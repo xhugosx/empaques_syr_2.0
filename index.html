@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--here document onsen-->
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+
+    <!-- icons -->
+    <link href="./css/icons/css/fontawesome.css" rel="stylesheet">
+    <link href="./css/icons/css/brands.css" rel="stylesheet">
+    <link href="./css/icons/css/solid.css" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- mi js-->
+    <script src="./js/home.js"></script>
+    <!--script src="./js/conexion.js"></script-->
+
+    <!-- mi css -->
+    <link rel="stylesheet" href="./css/main.css">
+
+    <title>Empaques SyR</title>
+</head>
+<body>
+
+    <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
+
+    <!-- PAGINA PRINCIPAL -->
+    <template id="home.html">
+        <ons-page id="page1">
+            <ons-toolbar>
+                <div class="center">
+                    <img src="./media/empaquessyr.svg" width="150px">
+                </div>
+            </ons-toolbar>
+            
+            <ons-card>
+                <ons-list-header>ADMINISTRACIÓN</ons-list-header>
+                <ons-list-item modifier="chevron" tappable onclick="nextPage('clientes.html')">
+                    <div class="left"><img src="./media/users.svg" alt=""></div>
+                    <div class="center">Clientes</div>
+                </ons-list-item>
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('productos.html',productos)" >
+                    <div class="left"> <i class="fa-solid fa-boxes-stacked"></i> </div>
+                    <div class="center">Productos</div>
+                </ons-list-item>
+            </ons-card>
+
+            <ons-card>
+                <ons-list-header>PRODUCCIÓN</ons-list-header>
+                <ons-list-item modifier="chevron" tappable onclick="nextPage('entradas.html')">
+                    <div class="left"><i class="fa-solid fa-plus"></i></div>
+                    <div class="center">Entradas</div>
+                </ons-list-item>
+                <ons-list-item modifier="chevron" tappable onclick="nextPage('salidas.html')" >
+                    <div class="left"> <i class="fa-solid fa-minus"></i> </div>
+                    <div class="center">Salidas</div>
+                </ons-list-item>
+                <ons-list-item modifier="chevron" tappable onclick="nextPage('inventario.html')" >
+                    <div class="left"> <i class="fa-solid fa-clipboard-list"></i> </div>
+                    <div class="center">Inventario</div>
+                </ons-list-item>
+            </ons-card>
+
+            <ons-card>
+                <ons-list-item modifier="chevron" tappable onclick="nextPage('pedidos.html')">
+                    <div class="left"><i class="fa-regular fa-rectangle-list"></i></div>
+                    <div class="center">Pedidos pendientes</div>
+                </ons-list-item>
+            </ons-card>
+
+            <ons-fab position="bottom right">
+                <i class="fa-regular fa-plus"></i>
+            </ons-fab>
+        </ons-page>
+    </template>
+    <!-- fin pagina pricipal -->
+
+    <!-- CLIENTES -->
+    <template id="clientes.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Clientes</div>
+            </ons-toolbar>
+
+            <ons-progress-bar indeterminate ></ons-progress-bar>
+            
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+
+        </ons-page>
+    </template>
+    <!-- FIN DE CLIENTES-->
+
+    <!-- PRODUCTOS -->
+    <template id="productos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Productos</div>
+            </ons-toolbar>
+
+            <ons-progress-bar id="loadingProductos" indeterminate></ons-progress-bar>
+            
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+            <div id="datosProductos">
+                <!-- aqui iran los datos de productos -->
+            </div>
+            
+
+        </ons-page>
+    </template>
+    <!--FIN DE PRODUCTOS-->
+
+    <!-- ENTREDA -->
+    <template id="entradas.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Entradas</div>
+            </ons-toolbar>
+
+            <div id="datosEntradas">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+                <ons-button><i class="fa-solid fa-filter"></i></ons-button>
+            </center>
+            
+
+        </ons-page>
+    </template>
+    <!-- FIN DE ENTRADA-->
+
+    <!-- SAIDA -->
+    <template id="salidas.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Salidas</div>
+            </ons-toolbar>
+
+            <div id="datosSalidas">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+            
+
+        </ons-page>
+    </template>
+    <!-- FIN DE SALIDA -->
+
+    <!-- INVENTARIO -->
+    <template id="inventario.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Inventario</div>
+            </ons-toolbar>
+
+            <div id="datosInventario">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+            
+
+        </ons-page>
+    </template>
+    <!-- FIN DE INVENTARIO -->
+
+    <!-- PEDIDOS -->
+    <template id="pedidos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Pedidos</div>
+            </ons-toolbar>
+
+            <div id="datosPedidos">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+            
+
+        </ons-page>
+    </template>
+    <!-- FIN DE PEDIDOS -->
+
+</body>
+</html>

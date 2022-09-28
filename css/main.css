@@ -1,0 +1,10 @@
+@font-face {
+    font-family: arialBold;
+    src: url(../font/arial-rounded-mt-bold.ttf);
+}
+body{
+    background-image: url('../media/FONDO-PANTALLA.svg');
+}
+div{
+    font-family: 'Courier';
+}
