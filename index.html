@@ -46,7 +46,7 @@
                     <div class="left"><img src="./media/users.svg" alt=""></div>
                     <div class="center">Clientes</div>
                 </ons-list-item>
-                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('productos.html',productos)" >
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('productos1.html',productos)" >
                     <div class="left"> <i class="fa-solid fa-boxes-stacked"></i> </div>
                     <div class="center">Productos</div>
                 </ons-list-item>
@@ -102,7 +102,8 @@
     <!-- FIN DE CLIENTES-->
 
     <!-- PRODUCTOS -->
-    <template id="productos.html">
+        <!-- primera vista de productos -->
+    <template id="productos1.html">
         <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
@@ -117,6 +118,25 @@
             </center>
             <div id="datosProductos">
                 <!-- aqui iran los datos de productos -->
+            </div>
+
+            <ons-fab position="bottom right" onclick="nextPageFunction('productos2.html',productos2)">
+                <i class="fa-solid fa-table-cells"></i>
+            </ons-fab>
+
+        </ons-page>
+    </template>
+        <!-- vista 2 de productos -->
+    <template id="productos2.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Productos</div>
+            </ons-toolbar>
+            <br>
+
+            <div id="datosProductos2">
+                <!-- aqui iran los botones de los productos -->
             </div>
 
             <ons-fab position="bottom right">

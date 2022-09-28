@@ -8,3 +8,6 @@ body{
 div{
     font-family: 'Courier';
 }
+#boton-cliente{
+    margin: 8px;
+}

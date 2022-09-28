@@ -70,3 +70,25 @@ function getProductos(respuesta)
 }
 //fin de productos
 
+//productos vista 2
+
+function productos2()
+{
+    let html = "";
+
+    for(let i=1;i<101;i++)
+    {
+        html += '<ons-button id="boton-cliente" onclick=""><h5>'+ agregarCeros(i) +'</h5></ons-button>';
+    }
+
+    $("#datosProductos2").append(html);
+}
+
+//funcion para agregar 0 a la variable
+function agregarCeros(numero)
+{
+    numero = String(numero);
+    if(numero.length === 1) return "00"+numero;
+    else if(numero.length === 2) return "0"+numero;
+    else return numero;
+}
