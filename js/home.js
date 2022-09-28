@@ -36,7 +36,7 @@ function servidor(link,miFuncion)
 //productos
 function productos()
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/conexion/prueba.php',getProductos);
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php',getProductos);
 }
 function getProductos(respuesta)
 {
