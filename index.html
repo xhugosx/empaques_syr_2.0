@@ -19,7 +19,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- mi js-->
-    <script src="./js/home.js"></script>
+    <script src="./js/productos.js"></script>
+    <script src="./js/clientes.js"></script>
     <!--script src="./js/conexion.js"></script-->
 
     <!-- mi css -->
@@ -42,11 +43,11 @@
             
             <ons-card>
                 <ons-list-header>ADMINISTRACIÓN</ons-list-header>
-                <ons-list-item modifier="chevron" tappable onclick="nextPage('clientes.html')">
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('clientes.html',setClientes)">
                     <div class="left"><img src="./media/users.svg" alt=""></div>
                     <div class="center">Clientes</div>
                 </ons-list-item>
-                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('productos1.html',productos)" >
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('productos1.html',setProductos)" >
                     <div class="left"> <i class="fa-solid fa-boxes-stacked"></i> </div>
                     <div class="center">Productos</div>
                 </ons-list-item>
@@ -75,7 +76,7 @@
                 </ons-list-item>
             </ons-card>
 
-            <ons-fab position="bottom right">
+            <ons-fab onclick="setProductos2Resultado()" position="bottom right">
                 <i class="fa-regular fa-plus"></i>
             </ons-fab>
         </ons-page>
@@ -90,13 +91,53 @@
                 <div class="center">Clientes</div>
             </ons-toolbar>
 
-            <ons-progress-bar indeterminate ></ons-progress-bar>
+            <ons-progress-bar id="loadingClientes" indeterminate ></ons-progress-bar>
             
             <br>
             <center>
                 <ons-search-input placeholder="Buscar"></ons-search-input>
             </center>
+            <div id="datosClientes">
+                <!-- aqui iran los datos de clientes -->
+            </div>
 
+            <ons-fab onclick="nextPage('agregarClientes.html')" position="bottom right">
+                <i class="fa-regular fa-plus"></i>
+            </ons-fab>
+        </ons-page>
+    </template>
+
+    <template id="agregarClientes.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar cliente</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <ons-card>
+                <center>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key"></i>
+                        </div>
+                        <div class="center">
+                            Este debe ser de 3 digitos
+                            <textarea class="textarea" rows="1" placeholder="codigo"></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-user-large"></i>
+                        </div>
+                        <div class="center">
+                            <textarea class="textarea" rows="3" placeholder="Nombre" ></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-button modifier="large">Agregar</ons-button>
+                </center>
+            </ons-card>
+            
         </ons-page>
     </template>
     <!-- FIN DE CLIENTES-->
@@ -139,9 +180,32 @@
                 <!-- aqui iran los botones de los productos -->
             </div>
 
-            <ons-fab position="bottom right">
+            <ons-fab onclick="resetearPila()" position="bottom right">
                 <i class="fa-solid fa-table-list"></i>
             </ons-fab>
+
+        </ons-page>
+    </template>
+
+        <!--Resultado de vista 2 de productos -->
+    <template id="productos2Resultado.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Productos</div>
+            </ons-toolbar>
+
+            <ons-progress-bar id="loadingProductos2Vista" indeterminate></ons-progress-bar>
+            <h3 id ="productosClienteVista2"></h3>
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+
+            <div id="datosProductos2Resultado">
+                <!-- aqui iran los resultados -->
+            </div>
+
 
         </ons-page>
     </template>

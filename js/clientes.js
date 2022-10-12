@@ -10,6 +10,14 @@ function nextPage(miPage)
 {
     myNavigator.pushPage(miPage, {data: {title: ''}});
 }
+function nextPageFunctionData(miPage,miFuncion,dato)
+{
+    myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
+
+        miFuncion(dato);
+
+    });
+}
 
 function alerta(mensaje)
 {
@@ -33,56 +41,57 @@ function servidor(link,miFuncion)
     xhttp.send();
 }
 
-//productos
-function productos()
+function setDataPage(agregar,eliminar,html)
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php',getProductos);
+    $(agregar).append(html);
+    if(eliminar!=0)$(eliminar).remove();
 }
-function getProductos(respuesta)
+//clientes
+//mostrar clientes
+function setClientes()
+{
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/select.php?type=2',getClientes);
+}
+function getClientes(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
     let html1;
     html1 = '<ons-card>';
+    //html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        html1 += '<ons-list-item modifier="chevron" tappable>';
-        html1 += '  <div class="left">';
-        html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
-        html1 += '  </div>';
-        html1 += '  <div class="center">';
-        html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ arrayJson[i].producto +'</span>';
-        html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
-        html1 += '  </div>';
+       
+        html1 += '<ons-list-header>'+ agregarCeros(arrayJson[i].codigo)+'</ons-list-header>';
+        html1 += '<ons-list-item>';
+        html1 += '<div class="left">';
+        html1 += '    <i class="fa-solid fa-user-large"></i>';
+        html1 += '</div>';
+        html1 += '<div class="center">';
+        html1 += '   <strong>'+arrayJson[i].nombre+'</strong>';
+        html1 += '</div>';
         html1 += '</ons-list-item>';
 
     }
-
+    //html1 += '</ons-list>';
     html1 += '</ons-card>';
 
-    $('#datosProductos').append(html1);
-    $('#loadingProductos').remove();
+    setDataPage('#datosClientes','#loadingClientes',html1);
 
 }
-//fin de productos
+//fin de mostrar clientes
 
-//productos vista 2
+//agregar clientes
 
-function productos2()
-{
-    let html = "";
 
-    for(let i=1;i<101;i++)
-    {
-        html += '<ons-button id="boton-cliente" onclick=""><h5>'+ agregarCeros(i) +'</h5></ons-button>';
-    }
 
-    $("#datosProductos2").append(html);
-}
+//fin de agregar clientes
+
+//fin de Clientes
 
 //funcion para agregar 0 a la variable
 function agregarCeros(numero)
