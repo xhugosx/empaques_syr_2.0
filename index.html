@@ -92,13 +92,14 @@
             </ons-toolbar>
 
             <ons-progress-bar id="loadingClientes" indeterminate ></ons-progress-bar>
-            
+
             <br>
             <center>
                 <ons-search-input placeholder="Buscar"></ons-search-input>
             </center>
+            <ons-lazy-repeat id="lista-clientes"></ons-lazy-repeat>
             <div id="datosClientes">
-                <!-- aqui iran los datos de clientes -->
+                <aqui iran los datos de clientes >
             </div>
 
             <ons-fab onclick="nextPage('agregarClientes.html')" position="bottom right">
@@ -122,8 +123,10 @@
                             <i class="fa-regular fa-key"></i>
                         </div>
                         <div class="center">
-                            Este debe ser de 3 digitos
-                            <textarea class="textarea" rows="1" placeholder="codigo"></textarea>
+                            <span class="list-item__title">Este debe ser de 3 digitos</span>
+                            <span class="list-item__subtitle">
+                                <textarea id="codigoCliente" cols="50" rows="1" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                            </span>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -131,10 +134,10 @@
                             <i class="fa-regular fa-user-large"></i>
                         </div>
                         <div class="center">
-                            <textarea class="textarea" rows="3" placeholder="Nombre" ></textarea>
+                            <textarea id="nombreCliente" class="textarea" cols="50" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
                         </div>
                     </ons-list-item>
-                    <ons-button modifier="large">Agregar</ons-button>
+                    <ons-button modifier="large" onclick="setAgregarCliente()">Agregar</ons-button>
                 </center>
             </ons-card>
             
@@ -151,11 +154,15 @@
                 <div class="center">Productos</div>
             </ons-toolbar>
 
-            <ons-progress-bar id="loadingProductos" indeterminate></ons-progress-bar>
+            <div id="loadingProductos"> 
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+            
             
             <br>
             <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
+                <ons-search-input id="busquedaProductos1" onkeyup="setProductosBarraBusqueda(this.value)" placeholder="Buscar producto"></ons-search-input>
+                
             </center>
             <div id="datosProductos">
                 <!-- aqui iran los datos de productos -->
@@ -195,8 +202,10 @@
                 <div class="center">Productos</div>
             </ons-toolbar>
 
-            <ons-progress-bar id="loadingProductos2Vista" indeterminate></ons-progress-bar>
-            <h3 id ="productosClienteVista2"></h3>
+            <div id="loadingProductos2Vista"> 
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
             <br>
             <center>
                 <ons-search-input placeholder="Buscar"></ons-search-input>
@@ -211,7 +220,7 @@
     </template>
     <!--FIN DE PRODUCTOS-->
 
-    <!-- ENTREDA -->
+    <!-- ENTRaDA -->
     <template id="entradas.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -226,9 +235,40 @@
             <br>
             <center>
                 <ons-search-input placeholder="Buscar"></ons-search-input>
-                <ons-button><i class="fa-solid fa-filter"></i></ons-button>
             </center>
+            <ons-card>
+                <ons-list-item modifier="chevron" tappable>
+                    <div class="left">
+                        <strong>
+                            045
+                        </strong>
+                    </div>
+                    <div class="center">
+                        CENTRAL DE VIDRIO
+                    </div>
+                    <div class="right">
+                        <span class="notification">1</span>
+                    </div>
+                </ons-list-item>
+                <!--ons-list-header>
+                    2022045-1
+                </ons-list-header>
+                <ons-list-item>
+                    <div class="left">
+                        <strong>045/001</strong>
+                    </div>
+                    <div class="center">
+                        <span class="list-item__title"> CAJA PRUEBA</span><span class="list-item__subtitle">CENTRAL DE VIDRIO</span>
+                    </div>
+                    <div class="right">
+                        1,500
+                    </div>
+                </ons-list-item-->
+            </ons-card>
             
+            <ons-fab position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
 
         </ons-page>
     </template>

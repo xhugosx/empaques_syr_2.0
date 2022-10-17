@@ -2,9 +2,7 @@
     font-family: arialBold;
     src: url(../font/arial-rounded-mt-bold.ttf);
 }
-body{
-    background-image: url('../media/FONDO-PANTALLA.svg');
-}
+
 div{
     font-family: 'Courier';
 }
@@ -13,4 +11,8 @@ div{
 }
 textarea{
     text-transform:uppercase;
+}
+div.right > i{
+    margin: 10px;
+    cursor: pointer;
 }

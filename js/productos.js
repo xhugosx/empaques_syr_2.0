@@ -43,9 +43,11 @@ function servidor(link,miFuncion)
 
 function setDataPage(agregar,eliminar,html)
 {
+    if(eliminar!=0)$(eliminar).empty();
     $(agregar).append(html);
-    if(eliminar!=0)$(eliminar).remove();
 }
+
+
 //productos
 function setProductos()
 {
@@ -56,28 +58,9 @@ function getProductos(respuesta)
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    let html1;
-    html1 = '<ons-card>';
+    resultado = enlistarProductos(arrayJson);
 
-    for(var i=0;i<arrayJson.length-1;i++) 
-    {
-        arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
-
-        html1 += '<ons-list-item modifier="chevron" tappable>';
-        html1 += '  <div class="left">';
-        html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
-        html1 += '  </div>';
-        html1 += '  <div class="center">';
-        html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ arrayJson[i].producto +'</span>';
-        html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
-        html1 += '  </div>';
-        html1 += '</ons-list-item>';
-
-    }
-
-    html1 += '</ons-card>';
-
-    setDataPage('#datosProductos','#loadingProductos',html1);
+    setDataPage('#datosProductos','#loadingProductos',resultado);
 
 }
 //fin de productos
@@ -95,7 +78,7 @@ function productos2()
     html += "</center>";
     $("#datosProductos2").append(html);
 }
-    //resultado de vista 2 de productos
+//resultado de vista 2 de productos
 function setProductos2Resultado(texto)
 {
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=1&search='+texto,getProductos2Resultado);
@@ -105,6 +88,43 @@ function getProductos2Resultado(respuesta)
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
+    resultado = enlistarProductos(arrayJson);
+
+    setDataPage('#datosProductos2Resultado','#loadingProductos2Vista',resultado);
+    
+}
+//fin de productos vista 2
+
+//busqueda por barra de busqueda
+
+function setProductosBarraBusqueda(busqueda)
+{
+    if(busqueda=="") setProductos();
+   servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=3&search='+busqueda,getProductosBarraBusqueda);
+}
+function getProductosBarraBusqueda(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+    resultado = enlistarProductos(arrayJson);
+    
+    $('#datosProductos').empty();
+    setDataPage('#datosProductos',0,resultado);
+}
+
+
+
+
+
+
+
+
+
+//sirve para enlistar todos los productos
+function enlistarProductos(arrayJson)
+{
+    if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
     let html1;
     html1 = '<ons-card>';
 
@@ -112,24 +132,26 @@ function getProductos2Resultado(respuesta)
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        html1 += '<ons-list-item modifier="chevron" tappable>';
+        html1 += '<ons-list-item>';
         html1 += '  <div class="left">';
         html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
         html1 += '  </div>';
         html1 += '  <div class="center">';
-        html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ arrayJson[i].producto +'</span>';
+        html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ acortarTexto(arrayJson[i].producto) +'</span>';
         html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
         html1 += '  </div>';
+        html1 += '    <div class="right">' 
+        html1 += '          <a target="_blank" href="https://empaquessyrgdl.000webhostapp.com/planos/'+arrayJson[i].codigo.substring(0,3)+'/'+arrayJson[i].codigo.substring(0,3)+'-'+arrayJson[i].codigo.substring(4,7)+'.pdf">';
+        html1 += '          <i class="fa-solid fa-file-pdf fa-2x" style="color:rgba(67, 175, 69, 0.888)"> </i></a> <i class="fa-solid fa-trash fa-lg" style="color:red"></i>'; 
+        html1 += '    </div>';
         html1 += '</ons-list-item>';
 
     }
 
-    html1 += '</ons-card>';
-    setDataPage('#datosProductos2Resultado','#loadingProductos2Vista',html1);
-    
-    
+    html1 += '</ons-card> <br><br>';
+
+    return html1;
 }
-//fin de productos vista 2
 
 //genera un pop de la pila de ventanas de la app *return*
 function resetearPila()
@@ -144,4 +166,12 @@ function agregarCeros(numero)
     if(numero.length === 1) return "00"+numero;
     else if(numero.length === 2) return "0"+numero;
     else return numero;
+}
+
+
+//funcion para acortar texto
+function acortarTexto(texto)
+{
+    if(texto.length < 23) return texto;
+    else return texto.substring(0,23)+"...";
 }
