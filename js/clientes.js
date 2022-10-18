@@ -69,22 +69,102 @@ function setClientes()
 }
 function getClientes(respuesta)
 {
+    
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    var registros = arrayJson[arrayJson.length-1]; // asignar el numero de registros
-    arrayJson.splice(-1,1);//eliminar el ultimo regisstro
 
+    console.log(""+resultado);
+
+    resultado = enlistarClientes(arrayJson);
+
+    $('#datosClientes').empty();
+    setDataPage('#datosClientes','#loadingClientes',resultado);
+
+}
+//fin de mostrar clientes
+
+//buscar clientes
+function setClientesBarraBusqueda(busqueda,e)
+{
+    if(busqueda=="") setClientes()
+    
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/select.php?type=3&search='+busqueda,getClientesBarraBusqueda);
+    }
+   
+}
+function getClientesBarraBusqueda(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+    resultado = enlistarClientes(arrayJson);
+    
+    $('#datosClientes').empty();
+    setDataPage('#datosClientes',0,resultado);
+}
+//fin de buscar clintes
+//agregar clientes
+function setAgregarCliente()
+{
+    
+    if(datoVacio($('#codigoCliente').val()) && datoVacio($('#nombreCliente').val())) 
+    {
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/add.php?codigo='+$('#codigoCliente').val()+'&nombre='+$('#nombreCliente').val(),getAgregarCliente)
+    }
+    else alerta("Espacios en blanco");
+    //validar si codigo y nombre tiene datos
+    
+}
+function getAgregarCliente(respuesta)
+{
+    //respuesta del servidor
+    if(respuesta.responseText=="1") 
+    {
+        alerta("Registro insertado");
+        resetearPilacliente();
+    }
+    else alerta('Ya existe un cliente con ese codigo, "No se pudo insertar"');
+}
+
+//fin de agregar clientes
+
+//eliminar cliente
+
+function setEliminarCliente(codigo)
+{
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/delete.php?codigo='+codigo,getEliminarCliente);
+}
+function getEliminarCliente(respuesta)
+{
+    if(respuesta.responseText=="1") 
+    {
+        alerta("Registro eliminado");
+        setClientes();
+    }  
+    else alerta("No se pudo eliminar");
+}
+
+//fin de eliminar cliente
+
+
+
+//fin de Clientes
+
+//funcion para enlistar clientes
+function enlistarClientes(arrayJson)
+{
+    if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
     let html1;
     html1 = '<ons-card>';
-    //html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-       
-        //html1 += '<ons-list-header>'+ agregarCeros(arrayJson[i].codigo)+'</ons-list-header>';
         html1 += '<ons-list-item>';
         html1 += '<div class="left">';
         html1 += '    <i class="fa-solid fa-user-large"></i>';
@@ -99,49 +179,11 @@ function getClientes(respuesta)
         html1 += '</ons-list-item>';
 
     }
-    //html1 += '</ons-list>';
     html1 += '</ons-card><br><br><br>';
 
-    setDataPage('#datosClientes','#loadingClientes',html1);
+    return html1
 
 }
-//fin de mostrar clientes
-
-//agregar clientes
-function setAgregarCliente()
-{
-    if(datoVacio($('#codigoCliente').val()) && datoVacio($('#nombreCliente').val())) 
-    {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/add.php?codigo='+$('#codigoCliente').val()+'&nombre='+$('#nombreCliente').val(),getAgregarCliente)
-    }
-    else alerta("Espacios en blanco");
-    //validar si codigo y nombre tiene datos
-    
-}
-function getAgregarCliente(respuesta)
-{
-    //respuesta del servidor
-    if(respuesta.responseText=="1") alerta("Registro insertado");  
-    else alerta("No se pudo insertar");
-}
-
-//fin de agregar clientes
-
-//eliminar cliente
-
-function setEliminarCliente(codigo)
-{
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/delete.php?codigo='+codigo,getEliminarCliente);
-}
-function getEliminarCliente(respuesta)
-{
-    if(respuesta.responseText=="1") alerta("Registro eliminado");  
-    else alerta("No se pudo eliminar");
-}
-
-//fin de eliminar cliente
-
-//fin de Clientes
 
 //funcion para agregar 0 a la variable
 function agregarCeros(numero)
@@ -157,4 +199,12 @@ function datoVacio(dato)
 {
     if(dato=="") return false;
     else return true;
+}
+
+//funcion para regresar y ejecutar una funcion
+function resetearPilacliente()
+{
+    document.querySelector('ons-navigator').popPage().then(function(){
+        setClientes();
+    }); 
 }

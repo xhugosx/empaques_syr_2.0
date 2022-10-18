@@ -49,6 +49,7 @@ function setDataPage(agregar,eliminar,html)
 
 
 //productos
+//ver productos
 function setProductos()
 {
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=2',getProductos);
@@ -60,47 +61,113 @@ function getProductos(respuesta)
 
     resultado = enlistarProductos(arrayJson);
 
+    $('#datosProductos').empty();
     setDataPage('#datosProductos','#loadingProductos',resultado);
 
 }
-//fin de productos
+//fin de ver productos
 
-//productos vista 2
-
-function productos2()
+//eliminar productos
+function setEliminarProducto(producto)
 {
-    let html = "<center>";
-
-    for(let i=1;i<101;i++)
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/delete.php?codigo='+producto,getEliminarProducto)
+}
+function getEliminarProducto(respuesta)
+{
+    if(respuesta.responseText=="1") 
     {
-        html += '<ons-button id="'+i+'" class="boton-cliente" onclick="nextPageFunctionData(\'productos2Resultado.html\',setProductos2Resultado,agregarCeros(this.id))"><h2>'+ agregarCeros(i) +'</h2></ons-button>';
-    }
-    html += "</center>";
-    $("#datosProductos2").append(html);
+        alerta("Registro eliminado");
+        setProductos();
+    }  
+    else alerta("No se pudo eliminar");
 }
-//resultado de vista 2 de productos
-function setProductos2Resultado(texto)
+//fin de eliminar productos
+
+//agregar productos
+function setAgregarProducto()
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=1&search='+texto,getProductos2Resultado);
+    
+    if($('#codigoProducto').val().length == 7 && $('#codigoProducto').val().includes('/'))
+    {
+        if(datoVacio($('#codigoProducto').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val())) 
+        {
+            servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php?codigo='+$('#codigoProducto').val()+'&producto='+$('#nombreProducto').val()+'&precio='+$('#precioProducto').val(),getAgregarProducto)
+        }
+        else alerta("Espacios en blanco");
+    }   
+    else alerta("Codigo invalido")
+   
+    //validar si codigo y nombre tiene datos
+    
 }
-function getProductos2Resultado(respuesta)
+function getAgregarProducto(respuesta)
+{
+    //respuesta del servidor
+    if(respuesta.responseText=="1") 
+    {
+        alerta("Registro insertado");
+        resetearPilaProducto();
+    }
+    else alerta('"No se pudo insertar"');
+}
+
+//fin de agregar productos
+
+//actualizar producto
+function setActualizarProducto()
+{
+    if(datoVacio($('#codigoProductoActualizar').val()) && datoVacio($('#nombreProductoActualizar').val())) 
+    {
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/update.php?codigo='+$('#codigoProductoActualizar').val()+'&producto='+$('#nombreProductoActualizar').val()+'&precio='+$('#precioProductoActualizar').val(),getActualizarProducto);
+    }
+    else alerta("Espacios en blanco");
+    
+}
+function getActualizarProducto(respuesta)
+{
+    if(respuesta.responseText=="1") 
+    {
+        alerta("Registro actualizado");
+        resetearPilaProducto();
+    }  
+    else alerta("No se pudo actualizar");
+
+}
+function setBuscarProductoActualizar(codigo)
+{
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=3&search='+codigo,getBuscarProductoActualizar);
+}
+function getBuscarProductoActualizar(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+    
+    arrayJson[0] = JSON.parse(arrayJson[0]);
 
-    resultado = enlistarProductos(arrayJson);
-
-    setDataPage('#datosProductos2Resultado','#loadingProductos2Vista',resultado);
+    $('#codigoProductoActualizar').val(arrayJson[0].codigo);
+    $('#nombreProductoActualizar').val(arrayJson[0].producto);
+    $('#precioProductoActualizar').val(arrayJson[0].precio);
     
 }
-//fin de productos vista 2
+//fin de actualizar cliente
+
+
+//fin de productos
+
 
 //busqueda por barra de busqueda
 
-function setProductosBarraBusqueda(busqueda)
+function setProductosBarraBusqueda(busqueda,e)
 {
     if(busqueda=="") setProductos();
-   servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=3&search='+busqueda,getProductosBarraBusqueda);
+
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=3&search='+busqueda,getProductosBarraBusqueda);
+    }
+   
 }
 function getProductosBarraBusqueda(respuesta)
 {
@@ -142,7 +209,10 @@ function enlistarProductos(arrayJson)
         html1 += '  </div>';
         html1 += '    <div class="right">' 
         html1 += '          <a target="_blank" href="https://empaquessyrgdl.000webhostapp.com/planos/'+arrayJson[i].codigo.substring(0,3)+'/'+arrayJson[i].codigo.substring(0,3)+'-'+arrayJson[i].codigo.substring(4,7)+'.pdf">';
-        html1 += '          <i class="fa-solid fa-file-pdf fa-2x" style="color:rgba(67, 175, 69, 0.888)"> </i></a> <i class="fa-solid fa-trash fa-lg" style="color:red"></i>'; 
+        html1 += '          <i class="fa-solid fa-file-pdf fa-2x" style="color:rgba(67, 175, 69, 0.888)"> </i>';
+        html1 += '          </a>';
+        html1 += '          <i class="fa-solid fa-trash fa-lg" onclick="alertaConfirm(\'Estas seguro de eliminar este producto? '+arrayJson[i].codigo+'\',setEliminarProducto,\''+arrayJson[i].codigo+'\')" style="color:red"></i>'; 
+        html1 += '          <i class="fa-solid fa-pen-to-square fa-lg" style="color:#FFC300" onclick="nextPageFunctionData(\'ActualizarProductos.html\',setBuscarProductoActualizar,\''+arrayJson[i].codigo+'\')"> </i>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
 
@@ -154,9 +224,11 @@ function enlistarProductos(arrayJson)
 }
 
 //genera un pop de la pila de ventanas de la app *return*
-function resetearPila()
+function resetearPilaProducto()
 {
-    document.querySelector('ons-navigator').popPage(); 
+    document.querySelector('ons-navigator').popPage().then(function(){
+        setProductos();
+    }); 
 }
 
 //funcion para agregar 0 a la variable
@@ -172,6 +244,6 @@ function agregarCeros(numero)
 //funcion para acortar texto
 function acortarTexto(texto)
 {
-    if(texto.length < 23) return texto;
-    else return texto.substring(0,23)+"...";
+    if(texto.length < 25) return texto;
+    else return texto.substring(0,25)+"...";
 }

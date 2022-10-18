@@ -91,19 +91,22 @@
                 <div class="center">Clientes</div>
             </ons-toolbar>
 
-            <ons-progress-bar id="loadingClientes" indeterminate ></ons-progress-bar>
+            <ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar>
 
             <br>
             <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
+                <ons-search-input onkeyup="setClientesBarraBusqueda(this.value,event)" placeholder="Buscar"></ons-search-input>
             </center>
             <ons-lazy-repeat id="lista-clientes"></ons-lazy-repeat>
             <div id="datosClientes">
-                <aqui iran los datos de clientes >
+
             </div>
 
             <ons-fab onclick="nextPage('agregarClientes.html')" position="bottom right">
                 <i class="fa-regular fa-plus"></i>
+            </ons-fab>
+            <ons-fab onclick="setClientes()" style="background:rgb(79, 134, 79)" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
         </ons-page>
     </template>
@@ -125,7 +128,7 @@
                         <div class="center">
                             <span class="list-item__title">Este debe ser de 3 digitos</span>
                             <span class="list-item__subtitle">
-                                <textarea id="codigoCliente" cols="50" rows="1" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                                <textarea id="codigoCliente" cols="40" rows="1" maxlength="3" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
                             </span>
                         </div>
                     </ons-list-item>
@@ -134,7 +137,7 @@
                             <i class="fa-regular fa-user-large"></i>
                         </div>
                         <div class="center">
-                            <textarea id="nombreCliente" class="textarea" cols="50" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                            <textarea id="nombreCliente" class="textarea" cols="40" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
                         </div>
                     </ons-list-item>
                     <ons-button modifier="large" onclick="setAgregarCliente()">Agregar</ons-button>
@@ -146,7 +149,7 @@
     <!-- FIN DE CLIENTES-->
 
     <!-- PRODUCTOS -->
-        <!-- primera vista de productos -->
+        <!-- vista de productos -->
     <template id="productos1.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -161,66 +164,109 @@
             
             <br>
             <center>
-                <ons-search-input id="busquedaProductos1" onkeyup="setProductosBarraBusqueda(this.value)" placeholder="Buscar producto"></ons-search-input>
+                <ons-search-input id="busquedaProductos1" onkeyup="setProductosBarraBusqueda(this.value,event)" placeholder="Buscar producto"></ons-search-input>
                 
             </center>
             <div id="datosProductos">
                 <!-- aqui iran los datos de productos -->
             </div>
 
-            <ons-fab position="bottom right" onclick="nextPageFunction('productos2.html',productos2)">
-                <i class="fa-solid fa-table-cells"></i>
+            <ons-fab position="bottom right" onclick="nextPage('agregaProductos.html')">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
+            <ons-fab onclick="setProductos()" style="background:rgb(79, 134, 79)" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
 
         </ons-page>
     </template>
-        <!-- vista 2 de productos -->
-    <template id="productos2.html">
+
+        <!-- Agregar productos -->
+    <template id="agregaProductos.html">
         <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Productos</div>
+                <div class="center">Agregar Productos</div>
             </ons-toolbar>
-            <br>
-
-            <div id="datosProductos2">
-                <!-- aqui iran los botones de los productos -->
-            </div>
-
-            <ons-fab onclick="resetearPila()" position="bottom right">
-                <i class="fa-solid fa-table-list"></i>
-            </ons-fab>
-
+            
+            <ons-card>
+                <center>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="codigoProducto" cols="40" rows="1" maxlength="7" class="textarea" placeholder="codigo"></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-box fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="nombreProducto" class="textarea" cols="40" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="precioProducto" class="textarea" cols="40" rows="1" placeholder="Precio"></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-button modifier="large" onclick="setAgregarProducto()">Agregar</ons-button>
+                </center>
+            </ons-card>
+    
         </ons-page>
     </template>
 
-        <!--Resultado de vista 2 de productos -->
-    <template id="productos2Resultado.html">
-        <ons-page>
+       <!-- Actualizar productos -->
+       <template id="ActualizarProductos.html">
+        <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Productos</div>
+                <div class="center">Actualizar Productos</div>
             </ons-toolbar>
-
-            <div id="loadingProductos2Vista"> 
-                <ons-progress-bar indeterminate></ons-progress-bar>
-            </div>
-
-            <br>
-            <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
-            </center>
-
-            <div id="datosProductos2Resultado">
-                <!-- aqui iran los resultados -->
-            </div>
-
-
+            
+            <ons-card>
+                <center>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="codigoProductoActualizar" cols="40" rows="1" maxlength="7" class="textarea" disabled></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-box fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="nombreProductoActualizar" class="textarea" cols="40" rows="2"  onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="precioProductoActualizar" class="textarea" cols="40" rows="1" ></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-button modifier="large" onclick="setActualizarProducto()">Actualizar</ons-button>
+                </center>
+            </ons-card>
+    
         </ons-page>
     </template>
+     
     <!--FIN DE PRODUCTOS-->
 
-    <!-- ENTRaDA -->
+    <!-- ENTRADA -->
     <template id="entradas.html">
         <ons-page id="prueba">
             <ons-toolbar>
