@@ -126,10 +126,9 @@
                             <i class="fa-regular fa-key"></i>
                         </div>
                         <div class="center">
-                            <span class="list-item__title">Este debe ser de 3 digitos</span>
-                            <span class="list-item__subtitle">
-                                <textarea id="codigoCliente" cols="40" rows="1" maxlength="3" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
-                            </span>
+                            
+                            <textarea id="codigoCliente" cols="40" rows="1" maxlength="3" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                            
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -238,7 +237,7 @@
                             <i class="fa-regular fa-key fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="codigoProductoActualizar" cols="40" rows="1" maxlength="7" class="textarea" disabled></textarea>
+                            <textarea id="codigoProductoActualizar" cols="40" rows="1" maxlength="10" class="textarea" disabled></textarea>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -314,6 +313,10 @@
             
             <ons-fab position="bottom right">
                 <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
+            <ons-fab position="bottom left" style="background:rgb(33, 151, 98)">
+                <i class="fa-solid fa-filter"></i>
             </ons-fab>
 
         </ons-page>

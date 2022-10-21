@@ -47,6 +47,25 @@ function setDataPage(agregar,eliminar,html)
     $(agregar).append(html);
 }
 
+function crearObjetMensaje(codigo) {
+    ons.openActionSheet({
+      title: 'OPCIONES',
+      cancelable: true,
+      buttons: [
+        'PLANO',
+        'Modificar',
+        {
+          label:'Eliminar',
+          modifier: 'destructive'
+        }
+      ]
+    }).then(function (index) { 
+      if(index==0) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
+      else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo);
+    });
+  };
+
 
 //productos
 //ver productos
@@ -208,11 +227,12 @@ function enlistarProductos(arrayJson)
         html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
         html1 += '  </div>';
         html1 += '    <div class="right">' 
-        html1 += '          <a target="_blank" href="https://empaquessyrgdl.000webhostapp.com/planos/'+arrayJson[i].codigo.substring(0,3)+'/'+arrayJson[i].codigo.substring(0,3)+'-'+arrayJson[i].codigo.substring(4,7)+'.pdf">';
-        html1 += '          <i class="fa-solid fa-file-pdf fa-2x" style="color:rgba(67, 175, 69, 0.888)"> </i>';
-        html1 += '          </a>';
-        html1 += '          <i class="fa-solid fa-trash fa-lg" onclick="alertaConfirm(\'Estas seguro de eliminar este producto? '+arrayJson[i].codigo+'\',setEliminarProducto,\''+arrayJson[i].codigo+'\')" style="color:red"></i>'; 
-        html1 += '          <i class="fa-solid fa-pen-to-square fa-lg" style="color:#FFC300" onclick="nextPageFunctionData(\'ActualizarProductos.html\',setBuscarProductoActualizar,\''+arrayJson[i].codigo+'\')"> </i>';
+        //html1 += '          <a target="_blank" href="https://empaquessyrgdl.000webhostapp.com/planos/'+arrayJson[i].codigo.substring(0,3)+'/'+arrayJson[i].codigo.substring(0,3)+'-'+arrayJson[i].codigo.substring(4,7)+'.pdf">';
+        //html1 += '          <i class="fa-solid fa-file-pdf fa-2x" style="color:brown"> </i>';
+        //html1 += '          </a>';
+        html1 += '          <i class="fa-solid fa-bars fa-lg" onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\')"></i>';
+        //html1 += '          <i class="fa-solid fa-trash fa-lg" onclick="alertaConfirm(\'Estas seguro de eliminar este producto? '+arrayJson[i].codigo+'\',setEliminarProducto,\''+arrayJson[i].codigo+'\')" style="color:red"></i>'; 
+        //html1 += '          <i class="fa-solid fa-pen-to-square fa-lg" style="color:#FFC300" onclick="nextPageFunctionData(\'ActualizarProductos.html\',setBuscarProductoActualizar,\''+arrayJson[i].codigo+'\')"> </i>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
 
