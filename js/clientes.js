@@ -1,4 +1,4 @@
-function nextPageFunction(miPage,miFuncion)
+/*function nextPageFunction(miPage,miFuncion)
 {
     myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
 
@@ -51,7 +51,7 @@ function servidor(link,miFuncion)
 
     xhttp.open("GET",link,true);
     xhttp.send();
-}
+}*/
 //funcion agregar html a una parte del codigo 
 // agregar -> html donde vas a gregar
 //eliminar -> html donde deceas eliminar, si no poner cero para no eliminar 
@@ -169,7 +169,7 @@ function enlistarClientes(arrayJson)
         html1 += '<div class="left">';
         html1 += '    <i class="fa-solid fa-user-large"></i>';
         html1 += '</div>';
-        html1 += '<div class="center">';
+        html1 += '<div class="center romperTexto">';
         html1 += '   <strong>'+ agregarCeros(arrayJson[i].codigo)+'</strong> &nbsp;'+arrayJson[i].nombre+'';
         html1 += '</div>';
         html1 += '<div class="right">';

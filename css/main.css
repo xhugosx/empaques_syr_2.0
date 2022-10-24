@@ -1,10 +1,7 @@
-@font-face {
-    font-family: arialBold;
-    src: url(../font/arial-rounded-mt-bold.ttf);
-}
+
 
 div{
-    font-family: 'Courier';
+    font-family: 'Candara';
 }
 .boton-cliente{
     margin: 8px;
@@ -15,4 +12,12 @@ textarea{
 div.right > i{
     margin: 10px;
     cursor: pointer;
+}
+.romperTexto{
+    
+    width: 230px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
 }

@@ -52,7 +52,7 @@ function crearObjetMensaje(codigo) {
       title: 'OPCIONES',
       cancelable: true,
       buttons: [
-        'PLANO',
+        'Plano',
         'Modificar',
         {
           label:'Eliminar',
@@ -125,7 +125,7 @@ function getAgregarProducto(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Registro insertado");
-        resetearPilaProducto();
+        resetearPilaProducto(setProductos);
     }
     else alerta('"No se pudo insertar"');
 }
@@ -147,7 +147,7 @@ function getActualizarProducto(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Registro actualizado");
-        resetearPilaProducto();
+        resetearPilaProducto(setProductos);
     }  
     else alerta("No se pudo actualizar");
 
@@ -221,18 +221,14 @@ function enlistarProductos(arrayJson)
         html1 += '<ons-list-item>';
         html1 += '  <div class="left">';
         html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
+        //html1 += '        hola';
         html1 += '  </div>';
-        html1 += '  <div class="center">';
-        html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ acortarTexto(arrayJson[i].producto) +'</span>';
+        html1 += '  <div class="center romperTexto">';
+        html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ arrayJson[i].producto +'</span>';
         html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
         html1 += '  </div>';
-        html1 += '    <div class="right">' 
-        //html1 += '          <a target="_blank" href="https://empaquessyrgdl.000webhostapp.com/planos/'+arrayJson[i].codigo.substring(0,3)+'/'+arrayJson[i].codigo.substring(0,3)+'-'+arrayJson[i].codigo.substring(4,7)+'.pdf">';
-        //html1 += '          <i class="fa-solid fa-file-pdf fa-2x" style="color:brown"> </i>';
-        //html1 += '          </a>';
+        html1 += '    <div class="right">';
         html1 += '          <i class="fa-solid fa-bars fa-lg" onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\')"></i>';
-        //html1 += '          <i class="fa-solid fa-trash fa-lg" onclick="alertaConfirm(\'Estas seguro de eliminar este producto? '+arrayJson[i].codigo+'\',setEliminarProducto,\''+arrayJson[i].codigo+'\')" style="color:red"></i>'; 
-        //html1 += '          <i class="fa-solid fa-pen-to-square fa-lg" style="color:#FFC300" onclick="nextPageFunctionData(\'ActualizarProductos.html\',setBuscarProductoActualizar,\''+arrayJson[i].codigo+'\')"> </i>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
 
@@ -244,10 +240,10 @@ function enlistarProductos(arrayJson)
 }
 
 //genera un pop de la pila de ventanas de la app *return*
-function resetearPilaProducto()
+function resetearPilaProducto(miFuncion)
 {
     document.querySelector('ons-navigator').popPage().then(function(){
-        setProductos();
+        miFuncion();
     }); 
 }
 
@@ -262,8 +258,8 @@ function agregarCeros(numero)
 
 
 //funcion para acortar texto
-function acortarTexto(texto)
+/*function acortarTexto(texto)
 {
     if(texto.length < 25) return texto;
     else return texto.substring(0,25)+"...";
-}
+}*/
