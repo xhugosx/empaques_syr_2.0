@@ -4,6 +4,7 @@
     src: url('../font/Candara.ttf');
 }
 div{
+    font-family: 'Candara';
 }
 .boton-cliente{
     margin: 8px;

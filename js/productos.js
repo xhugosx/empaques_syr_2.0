@@ -64,7 +64,17 @@ function crearObjetMensaje(codigo) {
       else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo);
     });
-  };
+};
+function alertaConfirm(mensaje,funcion,variable)
+{
+    ons.notification.confirm({
+        message: mensaje,
+        buttonLabels: ['SI', 'NO'],
+        callback: function(idx) {
+            if(idx==0) funcion(variable);
+          }
+   });
+}
 
 
 //productos
