@@ -1,5 +1,8 @@
 
-
+@font-face {
+    font-family: 'Candara';
+    src: url('../font/Candara.ttf');
+}
 div{
     font-family: 'Candara';
 }
