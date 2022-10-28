@@ -1,66 +1,6 @@
-/*function nextPageFunction(miPage,miFuncion)
-{
-    myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
 
-        miFuncion();
 
-    });
-}
-function nextPage(miPage)
-{
-    myNavigator.pushPage(miPage, {data: {title: ''}});
-}
 
-function nextPageFunctionData(miPage,miFuncion,dato)
-{
-    myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
-
-        miFuncion(dato);
-
-    });
-}
-
-function alerta(mensaje)
-{
-    ons.notification.alert(mensaje);
-}
-
-function alertaConfirm(mensaje,funcion,variable)
-{
-    ons.notification.confirm({
-        message: mensaje,
-        buttonLabels: ['SI', 'NO'],
-        callback: function(idx) {
-            if(idx==0) funcion(variable);
-          }
-   });
-}
-
-function servidor(link,miFuncion)
-{
-   var xhttp = new XMLHttpRequest();
-
-   xhttp.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-
-            miFuncion(this);
-
-        }
-    
-    };
-
-    xhttp.open("GET",link,true);
-    xhttp.send();
-}*/
-//funcion agregar html a una parte del codigo 
-// agregar -> html donde vas a gregar
-//eliminar -> html donde deceas eliminar, si no poner cero para no eliminar 
-// html para los datos a agregar
-function setDataPage(agregar,eliminar,html)
-{
-    $(agregar).append(html);
-    if(eliminar!=0)$(eliminar).remove();
-}
 //clientes
 //mostrar clientes
 function setClientes()
@@ -72,8 +12,6 @@ function getClientes(respuesta)
     
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-
-    console.log(""+resultado);
 
     resultado = enlistarClientes(arrayJson);
 
@@ -124,7 +62,7 @@ function getAgregarCliente(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Registro insertado");
-        resetearPilacliente();
+        resetearPilaFunction(setClientes);
     }
     else alerta('Ya existe un cliente con ese codigo, "No se pudo insertar"');
 }
@@ -167,7 +105,7 @@ function enlistarClientes(arrayJson)
 
         html1 += '<ons-list-item>';
         html1 += '<div class="left">';
-        html1 += '    <i class="fa-solid fa-user-large"></i>';
+        html1 += '    <i class="fa-solid fa-user-large fa-lg"></i>';
         html1 += '</div>';
         html1 += '<div class="center romperTexto">';
         html1 += '   <strong>'+ agregarCeros(arrayJson[i].codigo)+'</strong> &nbsp;'+arrayJson[i].nombre+'';
@@ -201,10 +139,3 @@ function datoVacio(dato)
     else return true;
 }
 
-//funcion para regresar y ejecutar una funcion
-function resetearPilacliente()
-{
-    document.querySelector('ons-navigator').popPage().then(function(){
-        setClientes();
-    }); 
-}

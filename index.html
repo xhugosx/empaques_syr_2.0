@@ -19,8 +19,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- mi js-->
+    <script src="./js/main.js"></script>
     <script src="./js/productos.js"></script>
     <script src="./js/clientes.js"></script>
+    <script src="./js/pedidos.js"></script>
     <!--script src="./js/conexion.js"></script-->
 
     <!-- mi css -->
@@ -45,7 +47,7 @@
                 <ons-list-header>ADMINISTRACIÓN</ons-list-header>
                 <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('clientes.html',setClientes)">
                     <div class="left"><img src="./media/users.svg" alt=""></div>
-                    <div class="center">Clientes holi</div>
+                    <div class="center">Clientes</div>
                 </ons-list-item>
                 <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('productos1.html',setProductos)" >
                     <div class="left"> <i class="fa-solid fa-boxes-stacked"></i> </div>
@@ -70,7 +72,7 @@
             </ons-card>
 
             <ons-card>
-                <ons-list-item modifier="chevron" tappable onclick="nextPage('pedidos.html')">
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
                     <div class="left"><i class="fa-regular fa-rectangle-list"></i></div>
                     <div class="center">Pedidos pendientes</div>
                 </ons-list-item>
@@ -127,7 +129,7 @@
                         </div>
                         <div class="center">
                             
-                            <textarea id="codigoCliente" cols="40" rows="1" maxlength="3" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                            <textarea id="codigoCliente" cols="30" rows="1" maxlength="3" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
                             
                         </div>
                     </ons-list-item>
@@ -136,7 +138,7 @@
                             <i class="fa-regular fa-user-large"></i>
                         </div>
                         <div class="center">
-                            <textarea id="nombreCliente" class="textarea" cols="40" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                            <textarea id="nombreCliente" class="textarea" cols="30" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
                         </div>
                     </ons-list-item>
                     <ons-button modifier="large" onclick="setAgregarCliente()">Agregar</ons-button>
@@ -196,7 +198,9 @@
                             <i class="fa-regular fa-key fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="codigoProducto" cols="40" rows="1" maxlength="7" class="textarea" placeholder="codigo"></textarea>
+                            <textarea id="codigoProducto1" cols="12" rows="1" maxlength="3" class="textarea" placeholder="codigo"></textarea>
+                            &nbsp;/&nbsp;
+                            <textarea id="codigoProducto2" cols="13" rows="1" maxlength="5" class="textarea" placeholder="codigo"></textarea>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -204,7 +208,7 @@
                             <i class="fa-regular fa-box fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="nombreProducto" class="textarea" cols="40" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                            <textarea id="nombreProducto" class="textarea" cols="30" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -212,7 +216,7 @@
                             <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="precioProducto" class="textarea" cols="40" rows="1" placeholder="Precio"></textarea>
+                            <textarea id="precioProducto" class="textarea" cols="30" rows="1" placeholder="Precio"></textarea>
                         </div>
                     </ons-list-item>
                     <ons-button modifier="large" onclick="setAgregarProducto()">Agregar</ons-button>
@@ -295,6 +299,7 @@
                         <span class="notification">1</span>
                     </div>
                 </ons-list-item>
+            </ons-card>
                 <!--ons-list-header>
                     2022045-1
                 </ons-list-header>
@@ -309,7 +314,7 @@
                         1,500
                     </div>
                 </ons-list-item-->
-            </ons-card>
+            
             
             <ons-fab position="bottom right">
                 <i class="fa-solid fa-plus"></i>
@@ -373,9 +378,26 @@
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Pedidos</div>
+                <div class="right">
+                    Entregado<ons-checkbox style="margin: 10px;" onclick="asignarFiltro(this)"></ons-checkbox>
+                </div>
             </ons-toolbar>
+            
+            <ons-tabbar swipeable position="auto">
+                <ons-tab page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home" badge="7" active>
+                </ons-tab>
+                <ons-tab page="tab2.html" label="Todo" icon="fa-boxes-stacked" active-icon="fa-box" badge="7">
+                </ons-tab>
+            </ons-tabbar>
+            
 
-            <div id="datosPedidos">
+        </ons-page>
+    </template>
+
+    <!-- vista 1 de los pedidos por cliente-->
+    <template id="tab1.html">
+        <ons-page id="Tab1">
+            <div id="datosPedidosClientesLoading">
                 <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
 
@@ -383,10 +405,28 @@
             <center>
                 <ons-search-input placeholder="Buscar"></ons-search-input>
             </center>
-            
+
+            <div id="datosPedidosClientes">
+
+            </div>
+        </ons-page>
+      </template>
+
+      <!-- VISTA 2 DE LOS PEDIDOS TODOS LOS PRODUCTOS-->
+      <template id="tab2.html">
+        <ons-page id="Tab2">
+          
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+
+            <div id="datosPedidos">
+                
+            </div>
 
         </ons-page>
-    </template>
+      </template>
     <!-- FIN DE PEDIDOS -->
 
 </body>

@@ -1,80 +1,3 @@
-function nextPageFunction(miPage,miFuncion)
-{
-    myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
-
-        miFuncion();
-
-    });
-}
-function nextPage(miPage)
-{
-    myNavigator.pushPage(miPage, {data: {title: ''}});
-}
-function nextPageFunctionData(miPage,miFuncion,dato)
-{
-    myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
-
-        miFuncion(dato);
-
-    });
-}
-
-function alerta(mensaje)
-{
-    ons.notification.alert(mensaje);
-}
-
-function servidor(link,miFuncion)
-{
-   var xhttp = new XMLHttpRequest();
-
-   xhttp.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-
-            miFuncion(this);
-
-        }
-    
-    };
-
-    xhttp.open("GET",link,true);
-    xhttp.send();
-}
-
-function setDataPage(agregar,eliminar,html)
-{
-    if(eliminar!=0)$(eliminar).empty();
-    $(agregar).append(html);
-}
-
-function crearObjetMensaje(codigo) {
-    ons.openActionSheet({
-      title: 'OPCIONES',
-      cancelable: true,
-      buttons: [
-        'Plano',
-        'Modificar',
-        {
-          label:'Eliminar',
-          modifier: 'destructive'
-        }
-      ]
-    }).then(function (index) { 
-      if(index==0) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-      else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
-      else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo);
-    });
-};
-function alertaConfirm(mensaje,funcion,variable)
-{
-    ons.notification.confirm({
-        message: mensaje,
-        buttonLabels: ['SI', 'NO'],
-        callback: function(idx) {
-            if(idx==0) funcion(variable);
-          }
-   });
-}
 
 
 //productos
@@ -116,15 +39,13 @@ function getEliminarProducto(respuesta)
 function setAgregarProducto()
 {
     
-    if($('#codigoProducto').val().length == 7 && $('#codigoProducto').val().includes('/'))
+   
+    if(datoVacio($('#codigoProducto1').val()) && datoVacio($('#codigoProducto2').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val())) 
     {
-        if(datoVacio($('#codigoProducto').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val())) 
-        {
-            servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php?codigo='+$('#codigoProducto').val()+'&producto='+$('#nombreProducto').val()+'&precio='+$('#precioProducto').val(),getAgregarProducto)
-        }
-        else alerta("Espacios en blanco");
-    }   
-    else alerta("Codigo invalido")
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php?codigo='+$('#codigoProducto1').val()+'/'+$('#codigoProducto2').val()+'&producto='+$('#nombreProducto').val()+'&precio='+$('#precioProducto').val(),getAgregarProducto)
+    }
+    else alerta("Espacios en blanco");
+    
    
     //validar si codigo y nombre tiene datos
     
@@ -135,7 +56,7 @@ function getAgregarProducto(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Registro insertado");
-        resetearPilaProducto(setProductos);
+        resetearPilaFunction(setProductos);
     }
     else alerta('"No se pudo insertar"');
 }
@@ -157,7 +78,7 @@ function getActualizarProducto(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Registro actualizado");
-        resetearPilaProducto(setProductos);
+        resetearPilaFunction(setProductos);
     }  
     else alerta("No se pudo actualizar");
 
@@ -210,13 +131,6 @@ function getProductosBarraBusqueda(respuesta)
 }
 
 
-
-
-
-
-
-
-
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson)
 {
@@ -250,26 +164,4 @@ function enlistarProductos(arrayJson)
 }
 
 //genera un pop de la pila de ventanas de la app *return*
-function resetearPilaProducto(miFuncion)
-{
-    document.querySelector('ons-navigator').popPage().then(function(){
-        miFuncion();
-    }); 
-}
 
-//funcion para agregar 0 a la variable
-function agregarCeros(numero)
-{
-    numero = String(numero);
-    if(numero.length === 1) return "00"+numero;
-    else if(numero.length === 2) return "0"+numero;
-    else return numero;
-}
-
-
-//funcion para acortar texto
-/*function acortarTexto(texto)
-{
-    if(texto.length < 25) return texto;
-    else return texto.substring(0,25)+"...";
-}*/
