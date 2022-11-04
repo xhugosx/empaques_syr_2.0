@@ -58,7 +58,7 @@ function getAgregarProducto(respuesta)
         alerta("Registro insertado");
         resetearPilaFunction(setProductos);
     }
-    else alerta('"No se pudo insertar"');
+    else alerta('Ya existe un producto con ese codigo!');
 }
 
 //fin de agregar productos

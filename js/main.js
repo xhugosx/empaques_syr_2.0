@@ -12,6 +12,7 @@ function nextPage(miPage)
 {
     myNavigator.pushPage(miPage, {data: {title: ''}});
 }
+// esta funcion solo pasa a la siguiente pagina con un una variable como parametro
 function nextPageFunctionData(miPage,miFuncion,dato)
 {
     myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
@@ -116,5 +117,13 @@ function sumarDias(fecha, dias){
     // Construimos el formato de salida
     fecha = dias_semana[fecha.getDay()] + ', ' + fecha.getDate() + ' de ' + meses[fecha.getMonth()] + ' de ' + fecha.getUTCFullYear();
     return fecha;
+}
+
+//$('ons-back-button')
+function reducirTexto(cadena)
+{
+    if(cadena.length > 30) return cadena.substr(0,30) + "...";
+    else return cadena;
+    
 }
 

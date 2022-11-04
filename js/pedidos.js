@@ -26,9 +26,10 @@ function getPedidosCliente(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-
+    var cantidadDeDatos = arrayJson[arrayJson.length-1];
     resultado = enlistarPedidosCliente(arrayJson);
-
+    
+    $('#clientesPedidos').attr("badge", cantidadDeDatos);
     $('#datosPedidosClientes').empty();    
     setDataPage('#datosPedidosClientes','#datosPedidosClientesLoading',resultado);
 }
@@ -38,19 +39,109 @@ function setBusquedaPendiente()
 {
     var type = 2;
     if(filtro) type = 1;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type,getFiltroEntregado)
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type,getBusquedaPendiente);
 }
-function getFiltroEntregado(respuesta)
+function getBusquedaPendiente(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-
+    var cantidadDeDatos = arrayJson[arrayJson.length-1];
     resultado = enlistarPedidos(arrayJson);
-
+    
+    $('#todoPedidos').attr("badge", cantidadDeDatos);
     $('#datosPedidos').empty();  
     setDataPage('#datosPedidos',0,resultado);
 }
 
+//PEDIDOS CLIENTE FILTRADO
+function setPedidosClienteFiltrado(codigo)
+{
+    var type = 2;
+    if(filtro) type = 1;
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo),getPedidosClienteFiltrado);
+}
+function getPedidosClienteFiltrado(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+    resultado = enlistarPedidos(arrayJson);
+    
+   
+    $('#datosPedidosClienteFiltrado').empty();  
+    setDataPage('#datosPedidosClienteFiltrado','#datosPedidosClientesLoadingFiltroLoading',resultado);
+}
+
+function setAgregarpedido()
+{
+    var id = $("#pedidoId").val();
+    var codigo = $("#pedidoCodigo").val();
+    var producto = $("#pedidoProducto").val();
+    var cliente = $("#pedidoCliente").val();
+    var cantidad =  $("#pedidoCantidad").val();
+    var oc = $("#pedidoOc").val();
+    var fecha_oc = $("#pedidoFechaOc").val();
+    
+    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && dato(fecha_oc))
+    {
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id=2022003-2&codigo=003/019&cantidad=1500&oc=N/A&fecha_oc=2022-11-2',setAgregarpedido);
+    }
+    else
+    {
+        alerta("Espacios vacios!");
+    }
+        
+}
+function getAgregarpedido()
+{
+
+}
+
+function setBuscarProductoCliente(codigo,e)
+{
+    
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#pedidoClienteProgress").empty();
+        $("#pedidoProductoProgress").empty();
+
+        $("#pedidoClienteProgress").append("<ons-progress-circular indeterminate></ons-progress-circular>");
+        $("#pedidoProductoProgress").append("<ons-progress-circular indeterminate></ons-progress-circular>");
+
+        $("#pedidoProducto").val("Buscando...");
+        $("#pedidoCliente").val("Buscando...");
+        $("#botonAgregarPedido").attr('disabled', true);
+        
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo,getBuscarProductoCliente);
+        //alert("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo);
+    }
+}
+function getBuscarProductoCliente(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    if(resultado == "")
+    {
+        $("#pedidoProducto").val("sin resultados...");
+        $("#pedidoCliente").val("sin resultados...");
+    }
+    else
+    {
+        
+        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+        arrayJson[0] = JSON.parse(arrayJson[0]);
+        $("#pedidoProducto").val(reducirTexto(arrayJson[0].producto));
+        $("#pedidoCliente").val(arrayJson[0].cliente);
+        let cantidad = parseInt(arrayJson[0].cantidad) + 1;
+        $('#pedidoId').val("2022"+agregarCeros(arrayJson[0].codigo)+"-"+cantidad);
+
+        //activar boton agregar
+        $("#botonAgregarPedido").attr('disabled', false);
+    }
+    $("#pedidoClienteProgress").empty();
+    $("#pedidoProductoProgress").empty();
+   
+}
 //ENLISTAR DATOS CLIENTES
 function enlistarPedidosCliente(arrayJson)
 {
@@ -64,7 +155,7 @@ function enlistarPedidosCliente(arrayJson)
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
         
-        html1 += '<ons-list-item modifier="chevron" tappable>';
+        html1 += '<ons-list-item modifier="chevron" tappable onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\''+arrayJson[i].codigo+'\')">';
         html1 += '    <div class="left">';
         html1 += '        <strong>';
         html1 += agregarCeros(arrayJson[i].codigo);
@@ -147,3 +238,8 @@ function preubaAlerta(dato)
 {
     alerta("O.C.: "+dato)
 }
+function reiniciarFilter()
+{
+    filtro = false;
+}
+

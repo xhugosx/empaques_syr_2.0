@@ -77,10 +77,24 @@
                     <div class="center">Pedidos pendientes</div>
                 </ons-list-item>
             </ons-card>
+            <ons-card>
+                <ons-list-item modifier="chevron" tappable onclick="">
+                    <div class="left"><i class="fa-regular fa-layer-group"></i></div>
+                    <div class="center">Pedidos de lámina</div>
+                </ons-list-item>
+            </ons-card>
+            <br><br><br>
+            <ons-card id="programaStyle">
+                <center>
+                    <h1>
+                        <b>
+                            Programa
+                        </b>
+                    </h1>
+                </center>
+                
+            </ons-card>
 
-            <ons-fab onclick="setProductos2Resultado()" position="bottom right">
-                <i class="fa-regular fa-plus"></i>
-            </ons-fab>
         </ons-page>
     </template>
     <!-- fin pagina pricipal -->
@@ -376,7 +390,7 @@
     <template id="pedidos.html">
         <ons-page id="prueba">
             <ons-toolbar>
-                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="left"><ons-back-button onclick="reiniciarFilter()">Regresar</ons-back-button></div>
                 <div class="center">Pedidos</div>
                 <div class="right">
                     Entregado<ons-checkbox style="margin: 10px;" onclick="asignarFiltro(this)"></ons-checkbox>
@@ -384,13 +398,15 @@
             </ons-toolbar>
             
             <ons-tabbar swipeable position="auto">
-                <ons-tab page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home" badge="7" active>
+                <ons-tab id="clientesPedidos" page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home" active>
                 </ons-tab>
-                <ons-tab page="tab2.html" label="Todo" icon="fa-boxes-stacked" active-icon="fa-box" badge="7">
+                <ons-tab id="todoPedidos" page="tab2.html" label="Todo" icon="fa-boxes-stacked" active-icon="fa-box" >
                 </ons-tab>
             </ons-tabbar>
-            
 
+            <ons-fab onclick="nextPage('pedidosAgregar.html')" position="bottom right">
+                <i class="fa-regular fa-plus"></i>
+            </ons-fab>
         </ons-page>
     </template>
 
@@ -427,6 +443,115 @@
 
         </ons-page>
       </template>
+
+
+    <!-- VISTA DE PEDIDOS FILTRADOS POR CLIENTE-->
+    <template id="pedidosFiltroCliente.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Pedidos</div>
+            </ons-toolbar>
+
+            <div id="datosPedidosClientesLoadingFiltroLoading">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <br>
+            <center>
+                <ons-search-input placeholder="Buscar"></ons-search-input>
+            </center>
+
+            <div id="datosPedidosClienteFiltrado">
+                
+            </div>
+           
+        </ons-page>
+    </template>
+
+    <!-- AGREGA PEDIDO -->
+    <template id="pedidosAgregar.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Pedidos</div>
+            </ons-toolbar>
+
+           
+            <ons-card>
+                <center>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="pedidoId" cols="12" rows="1" maxlength="9" class="textarea" placeholder="Id" disabled></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <input onkeyup="setBuscarProductoCliente(this.value,event)" style="margin-bottom: 5px; margin-right:5px;" id="pedidoCodigo" class="textarea" placeholder="Codigo" ></textarea>
+                            Escribe el codigo, enter para buscar!
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-box fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="pedidoProducto" class="textarea" cols="30" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" disabled ></textarea>
+                            <div id="pedidoProductoProgress">
+                                
+                            </div>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-user fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="pedidoCliente" class="textarea" cols="30" rows="2" placeholder="Cliente" disabled></textarea>
+                            <div id="pedidoClienteProgress">
+                                
+                            </div>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-calculator fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="pedidoCantidad" class="textarea" cols="30" rows="1" placeholder="Cantidad"></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-clipboard fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <textarea id="pedidoOc" class="textarea" cols="30" rows="1" placeholder="Orden de Compra"></textarea>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-calendar-days fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <input style="margin-right: 5px;" type="date" id="pedidoFechaOc" class="textarea" cols="30" rows="1" placeholder="Fecha O.C."></textarea>
+                            ❗ Fecha Orden de Compra
+                        </div>
+                    </ons-list-item>
+                    <ons-button id="botonAgregarPedido" modifier="large" onclick="setAgregarpedido()" disabled>Agregar</ons-button>
+                </center>
+            </ons-card>
+            
+           
+        </ons-page>
+    </template>
+
     <!-- FIN DE PEDIDOS -->
 
 </body>
