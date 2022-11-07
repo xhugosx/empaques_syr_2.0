@@ -72,19 +72,20 @@ function getPedidosClienteFiltrado(respuesta)
     setDataPage('#datosPedidosClienteFiltrado','#datosPedidosClientesLoadingFiltroLoading',resultado);
 }
 
-function setAgregarpedido()
+function setAgregarPedido()
 {
     var id = $("#pedidoId").val();
     var codigo = $("#pedidoCodigo").val();
-    var producto = $("#pedidoProducto").val();
-    var cliente = $("#pedidoCliente").val();
+    //var producto = $("#pedidoProducto").val();
+    //var cliente = $("#pedidoCliente").val();
     var cantidad =  $("#pedidoCantidad").val();
     var oc = $("#pedidoOc").val();
     var fecha_oc = $("#pedidoFechaOc").val();
+   
     
-    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && dato(fecha_oc))
+    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc))
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id=2022003-2&codigo=003/019&cantidad=1500&oc=N/A&fecha_oc=2022-11-2',setAgregarpedido);
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&oc='+oc+'&fecha_oc='+fecha_oc,getAgregarPedido);
     }
     else
     {
@@ -92,16 +93,22 @@ function setAgregarpedido()
     }
         
 }
-function getAgregarpedido()
+function getAgregarPedido(respuesta)
 {
-
+    
+    if(respuesta.responseText=="1") 
+    {
+        alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?",limpiarRegistrosPedidos,resetearPilaFunction,buscarDtospedidos)
+    }
+    else alerta('hubo un error al insertar!');
+    
 }
 
 function setBuscarProductoCliente(codigo,e)
 {
     
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (codigo.length == 7 || tecla == 13) 
     {
         $("#pedidoClienteProgress").empty();
         $("#pedidoProductoProgress").empty();
@@ -115,6 +122,10 @@ function setBuscarProductoCliente(codigo,e)
         
         servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo,getBuscarProductoCliente);
         //alert("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo);
+    }
+    else
+    {
+        limpiarRegistrosPedidos2();
     }
 }
 function getBuscarProductoCliente(respuesta)
@@ -132,15 +143,29 @@ function getBuscarProductoCliente(respuesta)
         arrayJson[0] = JSON.parse(arrayJson[0]);
         $("#pedidoProducto").val(reducirTexto(arrayJson[0].producto));
         $("#pedidoCliente").val(arrayJson[0].cliente);
-        let cantidad = parseInt(arrayJson[0].cantidad) + 1;
+        let cantidad = arrayJson[0].cantidad == "" ? 1 : parseInt(arrayJson[0].cantidad) + 1;
         $('#pedidoId').val("2022"+agregarCeros(arrayJson[0].codigo)+"-"+cantidad);
-
         //activar boton agregar
         $("#botonAgregarPedido").attr('disabled', false);
     }
     $("#pedidoClienteProgress").empty();
     $("#pedidoProductoProgress").empty();
    
+}
+
+function setEliminarPedido(id)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/delete.php?id="+id,getEliminarpedido);
+}
+function getEliminarpedido(respuesta)
+{
+    if(respuesta.responseText == 1) 
+    {  
+        alerta("Pedido Eliminado");
+        buscarDtospedidos();
+    }
+
+    else alerta("Hubo un error al tratar de eliminar el Pedido...")
 }
 //ENLISTAR DATOS CLIENTES
 function enlistarPedidosCliente(arrayJson)
@@ -156,6 +181,7 @@ function enlistarPedidosCliente(arrayJson)
 
         
         html1 += '<ons-list-item modifier="chevron" tappable onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\''+arrayJson[i].codigo+'\')">';
+        //html1 += '<ons-list-item modifier="chevron" tappable onclick="crearObjetMensajePedido()">';
         html1 += '    <div class="left">';
         html1 += '        <strong>';
         html1 += agregarCeros(arrayJson[i].codigo);
@@ -194,7 +220,7 @@ function enlistarPedidos(arrayJson)
         html1 += '        Se entrega el dia: '+sumarDias(arrayJson[i].fecha_oc,20); //aqui ira una fecha 
         html1 += '    </b>';
         html1 += '</ons-list-header>';
-        html1 += '<ons-list-item tappable onclick="preubaAlerta(\''+arrayJson[i].oc+'\')">';
+        html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
         html1 += '    <div class="left">';
         html1 += '        <strong>'+arrayJson[i].codigo+'</strong>';
         html1 += '    </div>';
@@ -241,5 +267,24 @@ function preubaAlerta(dato)
 function reiniciarFilter()
 {
     filtro = false;
+}
+
+function limpiarRegistrosPedidos()
+{
+    $("#pedidoId").val('');
+    $("#pedidoCodigo").val('');
+    $("#pedidoProducto").val('');
+    $("#pedidoCliente").val('');
+    $("#pedidoCantidad").val('');
+    $("#pedidoOc").val('');
+    $("#pedidoFechaOc").val('');
+}
+
+function limpiarRegistrosPedidos2()
+{
+    $("#pedidoId").val('');
+    $("#pedidoProducto").val('');
+    $("#pedidoCliente").val('');
+    $("#botonAgregarPedido").attr('disabled', true);
 }
 

@@ -142,18 +142,14 @@ function enlistarProductos(arrayJson)
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        html1 += '<ons-list-item>';
+        html1 += '<ons-list-item tappable onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\')">';
         html1 += '  <div class="left">';
         html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
-        //html1 += '        hola';
         html1 += '  </div>';
         html1 += '  <div class="center romperTexto">';
         html1 += '    <span class="list-item__title"><b>'+ arrayJson[i].codigo +'</b> '+ arrayJson[i].producto +'</span>';
         html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
         html1 += '  </div>';
-        html1 += '    <div class="right">';
-        html1 += '          <i class="fa-solid fa-bars fa-lg" onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\')"></i>';
-        html1 += '    </div>';
         html1 += '</ons-list-item>';
 
     }

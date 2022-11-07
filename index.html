@@ -494,7 +494,7 @@
                         </div>
                         <div class="center">
                             <input onkeyup="setBuscarProductoCliente(this.value,event)" style="margin-bottom: 5px; margin-right:5px;" id="pedidoCodigo" class="textarea" placeholder="Codigo" ></textarea>
-                            Escribe el codigo, enter para buscar!
+                            Escribe el codigo del producto!
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -532,7 +532,7 @@
                             <i class="fa-solid fa-clipboard fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="pedidoOc" class="textarea" cols="30" rows="1" placeholder="Orden de Compra"></textarea>
+                            <textarea id="pedidoOc" class="textarea" cols="30" rows="1" placeholder="Orden de Compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -544,7 +544,7 @@
                             ❗ Fecha Orden de Compra
                         </div>
                     </ons-list-item>
-                    <ons-button id="botonAgregarPedido" modifier="large" onclick="setAgregarpedido()" disabled>Agregar</ons-button>
+                    <ons-button id="botonAgregarPedido" modifier="large" onclick="setAgregarPedido()" disabled>Agregar</ons-button>
                 </center>
             </ons-card>
             

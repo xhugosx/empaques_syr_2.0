@@ -70,6 +70,25 @@ function crearObjetMensaje(codigo)
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo);
     });
 }
+function crearObjetMensajePedido(oc,id) 
+{
+    ons.openActionSheet({
+      title: 'OPCIONES',
+      cancelable: true,
+      buttons: [
+        'Detalles',
+        'Modificar',
+        {
+          label:'Eliminar',
+          modifier: 'destructive'
+        }
+      ]
+    }).then(function (index) { 
+      if(index==0) preubaAlerta(oc)
+      //else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
+      else if(index==2) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+    });
+}
 //FUNCION DE MENSAJE DE CONFIRMACION
 function alertaConfirm(mensaje,funcion,variable)
 {
@@ -78,6 +97,17 @@ function alertaConfirm(mensaje,funcion,variable)
         buttonLabels: ['SI', 'NO'],
         callback: function(idx) {
             if(idx==0) funcion(variable);
+          }
+   });
+}
+function alertaConfirmSiNo(mensaje,funcionSi,funcionNo,funcion)
+{
+    ons.notification.confirm({
+        message: mensaje,
+        buttonLabels: ['SI', 'NO'],
+        callback: function(idx) {
+            if(idx==0) funcionSi();
+            else funcionNo(funcion);
           }
    });
 }
