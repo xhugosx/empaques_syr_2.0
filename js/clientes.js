@@ -71,9 +71,14 @@ function getAgregarCliente(respuesta)
 
 //eliminar cliente
 
-function setEliminarCliente(codigo)
+function setEliminarCliente(codigo,i)
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/delete.php?codigo='+codigo,getEliminarCliente);
+    agregarClase(i);
+
+    setTimeout(function(){
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/clientes/delete.php?codigo='+codigo,getEliminarCliente);
+    }, 1500);
+    
 }
 function getEliminarCliente(respuesta)
 {
@@ -97,13 +102,13 @@ function enlistarClientes(arrayJson)
     if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
     let html1;
-    html1 = '<ons-card>';
+    html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        html1 += '<ons-list-item>';
+        html1 += '<ons-list-item id="list-cliente'+i+'">';
         html1 += '<div class="left">';
         html1 += '    <i class="fa-solid fa-user-large fa-lg"></i>';
         html1 += '</div>';
@@ -111,13 +116,16 @@ function enlistarClientes(arrayJson)
         html1 += '   <strong>'+ agregarCeros(arrayJson[i].codigo)+'</strong> &nbsp;'+arrayJson[i].nombre+'';
         html1 += '</div>';
         html1 += '<div class="right">';
-        html1 += '   <i class="fa-solid fa-trash fa-lg" style="color:red" onclick="alertaConfirm(\'Estas seguro de eliminar este cliente '+agregarCeros(arrayJson[i].codigo)+'?\',setEliminarCliente,\''+arrayJson[i].codigo+'\')"></i>';
+        html1 += '<div class="boton-icono" onclick="alertaConfirm(\'Estas seguro de eliminar este cliente '+agregarCeros(arrayJson[i].codigo)+'?\',setEliminarCliente,\''+arrayJson[i].codigo+'\','+i+')">';
+        html1 += '   <i class="fa-solid fa-trash fa-lg" style="color:red"></i>';
+        html1 += '</div>';
         html1 += '</div>';
 
         html1 += '</ons-list-item>';
 
     }
-    html1 += '</ons-card><br><br><br>';
+    html1 += '</ons-list>';
+    html1 += '<br><br><br>';
 
     return html1
 
@@ -137,5 +145,12 @@ function datoVacio(dato)
 {
     if(dato=="") return false;
     else return true;
+}
+function agregarClase(i){
+
+    $("#list-cliente"+i).addClass("list-cliente-animation");
+    setTimeout(function(){
+        $('.list-cliente-animation').remove();
+    }, 1500);
 }
 

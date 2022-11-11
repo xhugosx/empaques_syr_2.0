@@ -1,4 +1,4 @@
-//ESTA FUNCION ES PARA EJECUTAR UNA FUNCION AL PAAR LA SIGUIENTE PAGINA
+//ESTA FUNCION ES PARA EJECUTAR UNA FUNCION AL PAR LA SIGUIENTE PAGINA
 function nextPageFunction(miPage,miFuncion)
 {
     myNavigator.pushPage(miPage, {data: {title: ''}}).then(function() {
@@ -51,7 +51,7 @@ function setDataPage(agregar,eliminar,html)
     $(agregar).append(html);
 }
 //ESTA ES PARA MOSTRAR MENSAJE DEL LADO INFERIOR
-function crearObjetMensaje(codigo) 
+function crearObjetMensaje(codigo,contador) 
 {
     ons.openActionSheet({
       title: 'OPCIONES',
@@ -67,7 +67,7 @@ function crearObjetMensaje(codigo)
     }).then(function (index) { 
       if(index==0) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
       else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
-      else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo);
+      else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo,contador);
     });
 }
 function crearObjetMensajePedido(oc,id) 
@@ -84,19 +84,19 @@ function crearObjetMensajePedido(oc,id)
         }
       ]
     }).then(function (index) { 
-      if(index==0) preubaAlerta(oc)
+      if(index==0) alerta("<b>Orden de Compra: </b>"+oc)
       //else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
       else if(index==2) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
     });
 }
 //FUNCION DE MENSAJE DE CONFIRMACION
-function alertaConfirm(mensaje,funcion,variable)
+function alertaConfirm(mensaje,funcion,variable,contador)
 {
     ons.notification.confirm({
         message: mensaje,
         buttonLabels: ['SI', 'NO'],
         callback: function(idx) {
-            if(idx==0) funcion(variable);
+            if(idx==0) funcion(variable,contador);
           }
    });
 }

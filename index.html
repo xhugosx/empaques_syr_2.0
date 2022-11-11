@@ -39,7 +39,7 @@
         <ons-page id="page1">
             <ons-toolbar>
                 <div class="center">
-                    <img src="./media/empaquessyr.svg" width="150px">
+                    <img src="./media/empaquessyr.svg" width="150px" class="imagen-logo">
                 </div>
             </ons-toolbar>
             
@@ -109,10 +109,12 @@
 
             <ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar>
 
-            <br>
-            <center>
-                <ons-search-input onkeyup="setClientesBarraBusqueda(this.value,event)" placeholder="Buscar"></ons-search-input>
-            </center>
+            <ons-card>
+                <center>
+                    <ons-search-input onkeyup="setClientesBarraBusqueda(this.value,event)" placeholder="Buscar: codigo / nombre"></ons-search-input>
+                </center>
+            </ons-card>
+
             <ons-lazy-repeat id="lista-clientes"></ons-lazy-repeat>
             <div id="datosClientes">
 
@@ -135,15 +137,15 @@
             </ons-toolbar>
 
             <!--aqui iran los input de los datos-->
-            <ons-card>
-                <center>
+            <ons-list>
+                
                     <ons-list-item>
                         <div class="left">
                             <i class="fa-regular fa-key"></i>
                         </div>
                         <div class="center">
                             
-                            <textarea id="codigoCliente" cols="30" rows="1" maxlength="3" class="textarea" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                            <ons-input type="number" id="codigoCliente" cols="30" rows="1" maxlength="3" class="input-100" placeholder="codigo" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
                             
                         </div>
                     </ons-list-item>
@@ -152,12 +154,14 @@
                             <i class="fa-regular fa-user-large"></i>
                         </div>
                         <div class="center">
-                            <textarea id="nombreCliente" class="textarea" cols="30" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                            <ons-input id="nombreCliente" class="input-100" cols="30" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
                         </div>
                     </ons-list-item>
-                    <ons-button modifier="large" onclick="setAgregarCliente()">Agregar</ons-button>
-                </center>
-            </ons-card>
+                    <ons-list-item>
+                        <ons-button modifier="large" onclick="setAgregarCliente()">Agregar</ons-button>
+                    </ons-list-item>
+                
+            </ons-list>
             
         </ons-page>
     </template>
@@ -176,12 +180,15 @@
                 <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
             
+            <ons-card>
+                <center>
+                    <ons-search-input id="busquedaProductos1" onkeyup="setProductosBarraBusqueda(this.value,event)" placeholder="Buscar: codigo / nombre"></ons-search-input>
+                </center>   
+            </ons-card>
+        
             
-            <br>
-            <center>
-                <ons-search-input id="busquedaProductos1" onkeyup="setProductosBarraBusqueda(this.value,event)" placeholder="Buscar producto"></ons-search-input>
                 
-            </center>
+           
             <div id="datosProductos">
                 <!-- aqui iran los datos de productos -->
             </div>
@@ -205,16 +212,14 @@
                 <div class="center">Agregar Productos</div>
             </ons-toolbar>
             
-            <ons-card>
-                <center>
+            <ons-list>
+                
                     <ons-list-item>
                         <div class="left">
                             <i class="fa-regular fa-key fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="codigoProducto1" cols="12" rows="1" maxlength="3" class="textarea" placeholder="codigo"></textarea>
-                            &nbsp;/&nbsp;
-                            <textarea id="codigoProducto2" cols="13" rows="1" maxlength="5" class="textarea" placeholder="codigo"></textarea>
+                            <ons-input onkeyup="agregarDiagonal(this.value)" id="codigoProducto1" cols="12" rows="1" maxlength="9" class="input-100" placeholder="Codigo"></ons-input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -222,7 +227,7 @@
                             <i class="fa-regular fa-box fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="nombreProducto" class="textarea" cols="30" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
+                            <ons-input id="nombreProducto" class="input-100" cols="30" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -230,12 +235,15 @@
                             <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="precioProducto" class="textarea" cols="30" rows="1" placeholder="Precio"></textarea>
+                            <ons-input type="number" id="precioProducto" class="input-100" cols="30" rows="1" placeholder="Precio"></ons-input>
                         </div>
                     </ons-list-item>
-                    <ons-button modifier="large" onclick="setAgregarProducto()">Agregar</ons-button>
-                </center>
-            </ons-card>
+                    <ons-list-item>
+                        <ons-button modifier="large" onclick="setAgregarProducto()">Agregar</ons-button>
+                    </ons-list-item>
+                    
+                
+            </ons-list>
     
         </ons-page>
     </template>
@@ -248,35 +256,38 @@
                 <div class="center">Actualizar Productos</div>
             </ons-toolbar>
             
-            <ons-card>
-                <center>
-                    <ons-list-item>
-                        <div class="left">
-                            <i class="fa-regular fa-key fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <textarea id="codigoProductoActualizar" cols="40" rows="1" maxlength="10" class="textarea" disabled></textarea>
-                        </div>
-                    </ons-list-item>
-                    <ons-list-item>
-                        <div class="left">
-                            <i class="fa-regular fa-box fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <textarea id="nombreProductoActualizar" class="textarea" cols="40" rows="2"  onkeyup="javascript:this.value=this.value.toUpperCase();" ></textarea>
-                        </div>
-                    </ons-list-item>
-                    <ons-list-item>
-                        <div class="left">
-                            <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <textarea id="precioProductoActualizar" class="textarea" cols="40" rows="1" ></textarea>
-                        </div>
-                    </ons-list-item>
-                    <ons-button modifier="large" onclick="setActualizarProducto()">Actualizar</ons-button>
-                </center>
-            </ons-card>
+            <ons-list>
+                
+                <ons-list-item>
+                    <div class="left">
+                        <i class="fa-regular fa-key fa-lg"></i>
+                    </div>
+                    <div class="center">
+                        <ons-input id="codigoProductoActualizar"  maxlength="10" class="input-100" disabled></ons-input>
+                    </div>
+                </ons-list-item>
+                <ons-list-item>
+                    <div class="left">
+                        <i class="fa-regular fa-box fa-lg"></i>
+                    </div>
+                    <div class="center">
+                        <ons-input id="nombreProductoActualizar" class="input-100"   onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                    </div>
+                </ons-list-item>
+                <ons-list-item>
+                    <div class="left">
+                        <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                    </div>
+                    <div class="center">
+                        <ons-input type="number" id="precioProductoActualizar" class="input-100" ></ons-input>
+                    </div>
+                </ons-list-item>
+                <ons-list-item>
+                    <ons-button  modifier="large" onclick="setActualizarProducto()">Actualizar</ons-button>
+                </ons-list-item>
+                
+            
+            </ons-list>
     
         </ons-page>
     </template>
@@ -416,11 +427,11 @@
             <div id="datosPedidosClientesLoading">
                 <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
-
-            <br>
-            <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
-            </center>
+            <ons-card>
+                <center>
+                    <ons-search-input placeholder="Buscar: codigo / cliente"></ons-search-input>
+                </center>
+            </ons-card>
 
             <div id="datosPedidosClientes">
 
@@ -432,10 +443,11 @@
       <template id="tab2.html">
         <ons-page id="Tab2">
           
-            <br>
-            <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
-            </center>
+            <ons-card>
+                <center>
+                    <ons-search-input onkeyup="setSearchPedidos(this.value,event)" placeholder="Buscar: codigo / producto"></ons-search-input>  
+                </center>
+            </ons-card>
 
             <div id="datosPedidos">
                 
@@ -450,7 +462,7 @@
         <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Agregar Pedidos</div>
+                <div class="center">Pedidos Cliente</div>
             </ons-toolbar>
 
             <div id="datosPedidosClientesLoadingFiltroLoading">
@@ -521,10 +533,33 @@
                     </ons-list-item>
                     <ons-list-item>
                         <div class="left">
+                            <i class="fa-solid fa-house-crack fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <select  class="textarea" id="pedidoResistencia">
+                                <option value="">RESISTENCIA</option>
+                                <option value="MICRO">MICRO</option>
+                                <option value="S/G">S/G</option>
+                                <option value="21 ECT ESP">21 ECT ESP</option>
+                                <option value="21 ECT">21 ECT</option>
+                                <option value="23 ECT">23 ECT</option>
+                                <option value="26 ECT">26 ECT</option>
+                                <option value="32 ECT">32 ECT</option>
+                                <option value="38 ECT">38 ECT</option>
+                                <option value="42 ECT">42 ECT</option>
+                                <option value="51 ECT">51 ECT</option>
+                                <option value="61 ECT">61 ECT</option>
+                                <option value="71 ECT">71 ECT</option>
+                                
+                            </select>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
                             <i class="fa-solid fa-calculator fa-lg"></i>
                         </div>
                         <div class="center">
-                            <textarea id="pedidoCantidad" class="textarea" cols="30" rows="1" placeholder="Cantidad"></textarea>
+                            <input type="number" id="pedidoCantidad" class="textarea" cols="30" rows="1" placeholder="Cantidad"></input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>

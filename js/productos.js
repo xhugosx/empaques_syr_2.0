@@ -20,9 +20,15 @@ function getProductos(respuesta)
 //fin de ver productos
 
 //eliminar productos
-function setEliminarProducto(producto)
+function setEliminarProducto(producto,i)
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/delete.php?codigo='+producto,getEliminarProducto)
+    agregarClaseProducto(i);
+    
+    setTimeout(function(){
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/delete.php?codigo='+producto,getEliminarProducto)
+    }, 1500);
+
+    
 }
 function getEliminarProducto(respuesta)
 {
@@ -40,9 +46,9 @@ function setAgregarProducto()
 {
     
    
-    if(datoVacio($('#codigoProducto1').val()) && datoVacio($('#codigoProducto2').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val())) 
+    if(datoVacio($('#codigoProducto1').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val())) 
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php?codigo='+$('#codigoProducto1').val()+'/'+$('#codigoProducto2').val()+'&producto='+$('#nombreProducto').val()+'&precio='+$('#precioProducto').val(),getAgregarProducto)
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php?codigo='+$('#codigoProducto1').val()+'&producto='+$('#nombreProducto').val()+'&precio='+$('#precioProducto').val(),getAgregarProducto)
     }
     else alerta("Espacios en blanco");
     
@@ -136,13 +142,13 @@ function enlistarProductos(arrayJson)
 {
     if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
     let html1;
-    html1 = '<ons-card>';
+    html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        html1 += '<ons-list-item tappable onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\')">';
+        html1 += '<ons-list-item tappable id="list-producto'+i+'" onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\','+i+')">';
         html1 += '  <div class="left">';
         html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
         html1 += '  </div>';
@@ -154,10 +160,22 @@ function enlistarProductos(arrayJson)
 
     }
 
-    html1 += '</ons-card> <br><br>';
+    html1 += '</ons-list> <br><br>';
 
     return html1;
 }
 
+function agregarClaseProducto(i){
+
+    $("#list-producto"+i).addClass("list-producto-animation");
+    setTimeout(function(){
+        $('.list-cliente-animation').remove();
+    }, 1500);
+}
 //genera un pop de la pila de ventanas de la app *return*
 
+function agregarDiagonal(texto)
+{
+    if(texto.length == 3) $("#codigoProducto1").val(texto+"/");
+    
+}

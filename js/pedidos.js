@@ -1,10 +1,11 @@
 //variable global para ver si filtrar o no
 var filtro = false;
+//variable global para saber que cliente se filtro
+var cliente = "";
 function asignarFiltro(valor)
 {
     filtro = valor.checked;
-    setBusquedaPendiente();
-    setPedidosCliente()
+    buscarDtospedidos();
 
 }
 
@@ -12,14 +13,14 @@ function buscarDtospedidos()
 {
     setBusquedaPendiente();
     setPedidosCliente();
+    setPedidosClienteFiltrado(cliente);
     //aqui se ejecutara la otra funcion
 }
 
 //BUSQUEDA POR CLIENTE VISTA 1
 function setPedidosCliente()
 {
-    var type = 2;
-    if(filtro) type = 1;
+    var type = filtro ? 1 : 2;
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?type="+type,getPedidosCliente)
 }
 function getPedidosCliente(respuesta)
@@ -37,8 +38,7 @@ function getPedidosCliente(respuesta)
 //BUQUEDA POR TODOS VISTA 2
 function setBusquedaPendiente()
 {
-    var type = 2;
-    if(filtro) type = 1;
+    var type = filtro ? 1 : 2;
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type,getBusquedaPendiente);
 }
 function getBusquedaPendiente(respuesta)
@@ -53,11 +53,11 @@ function getBusquedaPendiente(respuesta)
     setDataPage('#datosPedidos',0,resultado);
 }
 
-//PEDIDOS CLIENTE FILTRADO
+//PEDIDOS FILTRADO POR CLIENTE
 function setPedidosClienteFiltrado(codigo)
 {
-    var type = 2;
-    if(filtro) type = 1;
+    var type = filtro ? 1 : 2;
+    cliente = codigo;
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo),getPedidosClienteFiltrado);
 }
 function getPedidosClienteFiltrado(respuesta)
@@ -72,20 +72,67 @@ function getPedidosClienteFiltrado(respuesta)
     setDataPage('#datosPedidosClienteFiltrado','#datosPedidosClientesLoadingFiltroLoading',resultado);
 }
 
+//funcion para barra de busqueda pedidos
+function setSearchPedidos(search,e)
+{
+   // if(busqueda=="") setProductos();
+
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        var type = filtro ? 1 : 2;
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+search,getSearchPedidos);
+    }
+    else if(search == "") setBusquedaPendiente();
+}
+
+function getSearchPedidos(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    resultado = enlistarPedidos(arrayJson);
+    
+    $('#datosPedidos').empty();  
+    setDataPage('#datosPedidos',0,resultado);
+}
+
+// function para barra de busqueda pedidos por cliente
+
+function setSearchPedidosCliente(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        var type = filtro ? 1 : 2;
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+search,getSearchPedidosCliente);
+    }
+    else if(search == "") setBusquedaPendiente();
+}
+
+function getSearchPedidosCliente(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    resultado = enlistarPedidos(arrayJson);
+    
+    $('#datosPedidos').empty();  
+    setDataPage('#datosPedidos',0,resultado);
+}
+
+//funcion paran agregar pedidos
 function setAgregarPedido()
 {
     var id = $("#pedidoId").val();
     var codigo = $("#pedidoCodigo").val();
-    //var producto = $("#pedidoProducto").val();
-    //var cliente = $("#pedidoCliente").val();
     var cantidad =  $("#pedidoCantidad").val();
     var oc = $("#pedidoOc").val();
     var fecha_oc = $("#pedidoFechaOc").val();
+    var resistencia = $("#pedidoResistencia").val();
    
     
-    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc))
+    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia))
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&oc='+oc+'&fecha_oc='+fecha_oc,getAgregarPedido);
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc,getAgregarPedido);
     }
     else
     {
@@ -121,7 +168,6 @@ function setBuscarProductoCliente(codigo,e)
         $("#botonAgregarPedido").attr('disabled', true);
         
         servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo,getBuscarProductoCliente);
-        //alert("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo);
     }
     else
     {
@@ -143,6 +189,7 @@ function getBuscarProductoCliente(respuesta)
         arrayJson[0] = JSON.parse(arrayJson[0]);
         $("#pedidoProducto").val(reducirTexto(arrayJson[0].producto));
         $("#pedidoCliente").val(arrayJson[0].cliente);
+
         let cantidad = arrayJson[0].cantidad == "" ? 1 : parseInt(arrayJson[0].cantidad) + 1;
         $('#pedidoId').val("2022"+agregarCeros(arrayJson[0].codigo)+"-"+cantidad);
         //activar boton agregar
@@ -152,7 +199,7 @@ function getBuscarProductoCliente(respuesta)
     $("#pedidoProductoProgress").empty();
    
 }
-
+//eliminar pedido
 function setEliminarPedido(id)
 {
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/delete.php?id="+id,getEliminarpedido);
@@ -164,13 +211,14 @@ function getEliminarpedido(respuesta)
         alerta("Pedido Eliminado");
         buscarDtospedidos();
     }
-
     else alerta("Hubo un error al tratar de eliminar el Pedido...")
 }
+
+
 //ENLISTAR DATOS CLIENTES
 function enlistarPedidosCliente(arrayJson)
 {
-    if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
+    if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
     let html1;
     html1 = '<ons-card>';
@@ -179,7 +227,6 @@ function enlistarPedidosCliente(arrayJson)
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        
         html1 += '<ons-list-item modifier="chevron" tappable onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\''+arrayJson[i].codigo+'\')">';
         //html1 += '<ons-list-item modifier="chevron" tappable onclick="crearObjetMensajePedido()">';
         html1 += '    <div class="left">';
@@ -194,16 +241,15 @@ function enlistarPedidosCliente(arrayJson)
         html1 += '        <span class="notification">'+arrayJson[i].contador+'</span>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
-        
-
     }
     html1 += '</ons-card><br><br><br>';
 
     return html1
 }
+//ENLISTAR PEDIDOS
 function enlistarPedidos(arrayJson)
 {
-    if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
+    if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
     let html1;
     html1 = '<ons-card>';
@@ -217,7 +263,7 @@ function enlistarPedidos(arrayJson)
         html1 += arrayJson[i].id;
         html1 += '    &emsp;&emsp;&emsp;';
         html1 += '    <b style="color: rgb(61, 121, 75);">';
-        html1 += '        Se entrega el dia: '+sumarDias(arrayJson[i].fecha_oc,20); //aqui ira una fecha 
+        html1 += '        Entrega: '+sumarDias(arrayJson[i].fecha_oc,20); //aqui ira una fecha 
         html1 += '    </b>';
         html1 += '</ons-list-header>';
         html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
@@ -231,7 +277,11 @@ function enlistarPedidos(arrayJson)
         html1 += '        </span>';
         html1 += '    </div>';
         html1 += '    <div class="right">';
-        html1 += '<b>'+separator(arrayJson[i].cantidad)+' pzas</b>';
+        html1 += '         <div class="centrar">';
+        html1 += arrayJson[i].resistencia;               
+        html1 += '               <br>';                    
+        html1 += '               <b>'+separator(arrayJson[i].cantidad)+' pzas</b>';
+        html1 += '         </div>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
         
@@ -241,29 +291,9 @@ function enlistarPedidos(arrayJson)
 
     return html1
 }
-function informacionPedido()
-{
-    ons.openActionSheet({
-        title: 'OPCIONES',
-        cancelable: true,
-        buttons: [
-          'Plano',
-          'Modificar',
-          {
-            label:'Eliminar',
-            modifier: 'destructive'
-          }
-        ]
-      }).then(function (index) { 
-        if(index==0) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-        else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
-        else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo);
-      });
-}
-function preubaAlerta(dato)
-{
-    alerta("O.C.: "+dato)
-}
+
+
+
 function reiniciarFilter()
 {
     filtro = false;
