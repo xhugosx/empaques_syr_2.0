@@ -97,3 +97,10 @@ body{
 .input-100{
     width: 100%;
 }
+
+i{
+    color: rgb(206, 189, 169);
+}
+template{
+    background-color: blanchedalmond;
+}

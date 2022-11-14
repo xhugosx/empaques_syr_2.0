@@ -221,7 +221,7 @@ function enlistarPedidosCliente(arrayJson)
     if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
     let html1;
-    html1 = '<ons-card>';
+    html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
@@ -242,7 +242,7 @@ function enlistarPedidosCliente(arrayJson)
         html1 += '    </div>';
         html1 += '</ons-list-item>';
     }
-    html1 += '</ons-card><br><br><br>';
+    html1 += '</ons-list><br><br><br>';
 
     return html1
 }
@@ -252,7 +252,7 @@ function enlistarPedidos(arrayJson)
     if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
     let html1;
-    html1 = '<ons-card>';
+    html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
@@ -287,7 +287,7 @@ function enlistarPedidos(arrayJson)
         
 
     }
-    html1 += '</ons-card><br><br><br>';
+    html1 += '</ons-list><br><br><br>';
 
     return html1
 }
