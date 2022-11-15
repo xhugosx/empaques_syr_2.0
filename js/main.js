@@ -70,13 +70,14 @@ function crearObjetMensaje(codigo,contador)
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo,contador);
     });
 }
-function crearObjetMensajePedido(oc,id) 
+function crearObjetMensajePedido(oc,id,codigo) 
 {
     ons.openActionSheet({
       title: 'OPCIONES',
       cancelable: true,
       buttons: [
         'Detalles',
+        'Plano',
         'Modificar',
         {
           label:'Eliminar',
@@ -84,9 +85,10 @@ function crearObjetMensajePedido(oc,id)
         }
       ]
     }).then(function (index) { 
-      if(index==0) alerta("<b>Orden de Compra: </b>"+oc)
-      //else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
-      else if(index==2) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      if(index==0) alerta("<b>Orden de Compra: </b>"+oc);
+      else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
+      else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
     });
 }
 //FUNCION DE MENSAJE DE CONFIRMACION
@@ -139,7 +141,7 @@ function separator(numb) {
    días es negativo restará los días*/
 function sumarDias(fecha, dias){
     fecha = new Date(fecha)
-    fecha.setDate(fecha.getDate() + dias);
+    fecha.setDate(fecha.getDate() + dias+1);
     // Creamos array con los meses del año
     const meses = ['ene', 'febr', 'mar', 'abr', 'may', 'jun', 'jul', 'agos', 'sep', 'oct', 'nov', 'dic'];
     // Creamos array con los días de la semana

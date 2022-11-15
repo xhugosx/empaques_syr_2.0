@@ -114,7 +114,7 @@
             </div>
 
             <ons-fab onclick="nextPage('agregarClientes.html')" position="bottom right">
-                <i class="fa-regular fa-plus"></i>
+                <img src="./media/plus.svg" alt="" width="70%">
             </ons-fab>
 
             <ons-fab onclick="setClientes()" position="bottom left">
@@ -300,11 +300,13 @@
                 <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
 
-            <br>
-            <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
-            </center>
-            <ons-card>
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input placeholder="Buscar"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <!--ons-list>
                 <ons-list-item modifier="chevron" tappable>
                     <div class="left">
                         <strong>
@@ -318,8 +320,9 @@
                         <span class="notification">1</span>
                     </div>
                 </ons-list-item>
-            </ons-card>
-                <!--ons-list-header>
+            </ons-list>
+
+                <ons-list-header>
                     2022045-1
                 </ons-list-header>
                 <ons-list-item>
@@ -347,7 +350,7 @@
     </template>
     <!-- FIN DE ENTRADA-->
 
-    <!-- SAIDA -->
+    <!-- SALIDA -->
     <template id="salidas.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -424,7 +427,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input placeholder="Buscar: codigo / cliente"></ons-search-input>
+                    <ons-search-input id="searchPedidoCliente" onkeyup="setSearchPedidosCliente(this.value,event)" placeholder="Buscar: codigo / cliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -440,7 +443,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input onkeyup="setSearchPedidos(this.value,event)" placeholder="Buscar: codigo / producto"></ons-search-input>
+                    <ons-search-input id="searchPedido" onkeyup="setSearchPedidos(this.value,event)" placeholder="Buscar: id / codigo / producto"></ons-search-input>
                 </ons-list-item>
             </ons-list>
             
@@ -467,7 +470,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input placeholder="Buscar"></ons-search-input>
+                    <ons-search-input onkeyup="setsearchPedidosClienteFiltrado(this.value,event,cliente)" placeholder="Buscar"></ons-search-input>
                 </ons-list-item>
             </ons-list>
                 
@@ -495,7 +498,7 @@
                             <i class="fa-regular fa-key fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="pedidoId" cols="12" rows="1" maxlength="9" class="textarea" placeholder="Id" disabled></ons-input>
+                            <ons-input id="pedidoId" cols="12" rows="1" maxlength="9" class="input-100" placeholder="Id" disabled></ons-input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -503,7 +506,7 @@
                             <i class="fa-regular fa-key fa-lg"></i>
                         </div>
                         <div class="center">
-                            <input onkeyup="setBuscarProductoCliente(this.value,event)" style="margin-bottom: 5px; margin-right:5px;" id="pedidoCodigo" class="textarea" placeholder="Codigo" ></textarea>
+                            <ons-input onkeyup="setBuscarProductoCliente(this.value,event)" style="margin-bottom: 5px; margin-right:5px;" id="pedidoCodigo" class="input-100" placeholder="Codigo" ></ons-input>
                             Escribe el codigo del producto!
                         </div>
                     </ons-list-item>
@@ -512,7 +515,7 @@
                             <i class="fa-solid fa-box fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="pedidoProducto" class="textarea" cols="30" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" disabled ></textarea>
+                            <ons-input id="pedidoProducto" class="input-100" cols="30" rows="2" placeholder="Producto" onkeyup="javascript:this.value=this.value.toUpperCase();" disabled ></ons-input>
                             <div id="pedidoProductoProgress">
                                 
                             </div>
@@ -523,7 +526,7 @@
                             <i class="fa-solid fa-user fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="pedidoCliente" class="textarea" cols="30" rows="2" placeholder="Cliente" disabled></textarea>
+                            <ons-input id="pedidoCliente" class="input-100" cols="30" rows="2" placeholder="Cliente" disabled></ons-input>
                             <div id="pedidoClienteProgress">
                                 
                             </div>
@@ -534,9 +537,9 @@
                             <i class="fa-solid fa-house-crack fa-lg"></i>
                         </div>
                         <div class="center">
-                            <select  class="textarea" id="pedidoResistencia">
-                                <option value="">RESISTENCIA</option>
-                                <option value="MICRO">MICRO</option>
+                            <ons-select  class="input-100" id="pedidoResistencia">
+                                <option value="">Resistencia</option>
+                                <option value="MICRO">Micro</option>
                                 <option value="S/G">S/G</option>
                                 <option value="21 ECT ESP">21 ECT ESP</option>
                                 <option value="21 ECT">21 ECT</option>
@@ -549,7 +552,7 @@
                                 <option value="61 ECT">61 ECT</option>
                                 <option value="71 ECT">71 ECT</option>
                                 
-                            </select>
+                            </ons-select>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -557,7 +560,7 @@
                             <i class="fa-solid fa-calculator fa-lg"></i>
                         </div>
                         <div class="center">
-                            <input type="number" id="pedidoCantidad" class="textarea" cols="30" rows="1" placeholder="Cantidad"></input>
+                            <ons-input type="number" id="pedidoCantidad" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -565,7 +568,7 @@
                             <i class="fa-solid fa-clipboard fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="pedidoOc" class="textarea" cols="30" rows="1" placeholder="Orden de Compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                            <ons-input id="pedidoOc" class="input-100" cols="30" rows="1" placeholder="Orden de Compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -573,13 +576,117 @@
                             <i class="fa-solid fa-calendar-days fa-lg"></i>
                         </div>
                         <div class="center">
-                            <input style="margin-right: 5px;" type="date" id="pedidoFechaOc" class="textarea" cols="30" rows="1" placeholder="Fecha O.C."></textarea>
+                            <ons-input style="margin-right: 5px;" type="date" id="pedidoFechaOc" class="input-100" cols="30" rows="1" placeholder="Fecha O.C."></ons-input>
                             ❗ Fecha Orden de Compra
                         </div>
                     </ons-list-item>
                     <ons-list-item>
                         <div class="center">
                             <ons-button id="botonAgregarPedido" modifier="large" onclick="setAgregarPedido()" disabled>Agregar</ons-button>
+                        </div>
+                        
+                    </ons-list-item>
+                    
+            </ons-list>
+            
+           
+        </ons-page>
+    </template>
+
+
+    <!--MODIFICAR PEDIDO-->
+    <template id="pedidosModificar.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Pedidos</div>
+            </ons-toolbar>
+
+           
+            <ons-list>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="pedidoModificarId" cols="12" rows="1" maxlength="9" class="input-100" placeholder="Id" disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input  id="pedidoModificarCodigo" class="input-100" placeholder="Codigo" disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-box fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="pedidoModificarProducto" class="input-100" cols="30" rows="2" placeholder="Producto" disabled ></ons-input>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-user fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="pedidoModificarCliente" class="input-100" cols="30" rows="2" placeholder="Cliente" disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-house-crack fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-select  class="input-100" id="pedidoModificarResistencia">
+                                <option value="">Resistencia</option>
+                                <option value="MICRO">Micro</option>
+                                <option value="S/G">S/G</option>
+                                <option value="21 ECT ESP">21 ECT ESP</option>
+                                <option value="21 ECT">21 ECT</option>
+                                <option value="23 ECT">23 ECT</option>
+                                <option value="26 ECT">26 ECT</option>
+                                <option value="32 ECT">32 ECT</option>
+                                <option value="38 ECT">38 ECT</option>
+                                <option value="42 ECT">42 ECT</option>
+                                <option value="51 ECT">51 ECT</option>
+                                <option value="61 ECT">61 ECT</option>
+                                <option value="71 ECT">71 ECT</option>
+                                
+                            </ons-select>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-calculator fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input type="number" id="pedidoModificarCantidad" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-clipboard fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="pedidoModificarOc" class="input-100" cols="30" rows="1" placeholder="Orden de Compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="left">
+                            <i class="fa-solid fa-calendar-days fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input style="margin-right: 5px;" type="date" id="pedidoModificarFechaOc" class="input-100" cols="30" rows="1" placeholder="Fecha O.C."></ons-input>
+                            ❗ Fecha Orden de Compra
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="center">
+                            <ons-button id="botonAgregarPedido" modifier="large" onclick="setModificarPedido()" >Modificar</ons-button>
                         </div>
                         
                     </ons-list-item>

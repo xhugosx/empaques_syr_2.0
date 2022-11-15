@@ -14,7 +14,10 @@ function buscarDtospedidos()
     setBusquedaPendiente();
     setPedidosCliente();
     setPedidosClienteFiltrado(cliente);
-    //aqui se ejecutara la otra funcion
+
+    $("#searchPedidoCliente").val("");
+    $("#searchPedido").val("");
+
 }
 
 //BUSQUEDA POR CLIENTE VISTA 1
@@ -104,19 +107,44 @@ function setSearchPedidosCliente(search,e)
     if (tecla==13) 
     {
         var type = filtro ? 1 : 2;
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+search,getSearchPedidosCliente);
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?type="+type+"&search="+search,getSearchPedidosCliente);
     }
-    else if(search == "") setBusquedaPendiente();
+    else if(search == "") setPedidosCliente();
 }
 
 function getSearchPedidosCliente(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    resultado = enlistarPedidosCliente(arrayJson);
+    
+    $('#datosPedidosClientes').empty();    
+    setDataPage('#datosPedidosClientes','#datosPedidosClientesLoading',resultado);
+}
+
+// funcion para buscar con cliente filtrado 
+//PEDIDOS FILTRADO POR CLIENTE
+function setsearchPedidosClienteFiltrado(search,e,codigo)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        var type = filtro ? 1 : 2;
+        cliente = codigo;
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo)+"&search="+search,getSearchPedidosClienteFiltrado);
+    }
+    else if(search == "") setPedidosClienteFiltrado(codigo);
+}
+function getSearchPedidosClienteFiltrado(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
     resultado = enlistarPedidos(arrayJson);
     
-    $('#datosPedidos').empty();  
-    setDataPage('#datosPedidos',0,resultado);
+   
+    $('#datosPedidosClienteFiltrado').empty();  
+    setDataPage('#datosPedidosClienteFiltrado',0,resultado);
 }
 
 //funcion paran agregar pedidos
@@ -211,7 +239,59 @@ function getEliminarpedido(respuesta)
         alerta("Pedido Eliminado");
         buscarDtospedidos();
     }
-    else alerta("Hubo un error al tratar de eliminar el Pedido...")
+    else alerta("Hubo un error al tratar de eliminar el Pedido...");
+}
+
+//buscar modificar pedido
+function setModificarBuscarPedido(id)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type=2&search="+id,getModificarBuscarPedido);
+    
+}
+function getModificarBuscarPedido(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    arrayJson[0] = JSON.parse(arrayJson[0]);
+    $("#pedidoModificarId").val(arrayJson[0].id);
+    $("#pedidoModificarCodigo").val(arrayJson[0].codigo);
+    $("#pedidoModificarProducto").val(arrayJson[0].producto);
+    $("#pedidoModificarCliente").val(arrayJson[0].cliente);
+    $("#pedidoModificarResistencia").val(arrayJson[0].resistencia);
+    $("#pedidoModificarCantidad").val(arrayJson[0].cantidad);
+    $("#pedidoModificarOc").val(arrayJson[0].oc);
+    $("#pedidoModificarFechaOc").val(arrayJson[0].fecha_oc);
+    //resultado = enlistarPedidos(arrayJson);
+    
+   //alert(resultado);
+    
+}
+
+
+//modificar pedido
+function setModificarPedido()
+{
+    var id = $("#pedidoModificarId").val();
+    var resistencia = $("#pedidoModificarResistencia").val();
+    var cantidad = $("#pedidoModificarCantidad").val();
+    var oc = $("#pedidoModificarOc").val();
+    var fecha = $("#pedidoModificarFechaOc").val();
+
+    if(datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha))
+    {
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id,getModificarPedido)
+    }
+    else alerta("Espacios Vacios!")
+    
+}
+function getModificarPedido(respuesta)
+{
+    if(respuesta.responseText == 1) 
+    {  
+        alerta("Pedido Actualizado");
+        resetearPilaFunction(buscarDtospedidos);
+    }
+    else alerta("Hubo un error al tratar de modificar el Pedido...");
 }
 
 
@@ -250,23 +330,36 @@ function enlistarPedidosCliente(arrayJson)
 function enlistarPedidos(arrayJson)
 {
     if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
-
+    //alert(arrayJson);
     let html1;
     html1 = '<ons-list>';
+    var color = "";
+    var entregado = "";
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
         
-        
+        if(arrayJson[i].fechaSalida != "") 
+        {
+            color = "rgb(8, 136, 205)";
+            entregado = "Entregado: "+ sumarDias(arrayJson[i].fechaSalida,0);
+
+        }
+        else 
+        {
+            entregado = 'Entrega: '+sumarDias(arrayJson[i].fecha_oc,20);
+            color = "rgb(61, 121, 75)";
+        }
+
         html1 += '<ons-list-header>';
         html1 += arrayJson[i].id;
         html1 += '    &emsp;&emsp;&emsp;';
-        html1 += '    <b style="color: rgb(61, 121, 75);">';
-        html1 += '        Entrega: '+sumarDias(arrayJson[i].fecha_oc,20); //aqui ira una fecha 
+        html1 += '    <b style="color: '+color+';">';
+        html1 +=        entregado; //aqui ira una fecha 
         html1 += '    </b>';
         html1 += '</ons-list-header>';
-        html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
+        html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].codigo+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
         html1 += '    <div class="left">';
         html1 += '        <strong>'+arrayJson[i].codigo+'</strong>';
         html1 += '    </div>';
@@ -291,8 +384,6 @@ function enlistarPedidos(arrayJson)
 
     return html1
 }
-
-
 
 function reiniciarFilter()
 {
