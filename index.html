@@ -23,6 +23,8 @@
     <script src="./js/productos.js"></script>
     <script src="./js/clientes.js"></script>
     <script src="./js/pedidos.js"></script>
+    <script src="./js/entradas.js"></script>
+    <script src="./js/salidas.js"></script>
     <!--script src="./js/conexion.js"></script-->
 
     <!-- mi css -->
@@ -65,17 +67,17 @@
 
             <ons-card>
                 <ons-list-header>PRODUCCIÓN</ons-list-header>
+                <ons-list-item modifier="chevron" tappable onclick="nextPage('inventario.html')" >
+                    <div class="left"> <i class="fa-solid fa-clipboard-list"></i> </div>
+                    <div class="center">Inventario</div>
+                </ons-list-item>
                 <ons-list-item modifier="chevron" tappable onclick="nextPage('entradas.html')">
                     <div class="left"><i class="fa-solid fa-plus"></i></div>
                     <div class="center">Entradas</div>
                 </ons-list-item>
-                <ons-list-item modifier="chevron" tappable onclick="nextPage('salidas.html')" >
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('salidas.html',mostrarTodoSalida)" >
                     <div class="left"> <i class="fa-solid fa-minus"></i> </div>
                     <div class="center">Salidas</div>
-                </ons-list-item>
-                <ons-list-item modifier="chevron" tappable onclick="nextPage('inventario.html')" >
-                    <div class="left"> <i class="fa-solid fa-clipboard-list"></i> </div>
-                    <div class="center">Inventario</div>
                 </ons-list-item>
             </ons-card>
 
@@ -306,48 +308,76 @@
                 </ons-list-item>
             </ons-list>
 
-            <!--ons-list>
-                <ons-list-item modifier="chevron" tappable>
-                    <div class="left">
-                        <strong>
-                            045
-                        </strong>
-                    </div>
-                    <div class="center">
-                        CENTRAL DE VIDRIO
-                    </div>
-                    <div class="right">
-                        <span class="notification">1</span>
-                    </div>
-                </ons-list-item>
-            </ons-list>
-
-                <ons-list-header>
-                    2022045-1
-                </ons-list-header>
-                <ons-list-item>
-                    <div class="left">
-                        <strong>045/001</strong>
-                    </div>
-                    <div class="center">
-                        <span class="list-item__title"> CAJA PRUEBA</span><span class="list-item__subtitle">CENTRAL DE VIDRIO</span>
-                    </div>
-                    <div class="right">
-                        1,500
-                    </div>
-                </ons-list-item-->
+             
+            <ons-tabbar swipeable position="auto">
+                <ons-tab id="clientesPedidos" page="cajaEntrada.html" label="Cajas" icon="fa-box" active></ons-tab>
+                <ons-tab id="todoPedidos" page="insertoEntrada.html" label="Insertos" icon="fa-box-open"></ons-tab>
+                <ons-tab id="todoPedidos" page="laminaEntrada.html" label="Lamina" icon="fa-layer-group" ></ons-tab>
+            </ons-tabbar>
             
             
-            <ons-fab position="bottom right">
+            <ons-fab onclick="crearObjetMensajeEntrada()" position="bottom right">
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
-            <ons-fab position="bottom left" style="background:rgb(33, 151, 98)">
-                <i class="fa-solid fa-filter"></i>
-            </ons-fab>
 
         </ons-page>
     </template>
+
+    <!-- vista caja entradas-->
+    <template id="cajaEntrada.html">
+        <ons-page id="Tab1">
+            <div id="cajaEntradaLoading">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchCajaEntrada" placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <div id="datosCajaEntrada">
+
+            </div>
+        </ons-page>
+      </template>
+
+      <!-- VISTA 2 insertos entradas-->
+      <template id="insertoEntrada.html">
+        <ons-page id="Tab2">
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchInsertoEntrada" placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+            
+
+            <div id="datosInsertoEntrada">
+                
+            </div>
+
+        </ons-page>
+      </template>
+
+      <!-- VISTA 3 lamina entradas-->
+      <template id="laminaEntrada.html">
+        <ons-page id="Tab2">
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchLaminaEntrada" placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+            
+
+            <div id="datosLaminaEntrada">
+                
+            </div>
+
+        </ons-page>
+      </template>
     <!-- FIN DE ENTRADA-->
 
     <!-- SALIDA -->
@@ -358,18 +388,98 @@
                 <div class="center">Salidas</div>
             </ons-toolbar>
 
-            <div id="datosSalidas">
-                <ons-progress-bar indeterminate></ons-progress-bar>
-            </div>
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input placeholder="Buscar"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
 
-            <br>
-            <center>
-                <ons-search-input placeholder="Buscar"></ons-search-input>
-            </center>
+             
+            <ons-tabbar swipeable position="auto">
+                <ons-tab id="clientesPedidos" page="cajaSalida.html" label="Cajas" icon="fa-box" active></ons-tab>
+                <ons-tab id="todoPedidos" page="insertoSalida.html" label="Insertos" icon="fa-box-open"></ons-tab>
+                <ons-tab id="todoPedidos" page="laminaSalida.html" label="Lamina" icon="fa-layer-group" ></ons-tab>
+            </ons-tabbar>
             
+            
+            <ons-fab onclick="crearObjetMensajeEntrada()" position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
 
         </ons-page>
     </template>
+
+    <!-- vista caja entradas-->
+    <template id="cajaSalida.html">
+        <ons-page id="Tab1">
+            <div id="cajaSalidaLoading">
+                <ons-progress-bar  indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchCajaSalida" placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <div id="datosCajaSalida">
+                
+
+            </div>
+        </ons-page>
+      </template>
+
+      <!-- VISTA 2 insertos salidas-->
+      <template id="insertoSalida.html">
+        <ons-page id="Tab2">
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchInsertoSalida" placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+            
+
+            <div id="datosInsertoSalida">
+                
+            </div>
+
+        </ons-page>
+      </template>
+
+      <!-- VISTA 3 lamina salidas-->
+      <template id="laminaSalida.html">
+        <ons-page id="Tab2">
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchLaminaSalida" placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+            
+
+            <div id="datosLaminaSalida">
+                
+            </div>
+
+        </ons-page>
+      </template>
+
+      <template id="agregarSalidasCaja.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Salidas</div>
+            </ons-toolbar>
+
+
+        </ons-page>
+    </template>
+
+
+      <!--Agregar salida Caja-->
+
     <!-- FIN DE SALIDA -->
 
     <!-- INVENTARIO -->
@@ -698,6 +808,19 @@
     </template>
 
     <!-- FIN DE PEDIDOS -->
+
+    <!-- template para dialogos-->
+    <template id="dialog.html">
+        <ons-dialog id="my-dialog">
+            <div style="text-align: center; padding: 10px;">
+                <div class="botonCerrar" onclick="cerrarDialog()">&times;</div> <b>Observaciones:</b> 
+                <br>
+                <p id="datoDialog">
+                    
+                </p>
+            </div>
+        </ons-dialog>
+      </template>
 
 </body>
 </html>

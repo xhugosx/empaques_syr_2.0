@@ -159,3 +159,53 @@ function reducirTexto(cadena)
     
 }
 
+
+function crearObjetMensajeEntrada()
+{
+    ons.openActionSheet({
+        title: 'AGREGAR',
+        cancelable: true,
+        buttons: [
+          '<i class="fa-solid fa-box" style="color:rgb(0, 118, 255)"></i> Caja',
+          '<i class="fa-solid fa-box-open" style="color:rgb(0, 118, 255)"></i> Inserto',
+          '<i class="fa-solid fa-layer-group" style="color:rgb(0, 118, 255)"></i> Lamina',
+          {
+            label:'Cancelar',
+            modifier: 'destructive'
+          }
+        ]
+      }).then(function (index) { 
+        if(index==0) nextPage("agregarSalidasCaja.html");
+        //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+       // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
+        //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      });
+
+}
+
+function abrirDialog(texto) {
+  if(texto == "") texto = "Sin observaciones";
+
+  var dialog = document.getElementById('my-dialog');  
+  
+  if (dialog) {
+    dialog.show();
+  } else {
+    ons.createElement('dialog.html', { append: true }).then(function(dialog) {
+        dialog.show();
+      });
+  }
+  setTimeout(() => {
+    $("#datoDialog").empty();
+    $("#datoDialog").append('<ons-progress-circular indeterminate style="margin-bottom:10px"></ons-progress-circular>');
+  }, 1);
+  setTimeout(() => {
+    $("#datoDialog").empty();
+    $("#datoDialog").append(texto);
+  }, 500);
+  
+};
+  
+function cerrarDialog() {
+  document.getElementById("my-dialog").hide();
+};
