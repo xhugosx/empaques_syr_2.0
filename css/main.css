@@ -110,3 +110,21 @@ i{
     border-radius:10px;
     cursor: pointer;
 }
+.programa{
+    position: absolute;
+    font-weight: bold;
+    
+}
+
+.contenedorPrograma{
+    background: black;
+}
+
+#proceso
+{
+ background-color: rgb(233, 188, 105);
+}
+#terminado{
+    background-color: rgba(35, 154, 75, 0.933);
+}
+

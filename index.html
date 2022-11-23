@@ -25,6 +25,7 @@
     <script src="./js/pedidos.js"></script>
     <script src="./js/entradas.js"></script>
     <script src="./js/salidas.js"></script>
+    <script src="./js/programa.js"></script>
     <!--script src="./js/conexion.js"></script-->
 
     <!-- mi css -->
@@ -71,7 +72,7 @@
                     <div class="left"> <i class="fa-solid fa-clipboard-list"></i> </div>
                     <div class="center">Inventario</div>
                 </ons-list-item>
-                <ons-list-item modifier="chevron" tappable onclick="nextPage('entradas.html')">
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('entradas.html',mostrarTodoEntrada)">
                     <div class="left"><i class="fa-solid fa-plus"></i></div>
                     <div class="center">Entradas</div>
                 </ons-list-item>
@@ -82,11 +83,36 @@
             </ons-card>
 
             <ons-card>
-                <center>
-                    <img src="https://www.giitic.com/img/produccion/software_produccion_7.png?pfdrid_c=true" alt="Onsen UI" style="width: 70%">
-                </center>
-
-                <ons-button style="background-color: rgb(206, 189, 169);" modifier="large">PROGRAMA</ons-button>
+                <ons-list-header>
+                    Programa
+                </ons-list-header>
+                <ons-list-item modifier="chevron" tappable onclick="nextPageFunction('programaArtesanos.html',setMostrarPrograma)" >
+                    <div class="left"> <i class="fa-solid fa-clipboard-list"></i> </div>
+                    <div class="center">Artesanos</div>
+                </ons-list-item>
+                <ons-list-item expandable>
+                    <div class="left"> <i class="fa-solid fa-clipboard-list"></i> </div>
+                    <div class="center">Afilador</div>
+                    <div class="expandable-content">
+                        <ons-list-item modifier="chevron" tappable onclick="nextPage('programaAfilador.html')">
+                            <div class="left">
+                                <i class="fa-solid fa-box"></i>
+                            </div>
+                            <div class="center">
+                                Cajas
+                            </div>
+                        </ons-list-item>
+                        <ons-list-item modifier="chevron" tappable>
+                            <div class="left">
+                                <i class="fa-solid fa-box-open"></i>
+                            </div>
+                            <div class="center">
+                                Insertos
+                            </div>
+                        </ons-list-item>
+                    </div>
+                </ons-list-item>
+                
             
             </ons-card>
            
@@ -316,7 +342,7 @@
             </ons-tabbar>
             
             
-            <ons-fab onclick="crearObjetMensajeEntrada()" position="bottom right">
+            <ons-fab onclick="crearObjetMensajeAgregarEntrada()" position="bottom right">
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
@@ -378,6 +404,32 @@
 
         </ons-page>
       </template>
+
+    <!--Agregar Entrada-->
+      <template id="agregarEntradaCaja.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Entrada</div>
+            </ons-toolbar>
+
+            <div id="cajaAgregarEntradaLoading">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input placeholder="Buscar: "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+            
+
+            <div id="">
+                
+            </div>
+
+        </ons-page>
+      </template>
     <!-- FIN DE ENTRADA-->
 
     <!-- SALIDA -->
@@ -402,7 +454,7 @@
             </ons-tabbar>
             
             
-            <ons-fab onclick="crearObjetMensajeEntrada()" position="bottom right">
+            <ons-fab onclick="crearObjetMensajeAgregarSalida()" position="bottom right">
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
@@ -470,7 +522,7 @@
         <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Agregar Salidas</div>
+                <div class="center">Agregar Salidas <i class="fa-solid fa-box"></i>  </div>
             </ons-toolbar>
 
 
@@ -808,6 +860,82 @@
     </template>
 
     <!-- FIN DE PEDIDOS -->
+
+    <!-- PROGRAMA -->
+    <template id="programaArtesanos.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Programa</div>
+            </ons-toolbar>
+
+            <ons-tabbar swipeable position="auto">
+                <ons-tab id="clientesPedidos" page="flexo.html" label="Flexo" icon="fa-gear" active></ons-tab>
+                <ons-tab id="todoPedidos" page="pegado.html" label="Pegado" icon="fa-droplet" ></ons-tab>
+                <ons-tab id="todoPedidos" page="impresion.html" label="Impresion" icon="fa-fill-drip" ></ons-tab>
+                <ons-tab id="todoPedidos" page="suajado.html" label="Suajado" icon="fa-scissors"></ons-tab>
+            </ons-tabbar>
+           
+        </ons-page>
+    </template>
+    <!--vista flexo-->
+    <template id="flexo.html">
+        <ons-page>
+
+            <div id="datosProgramaFlexo">
+                
+            </div>
+
+        </ons-page>
+    </template>
+    <template id="pegado.html">
+        <ons-page>
+
+            <div id="datosProgramaPegado">
+                
+            </div>
+
+        </ons-page>
+    </template>
+    <template id="impresion.html">
+        <ons-page>
+
+            <div id="datosProgramaImpresion">
+                
+            </div>
+
+        </ons-page>
+    </template>
+    <template id="suajado.html">
+        <ons-page>
+
+            <div id="datosProgramaSuajado">
+                
+            </div>
+
+        </ons-page>
+    </template>
+    
+
+
+    <template id="programaAfilador.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Programa</div>
+            </ons-toolbar>
+
+            <ons-tabbar swipeable position="auto">
+                <ons-tab id="clientesPedidos" page="tab1.html" label="Cortadora" icon="fa-scissors, material:md-home" active></ons-tab>
+                <ons-tab id="todoPedidos" page="tab2.html" label="Caiman" icon="fa-grip-lines-vertical" active-icon="fa-box" ></ons-tab>
+            </ons-tabbar>
+           
+        </ons-page>
+    </template>
+
+
+    <!-- FIN DE PROGRAMA -->
+
 
     <!-- template para dialogos-->
     <template id="dialog.html">

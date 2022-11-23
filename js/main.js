@@ -160,7 +160,7 @@ function reducirTexto(cadena)
 }
 
 
-function crearObjetMensajeEntrada()
+function crearObjetMensajeAgregarSalida()
 {
     ons.openActionSheet({
         title: 'AGREGAR',
@@ -176,6 +176,50 @@ function crearObjetMensajeEntrada()
         ]
       }).then(function (index) { 
         if(index==0) nextPage("agregarSalidasCaja.html");
+        //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+       // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
+        //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      });
+
+}
+
+function crearObjetMensajeAgregarEntrada()
+{
+    ons.openActionSheet({
+        title: 'AGREGAR',
+        cancelable: true,
+        buttons: [
+          '<i class="fa-solid fa-box" style="color:rgb(0, 118, 255)"></i> Caja',
+          '<i class="fa-solid fa-box-open" style="color:rgb(0, 118, 255)"></i> Inserto',
+          '<i class="fa-solid fa-layer-group" style="color:rgb(0, 118, 255)"></i> Lamina',
+          {
+            label:'Cancelar',
+            modifier: 'destructive'
+          }
+        ]
+      }).then(function (index) { 
+        if(index==0) nextPage("agregarEntradaCaja.html");
+        //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+       // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
+        //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      });
+
+}
+
+function crearObjetMensajeInventario(ob)
+{
+    ons.openActionSheet({
+        title: 'Detalles',
+        cancelable: true,
+        buttons: [
+          'Observaciones',
+          {
+            label:'Salida',
+            modifier: 'destructive'
+          }
+        ]
+      }).then(function (index) { 
+        if(index==0) abrirDialog(ob);
         //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
        // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
         //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
