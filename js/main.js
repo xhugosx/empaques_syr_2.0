@@ -70,15 +70,16 @@ function crearObjetMensaje(codigo,contador)
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo,contador);
     });
 }
-function crearObjetMensajePedido(oc,id,codigo) 
+function crearObjetMensajePedido(oc,id,codigo,estado) 
 {
     ons.openActionSheet({
       title: 'OPCIONES',
       cancelable: true,
       buttons: [
         'Detalles',
-        'Plano',
         'Modificar',
+        'Plano',
+        '<b>Programar<b/>',
         {
           label:'Eliminar',
           modifier: 'destructive'
@@ -86,9 +87,16 @@ function crearObjetMensajePedido(oc,id,codigo)
       ]
     }).then(function (index) { 
       if(index==0) alerta("<b>Orden de Compra: </b>"+oc);
-      else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-      else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
-      else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      else if(index==1) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
+      else if(index==2) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      else if(index==3)  
+      {
+        if(estado == 0) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
+        else alerta("Ya fue programado");
+      }
+      
+      else if(index==4) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      
     });
 }
 //FUNCION DE MENSAJE DE CONFIRMACION
@@ -239,6 +247,7 @@ function abrirDialog(texto) {
         dialog.show();
       });
   }
+
   setTimeout(() => {
     $("#datoDialog").empty();
     $("#datoDialog").append('<ons-progress-circular indeterminate style="margin-bottom:10px"></ons-progress-circular>');
@@ -253,3 +262,23 @@ function abrirDialog(texto) {
 function cerrarDialog() {
   document.getElementById("my-dialog").hide();
 };
+
+
+function Abrirdialogo(id,template,idProducto)
+{
+  idPedido = idProducto;
+  var dialog = document.getElementById(id);  
+  
+  if (dialog) {
+    dialog.show();
+  } else {
+    ons.createElement(template, { append: true }).then(function(dialog) {
+        dialog.show();
+      });
+  }
+}
+function cerrarDialogo(id)
+{
+  idPedido = "";
+  document.getElementById(id).hide();
+}

@@ -335,6 +335,7 @@ function enlistarPedidos(arrayJson)
     html1 = '<ons-list>';
     var color = "";
     var entregado = "";
+    var estado = "";
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
@@ -351,15 +352,18 @@ function enlistarPedidos(arrayJson)
             entregado = 'Entrega: '+sumarDias(arrayJson[i].fecha_oc,20);
             color = "rgb(61, 121, 75)";
         }
+        if (arrayJson[i].estado == 1) estado = '<i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i>';
+        else if(arrayJson[i].estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>';
+        else estado = '<i class="fa-solid fa-circle" style="color: white;"></i>';
 
-        html1 += '<ons-list-header>';
+        html1 += '<ons-list-header>'+estado+'&emsp;';
         html1 += arrayJson[i].id;
         html1 += '    &emsp;&emsp;&emsp;';
         html1 += '    <b style="color: '+color+';">';
         html1 +=        entregado; //aqui ira una fecha 
         html1 += '    </b>';
         html1 += '</ons-list-header>';
-        html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].codigo+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
+        html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].estado+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
         html1 += '    <div class="left">';
         html1 += '        <strong>'+arrayJson[i].codigo+'</strong>';
         html1 += '    </div>';

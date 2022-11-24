@@ -123,8 +123,10 @@ i{
 #proceso
 {
  background-color: rgb(233, 188, 105);
+ color: white;
 }
 #terminado{
     background-color: rgba(35, 154, 75, 0.933);
+    color: white;
 }
 

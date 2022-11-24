@@ -868,7 +868,7 @@
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Programa</div>
             </ons-toolbar>
-
+            
             <ons-tabbar swipeable position="auto">
                 <ons-tab id="clientesPedidos" page="flexo.html" label="Flexo" icon="fa-gear" active></ons-tab>
                 <ons-tab id="todoPedidos" page="pegado.html" label="Pegado" icon="fa-droplet" ></ons-tab>
@@ -881,7 +881,15 @@
     <!--vista flexo-->
     <template id="flexo.html">
         <ons-page>
-
+            <br>
+            <center>
+                <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
+                - 
+                <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
+                -
+                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+            </center>
+            <br>
             <div id="datosProgramaFlexo">
                 
             </div>
@@ -890,7 +898,15 @@
     </template>
     <template id="pegado.html">
         <ons-page>
-
+            <br>
+            <center>
+                <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
+                - 
+                <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
+                -
+                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+            </center>
+            <br>
             <div id="datosProgramaPegado">
                 
             </div>
@@ -899,7 +915,15 @@
     </template>
     <template id="impresion.html">
         <ons-page>
-
+            <br>
+            <center>
+                <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
+                - 
+                <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
+                -
+                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+            </center>
+            <br>
             <div id="datosProgramaImpresion">
                 
             </div>
@@ -908,7 +932,15 @@
     </template>
     <template id="suajado.html">
         <ons-page>
-
+            <br>
+            <center>
+                <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
+                - 
+                <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
+                -
+                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+            </center>
+            <br>
             <div id="datosProgramaSuajado">
                 
             </div>
@@ -946,6 +978,105 @@
                 <p id="datoDialog">
                     
                 </p>
+            </div>
+        </ons-dialog>
+      </template>
+
+      <template id="dialogPrograma.html">
+        <ons-dialog id="my-dialog-programa">
+            <div style="text-align: center; padding: 10px;">
+                <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-programa')">&times;</div> <b>Selecciona los procesos</b> 
+                <br><br>
+                <ons-list-header>
+                    Artesanos
+                </ons-list-header>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check1"></ons-checkbox>
+                    </label>
+                    <label for="checkFlexo" class="center">
+                        Flexo
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check2"></ons-checkbox>
+                    </label>
+                    <label for="checkPegadoFlejado" class="center">
+                        Pegado - Flejado
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check3"></ons-checkbox>
+                    </label>
+                    <label for="checkImpresion" class="center">
+                        Impresion
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check4"></ons-checkbox>
+                    </label>
+                    <label for="checkSuajado" class="center">
+                        Suajado
+                    </label>
+                </ons-list-item>
+
+                <ons-list-header>
+                    AFilador (Cajas)
+                </ons-list-header>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check5"></ons-checkbox>
+                    </label>
+                    <label for="checkCortadora1" class="center">
+                        Cortadora
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check6"></ons-checkbox>
+                    </label>
+                    <label for="checkCaiman" class="center">
+                        Caiman
+                    </label>
+                </ons-list-item>
+
+                <ons-list-header>
+                    AFilador (Insertos)
+                </ons-list-header>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check7"></ons-checkbox>
+                    </label>
+                    <label for="checkCortadora2" class="center">
+                        Cortadora
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check8"></ons-checkbox>
+                    </label>
+                    <label for="checkRanurado" class="center">
+                        Ranurado
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable> 
+                    <label class="left">
+                        <ons-checkbox input-id="check9"></ons-checkbox>
+                    </label>
+                    <label for="checkArmadoFlejado" class="center">
+                        Armador - Flejado
+                    </label>
+                </ons-list-item>
+                <ons-list-item>
+                    <ons-button onclick="setagregarPrograma(idPedido)" modifier="large">
+                        Programar
+                    </ons-button>
+                </ons-list-item>
+                
+
             </div>
         </ons-dialog>
       </template>
