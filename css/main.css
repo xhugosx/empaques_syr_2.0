@@ -129,4 +129,7 @@ i{
     background-color: rgba(35, 154, 75, 0.933);
     color: white;
 }
+ons-list > * {
+    background-color: white;
+}
 
