@@ -92,6 +92,7 @@ ons-search-input{
 body{
 
     overflow-x:hidden;
+    
 }
 
 .input-100{
@@ -99,7 +100,7 @@ body{
 }
 
 i{
-    color: rgb(206, 189, 169);
+    color: rgba(215,172,118,1)
 }
 .botonCerrar{
     position:absolute; 
@@ -122,14 +123,46 @@ i{
 
 #proceso
 {
- background-color: rgb(233, 188, 105);
+ background-color: rgba(215,172,118,1);
  color: white;
 }
 #terminado{
     background-color: rgba(35, 154, 75, 0.933);
     color: white;
 }
-ons-list > * {
-    background-color: white;
+
+.programaTitle{
+    font: bold;
+    margin: 0%;
+    
+}
+#contenedorPrograma{
+    background:rgba(255, 255, 255, 0);
+    font: bold;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+}
+#contenedorPrograma > div{
+    color: rgb(93, 76, 50);
+    font: bold;
 }
 
+.botonPrograma:active{
+    box-shadow: 0px 0px 10px -6px black inset;
+}
+.botonPrograma{
+    cursor: pointer;
+}
+
+.contenedor2Programa{
+    background-color: rgba(255, 255, 255, 0.464);
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    justify-content  : center;
+    
+    
+}
+.contenedor2Programa > h4{
+    color:rgb(114, 99, 81);
+    margin: auto;
+}

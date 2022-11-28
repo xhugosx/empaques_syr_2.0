@@ -1,9 +1,10 @@
 var idPedido = "";
-function setMostrarPrograma()
+//funcion para mostrara programa en artesanos
+function setMostrarProgramaArtesanos()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarPrograma)
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaArtesanos)
 }
-function getMostrarPrograma(respuesta)
+function getMostrarProgramaArtesanos(respuesta)
 {
     var resultado = respuesta.responseText;
     const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -11,7 +12,7 @@ function getMostrarPrograma(respuesta)
 
     resultado = enlistarPrograma(arrayJson,1);
     $('#datosProgramaFlexo').empty();
-    setDataPage('#datosProgramaFlexo',0,resultado);
+    setDataPage('#datosProgramaFlexo','#loadingFlexo',resultado);
     //tipo 2 para impresion
 
     resultado = enlistarPrograma(arrayJson,2);
@@ -26,7 +27,27 @@ function getMostrarPrograma(respuesta)
     $('#datosProgramaSuajado').empty();
     setDataPage('#datosProgramaSuajado',0,resultado);
 }
+//funcion para mostrar rpograma de afilador 2
 
+function setMostrarProgramaAfilador()
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaAfilador);
+}
+
+function getMostrarProgramaAfilador(respuesta)
+{
+    var resultado = respuesta.responseText;
+    const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    //creamos una copia 
+
+    resultado = enlistarPrograma(arrayJson,1);
+    $('#datosProgramaFlexo').empty();
+    setDataPage('#datosProgramaFlexo','#loadingFlexo',resultado);
+    //tipo 2 para impresion
+
+}
+
+//funcion para enlistar los programas
 function enlistarPrograma(arrayJson,tipo)
 {
     //alert("entro");
