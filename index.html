@@ -63,7 +63,7 @@
                     <h4>
                         Afilador
                     </h4>
-                    <ons-card class="botonPrograma" onclick="nextPage('programaAfilador.html')">
+                    <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
                         <i class="fa-solid fa-box"></i> Cajas
                     </ons-card>
                     <ons-card class="botonPrograma" onclick="nextPage('programaAfilador2.html')">
@@ -328,7 +328,7 @@
             </ons-list>
 
              
-            <ons-tabbar swipeable position="auto">
+            <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="cajaEntrada.html" label="Cajas" icon="fa-box" active></ons-tab>
                 <ons-tab id="todoPedidos" page="insertoEntrada.html" label="Insertos" icon="fa-box-open"></ons-tab>
                 <ons-tab id="todoPedidos" page="laminaEntrada.html" label="Lamina" icon="fa-layer-group" ></ons-tab>
@@ -440,7 +440,7 @@
             </ons-list>
 
              
-            <ons-tabbar swipeable position="auto">
+            <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="cajaSalida.html" label="Cajas" icon="fa-box" active></ons-tab>
                 <ons-tab id="todoPedidos" page="insertoSalida.html" label="Insertos" icon="fa-box-open"></ons-tab>
                 <ons-tab id="todoPedidos" page="laminaSalida.html" label="Lamina" icon="fa-layer-group" ></ons-tab>
@@ -560,7 +560,7 @@
                 </div>
             </ons-toolbar>
             
-            <ons-tabbar swipeable position="auto">
+            <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home" active>
                 </ons-tab>
                 <ons-tab id="todoPedidos" page="tab2.html" label="Todo" icon="fa-boxes-stacked" active-icon="fa-box" >
@@ -862,7 +862,7 @@
                 <div class="center">Programa</div>
             </ons-toolbar>
             
-            <ons-tabbar swipeable position="auto">
+            <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="flexo.html" label="Flexo" icon="fa-gear" active></ons-tab>
                 <ons-tab id="todoPedidos" page="pegado.html" label="Pegado" icon="fa-droplet" ></ons-tab>
                 <ons-tab id="todoPedidos" page="impresion.html" label="Impresion" icon="fa-fill-drip" ></ons-tab>
@@ -883,7 +883,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaFlexo">
@@ -900,7 +900,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaPegado">
@@ -917,7 +917,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaImpresion">
@@ -934,7 +934,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaSuajado">
@@ -953,7 +953,7 @@
                 <div class="center">Programa</div>
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="auto">
+            <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="cortadora1.html" label="Cortadora" icon="fa-scissors, material:md-home" active></ons-tab>
                 <ons-tab id="todoPedidos" page="caiman.html" label="Caiman" icon="fa-grip-lines-vertical"></ons-tab>
             </ons-tabbar>
@@ -963,13 +963,16 @@
 
     <template id="cortadora1.html">
         <ons-page>
+            <div id="loadingCortadora1">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
             <br>
             <center>
                 <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaCortadora1">
@@ -987,7 +990,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaCaiman">
@@ -1005,7 +1008,7 @@
                 <div class="center">Programa</div>
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="auto">
+            <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="cortadora2.html" label="Cortadora" icon="fa-scissors" active></ons-tab>
                 <ons-tab id="todoPedidos" page="ranurado.html" label="Ranurado" icon="fa-grip-lines-vertical" ></ons-tab>
                 <ons-tab id="todoPedidos" page="armadoFlejado.html" label="Armado flejado" icon="fa-calculator"></ons-tab>
@@ -1016,13 +1019,16 @@
 
     <template id="cortadora2.html">
         <ons-page>
+            <div id="loadingCortadora2">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
             <br>
             <center>
                 <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaCortadora2">
@@ -1040,7 +1046,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaRanurado">
@@ -1058,7 +1064,7 @@
                 - 
                 <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
                 -
-                <i class="fa-solid fa-circle" style="color:white;"></i> Pendiente 
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente 
             </center>
             <br>
             <div id="datosProgramaArmadoFlejado">

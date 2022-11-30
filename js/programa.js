@@ -1,5 +1,11 @@
 var idPedido = "";
 //funcion para mostrara programa en artesanos
+function refreshPrograma()
+{
+    setMostrarProgramaArtesanos();
+    setMostrarProgramaAfilador1();
+    setMostrarProgramaAfilador2();
+}
 function setMostrarProgramaArtesanos()
 {
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaArtesanos)
@@ -29,21 +35,67 @@ function getMostrarProgramaArtesanos(respuesta)
 }
 //funcion para mostrar rpograma de afilador 2
 
-function setMostrarProgramaAfilador()
+function setMostrarProgramaAfilador1()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaAfilador);
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaAfilador1);
 }
 
-function getMostrarProgramaAfilador(respuesta)
+function getMostrarProgramaAfilador1(respuesta)
 {
     var resultado = respuesta.responseText;
     const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //creamos una copia 
+    
 
-    resultado = enlistarPrograma(arrayJson,1);
-    $('#datosProgramaFlexo').empty();
-    setDataPage('#datosProgramaFlexo','#loadingFlexo',resultado);
-    //tipo 2 para impresion
+    resultado = enlistarPrograma(arrayJson,5);
+    $('#datosProgramaCortadora1').empty();
+    setDataPage('#datosProgramaCortadora1','#loadingCortadora1',resultado);
+
+    resultado = enlistarPrograma(arrayJson,6);
+    $('#datosProgramaCaiman').empty();
+    setDataPage('#datosProgramaCaiman',0,resultado);
+
+}
+
+function setMostrarProgramaAfilador2()
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaAfilador2);
+}
+
+function getMostrarProgramaAfilador2(respuesta)
+{
+    var resultado = respuesta.responseText;
+    const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+
+    resultado = enlistarPrograma(arrayJson,7);
+    $('#datosProgramaCortadora2').empty();
+    setDataPage('#datosProgramaCortadora2','#loadingCortadora2',resultado);
+
+    resultado = enlistarPrograma(arrayJson,8);
+    $('#datosProgramaRanurado').empty();
+    setDataPage('#datosProgramaRanurado',0,resultado);
+
+    resultado = enlistarPrograma(arrayJson,9);
+    $('#datosProgramaArmadoFlejado').empty();
+    setDataPage('#datosProgramaArmadoFlejado',0,resultado);
+
+}
+
+//funcion para actualizar estado de un producto
+function setActualizarEstado(id,estado)
+{
+    //alert('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/updateEstado.php?id='+id+'&estado='+estado);
+
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/updateEstado.php?id='+id+'&estado='+estado,getActualizarEstado);
+}
+function getActualizarEstado(respuesta)
+{
+    if(respuesta.responseText=="1") 
+    {
+        alertToast('Actualizado!',1000)
+        refreshPrograma();
+    }  
+    else alerta("No se pudo actualizar");
 
 }
 
@@ -51,8 +103,8 @@ function getMostrarProgramaAfilador(respuesta)
 function enlistarPrograma(arrayJson,tipo)
 {
     //alert("entro");
-    if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
-    let html1 = '<ons-list>';
+    if(arrayJson=="" || arrayJson == "0") return '<ons-card  class="botonPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
+    let html1 = '';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
@@ -60,10 +112,10 @@ function enlistarPrograma(arrayJson,tipo)
         if(arrayJson[i].proceso == tipo)
         {
             //html1 += '<ons-list-header>';
-            //html1 += '</ons-list-header>';
-            html1 += '<ons-list-item '+estadoColor(arrayJson[i].estado)+' tappable >';
+            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\')">';
+            html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
-            html1 += '        <strong>'+arrayJson[i].codigo+'</strong>';
+            html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
             html1 += '    </div>';
             html1 += '    <div class="center romperTexto">';
             html1 += '        <span class="list-item__title">'+arrayJson[i].producto+'</span>'; 
@@ -79,10 +131,11 @@ function enlistarPrograma(arrayJson,tipo)
             html1 += '         </div>';
             html1 += '    </div>';
             html1 += '</ons-list-item>';
+            html1 += '</ons-card>';
         }
 
     }
-    html1 += '</ons-list><br><br><br>';
+    html1 += '<br><br><br>';
 
     return html1
 }
@@ -125,7 +178,7 @@ function estatus(dato)
 }
 function estadoColor(dato)
 {
-    if(dato==0) return '';
+    if(dato==0) return 'id="pendiente"';
    else if(dato==1) return 'id="proceso"';
    else return 'id="terminado"';
 }

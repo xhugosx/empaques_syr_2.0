@@ -140,15 +140,15 @@ function getProductosBarraBusqueda(respuesta)
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson)
 {
-    if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
-    let html1;
-    html1 = '<ons-list>';
+    if(arrayJson=="") return '<ons-card id="contenedorPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
+    let html1 = "";
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
-
-        html1 += '<ons-list-item tappable id="list-producto'+i+'" onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\','+i+')">';
+        
+        html1 += '<ons-card style="padding:0px;" class="botonPrograma" id="list-cliente'+i+'" onclick="crearObjetMensaje(\''+arrayJson[i].codigo+'\','+i+')">';
+        html1 += '<ons-list-item modifier="nodivider">';
         html1 += '  <div class="left">';
         html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
         html1 += '  </div>';
@@ -157,10 +157,11 @@ function enlistarProductos(arrayJson)
         html1 += '    <span class="list-item__subtitle">$'+ arrayJson[i].precio +'</span>';
         html1 += '  </div>';
         html1 += '</ons-list-item>';
+        html1 += '</ons-card>';
 
     }
 
-    html1 += '</ons-list> <br><br>';
+    html1 += ' <br><br>';
 
     return html1;
 }

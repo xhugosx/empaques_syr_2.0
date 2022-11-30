@@ -300,14 +300,14 @@ function enlistarPedidosCliente(arrayJson)
 {
     if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
 
-    let html1;
-    html1 = '<ons-list>';
+    let html1 = "";
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
 
-        html1 += '<ons-list-item modifier="chevron" tappable onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\''+arrayJson[i].codigo+'\')">';
+        html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\''+arrayJson[i].codigo+'\')">'
+        html1 += '<ons-list-item modifier="chevron nodivider" >';
         //html1 += '<ons-list-item modifier="chevron" tappable onclick="crearObjetMensajePedido()">';
         html1 += '    <div class="left">';
         html1 += '        <strong>';
@@ -321,18 +321,18 @@ function enlistarPedidosCliente(arrayJson)
         html1 += '        <span class="notification">'+arrayJson[i].contador+'</span>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
+        html1 += '</ons-card>';
     }
-    html1 += '</ons-list><br><br><br>';
+    html1 += '<br><br><br>';
 
     return html1
 }
 //ENLISTAR PEDIDOS
 function enlistarPedidos(arrayJson)
 {
-    if(arrayJson=="" || arrayJson == "0") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
+    if(arrayJson=="" || arrayJson == "0") return '<ons-card  class="botonPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
     //alert(arrayJson);
-    let html1;
-    html1 = '<ons-list>';
+    let html1 = "";
     var color = "";
     var entregado = "";
     var estado = "";
@@ -356,14 +356,15 @@ function enlistarPedidos(arrayJson)
         else if(arrayJson[i].estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>';
         else estado = '<i class="fa-solid fa-circle" style="color: white;"></i>';
 
+        html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].estado+'\')">'
         html1 += '<ons-list-header>'+estado+'&emsp;';
         html1 += arrayJson[i].id;
-        html1 += '    &emsp;&emsp;&emsp;';
+        html1 += '    &emsp;';
         html1 += '    <b style="color: '+color+';">';
         html1 +=        entregado; //aqui ira una fecha 
         html1 += '    </b>';
         html1 += '</ons-list-header>';
-        html1 += '<ons-list-item tappable onclick="crearObjetMensajePedido(\''+arrayJson[i].oc+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].estado+'\')">'; //preubaAlerta(\''+arrayJson[i].oc+'\')
+        html1 += '<ons-list-item modifier="nodivider"tappable >'; 
         html1 += '    <div class="left">';
         html1 += '        <strong>'+arrayJson[i].codigo+'</strong>';
         html1 += '    </div>';
@@ -381,10 +382,11 @@ function enlistarPedidos(arrayJson)
         html1 += '         </div>';
         html1 += '    </div>';
         html1 += '</ons-list-item>';
+        html1 += '</ons-card>';
         
 
     }
-    html1 += '</ons-list><br><br><br>';
+    html1 += '<br><br><br>';
 
     return html1
 }

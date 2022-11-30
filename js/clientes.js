@@ -99,9 +99,20 @@ function getEliminarCliente(respuesta)
 //funcion para enlistar clientes
 function enlistarClientes(arrayJson)
 {
-    if(arrayJson=="") return "<ons-card> <center> <h2>Sin resultados...</h2> </center> </ons-card>";
+    if(arrayJson=="") return '<ons-card id="contenedorPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
 
-    let html1;
+    let html1 = "";
+    //html1 = '<ons-card id="contenedorPrograma">';
+
+    for(var i=0;i<arrayJson.length-1;i++) 
+    {
+        arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
+        html1 += '<ons-card class="botonPrograma" id="list-cliente'+i+'" onclick="crearObjetMensajeCliente('+arrayJson[i].codigo+','+i+')">';
+        html1 += '    <i class="fa-solid fa-user-large fa-lg"></i> <strong>'+ agregarCeros(arrayJson[i].codigo)+'</strong> &nbsp;'+arrayJson[i].nombre+'';
+        html1 += '</ons-card>';
+    }
+    //html1 += '</ons-card>';
+    /*
     html1 = '<ons-list>';
 
     for(var i=0;i<arrayJson.length-1;i++) 
@@ -125,6 +136,7 @@ function enlistarClientes(arrayJson)
 
     }
     html1 += '</ons-list>';
+    */
     html1 += '<br><br><br>';
 
     return html1

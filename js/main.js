@@ -24,7 +24,11 @@ function nextPageFunctionData(miPage,miFuncion,dato)
 //FUMCION PRA MOSTRAR UN MENSAJE
 function alerta(mensaje)
 {
-    ons.notification.alert(mensaje);
+    ons.notification.alert({
+      title: ' ',
+      message: mensaje,
+      buttonLabels: 'Aceptar'
+    });
 }
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link,miFuncion)
@@ -57,7 +61,7 @@ function crearObjetMensaje(codigo,contador)
       title: 'OPCIONES',
       cancelable: true,
       buttons: [
-        'Plano',
+        'Ver Plano',
         'Modificar',
         {
           label:'Eliminar',
@@ -76,26 +80,66 @@ function crearObjetMensajePedido(oc,id,codigo,estado)
       title: 'OPCIONES',
       cancelable: true,
       buttons: [
+        '<b>Programar<b/>',
+        'Ver Plano',
         'Detalles',
         'Modificar',
-        'Plano',
-        '<b>Programar<b/>',
         {
           label:'Eliminar',
           modifier: 'destructive'
         }
       ]
     }).then(function (index) { 
-      if(index==0) alerta("<b>Orden de Compra: </b>"+oc);
-      else if(index==1) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
-      else if(index==2) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-      else if(index==3)  
+      if(index==0)  
       {
         if(estado == 0) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
         else alerta("Ya fue programado");
       }
-      
+      else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      else if(index==2) alerta("<b>Orden de Compra: </b>"+oc);
+      else if(index==3) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
       else if(index==4) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
+      
+    });
+}
+
+function crearObjetMensajeCliente(id,i) 
+{
+    ons.openActionSheet({
+      title: 'OPCIONES',
+      cancelable: true,
+      buttons: [
+        {
+          label:'Eliminar',
+          modifier: 'destructive'
+        }
+      ]
+    }).then(function (index) { 
+      if(index==0) alertaConfirm('Estas seguro de eliminar este cliente '+agregarCeros(id)+'?',setEliminarCliente,id,i);  
+    });
+}
+
+function crearObjetMensajeProcesoPrograma(id) 
+{
+    ons.openActionSheet({
+      title: 'ASIGNAR PROCESO',
+      cancelable: true,
+      buttons: [
+        '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado ',
+        '<i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso ',
+        '<i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);"></i> Pendiente ',
+        'Terminar',
+        {
+          label:'Eliminar',
+          modifier: 'destructive'
+        }
+      ]
+    }).then(function (index) { 
+      if(index == 0) setActualizarEstado(id,2);
+      else if(index == 1) setActualizarEstado(id,1);
+      else if(index==2) setActualizarEstado(id,0); 
+      else if(index == 3) alertPrompt();
+      else if(index == 4) ;//eliminar
       
     });
 }
@@ -103,6 +147,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado)
 function alertaConfirm(mensaje,funcion,variable,contador)
 {
     ons.notification.confirm({
+        title: '',
         message: mensaje,
         buttonLabels: ['SI', 'NO'],
         callback: function(idx) {
@@ -167,7 +212,7 @@ function reducirTexto(cadena)
     
 }
 
-
+/*
 function crearObjetMensajeAgregarSalida()
 {
     ons.openActionSheet({
@@ -233,7 +278,7 @@ function crearObjetMensajeInventario(ob)
         //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
       });
 
-}
+}*/
 
 function abrirDialog(texto) {
   if(texto == "") texto = "Sin observaciones";
@@ -281,4 +326,25 @@ function cerrarDialogo(id)
 {
   idPedido = "";
   document.getElementById(id).hide();
+}
+function alertToast(mensaje,tiempo)
+{
+  ons.notification.toast(mensaje, { timeout: tiempo, animation: 'fall' })
+}
+
+function alertPrompt()
+{
+  ons.notification.prompt({
+    title: '',
+    inputType: 'number',
+    buttonLabels: [
+      'Agregar'
+    ],
+    message: 'Cantidad total (pzas)'
+    }).then(function(input) {
+      if(input == 0) alerta("Cancelado");
+      else alerta('Se mandara a entrada: '+input);
+
+      
+  });
 }
