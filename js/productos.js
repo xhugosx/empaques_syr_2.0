@@ -175,8 +175,3 @@ function agregarClaseProducto(i){
 }
 //genera un pop de la pila de ventanas de la app *return*
 
-function agregarDiagonal(texto)
-{
-    if(texto.length == 3) $("#codigoProducto1").val(texto+"/");
-    
-}

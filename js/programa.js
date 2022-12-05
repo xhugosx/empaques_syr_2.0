@@ -29,7 +29,7 @@ function getMostrarProgramaArtesanos(respuesta)
     $('#datosProgramaImpresion').empty();
     setDataPage('#datosProgramaImpresion',0,resultado);
 
-    resultado = enlistarPrograma(arrayJson,2);
+    resultado = enlistarPrograma(arrayJson,4);
     $('#datosProgramaSuajado').empty();
     setDataPage('#datosProgramaSuajado',0,resultado);
 }
@@ -92,18 +92,53 @@ function getActualizarEstado(respuesta)
 {
     if(respuesta.responseText=="1") 
     {
-        alertToast('Actualizado!',1000)
+        alertToast('Actualizado!',1000);
         refreshPrograma();
     }  
-    else alerta("No se pudo actualizar");
+    else alertToast('Proceso actual!',1000);
 
 }
+function setEliminarPrograma(id)
+{
+    
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/delete.php?id='+id,getEliminarPrograma);
+}
+function getEliminarPrograma(respuesta)
+{
+    if(respuesta.responseText=="1")
+    {
+       
+        alerta("Se ah eliminado del programa");
+        refreshPrograma();
+    } 
+    else alerta("No se pudo eliminar!");
+}
 
+function setLlenarProcesoPrograma(id)
+{
+    Abrirdialogo('my-dialog-programa','dialogPrograma.html',id)
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/selectProcesos.php?id="+id,getLlenarProcesoPrograma);
+}
+function getLlenarProcesoPrograma(respuesta)
+{  
+    var resultado = respuesta.responseText;
+    const arrayJson  = resultado.split('|');
+    for(var i=0;i<arrayJson.length-2;i++) 
+    {
+        arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
+        
+        $('#check'+arrayJson[i].proceso).prop("checked","true");
+        //document.getElementById('#check'+arrayJson[i].proceso).checked =
+
+        //alert('#check'+arrayJson[i].proceso);
+    }
+
+}
 //funcion para enlistar los programas
 function enlistarPrograma(arrayJson,tipo)
 {
     //alert("entro");
-    if(arrayJson=="" || arrayJson == "0") return '<ons-card  class="botonPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
+    if(arrayJson=="" || arrayJson == "0") return '<ons-card  id="contenedorPrograma"> <center> <h2>No se ha programado nada...</h2> </center> </ons-card>';
     let html1 = '';
 
     for(var i=0;i<arrayJson.length-1;i++) 
@@ -112,7 +147,7 @@ function enlistarPrograma(arrayJson,tipo)
         if(arrayJson[i].proceso == tipo)
         {
             //html1 += '<ons-list-header>';
-            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\')">';
+            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\','+arrayJson[i].cantidad+')">';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
@@ -135,9 +170,10 @@ function enlistarPrograma(arrayJson,tipo)
         }
 
     }
+    if(html1 == "") return '<ons-card  id="contenedorPrograma"> <center> <h2>No se ha programado nada...</h2> </center> </ons-card>';
     html1 += '<br><br><br>';
 
-    return html1
+    return html1;
 }
 function setagregarPrograma(id)
 {
@@ -162,6 +198,9 @@ function getAgregarPrograma(respuesta)
         buscarDtospedidos()
     }
     else alerta('hubo un error al insertar!');
+
+    //limpiar select 
+    limpiarSelectPrograma();
     
 }
 
@@ -194,4 +233,11 @@ function verificarError(objeto)
 }
 function prueba(){
     var icon = '<tr><td> <a  onclick="del('+i +',\'' + mat +'\',\'' +size +'\')"><img src="..wwwroot/img/ELIMINAR.png" id = "icon_delete" class= "img-delete" /></a></td ></tr>';
+}
+function limpiarSelectPrograma()
+{
+    for(var i = 0; i<9 ; i++)
+    {
+        $('#check'+(i+1)).val([])
+    } 
 }

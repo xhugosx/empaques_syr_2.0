@@ -1,11 +1,18 @@
 
 @font-face {
     font-family: 'Candara';
-    src: url('../font/TypoSlabserif-Light.ttf');
+    src: url('../font/JosefinSans-VariableFont_wght.ttf');
 }
-*{
+body{
     font-family: 'Candara';
 }
+ons-toolbar>div.center, ons-toolbar>div.left{
+    font-family: 'Candara';
+}
+input.search-input, input.text-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center{
+    font-family: 'Candara';
+}
+
 .boton-cliente{
     margin: 8px;
 }

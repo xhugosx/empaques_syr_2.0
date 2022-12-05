@@ -46,33 +46,7 @@
                 </div>
             </ons-toolbar>
 
-            <ons-card id="contenedorPrograma">
-
-                <div class="title">
-                    PROGRAMA
-                </div>
-                <ons-card class="contenedor2Programa">
-                    <h4>
-                        Artesanos
-                    </h4>
-                    <ons-card class="botonPrograma" onclick="nextPageFunction('programaArtesanos.html',setMostrarProgramaArtesanos)">
-                        <i class="fa-solid fa-box"></i> Cajas
-                    </ons-card>
-                </ons-card>
-                <ons-card class="contenedor2Programa">
-                    <h4>
-                        Afilador
-                    </h4>
-                    <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
-                        <i class="fa-solid fa-box"></i> Cajas
-                    </ons-card>
-                    <ons-card class="botonPrograma" onclick="nextPage('programaAfilador2.html')">
-                        <i class="fa-solid fa-box-open"></i> Insertos
-                    </ons-card>
-                </ons-card>
-                
-               
-            </ons-card>
+            
             <ons-card id="contenedorPrograma">
                 <div class="title">
                     ADMINISTRACIÓN
@@ -104,6 +78,34 @@
                 <ons-card class="botonPrograma" onclick="nextPageFunction('salidas.html',mostrarTodoSalida)" >
                     <i class="fa-solid fa-minus"></i> Salidas
                 </ons-card>
+            </ons-card>
+
+            <ons-card id="contenedorPrograma">
+
+                <div class="title">
+                    PROGRAMA
+                </div>
+                <ons-card class="contenedor2Programa">
+                    <h4>
+                        Artesanos
+                    </h4>
+                    <ons-card class="botonPrograma" onclick="nextPageFunction('programaArtesanos.html',setMostrarProgramaArtesanos)">
+                        <i class="fa-solid fa-box"></i> Cajas
+                    </ons-card>
+                </ons-card>
+                <ons-card class="contenedor2Programa">
+                    <h4>
+                        Afilador
+                    </h4>
+                    <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
+                        <i class="fa-solid fa-box"></i> Cajas
+                    </ons-card>
+                    <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador2.html',setMostrarProgramaAfilador2)">
+                        <i class="fa-solid fa-box-open"></i> Insertos
+                    </ons-card>
+                </ons-card>
+                
+               
             </ons-card>
 
             
@@ -234,7 +236,7 @@
                             <i class="fa-regular fa-key fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input onkeyup="agregarDiagonal(this.value)" id="codigoProducto1" cols="12" rows="1" maxlength="9" class="input-100" placeholder="Codigo"></ons-input>
+                            <ons-input id="codigoProducto1" cols="12" rows="1" maxlength="9" class="input-100" placeholder="Codigo"></ons-input>
                         </div>
                     </ons-list-item>
                     <ons-list-item>
@@ -1096,7 +1098,7 @@
       <template id="dialogPrograma.html">
         <ons-dialog id="my-dialog-programa">
             <div style="text-align: center; padding: 10px;">
-                <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-programa')">&times;</div> <b>Selecciona los procesos</b> 
+                <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-programa');limpiarSelectPrograma()">&times;</div> <b>Selecciona los procesos</b> 
                 <br><br>
                 <ons-list-header>
                     Artesanos

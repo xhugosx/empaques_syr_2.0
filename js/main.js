@@ -93,7 +93,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado)
       if(index==0)  
       {
         if(estado == 0) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
-        else alerta("Ya fue programado");
+        else alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
       }
       else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
       else if(index==2) alerta("<b>Orden de Compra: </b>"+oc);
@@ -119,7 +119,7 @@ function crearObjetMensajeCliente(id,i)
     });
 }
 
-function crearObjetMensajeProcesoPrograma(id) 
+function crearObjetMensajeProcesoPrograma(idP,id,cantidad) 
 {
     ons.openActionSheet({
       title: 'ASIGNAR PROCESO',
@@ -135,11 +135,11 @@ function crearObjetMensajeProcesoPrograma(id)
         }
       ]
     }).then(function (index) { 
-      if(index == 0) setActualizarEstado(id,2);
-      else if(index == 1) setActualizarEstado(id,1);
-      else if(index==2) setActualizarEstado(id,0); 
-      else if(index == 3) alertPrompt();
-      else if(index == 4) ;//eliminar
+      if(index == 0) setActualizarEstado(idP,2);
+      else if(index == 1) setActualizarEstado(idP,1);
+      else if(index==2) setActualizarEstado(idP,0); 
+      else if(index == 3) alertPrompt(cantidad);
+      else if(index == 4) alertaConfirPrograma("Estas seguro de eliminar este pedido del programa?",setEliminarPrograma,id);//eliminar
       
     });
 }
@@ -164,6 +164,17 @@ function alertaConfirmSiNo(mensaje,funcionSi,funcionNo,funcion)
             if(idx==0) funcionSi();
             else funcionNo(funcion);
           }
+   });
+}
+function alertaConfirPrograma(mensaje,funcionSi,id)
+{
+    ons.notification.confirm({
+      title :"",
+      message: mensaje,
+      buttonLabels: ['SI', 'NO'],
+      callback: function(idx) {
+          if(idx==0) funcionSi(id);
+        }
    });
 }
 //FUNCION PARA AGREGAR CEROS
@@ -332,8 +343,9 @@ function alertToast(mensaje,tiempo)
   ons.notification.toast(mensaje, { timeout: tiempo, animation: 'fall' })
 }
 
-function alertPrompt()
+function alertPrompt(cantidad)
 {
+  
   ons.notification.prompt({
     title: '',
     inputType: 'number',
@@ -343,7 +355,11 @@ function alertPrompt()
     message: 'Cantidad total (pzas)'
     }).then(function(input) {
       if(input == 0) alerta("Cancelado");
-      else alerta('Se mandara a entrada: '+input);
+      else {
+        if(cantidad > input) alerta("Se hizo menos de lo que piden, hacer reporte de faltante?")
+        else alerta('Se mandara a entrada: '+input);
+      }
+        
 
       
   });
