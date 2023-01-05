@@ -128,26 +128,56 @@ function getLlenarProcesoPrograma(respuesta)
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
         
         $('#check'+arrayJson[i].proceso).prop("checked","true");
-        //document.getElementById('#check'+arrayJson[i].proceso).checked =
-
         //alert('#check'+arrayJson[i].proceso);
     }
 
+}
+
+function setProcesosProgramaEntradaPedido(id,cantidad)
+{
+    //id es id de lista de pedidos
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/procesosEntradaProgramaPedido.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido)
+}
+function getProcesosProgramaEntradaPedido(respuesta)
+{
+    if(respuesta.responseText == 1)
+    {
+        alertToast("Se agrego a inventario",1000);
+        refreshPrograma();
+    } 
+    else alerta("Hubo un error");
+}
+
+// funcion para agregar faltante a lista de pedidos
+function setAgregarFaltante(json)
+{
+    
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia,getAgregarFaltante);
+}
+function getAgregarFaltante(respuesta)
+{
+    if (respuesta.responseText == 1)
+    {
+        alerta("Se agrego a lista de pedidos");
+        refreshPrograma();
+    }
+    else alerta("hubo un error"+ respuesta.responseText);
 }
 //funcion para enlistar los programas
 function enlistarPrograma(arrayJson,tipo)
 {
     //alert("entro");
-    if(arrayJson=="" || arrayJson == "0") return '<ons-card  id="contenedorPrograma"> <center> <h2>No se ha programado nada...</h2> </center> </ons-card>';
+    if(arrayJson=="" || arrayJson == "0") return '<ons-card  id="contenedorPrograma"> <center> <h2>Excelente haz terminado!</h2> </center> </ons-card>';
     let html1 = '';
 
     for(var i=0;i<arrayJson.length-1;i++) 
     {
         arrayJson[i] = verificarError(arrayJson[i]) ? JSON.parse(arrayJson[i]) : arrayJson[i]; //convertimos los jsonText en un objeto json
-        if(arrayJson[i].proceso == tipo)
+        if(arrayJson[i].proceso == tipo && arrayJson[i].estado != 3)
         {
-            //html1 += '<ons-list-header>';
-            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\','+arrayJson[i].cantidad+')">';
+            //html1 += '<ons-list-header>';                                                                                                 	
+                                                                                                                                                                
+            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\')">';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
@@ -170,7 +200,7 @@ function enlistarPrograma(arrayJson,tipo)
         }
 
     }
-    if(html1 == "") return '<ons-card  id="contenedorPrograma"> <center> <h2>No se ha programado nada...</h2> </center> </ons-card>';
+    if(html1 == "") return '<ons-card  id="contenedorPrograma"> <center> <h2>Excelente haz terminado!</h2> </center> </ons-card>';
     html1 += '<br><br><br>';
 
     return html1;
@@ -184,7 +214,7 @@ function setagregarPrograma(id)
     } 
 
    if(procesos == "") alerta("No haz seleccionado niguna");
-   else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma)
+   else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
 
    
 } 
@@ -197,7 +227,7 @@ function getAgregarPrograma(respuesta)
         cerrarDialogo('my-dialog-programa');
         buscarDtospedidos()
     }
-    else alerta('hubo un error al insertar!');
+    else alerta('hubo un error al insertar!'+respuesta.responseText);
 
     //limpiar select 
     limpiarSelectPrograma();

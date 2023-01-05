@@ -76,8 +76,10 @@ function crearObjetMensaje(codigo,contador)
 }
 function crearObjetMensajePedido(oc,id,codigo,estado) 
 {
+  let titulo = "";
+  if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
     ons.openActionSheet({
-      title: 'OPCIONES',
+      title: titulo,
       cancelable: true,
       buttons: [
         '<b>Programar<b/>',
@@ -93,7 +95,8 @@ function crearObjetMensajePedido(oc,id,codigo,estado)
       if(index==0)  
       {
         if(estado == 0) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
-        else alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
+        else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
+        else alerta("Pedido ya se encuentra en inventario");
       }
       else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
       else if(index==2) alerta("<b>Orden de Compra: </b>"+oc);
@@ -119,8 +122,9 @@ function crearObjetMensajeCliente(id,i)
     });
 }
 
-function crearObjetMensajeProcesoPrograma(idP,id,cantidad) 
+function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia) 
 {
+  
     ons.openActionSheet({
       title: 'ASIGNAR PROCESO',
       cancelable: true,
@@ -128,7 +132,7 @@ function crearObjetMensajeProcesoPrograma(idP,id,cantidad)
         '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado ',
         '<i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso ',
         '<i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);"></i> Pendiente ',
-        'Terminar',
+        'Finalizar',
         {
           label:'Eliminar',
           modifier: 'destructive'
@@ -137,8 +141,8 @@ function crearObjetMensajeProcesoPrograma(idP,id,cantidad)
     }).then(function (index) { 
       if(index == 0) setActualizarEstado(idP,2);
       else if(index == 1) setActualizarEstado(idP,1);
-      else if(index==2) setActualizarEstado(idP,0); 
-      else if(index == 3) alertPrompt(cantidad);
+      else if(index == 2) setActualizarEstado(idP,0); 
+      else if(index == 3) alertPrompt(id,cantidad,codigo,resistencia);
       else if(index == 4) alertaConfirPrograma("Estas seguro de eliminar este pedido del programa?",setEliminarPrograma,id);//eliminar
       
     });
@@ -176,6 +180,58 @@ function alertaConfirPrograma(mensaje,funcionSi,id)
           if(idx==0) funcionSi(id);
         }
    });
+}
+
+//funcion para alert confirm global
+function alertConfirmReporteFaltante(mensaje,json,input)
+{
+  //setAgregarFaltante(id,codigo,cantidad,resistencia,oc,fecha_oc)
+  ons.notification.confirm({
+    title :"",
+    message: mensaje,
+    buttonLabels: ['SI', 'NO'],
+    callback: function(idx) {
+        if(idx==0) 
+        {
+          setAgregarFaltante(json);
+          setProcesosProgramaEntradaPedido(json.id,input);
+        }
+        else setProcesosProgramaEntradaPedido(json.id,input);
+      }
+ });
+}
+function alertPrompt(id,cantidad,codigo,resistencia)
+{
+  //el id es el id de la lista del pedido
+  //json = JSON.parse(json);
+  
+
+  ons.notification.prompt({
+    title: '',
+    inputType: 'number',
+    buttonLabels: [
+      'Agregar'
+    ],
+    message: 'Cantidad total hechas (pzas)'
+    }).then(function(input) {
+      if(input == 0) alerta("Cancelado");
+      else {
+        if(parseInt(cantidad) > parseInt(input))
+        {
+          //alert("si entro cantidad: "+ cantidad +"input: "+input);
+          cantidad -= input;
+          json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia"],[id,cantidad,codigo,resistencia]));
+
+          alertConfirmReporteFaltante("La cantidad es menor al del pedido, ¿Deseas generar reporte de faltante?",json,input);
+          
+        }
+         
+        else
+        {
+          setProcesosProgramaEntradaPedido(id,input);
+        } 
+      }  
+  });
 }
 //FUNCION PARA AGREGAR CEROS
 function agregarCeros(numero)
@@ -223,74 +279,6 @@ function reducirTexto(cadena)
     
 }
 
-/*
-function crearObjetMensajeAgregarSalida()
-{
-    ons.openActionSheet({
-        title: 'AGREGAR',
-        cancelable: true,
-        buttons: [
-          '<i class="fa-solid fa-box" style="color:rgb(0, 118, 255)"></i> Caja',
-          '<i class="fa-solid fa-box-open" style="color:rgb(0, 118, 255)"></i> Inserto',
-          '<i class="fa-solid fa-layer-group" style="color:rgb(0, 118, 255)"></i> Lamina',
-          {
-            label:'Cancelar',
-            modifier: 'destructive'
-          }
-        ]
-      }).then(function (index) { 
-        if(index==0) nextPage("agregarSalidasCaja.html");
-        //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-       // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
-        //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
-      });
-
-}
-
-function crearObjetMensajeAgregarEntrada()
-{
-    ons.openActionSheet({
-        title: 'AGREGAR',
-        cancelable: true,
-        buttons: [
-          '<i class="fa-solid fa-box" style="color:rgb(0, 118, 255)"></i> Caja',
-          '<i class="fa-solid fa-box-open" style="color:rgb(0, 118, 255)"></i> Inserto',
-          '<i class="fa-solid fa-layer-group" style="color:rgb(0, 118, 255)"></i> Lamina',
-          {
-            label:'Cancelar',
-            modifier: 'destructive'
-          }
-        ]
-      }).then(function (index) { 
-        if(index==0) nextPage("agregarEntradaCaja.html");
-        //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-       // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
-        //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
-      });
-
-}
-
-function crearObjetMensajeInventario(ob)
-{
-    ons.openActionSheet({
-        title: 'Detalles',
-        cancelable: true,
-        buttons: [
-          'Observaciones',
-          {
-            label:'Salida',
-            modifier: 'destructive'
-          }
-        ]
-      }).then(function (index) { 
-        if(index==0) abrirDialog(ob);
-        //else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-       // else if(index==2) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
-        //else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
-      });
-
-}*/
-
 function abrirDialog(texto) {
   if(texto == "") texto = "Sin observaciones";
 
@@ -322,15 +310,16 @@ function cerrarDialog() {
 
 function Abrirdialogo(id,template,idProducto)
 {
-  idPedido = idProducto;
+  if(idProducto != "") idPedido = idProducto;
+  
   var dialog = document.getElementById(id);  
   
   if (dialog) {
     dialog.show();
   } else {
     ons.createElement(template, { append: true }).then(function(dialog) {
-        dialog.show();
-      });
+      dialog.show();
+    });
   }
 }
 function cerrarDialogo(id)
@@ -343,24 +332,84 @@ function alertToast(mensaje,tiempo)
   ons.notification.toast(mensaje, { timeout: tiempo, animation: 'fall' })
 }
 
-function alertPrompt(cantidad)
+
+
+/*function alertPromptFiltroCalendario()
 {
   
   ons.notification.prompt({
     title: '',
-    inputType: 'number',
+    inputType: 'date',
+    defaultValue: fechaHoy(),
     buttonLabels: [
-      'Agregar'
+      'Filtrar'
     ],
-    message: 'Cantidad total (pzas)'
+    message: 'Selecciona la fecha para filtrar...'
     }).then(function(input) {
-      if(input == 0) alerta("Cancelado");
-      else {
-        if(cantidad > input) alerta("Se hizo menos de lo que piden, hacer reporte de faltante?")
-        else alerta('Se mandara a entrada: '+input);
-      }
-        
-
       
+      alerta("text date: "+input)
   });
+}*/
+
+function fechaHoy()
+{
+  var fecha = new Date(); //Fecha actual
+  var mes = fecha.getMonth()+1; //obteniendo mes
+  var dia = fecha.getDate(); //obteniendo dia
+  var ano = fecha.getFullYear(); //obteniendo año
+  if(dia<10) dia='0'+dia; //agrega cero si el menor de 10
+  if(mes<10) mes='0'+mes; //agrega cero si el menor de 10
+
+  return ano+"-"+mes+"-"+dia;
+}
+
+function llenarFecha()
+{
+  $('#pedidoFechaOc').val(fechaHoy());
+}
+//funcion para crear objetos
+function crearJson(nombres,variables)
+{
+  var json = "{"
+  for(var i=0;i<variables.length;i++)
+  {
+    //alert("entro");
+    json += '"'+nombres[i]+'":'+'"'+variables[i]+'"';
+    if(i<variables.length-1) json += ",";
+    //"producto": "'.$datos['producto'].'",
+  }
+  json += "}";
+  return json;
+}
+
+function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
+{
+  //alerta(""+arrayJson)
+  if(eliminarLoadingHtml!="")$("#"+eliminarLoadingHtml).empty();
+  var contador = 1;
+  var resultado;
+  var html = '<ons-card id="contenedorPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
+  
+
+  var infiniteList = document.getElementById(agregarHtml);
+  
+  infiniteList.delegate = {
+    createItemContent: function(i) {
+        
+      if(arrayJson!=""){
+        var tempJson = JSON.parse(arrayJson[i]);
+      }
+      //alert(miFuncion(tempJson,i));
+      return  ons.createElement(resultado = arrayJson==""  ? html : miFuncion(tempJson,i));
+    },
+    countItems: function() {
+    return contador = arrayJson=="" ? contador : arrayJson.length-1;
+    }
+  };
+
+}
+function retroceso(){
+  document.addEventListener("backbutton", function(){
+    //alert("entro");
+  }, false);
 }

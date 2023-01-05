@@ -111,32 +111,6 @@ function enlistarClientes(arrayJson)
         html1 += '    <i class="fa-solid fa-user-large fa-lg"></i> <strong>'+ agregarCeros(arrayJson[i].codigo)+'</strong> &nbsp;'+arrayJson[i].nombre+'';
         html1 += '</ons-card>';
     }
-    //html1 += '</ons-card>';
-    /*
-    html1 = '<ons-list>';
-
-    for(var i=0;i<arrayJson.length-1;i++) 
-    {
-        arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
-
-        html1 += '<ons-list-item id="list-cliente'+i+'">';
-        html1 += '<div class="left">';
-        html1 += '    <i class="fa-solid fa-user-large fa-lg"></i>';
-        html1 += '</div>';
-        html1 += '<div class="center romperTexto">';
-        html1 += '   <strong>'+ agregarCeros(arrayJson[i].codigo)+'</strong> &nbsp;'+arrayJson[i].nombre+'';
-        html1 += '</div>';
-        html1 += '<div class="right">';
-        html1 += '<div class="boton-icono" onclick="alertaConfirm(\'Estas seguro de eliminar este cliente '+agregarCeros(arrayJson[i].codigo)+'?\',setEliminarCliente,\''+arrayJson[i].codigo+'\','+i+')">';
-        html1 += '   <i class="fa-solid fa-trash fa-lg" style="color:red"></i>';
-        html1 += '</div>';
-        html1 += '</div>';
-
-        html1 += '</ons-list-item>';
-
-    }
-    html1 += '</ons-list>';
-    */
     html1 += '<br><br><br>';
 
     return html1
