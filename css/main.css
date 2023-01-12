@@ -10,7 +10,7 @@ body{
 ons-toolbar>div.center, ons-toolbar>div.left{
     font-family: 'Candara';
 }
-ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center{
+ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center,span,font{
     font-family: 'Candara';
 }
 
@@ -112,11 +112,11 @@ body{
 }
 
 i{
-    color: rgba(215,172,118,1);
+    color: #7BB5E8;/*rgba(215,172,118,1);*/
 }
-ons-fab > span > i{
+/*ons-fab > span > i{
     color: rgb(210, 210, 210);
-}
+}*/
 .botonCerrar{
     position:absolute; 
     width:25px;
@@ -200,7 +200,7 @@ ons-toolbar > div.center, ons-toolbar > div.right {
     
 }
 ons-toolbar.toolbar{
-    background-color: rgb(225, 186, 138);
+    background-color: #1A9CE8;/*rgb(225, 186, 138);*/
     color: white;
 }
 ons-back-button.back-button{
@@ -230,4 +230,8 @@ ons-list-header{
 }
 span.list-item__subtitle{
     font-size: 9px;
+}
+.nombreArchivo{
+    font-family: 'Candara'; 
+    font-size: 15px;
 }

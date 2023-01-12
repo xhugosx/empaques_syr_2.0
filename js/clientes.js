@@ -58,6 +58,7 @@ function setAgregarCliente()
 }
 function getAgregarCliente(respuesta)
 {
+    //alert(respuesta.responseText);
     //respuesta del servidor
     if(respuesta.responseText=="1") 
     {
@@ -82,6 +83,7 @@ function setEliminarCliente(codigo,i)
 }
 function getEliminarCliente(respuesta)
 {
+    //alert(respuesta.responseText);
     if(respuesta.responseText=="1") 
     {
         alerta("Registro eliminado");
@@ -118,25 +120,5 @@ function enlistarClientes(arrayJson)
 }
 
 //funcion para agregar 0 a la variable
-function agregarCeros(numero)
-{
-    numero = String(numero);
-    if(numero.length === 1) return "00"+numero;
-    else if(numero.length === 2) return "0"+numero;
-    else return numero;
-}
 
-//funcion para saber si tiene datos una variable
-function datoVacio(dato)
-{
-    if(dato=="") return false;
-    else return true;
-}
-function agregarClase(i){
-
-    $("#list-cliente"+i).addClass("list-cliente-animation");
-    setTimeout(function(){
-        $('.list-cliente-animation').remove();
-    }, 1500);
-}
 

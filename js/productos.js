@@ -42,6 +42,7 @@ function getEliminarProducto(respuesta)
         setProductos();
     }  
     else alerta("No se pudo eliminar");
+    //alert(respuesta.responseText);
 }
 //fin de eliminar productos
 
@@ -49,16 +50,24 @@ function getEliminarProducto(respuesta)
 function setAgregarProducto()
 {
     
-   
-    if(datoVacio($('#codigoProducto1').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val())) 
+    if(datoVacio($('#codigoProducto1').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val()) && datoVacio($('input[type=file]').val())) 
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php?codigo='+$('#codigoProducto1').val()+'&producto='+$('#nombreProducto').val()+'&precio='+$('#precioProducto').val(),getAgregarProducto)
+        var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+        var codigo = filename.split(".");
+        codigo = codigo[0].replace("-","/");
+
+        if(codigo == $('#codigoProducto1').val())
+        {
+            var form = $('#formProducto')[0];
+            var formData = new FormData(form);
+    
+            servidorPost('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/add.php',getAgregarProducto,formData);
+            //alerta("el archivo si coiciden");
+        }
+        else alerta("El Archivo no coicide con el codigo del producto");
+       
     }
     else alerta("Espacios en blanco");
-    
-   
-    //validar si codigo y nombre tiene datos
-    
 }
 function getAgregarProducto(respuesta)
 {
@@ -69,6 +78,7 @@ function getAgregarProducto(respuesta)
         resetearPilaFunction(setProductos);
     }
     else alerta('Ya existe un producto con ese codigo!');
+    //alert(respuesta.responseText);
 }
 
 //fin de agregar productos
@@ -78,13 +88,28 @@ function setActualizarProducto()
 {
     if(datoVacio($('#codigoProductoActualizar').val()) && datoVacio($('#nombreProductoActualizar').val())) 
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/update.php?codigo='+$('#codigoProductoActualizar').val()+'&producto='+$('#nombreProductoActualizar').val()+'&precio='+$('#precioProductoActualizar').val(),getActualizarProducto);
+        if( $('input[type=file]').val() ) 
+        {
+            var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+            var codigo = filename.split(".");
+            codigo = codigo[0].replace("-","/");
+            if(codigo != $('#codigoProductoActualizar').val()) 
+            {
+                alerta("El Archivo no coicide con el codigo del producto"); 
+                return 0;
+            }
+        }
+        $("#codigoProductoActualizar").prop('disabled', false);
+        var form = $('#formProductoActualizar')[0];
+        var formData = new FormData(form);
+        servidorPost('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/update.php',getActualizarProducto,formData);
     }
     else alerta("Espacios en blanco");
     
 }
 function getActualizarProducto(respuesta)
 {
+    //alert(respuesta.responseText);
     if(respuesta.responseText=="1") 
     {
         alerta("Registro actualizado");
@@ -104,10 +129,12 @@ function getBuscarProductoActualizar(respuesta)
     
     
     arrayJson[0] = JSON.parse(arrayJson[0]);
-
+    var producto = (arrayJson[0].codigo).split("/"); // funcion para dividir codigo y poner nombre del archivo...
     $('#codigoProductoActualizar').val(arrayJson[0].codigo);
     $('#nombreProductoActualizar').val(arrayJson[0].producto);
     $('#precioProductoActualizar').val(arrayJson[0].precio);
+    $('#pdfNombreProductoActualizar').text(arrayJson[0].file == 1 ? producto[0]+"-"+producto[1]+".pdf"  : "No tiene Plano");
+    //alert(arrayJson[0].file);
     
 }
 //fin de actualizar cliente
@@ -168,5 +195,36 @@ function agregarClaseProducto(i){
         $('.list-cliente-animation').remove();
     }, 1500);
 }
-//genera un pop de la pila de ventanas de la app *return*
+
+function cargarArchivoProducto()
+{
+   //alert(""+);
+   var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+    //alert(filename);
+    var extension = filename.split(".");
+    if(extension[1] === "pdf") $('#pdfNombreProducto').text(filename);
+    else
+    {
+        alerta("Archivo no valido");
+        $('#pdfNombreProducto').text('Selecciona un archivo "PDF"');
+        $('input[type=file]').val("");
+    }
+
+}
+
+function cargarArchivoProductoActualizar()
+{
+   //alert(""+);
+   var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+    //alert(filename);
+    var extension = filename.split(".");
+    if(extension[1] === "pdf") $('#pdfNombreProductoActualizar').text(filename);
+    else
+    {
+        alerta("Archivo no valido");
+        //$('#pdfNombreProductoActualizar').text('Selecciona un archivo "PDF"');
+        $('input[type=file]').val("");
+    }
+
+}
 

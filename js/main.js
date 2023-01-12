@@ -22,7 +22,7 @@ function nextPageFunctionData(miPage,miFuncion,dato)
     });
 }
 //FUMCION PRA MOSTRAR UN MENSAJE
-function alerta(mensaje)
+function alerta(mensaje,tittle)
 {
     ons.notification.alert({
       title: ' ',
@@ -46,6 +46,22 @@ function servidor(link,miFuncion)
 
     xhttp.open("GET",link,true);
     xhttp.send();
+}
+function servidorPost(link,miFuncion,data)
+{
+   var xhttp = new XMLHttpRequest();
+
+   xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+
+            miFuncion(this);
+
+        }
+    
+    };
+
+    xhttp.open("POST",link,true);
+    xhttp.send(data);
 }
 
 //ASIGNAR DATOS A UN HTML Y BORRAR UNA SECCION DEL HTML
@@ -118,7 +134,7 @@ function crearObjetMensajeCliente(id,i)
         }
       ]
     }).then(function (index) { 
-      if(index==0) alertaConfirm('Estas seguro de eliminar este cliente '+agregarCeros(id)+'?',setEliminarCliente,id,i);  
+      if(index==0) alertaConfirm('Estas seguro de eliminar este cliente '+agregarCeros(id)+'?<br><font color="red">(Recuerda que esto eliminara todos lo enlazado Archivos, Pedidos, Inventario)</font>',setEliminarCliente,id,i);  
     });
 }
 
@@ -204,33 +220,97 @@ function alertPrompt(id,cantidad,codigo,resistencia)
 {
   //el id es el id de la lista del pedido
   //json = JSON.parse(json);
-  
-
   ons.notification.prompt({
     title: '',
     inputType: 'number',
     buttonLabels: [
+      'Cancelar',
       'Agregar'
     ],
     message: 'Cantidad total hechas (pzas)'
     }).then(function(input) {
-      if(input == 0) alerta("Cancelado");
-      else {
+      
+      if(input !== null && input !== "" && input != 0)
+      {
         if(parseInt(cantidad) > parseInt(input))
         {
           //alert("si entro cantidad: "+ cantidad +"input: "+input);
-          cantidad -= input;
-          json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia"],[id,cantidad,codigo,resistencia]));
+          ons.notification.confirm({
+            title :"",
+            message: 'Se mandará a inventario <br><br> <font size="8px">'+input+' pza(s)</font>',
+            buttonLabels: ['Aceptar', 'Cancelar'],
+            callback: function(idx) {
+              if(idx==0) 
+              {
+                cantidad -= input;
+                json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia"],[id,cantidad,codigo,resistencia]));
+      
+                alertConfirmReporteFaltante("La cantidad es menor al del pedido, ¿Deseas generar reporte de faltante?",json,input);
+              }
+              else alerta("Cancelado");
+            } 
+          });
 
-          alertConfirmReporteFaltante("La cantidad es menor al del pedido, ¿Deseas generar reporte de faltante?",json,input);
+         
           
         }
          
         else
         {
-          setProcesosProgramaEntradaPedido(id,input);
+          ons.notification.confirm({
+            title :"",
+            message: 'Se mandará a inventario <br><br> <font size="8px">'+input+' pza(s)</font>',
+            buttonLabels: ['Aceptar', 'Cancelar'],
+            callback: function(idx) {
+              if(idx==0) 
+              {
+                setProcesosProgramaEntradaPedido(id,input);
+              }
+              else alerta("Cancelado");
+            } 
+          });
+          //
         } 
-      }  
+      }
+      else if(input == 0) alerta("*ERROR* <br>Debe se mayor de <b>0</b>");
+      else alerta("No se envio nada");
+  });
+}
+//alert prompt para inventario
+function alertPromptInventario(id_lp,salida,inventario)
+{
+  ons.notification.prompt({
+    title: '',
+    inputType: 'number',
+    buttonLabels: [
+      'Cancelar',
+      'Agregar'
+    ],
+    message: 'Agrega salida menor o igual a: '+ inventario +' pza(s)'
+    }).then(function(input) {
+      if(input !== null && input > 0 && input !== "")
+      {
+        //alert("la cantidad es: "+input + " inventario: " +inventario);
+        if(parseInt(input) > parseInt(inventario)) alerta("La cantidad es mayor a la existinte");
+        else 
+        {
+          ons.notification.confirm({
+            title :"",
+            message: 'Se generá la siguiente salida:<br><br> <font size="8px">'+input+' pza(s)</font>',
+            buttonLabels: ['Aceptar', 'Cancelar'],
+            callback: function(idx) {
+              if(idx==0) 
+              {
+                let suma = parseInt(input) + parseInt(salida);
+                setActualizarSalida(salida,suma,id_lp);
+              }
+            } 
+          });
+         
+        }
+        
+      }
+      else alerta("Cancelado");
   });
 }
 //FUNCION PARA AGREGAR CEROS
@@ -413,3 +493,43 @@ function retroceso(){
     //alert("entro");
   }, false);
 }
+
+function agregarCeros(numero)
+{
+  numero = String(numero);
+  if(numero.length === 1) return "00"+numero;
+  else if(numero.length === 2) return "0"+numero;
+  else return numero;
+}
+
+//funcion para saber si tiene datos una variable
+function datoVacio(dato)
+{
+  if(dato=="" || dato == 0) return false;
+  else return true;
+}
+function agregarClase(i){
+
+  $("#list-cliente"+i).addClass("list-cliente-animation");
+  setTimeout(function(){
+      $('.list-cliente-animation').remove();
+  }, 1500);
+}
+
+
+/*function alertPromptGenerarSalida(cantidad)
+{
+  
+  ons.notification.prompt({
+    title: '',
+    inputType: 'number',
+    defaultValue: fechaHoy(),
+    buttonLabels: [
+      'Filtrar'
+    ],
+    message: 'Agrega salida'
+    }).then(function(input) {
+      
+      alerta("text date: "+input)
+  });
+}*/

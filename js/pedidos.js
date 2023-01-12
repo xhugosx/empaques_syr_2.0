@@ -161,10 +161,11 @@ function setAgregarPedido()
     if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia))
     {
         servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc,getAgregarPedido);
+        //alert('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc);
     }
     else
     {
-        alerta("Espacios vacios!");
+        alerta('Espacios vacios! <br>(No escribir "CEROS")');
     }
         
 }
@@ -287,7 +288,7 @@ function setModificarPedido()
     {
         servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id,getModificarPedido)
     }
-    else alerta("Espacios Vacios!")
+    else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
     
 }
 function getModificarPedido(respuesta)
@@ -352,7 +353,7 @@ function enlistarPedidos(arrayJson,i)
     
     if (arrayJson.estado == 1)estado = '<i class="fa-solid fa-circle" style="color: #EC641A;"></i>'; 
     else if(arrayJson.estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>'; 
-    else estado = '<i class="fa-solid fa-circle" style="color: white;"></i>'; 
+    else estado = '<i class="fa-solid fa-circle" style="color: #F2F2F2;"></i>'; 
     
 
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\''+arrayJson.oc+'\',\''+arrayJson.id+'\',\''+arrayJson.codigo+'\',\''+arrayJson.estado+'\')">'
