@@ -1,3 +1,4 @@
+var codigoCliente = "";
 function mostrarTodoInventario()
 {
     setMostrarInventario();
@@ -30,9 +31,17 @@ function getActualizarSalida(respuesta)
     else alerta("no se pudo actualizar");
 
 }
-function setSalidaTotal()
+function setSalidaTotal(codigo)
 {
-    alerta("Se dará salida a todo");
+    ons.notification.confirm({
+        title: '',
+        message: "Se dará salida a todo el inventario",
+        buttonLabels: ['SI', 'NO'],
+        callback: function(idx) {
+            if(idx==0) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalidaTodo.php?codigo="+codigo,getActualizarSalida);;
+          }
+   });
+    
 }
 function enlistarInventario(arrayJson)
 {
@@ -58,6 +67,7 @@ function enlistarInventario(arrayJson)
 
 function setMostrarInventarioPedidos(codigo)
 {
+    codigoCliente = codigo;
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectCodigo.php?codigo='+codigo,getMostrarInventarioPedidos);
 }
 
