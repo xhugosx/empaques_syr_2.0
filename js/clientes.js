@@ -1,6 +1,3 @@
-
-
-
 //clientes
 //mostrar clientes
 function setClientes()

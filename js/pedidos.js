@@ -2,6 +2,7 @@
 var filtro = false;
 //variable global para saber que cliente se filtro
 var cliente = "";
+function reiniciarCliente(){ cliente = "" }
 function asignarFiltro(valor)
 {
     filtro = valor.checked;
@@ -11,8 +12,11 @@ function asignarFiltro(valor)
 
 function buscarDtospedidos()
 {
-    setBusquedaPendiente();
-    setPedidosCliente();
+    //asignar barra carga
+    $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+
+    if(cliente == "") setBusquedaPendiente();
+    if(cliente == "") setPedidosCliente();
     if(cliente != "") setPedidosClienteFiltrado(cliente);
 
     $("#searchPedidoCliente").val("");
@@ -23,10 +27,9 @@ function solicitarInfoPedido(codigo,e)
 {
     tecla = (document.all) ? e.keyCode : e.which;
     if(codigo.length == 7 || tecla == 13)
-    {
-        
+    { 
         //funcion para solicitarInventario
-        setBuscarInventario(codigo)
+        setBuscarInventario(codigo);
         //funcion para solicitar el ultimo registrado
         setBuscarProductoCliente(codigo);   
     }
@@ -81,7 +84,7 @@ function getPedidosClienteFiltrado(respuesta)
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
     listaInfinita('datosPedidosClienteFiltrado','datosPedidosClientesLoadingFiltroLoading',arrayJson,enlistarPedidos);
-    cliente = "";
+    //cliente = "";
 }
 
 //funcion para barra de busqueda pedidos

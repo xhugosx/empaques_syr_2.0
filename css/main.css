@@ -10,7 +10,7 @@ body{
 ons-toolbar>div.center, ons-toolbar>div.left{
     font-family: 'Candara';
 }
-ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center,span,font{
+label,textarea,ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center,span,font{
     font-family: 'Candara';
 }
 
@@ -234,4 +234,7 @@ span.list-item__subtitle{
 .nombreArchivo{
     font-family: 'Candara'; 
     font-size: 15px;
+}
+.subirPx{
+    bottom: 50px;
 }

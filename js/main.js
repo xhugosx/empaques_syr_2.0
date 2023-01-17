@@ -358,8 +358,14 @@ function reducirTexto(cadena)
     else return cadena;
     
 }
+var idSalidasEntradas = "";
+var observacionesSalidasEntradas = "";
+var type = "";
+function abrirDialog(texto,_id,tipo) {
+  idSalidasEntradas = _id;
+  observacionesSalidasEntradas = texto;
+  type = tipo;
 
-function abrirDialog(texto) {
   if(texto == "") texto = "Sin observaciones";
 
   var dialog = document.getElementById('my-dialog');  
@@ -379,6 +385,8 @@ function abrirDialog(texto) {
   setTimeout(() => {
     $("#datoDialog").empty();
     $("#datoDialog").append(texto);
+    $('#aceptar').empty();
+    $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntrada(observacionesSalidasEntradas)"></i>');
   }, 500);
   
 };

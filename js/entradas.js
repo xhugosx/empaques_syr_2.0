@@ -14,7 +14,7 @@ function getMostrarEntradaCajas(respuesta)
     var resultado = respuesta.responseText;
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    listaInfinita('datosCajaInventario','cajaInventarioLoading',arrayJson,enlistarEntradas);
+    listaInfinita('datosCajaEntradaSalida','cajaSalidasEntradasLoading',arrayJson,enlistarEntradas);
 }
 function setEliminarEntrada(id)
 {
@@ -35,7 +35,7 @@ function enlistarEntradas(arrayJson)
 {
     let html1 = '';
     
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
     html1 += ' <ons-list-header>'+ arrayJson.id_lp +' <b style="color: rgb(61, 174, 80);">Terminado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';
