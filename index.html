@@ -27,7 +27,7 @@
     <script src="./js/salidas.js"></script>
     <script src="./js/programa.js"></script>
     <script src="./js/inventario.js"></script>
-    <!--script src="./js/conexion.js"></script-->
+    <script src="./js/pedidos_lamina.js"></script>
 
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
@@ -38,7 +38,7 @@
 
     <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
 
-    <!-- PAGINA PRINCIPAL -->
+<!-- PAGINA PRINCIPAL -->
     <template id="home.html">
         <ons-page id="page1">
             <ons-toolbar>
@@ -61,7 +61,7 @@
                 <ons-card class="botonPrograma" onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
                     <i class="fa-solid fa-rectangle-list"></i> Pedidos pendientes
                 </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPage('pedidosLamina.html')">
+                <ons-card class="botonPrograma" onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
                     <i class="fa-solid fa-layer-group"></i> Pedidos lámina
                 </ons-card>
             </ons-card>
@@ -110,9 +110,9 @@
 
         </ons-page>
     </template>
-    <!-- fin pagina pricipal -->
+<!-- fin pagina pricipal -->
 
-    <!-- CLIENTES -->
+<!-- CLIENTES -->
     <template id="clientes.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -184,9 +184,9 @@
             
         </ons-page>
     </template>
-    <!-- FIN DE CLIENTES-->
+<!-- FIN DE CLIENTES-->
 
-    <!-- PRODUCTOS -->
+<!-- PRODUCTOS -->
     <!-- vista de productos -->
     <template id="productos1.html">
         <ons-page id="prueba">
@@ -358,9 +358,9 @@
         </ons-page>
     </template>
      
-    <!--FIN DE PRODUCTOS-->
+<!--FIN DE PRODUCTOS-->
 
-    <!--PEDIDOS LAMINAS-->
+<!--PEDIDOS LAMINAS-->
     <template id="pedidosLamina.html">
         <ons-page>
             <ons-toolbar>
@@ -368,21 +368,52 @@
                 <div class="center">Laminas</div>
             </ons-toolbar>
 
+
+            <ons-tabbar swipeable position="bottom">
+                <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving" active></ons-tab>
+                <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
+            </ons-tabbar>
+
+            <ons-fab onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy())})" position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+        </ons-page>
+    </template>
+
+    <!-- vista pedidos lamina pcm-->
+    <template id="pPCM.html">
+        <ons-page>
+
             <ons-progress-bar id="loadingPedidosLamina"  indeterminate ></ons-progress-bar>
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input onkeyup="setClientesBarraBusqueda(this.value,event)" placeholder="Buscar: codigo "></ons-search-input>
+                    <ons-search-input onkeyup="setMostrarBusquedaLamina(this.value,event)" placeholder="Buscar: Od. Comp. / Estado / Resistencia / Medidas "></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datospedidosLamina"></ons-lazy-repeat>
             </ons-list>
+            
+        </ons-page>
+    </template>
 
-            <ons-fab onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#pedidoLaminaFechaOc').val(fechaHoy())})" position="bottom right">
-                <i class="fa-solid fa-plus"></i>
-            </ons-fab>
+    <template id="pPACK.html">
+        <ons-page>
+
+            <ons-progress-bar id="loadingPedidosLaminaPACK"  indeterminate ></ons-progress-bar>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input onkeyup="setMostrarBusquedaLaminaPack(this.value,event)" placeholder="Buscar: Od. Comp. / Estado / Resistencia / Medidas "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datospedidosLaminaPACK"></ons-lazy-repeat>
+            </ons-list>
+            
         </ons-page>
     </template>
 
@@ -395,103 +426,144 @@
             </ons-toolbar>
 
             <!--aqui iran los input de los datos-->
-            
-            <ons-card id="contenedorInput">
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-key"></i>
-                        </div>
-                        <div class="center">
-                            
-                            <ons-input type="text" id="codigoCliente" cols="30" rows="1" maxlength="3" class="input-100" placeholder="Orden de compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
-                            
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-            
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-solid fa-ruler-vertical"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="nombreCliente" class="input-100" type="number" step="any" placeholder="Ancho"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
+            <form id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-key"></i>
+                            </div>
+                            <div class="center">
+                                
+                                <ons-input type="text" id="O_CLP" name="o_c" cols="30" rows="1" class="input-100" placeholder="Orden de compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                                
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
 
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-solid fa-ruler-horizontal"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="nombreCliente" class="input-100" type="number" step="any" placeholder="Largo"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-solid fa-calculator"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="nombreCliente" class="input-100" type="number" placeholder="Piezas ordenadas"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-solid fa-clipboard"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="nombreCliente" class="input-100" type="text" placeholder="Observaciones" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider"> 
-                        <label class="left">
-                            <ons-checkbox input-id="checkCaja"></ons-checkbox>
-                        </label>
-                        <label for="checkCaja" class="center">
-                            Selecciona esta casilla si es para una caja
-                        </label>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-solid fa-calendar-days fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <div class="placeholder">Fecha Orden de Compra!</div> 
-                            <ons-input style="margin-right: 5px;" type="date" id="pedidoLaminaFechaOc" class="input-100"></ons-input>
-                            
-                        </div>
-                    </ons-list-item>
-                </ons-card>
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-truck"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="proveedor" id="proveedorPL">
+                                    <option value="" style="color: #ccc;">(PROVEEDOR)</option>
+                                    <option value="1">PCM</option>
+                                    <option value="2">PACK</option>
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
                 
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-ruler-vertical"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="anchoPL" name="ancho" class="input-100" type="number" step="any" placeholder="Ancho"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-ruler-horizontal"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="largoPL" name="largo" class="input-100" type="number" step="any" placeholder="Largo"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="pzas_ordenadasPL" name="pzas_ordenadas" class="input-100" type="number" placeholder="Piezas ordenadas"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
 
-                <ons-list-item modifier="nodivider">
-                    <ons-button modifier="large" onclick="">Agregar</ons-button>
-                </ons-list-item>
-            </ons-card>
-            
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-house-crack fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="resistencia" id="resistenciaPL">
+                                    <option value="" style="color: #ccc;">(RESISTENCIA)</option>
+                                    <option value="MICRO">MICRO</option>
+                                    <option value="S/G">S/G</option>
+                                    <option value="21 ECT ESP">21 ECT ESP</option>
+                                    <option value="21 ECT">21 ECT</option>
+                                    <option value="23 ECT">23 ECT</option>
+                                    <option value="26 ECT">26 ECT</option>
+                                    <option value="32 ECT">32 ECT</option>
+                                    <option value="38 ECT">38 ECT</option>
+                                    <option value="42 ECT">42 ECT</option>
+                                    <option value="51 ECT">51 ECT</option>
+                                    <option value="61 ECT">61 ECT</option>
+                                    <option value="71 ECT">71 ECT</option>
+                                    
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider"> 
+                            <label class="left">
+                                <ons-checkbox input-id="checkCaja" onclick="asignarInputCaja(this)"></ons-checkbox>
+                            </label>
+                            <label for="checkCaja" class="center">
+                                Selecciona esta casilla si es para una caja
+                            </label>
+                        </ons-list-item>
+                    </ons-card>
+                    <div id="llenarInputCaja">
+                        
+                    </div>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calendar-days fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <div class="placeholder">Fecha Orden de Compra!</div> 
+                                <ons-input style="margin-right: 5px;" name="fecha" id="fechaLP" type="date" class="input-100"></ons-input>
+                                
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-clipboard"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="observacionesPL" name="observaciones" class="input-100" type="text" placeholder="Observaciones" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setAgregarPedidoLamina()">Agregar</ons-button>
+                    </ons-list-item>
+                
+                </ons-card>
+            </form>
         </ons-page>
     </template>
+<!--FIN DE PEDIDOS DE LAMINAS-->
 
-    <!--PEDIDOS LAMINAS-->
-
-    <!--FIN DE PEDIDOS DE LAMINAS-->
-
-    <!--SALIDAS Y ENTRADAS-->
+<!--SALIDAS Y ENTRADAS-->
     <template id="salidasyEntradas.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -528,6 +600,23 @@
                     <ons-search-input id="searchCajaEntradasSalidas" placeholder="Buscar: "></ons-search-input>
                 </ons-list-item>
             </ons-list>
+
+            <!--ons-card  style="padding:0px;" class="botonPrograma" >
+               <ons-list-header>0000000-0<b style="color: rgb(61, 174, 80);">Terminado: FECHA</b></ons-list-header>
+                <ons-list-item modifier="nodivider"> 
+                        <div class="left">
+                            <i class="fa-solid fa-box fa-2x"></i>
+                        </div>
+                        <div class="center">
+                            <span class="list-item__title"><b>000/000</b>&nbsp;PRUEBA</span>
+                            <span class="list-item__subtitle">PRUEBA</span>
+                        </div>
+                        <div class="right">
+                            <span class="notification" style="background: rgb(61, 174, 80);">20<font size="2px">pza(s)</font></span>
+                            <div style="position: absolute;bottom:60px; right: 10px;" ><i class="fa-solid fa-comment-dots fa-2x"></i></div>
+                        </div>
+                </ons-list-item>
+            </ons-card-->
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosCajaEntradaSalida"></ons-lazy-repeat>
@@ -571,9 +660,9 @@
 
     </ons-page>
     </template>
-      
+<!--FIN DE SALIDAS Y ENTRADAS-->
 
-    <!-- INVENTARIO-->
+<!-- INVENTARIO-->
     <template id="inventario.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -681,10 +770,9 @@
         
     </ons-page>
     </template>
+<!-- FIN DE INVENTARIO-->
 
-    <!-- FIN DE INVENTARIO-->
-
-    <!-- PEDIDOS -->
+<!-- PEDIDOS -->
     <template id="pedidos.html">
         <ons-page id="prueba">
             <ons-toolbar>
@@ -749,7 +837,6 @@
 
     </ons-page>
     </template>
-
 
     <!-- VISTA DE PEDIDOS FILTRADOS POR CLIENTE-->
     <template id="pedidosFiltroCliente.html">
@@ -897,7 +984,7 @@
                             <i class="fa-solid fa-comment-dots fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="pedidoOc" class="input-100" cols="30" rows="1" placeholder="Observaciones" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                            <ons-input id="pedidoObservaciones" class="input-100" cols="30" rows="1" placeholder="Observaciones" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -1028,7 +1115,18 @@
                         </div>
                     </ons-list-item>
                 </ons-card>
-                    
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-comment-dots fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="pedidoModificarObservaciones" class="input-100" cols="30" rows="1" placeholder="Observaciones" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
                 <ons-list-item modifier="nodivider">
                     <div class="center">
                         <ons-button id="botonAgregarPedido" modifier="large" onclick="setModificarPedido()" >Modificar</ons-button>
@@ -1042,9 +1140,10 @@
         </ons-page>
     </template>
 
-    <!-- FIN DE PEDIDOS -->
+<!-- FIN DE PEDIDOS -->
 
-    <!-- PROGRAMA -->
+<!-- PROGRAMA -->
+    <!--PROGRAMA ARTESANOS-->
     <template id="programaArtesanos.html">
         <ons-page>
             <ons-toolbar>
@@ -1138,7 +1237,7 @@
     </template>
     
 
-<!-- programa afilador cajas -->
+    <!-- programa afilador cajas -->
     <template id="programaAfilador.html">
         <ons-page>
             <ons-toolbar>
@@ -1193,7 +1292,7 @@
         </ons-page>
     </template>
 
- <!-- programa afilador insertos-->
+    <!-- programa afilador insertos-->
     <template id="programaAfilador2.html">
         <ons-page>
             <ons-toolbar>
@@ -1267,7 +1366,7 @@
         </ons-page>
     </template>
 
-    <!-- FIN DE PROGRAMA -->
+<!-- FIN DE PROGRAMA -->
 
 
     <!-- template para dialogos-->

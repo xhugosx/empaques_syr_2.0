@@ -158,12 +158,12 @@ function setAgregarPedido()
     var cantidad =  $("#pedidoCantidad").val();
     var oc = $("#pedidoOc").val();
     var fecha_oc = $("#pedidoFechaOc").val();
+    var observaciones = $("#pedidoObservaciones").val();
     var resistencia = $("#pedidoResistencia").val();
-   
     
     if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia))
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc,getAgregarPedido);
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
         //alert('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc);
     }
     else
@@ -179,7 +179,7 @@ function getAgregarPedido(respuesta)
     {
         alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?",limpiarRegistrosPedidos,resetearPilaFunction,buscarDtospedidos)
     }
-    else alerta('hubo un error al insertar!');
+    else alerta('hubo un error al insertar!'+respuesta.responseText);
     
 }
 
@@ -271,6 +271,7 @@ function getModificarBuscarPedido(respuesta)
     $("#pedidoModificarCantidad").val(arrayJson[0].cantidad);
     $("#pedidoModificarOc").val(arrayJson[0].oc);
     $("#pedidoModificarFechaOc").val(arrayJson[0].fecha_oc);
+    $("#pedidoModificarObservaciones").val(arrayJson[0].observaciones);
     //resultado = enlistarPedidos(arrayJson);
     
    //alert(resultado);
@@ -286,10 +287,11 @@ function setModificarPedido()
     var cantidad = $("#pedidoModificarCantidad").val();
     var oc = $("#pedidoModificarOc").val();
     var fecha = $("#pedidoModificarFechaOc").val();
+    var observaciones = $("#pedidoModificarObservaciones").val();
 
     if(datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha))
     {
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id,getModificarPedido)
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id+"&observaciones="+observaciones,getModificarPedido)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
     
@@ -358,8 +360,9 @@ function enlistarPedidos(arrayJson,i)
     else if(arrayJson.estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>'; 
     else estado = '<i class="fa-solid fa-circle" style="color: #F2F2F2;"></i>'; 
     
+    var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
 
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\''+arrayJson.oc+'\',\''+arrayJson.id+'\',\''+arrayJson.codigo+'\',\''+arrayJson.estado+'\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\''+arrayJson.oc+'\',\''+arrayJson.id+'\',\''+arrayJson.codigo+'\',\''+arrayJson.estado+'\',\''+arrayJson.observaciones+'\')">'
     html1 += '<ons-list-header>'+estado+'&emsp;';
     html1 += arrayJson.id;
     html1 += '    &emsp;';
@@ -383,6 +386,7 @@ function enlistarPedidos(arrayJson,i)
     html1 += '               <br>';                    
     html1 += '               <b>'+separator(arrayJson.cantidad)+' <span style="font-size:10px">pzas</span></b>';
     html1 += '         </div>';
+   html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color1+'" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '    </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';

@@ -23,7 +23,7 @@ function asignarTextSalidaEntrada(observaciones)
     $("#datoDialog").append('<textarea id="observacionesSalidasEntradas" cols="40" rows="5" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>');
 
     setTimeout(() => {
-        $("#observacionesSalidasEntradas").val(observaciones);
+        $("#observacionesSalidasEntradas").val(observaciones == "" ? "" : observaciones);
     }, 1);
     $('#aceptar').empty();
     $('#aceptar').append('<i style="color:green" class="fa-solid fa-check fa-2x" onclick="setActualizaObservaciones()"></i>')
@@ -34,12 +34,12 @@ function asignarTextSalidaEntrada(observaciones)
 function setActualizaObservaciones()
 {
     observacionesSalidasEntradas = $("#observacionesSalidasEntradas").val();
-    
+    var observaciones = $("#observacionesSalidasEntradas").val() == "" ? "(Sin comentarios)" : $("#observacionesSalidasEntradas").val();
     $('#aceptar').empty();
     $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntrada(observacionesSalidasEntradas)"></i>');
 
     $("#datoDialog").empty();
-    $('#datoDialog').text(observacionesSalidasEntradas);
+    $('#datoDialog').text(observaciones);
     
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservaciones.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
 }
@@ -52,6 +52,7 @@ function getActualizarObservaciones(respuesta)
 
 function enlistarSalidas(arrayJson)
 {
+    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
     let html1 = "";
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">';
     html1 += '    <ons-list-header>'+arrayJson.id_lp+' <b style="color: rgb(211, 64, 64);">Entregado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
@@ -65,6 +66,7 @@ function enlistarSalidas(arrayJson)
     html1 += '        </div>';
     html1 += '        <div class="right">';
     html1 += '            <span class="notification">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '        </div>';
     html1 += '    </ons-list-item>';
     html1 += '</ons-card>';

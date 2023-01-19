@@ -34,7 +34,7 @@ function getEliminarEntrada(respuesta)
 function enlistarEntradas(arrayJson)
 {
     let html1 = '';
-    
+    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
     html1 += ' <ons-list-header>'+ arrayJson.id_lp +' <b style="color: rgb(61, 174, 80);">Terminado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
@@ -47,6 +47,7 @@ function enlistarEntradas(arrayJson)
     html1 += '        </div>';
     html1 += '        <div class="right">';
     html1 += '            <span class="notification" style="background: rgb(61, 174, 80);">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '        </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';

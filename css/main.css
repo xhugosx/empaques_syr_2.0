@@ -30,7 +30,6 @@ div.right > i{
     overflow:hidden;
     white-space:nowrap;
     text-overflow: ellipsis;
-    
 
 }
 #programaStyle:hover{
@@ -238,3 +237,16 @@ span.list-item__subtitle{
 .subirPx{
     bottom: 50px;
 }
+.agrandar{
+    animation: agrandar .8s;
+  }
+@keyframes agrandar {
+    0% {
+      width: 10%;
+      height: 0%;
+    }
+    100% {
+      width: 97%;
+      height:100%;
+    }
+  }

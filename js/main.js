@@ -90,7 +90,7 @@ function crearObjetMensaje(codigo,contador)
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo,contador);
     });
 }
-function crearObjetMensajePedido(oc,id,codigo,estado) 
+function crearObjetMensajePedido(oc,id,codigo,estado,observaciones) 
 {
   let titulo = "";
   if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
@@ -115,7 +115,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado)
         else alerta("Pedido ya se encuentra en inventario");
       }
       else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-      else if(index==2) alerta("<b>Orden de Compra: </b>"+oc);
+      else if(index==2) alerta("<b>Orden de Compra </b><br>"+oc+"<br><br><b>Observaciones </b><br>"+observaciones);
       else if(index==3) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
       else if(index==4) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
       
@@ -366,7 +366,7 @@ function abrirDialog(texto,_id,tipo) {
   observacionesSalidasEntradas = texto;
   type = tipo;
 
-  if(texto == "") texto = "Sin observaciones";
+  if(texto == "") texto = "(Sin comentarios)";
 
   var dialog = document.getElementById('my-dialog');  
   
@@ -475,7 +475,7 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
   //alerta(""+arrayJson)
   if(eliminarLoadingHtml!="")$("#"+eliminarLoadingHtml).empty();
   var contador = 1;
-  var resultado;
+  //var resultado;
   var html = '<ons-card id="contenedorPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
   
 
@@ -488,7 +488,7 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
         var tempJson = JSON.parse(arrayJson[i]);
       }
       //alert(miFuncion(tempJson,i));
-      return  ons.createElement(resultado = arrayJson==""  ? html : miFuncion(tempJson,i));
+      return  ons.createElement(arrayJson==""  ? html : miFuncion(tempJson,i));
     },
     countItems: function() {
     return contador = arrayJson=="" ? contador : arrayJson.length-1;
