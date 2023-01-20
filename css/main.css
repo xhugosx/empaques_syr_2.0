@@ -10,10 +10,12 @@ body{
 ons-toolbar>div.center, ons-toolbar>div.left{
     font-family: 'Candara';
 }
-label,textarea,ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center,span,font{
+p,label,textarea,ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center,span,font{
     font-family: 'Candara';
 }
-
+span.notification,div{
+    font-family: 'Candara';
+}
 .boton-cliente{
     margin: 8px;
 }
@@ -237,6 +239,7 @@ span.list-item__subtitle{
 .subirPx{
     bottom: 50px;
 }
+
 .agrandar{
     animation: agrandar .8s;
   }

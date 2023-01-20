@@ -72,6 +72,10 @@ function getAgregarPedidoLamina(respuesta)
     }
     else alerta("Inserta otra Orden de Compra");
 }
+function setActualizarEstadoPL(estado,o_c,cantidad)
+{
+    alerta("recibi estos datos: "+estado+o_c+cantidad);
+}
 function asignarInputCaja(value)
 {
     if(value.checked) 
@@ -97,26 +101,28 @@ function asignarInputCaja(value)
     }
 }
 
+
 function enlistarPedidosLamina(arrayJson)
 {
-    
     let html1 = "";
-
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma">'
-    html1 += '<ons-list-header style="background:'+colorEstado(arrayJson.estado)+'; color:white;">'+ estadoLamina(arrayJson.estado)+' | ';
+    var o_c  = arrayJson.o_c.slice(0,-2);
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\')">'
+    html1 += '<ons-list-header style="background:'+colorEstado(arrayJson.estado)+'; color:white;">';
+    html1 += arrayJson.entrada != "" ? '      <div style="position:absolute;right:0px;margin-right:2vh">'+arrayJson.entrada+' pzas</div>' : "";
+    html1 +=        estadoLamina(arrayJson.estado)+' | ';
     html1 +=        sumarDias(arrayJson.fecha,0) //aqui ira una fecha 
     html1 += '</ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '    <div class="left">';
-    html1 += '        <strong style="width:35px">'+arrayJson.o_c+'</strong>';
+    html1 += '        <strong style="width:38px">'+o_c+'</strong>';
     html1 += '    </div>';
     html1 += '    <div class="center romperTexto">';
     html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
-    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - '+arrayJson.cliente+'</span>' : "";
+    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.cliente+'</b></span>' : "";
     html1 += '    </div>';
     html1 += '    <div class="right">';
     html1 += '         <div class="centrar">';
-    html1 += '              <span class="notification">'+separator(arrayJson.pzas_ordenadas)+' <font size="2px">pza(s)</font></span>';   
+    html1 += '              <span class="notification"><font size="2px">'+separator(arrayJson.pzas_ordenadas)+' pza(s)</font></span>';   
     html1 += '         </div>';
     html1 += '    </div>';
     html1 += '</ons-list-item>';

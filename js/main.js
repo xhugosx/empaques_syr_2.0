@@ -523,7 +523,43 @@ function agregarClase(i){
       $('.list-cliente-animation').remove();
   }, 1500);
 }
-
+//crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\')
+function crearMensajePL(estado,entrada,pzas_ordenadas,o_c) 
+{
+  //var titulo = '<i class="fa-solid fa-circle" style="color: '+colorEstado(estado)+';"></i> '+estadoLamina(estado);
+    ons.openActionSheet({
+      title: 'ESTADO',
+      cancelable: true,
+      buttons: [
+        '<i class="fa-solid fa-circle" style="color: #E8C07C"></i> BACKORDER ',
+        '<i class="fa-solid fa-circle" style="color: #CE84DA"></i> PARCIAL ',
+        '<i class="fa-solid fa-circle" style="color: #00A514"></i> COMPLETO',
+        '<i class="fa-solid fa-circle" style="color: #000000"></i> CANCELADA',
+        '<i class="fa-solid fa-circle" style="color: #E1D000"></i> PROGRAMADO',
+        'Actualizar',
+        {
+          label:'Eliminar',
+          modifier: 'destructive'
+        }
+      ]
+    }).then(function (index) { 
+      if(estado != 3)
+      {
+        if(index == 0) setActualizarEstadoPL(1,o_c,'');//en este solo actualiza el estado del pedido
+        else if(index == 1) ;//en este actualiza y manda datos a entrada (menor al valor que muestra las piezas ordenadas)
+        else if(index == 2) ;//en este actualiza y manda a entrada 
+        else if(index == 3) setActualizarEstadoPL(4,o_c,'');//actualiza el estado
+        else if(index == 4) setActualizarEstadoPL(5,o_c,'');//actuliza el estado
+      }
+      else
+      {
+        alerta("Este pedido ya se encuentra completo en inventario");
+      }
+      
+      if(index == 5) ; //actualiza pedido
+      else if(index == 6) ; // elimina el pedido
+    });
+}
 
 /*function alertPromptGenerarSalida(cantidad)
 {
