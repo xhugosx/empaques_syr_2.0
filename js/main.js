@@ -417,7 +417,7 @@ function cerrarDialogo(id)
 }
 function alertToast(mensaje,tiempo)
 {
-  ons.notification.toast(mensaje, { timeout: tiempo, animation: 'fall' })
+  ons.notification.toast(mensaje, { timeout: tiempo, animation: 'ascend' })
 }
 
 
@@ -527,6 +527,7 @@ function agregarClase(i){
 function crearMensajePL(estado,entrada,pzas_ordenadas,o_c) 
 {
   //var titulo = '<i class="fa-solid fa-circle" style="color: '+colorEstado(estado)+';"></i> '+estadoLamina(estado);
+  
     ons.openActionSheet({
       title: 'ESTADO',
       cancelable: true,
@@ -542,22 +543,62 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
           modifier: 'destructive'
         }
       ]
-    }).then(function (index) { 
-      if(estado != 3)
+    }).then(function (index) {
+      //if(estado != index || index != -1) alerta('No puedes cambiar de estado por ya existen en Inventario')
+      var faltante = pzas_ordenadas - entrada;
+      entrada = entrada== "" ? 0 : entrada; 
+      if(index == -1) return 0;
+      if(estado == 3 ) alerta("Este pedido ya se encuentra completo en inventario");
+      //else if((entrada > 0 && estado != 2) && index != -1) alerta("No puedes cambiar a este estado por que ya existen en inventario");
+      else if(index != -1)
       {
-        if(index == 0) setActualizarEstadoPL(1,o_c,'');//en este solo actualiza el estado del pedido
-        else if(index == 1) ;//en este actualiza y manda datos a entrada (menor al valor que muestra las piezas ordenadas)
-        else if(index == 2) ;//en este actualiza y manda a entrada 
-        else if(index == 3) setActualizarEstadoPL(4,o_c,'');//actualiza el estado
-        else if(index == 4) setActualizarEstadoPL(5,o_c,'');//actuliza el estado
-      }
-      else
-      {
-        alerta("Este pedido ya se encuentra completo en inventario");
+        
+        if(index == 1 || index == 2) //en este actualiza y manda datos a entrada (menor al valor que muestra las piezas ordenadas)
+        {
+      
+          ons.notification.prompt({
+            title: '',
+            inputType: 'number',
+            buttonLabels: [
+              'Cancelar',
+              'Enviar'
+            ],
+            message: 'Existencia en inventario: '+entrada+' de '+pzas_ordenadas
+            }).then(function(input) {
+              if(input !== null && input > 0 && input !== "")
+              {
+                ons.notification.confirm({
+                  title :"",
+                  message: 'Se generá la siguiente salida:<br><br> <font size="8px">'+input+' pza(s)</font>',
+                  buttonLabels: ['Aceptar', 'Cancelar'],
+                  callback: function(idx) {
+                    if(idx==0) 
+                    {
+                      var suma = parseInt(input) + parseInt(entrada);
+                      if(input >= faltante) setActualizarEstadoPL(3,o_c,suma,entrada);
+                      else setActualizarEstadoPL(2,o_c,suma,entrada);
+                      
+                    }
+                  } 
+                });
+              }
+          });
+        }
+        
+        else if(estado != 2)
+        {
+          if(index == 0) setActualizarEstadoPL(1,o_c);//en este solo actualiza el estado del pedido
+          else if(index == 3) setActualizarEstadoPL(4,o_c);//actualiza el estado
+          else if(index == 4) setActualizarEstadoPL(5,o_c);//actuliza el estado
+        }
+        else alerta("No puedes cambiar a este estado por que ya existen en inventario");
+        
+      
+        if(index == 5) ; //actualiza pedido
+        else if(index == 6) ; //elimina pedido
       }
       
-      if(index == 5) ; //actualiza pedido
-      else if(index == 6) ; // elimina el pedido
+       // elimina el pedido
     });
 }
 

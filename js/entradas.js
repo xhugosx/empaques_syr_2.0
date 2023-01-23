@@ -1,10 +1,21 @@
 function mostrarTodoEntrada()
 {
     setMostrarEntradaCajas();
+    setMostrarEntradaLamina();
     //aqui iran las otras dos funciones mostrar insertos y lamina
 }
 
+function setMostrarEntradaLamina()
+{
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/lamina/select.php',getMostrarEntradaLamina)
+}
+function getMostrarEntradaLamina(respuesta)
+{ 
+    var resultado = respuesta.responseText;
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
+    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',arrayJson,enlistarEntradasLamina);
+}
 function setMostrarEntradaCajas()
 {
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/select.php",getMostrarEntradaCajas)
@@ -44,6 +55,33 @@ function enlistarEntradas(arrayJson)
     html1 += '        <div class="center">';
     html1 += '            <span class="list-item__title"><b>'+arrayJson.codigo+'</b>&nbsp;'+ arrayJson.producto +'</span>';
     html1 += '            <span class="list-item__subtitle">'+ arrayJson.nombre +'</span>';
+    html1 += '        </div>';
+    html1 += '        <div class="right">';
+    html1 += '            <span class="notification" style="background: rgb(61, 174, 80);">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '        </div>';
+    html1 += '</ons-list-item>';
+    html1 += '</ons-card>';
+
+    return html1;
+}
+function enlistarEntradasLamina(arrayJson)
+{
+    let html1 = '';
+    var o_c = arrayJson.id_lp;
+    o_c = o_c[o_c.length-1] == 1 ? o_c.slice(0,-1) + "PCM" : o_c.slice(0,-1) + "PACK";
+
+
+    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
+    html1 += ' <ons-list-header>'+ o_c +' <b style="color: rgb(61, 174, 80);">Recibido: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += '<ons-list-item modifier="nodivider">'; 
+    html1 += '        <div class="left">';
+    html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';
+    html1 += '        </div>';
+    html1 += '        <div class="center">';
+    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
+    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.nombre+'</b></span>' : "";
     html1 += '        </div>';
     html1 += '        <div class="right">';
     html1 += '            <span class="notification" style="background: rgb(61, 174, 80);">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';

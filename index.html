@@ -374,6 +374,10 @@
                 <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
             </ons-tabbar>
 
+            <ons-fab onclick="mostrarTodoPedidosLamina()" position="bottom left">
+                <i class="fa-solid fa-refresh"></i>
+            </ons-fab>
+
             <ons-fab onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy())})" position="bottom right">
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
@@ -384,7 +388,9 @@
     <template id="pPCM.html">
         <ons-page>
 
-            <ons-progress-bar id="loadingPedidosLamina"  indeterminate ></ons-progress-bar>
+            <div id="loadingPedidosLamina"> 
+            </div>
+           
 
             <ons-list>
                 <ons-list-item>
@@ -402,7 +408,9 @@
     <template id="pPACK.html">
         <ons-page>
 
-            <ons-progress-bar id="loadingPedidosLaminaPACK"  indeterminate ></ons-progress-bar>
+            <div id="loadingPedidosLaminaPACK"> 
+            </div>
+            
 
             <ons-list>
                 <ons-list-item>
@@ -646,6 +654,9 @@
     <!-- VISTA 3 laminas entrada/salida-->
     <template id="laminaSalidasEntradas.html">
     <ons-page>
+        <div id="laminaSalidasEntradasLoading">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+        </div>
 
         <ons-list>
             <ons-list-item>
@@ -653,10 +664,10 @@
             </ons-list-item>
         </ons-list>
         
-
-        <div id="datosLaminaInventario">
-            
-        </div>
+        </ons-list>
+        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
+        </ons-list>
 
     </ons-page>
     </template>

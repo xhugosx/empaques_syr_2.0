@@ -1,5 +1,7 @@
 function mostrarTodoPedidosLamina()
 {
+    $('#loadingPedidosLamina').append("<ons-progress-bar indeterminate></ons-progress-bar>");
+    $('#loadingPedidosLaminaPACK').append("<ons-progress-bar indeterminate></ons-progress-bar>");
     setMostrarPedidosLamina();
     setMostrarPedidosLaminaPACK();
 }
@@ -72,9 +74,21 @@ function getAgregarPedidoLamina(respuesta)
     }
     else alerta("Inserta otra Orden de Compra");
 }
-function setActualizarEstadoPL(estado,o_c,cantidad)
+function setActualizarEstadoPL(estado,o_c,cantidad,entrada)
 {
-    alerta("recibi estos datos: "+estado+o_c+cantidad);
+    //alert('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/updateEntrada.php?id_lp='+o_c+'&cantidad='+cantidad+'&entrada='+entrada+'&estado='+estado);
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/updateEntrada.php?id_lp='+o_c+'&cantidad='+cantidad+'&entrada='+entrada+'&estado='+estado,getActualizarEstadoPL)
+}
+function getActualizarEstadoPL(respuesta)
+{
+    var resultado = respuesta.responseText;
+    if(resultado == 11 || resultado == 1)
+    {
+       alertToast("Estado Actualizado",500)
+       mostrarTodoPedidosLamina();
+    }
+     
+    else alerta("no se pudo actualizar"+resultado);
 }
 function asignarInputCaja(value)
 {
@@ -108,7 +122,7 @@ function enlistarPedidosLamina(arrayJson)
     var o_c  = arrayJson.o_c.slice(0,-2);
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\')">'
     html1 += '<ons-list-header style="background:'+colorEstado(arrayJson.estado)+'; color:white;">';
-    html1 += arrayJson.entrada != "" ? '      <div style="position:absolute;right:0px;margin-right:2vh">'+arrayJson.entrada+' pzas</div>' : "";
+    html1 += arrayJson.entrada != "" ? '      <div class="contenedorHead" style="color:'+colorEstado(arrayJson.estado)+';">llego: '+separator(arrayJson.entrada)+' pzas</div>' : "";
     html1 +=        estadoLamina(arrayJson.estado)+' | ';
     html1 +=        sumarDias(arrayJson.fecha,0) //aqui ira una fecha 
     html1 += '</ons-list-header>';
