@@ -73,7 +73,7 @@ function enlistarEntradasLamina(arrayJson)
 
 
     var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialogLamina(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
     html1 += ' <ons-list-header>'+ o_c +' <b style="color: rgb(61, 174, 80);">Recibido: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';

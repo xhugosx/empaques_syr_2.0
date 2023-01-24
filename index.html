@@ -744,16 +744,19 @@
     <template id="laminaInventario.html">
     <ons-page id="Tab2">
 
+        <div id="laminaInventarioLoading">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+        </div>
+
         <ons-list>
             <ons-list-item>
                 <ons-search-input id="searchLaminaInventario" placeholder="Buscar: "></ons-search-input>
             </ons-list-item>
         </ons-list>
-        
 
-        <div id="datosLaminaInventario">
-            
-        </div>
+        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
+        </ons-list>
 
     </ons-page>
     </template>

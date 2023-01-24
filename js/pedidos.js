@@ -255,11 +255,14 @@ function getEliminarpedido(respuesta)
 //buscar modificar pedido
 function setModificarBuscarPedido(id)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type=2&search="+id,getModificarBuscarPedido);
+    var type = filtro ? 1 : 2;
+    console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id);
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id,getModificarBuscarPedido);
     
 }
 function getModificarBuscarPedido(respuesta)
 {
+    console.log(respuesta.responseText);
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     arrayJson[0] = JSON.parse(arrayJson[0]);

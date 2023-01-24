@@ -2,6 +2,7 @@ var codigoCliente = "";
 function mostrarTodoInventario()
 {
     setMostrarInventario();
+    setMostrarInventarioPedidosLamina();
     //aqui iran las otras dos funciones mostrar insertos y lamina
 }
 
@@ -79,6 +80,20 @@ function getMostrarInventarioPedidos(respuesta)
     listaInfinita('datosInventarioPedidos','InventarioPedidosLoading',arrayJson,enlistarInventarioCodigo);
 }
 
+function setMostrarInventarioPedidosLamina()
+{
+    //codigoCliente = codigo;
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectLamina.php',getMostrarInventarioPedidosLamina);
+}
+
+function getMostrarInventarioPedidosLamina(respuesta)
+{
+    var resultado = respuesta.responseText;
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+    listaInfinita('datosLaminaInventario','laminaInventarioLoading',arrayJson,enlistarInventarioLamina);
+}
+
 function enlistarInventarioCodigo(arrayJson)
 {
     let html = "";
@@ -103,4 +118,30 @@ function enlistarInventarioCodigo(arrayJson)
     html += '    </ons-list-item>';
     html += '</ons-card>';
     return html;
+}
+
+function enlistarInventarioLamina(arrayJson)
+{
+    let html1 = '';
+    var o_c = arrayJson.codigo;
+    o_c = o_c[o_c.length-1] == 1 ? o_c.slice(0,-1) + "PCM" : o_c.slice(0,-1) + "PACK";
+    
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="">'
+    html1 += ' <ons-list-header style="background:white">'+ o_c +'</ons-list-header>';
+    html1 += '<ons-list-item modifier="nodivider">'; 
+    html1 += '        <div class="left">';
+    html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';
+    html1 += '        </div>';
+    html1 += '        <div class="center">';
+    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
+    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.cliente+'</b></span>' : "";
+    html1 += '        </div>';
+    html1 += '        <div class="right">';
+    html1 += '            <span class="notification" style="background: rgb(8, 136, 205);">'+ separator(arrayJson.inventario) +' <font size="2px">pza(s)</font></span>';
+    //html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '        </div>';
+    html1 += '</ons-list-item>';
+    html1 += '</ons-card>';
+    
+    return html1;
 }

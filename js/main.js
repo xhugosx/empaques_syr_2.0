@@ -377,7 +377,6 @@ function abrirDialog(texto,_id,tipo) {
         dialog.show();
       });
   }
-
   setTimeout(() => {
     $("#datoDialog").empty();
     $("#datoDialog").append('<ons-progress-circular indeterminate style="margin-bottom:10px"></ons-progress-circular>');
@@ -389,11 +388,40 @@ function abrirDialog(texto,_id,tipo) {
     $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntrada(observacionesSalidasEntradas)"></i>');
   }, 500);
   
-};
+}
+
+function abrirDialogLamina(texto,_id,tipo) {
+  idSalidasEntradas = _id;
+  observacionesSalidasEntradas = texto;
+  type = tipo;
+
+  if(texto == "") texto = "(Sin comentarios)";
+
+  var dialog = document.getElementById('my-dialog');  
+  
+  if (dialog) {
+    dialog.show();
+  } else {
+    ons.createElement('dialog.html', { append: true }).then(function(dialog) {
+        dialog.show();
+      });
+  }
+  setTimeout(() => {
+    $("#datoDialog").empty();
+    $("#datoDialog").append('<ons-progress-circular indeterminate style="margin-bottom:10px"></ons-progress-circular>');
+  }, 1);
+  setTimeout(() => {
+    $("#datoDialog").empty();
+    $("#datoDialog").append(texto);
+    $('#aceptar').empty();
+    $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntradaLamina(observacionesSalidasEntradas)"></i>');
+  }, 500);
+  
+}
   
 function cerrarDialog() {
   document.getElementById("my-dialog").hide();
-};
+}
 
 
 function Abrirdialogo(id,template,idProducto)

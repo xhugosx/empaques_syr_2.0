@@ -1,6 +1,7 @@
 function mostrarTodoSalida()
 {
     setMostrarSalidaCajas();
+    setMostrarSalidaLamina();
     //aqui iran las otras dos funciones
 }
 
@@ -16,6 +17,19 @@ function getMostrarSalidaCajas(respuesta)
     //alerta(resultado);
     listaInfinita('datosCajaEntradaSalida','cajaSalidasEntradasLoading',arrayJson,enlistarSalidas);
 }
+
+function setMostrarSalidaLamina()
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php",getMostrarSalidaLamina)
+}
+function getMostrarSalidaLamina(respuesta)
+{
+    var resultado = respuesta.responseText;
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    //alerta(resultado);
+    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',arrayJson,enlistarSalidasLamina);
+}
+
 function asignarTextSalidaEntrada(observaciones)
 {
     
@@ -45,8 +59,44 @@ function setActualizaObservaciones()
 }
 function getActualizarObservaciones(respuesta)
 {
-    if(respuesta.responseText == 1) setMostrarSalidaCajas();
-    else if(respuesta.responseText == 2) setMostrarEntradaCajas();
+    if(respuesta.responseText == 1) mostrarTodoSalida();
+    else if(respuesta.responseText == 2) mostrarTodoEntrada();
+    else alerta("no se actualizo "+respuesta.responseText);
+}
+// observaciones Lamina
+function asignarTextSalidaEntradaLamina(observaciones)
+{
+    
+    $("#datoDialog").empty();
+    $("#datoDialog").append('<textarea id="observacionesSalidasEntradas" cols="40" rows="5" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>');
+
+    setTimeout(() => {
+        $("#observacionesSalidasEntradas").val(observaciones == "" ? "" : observaciones);
+    }, 1);
+    $('#aceptar').empty();
+    $('#aceptar').append('<i style="color:green" class="fa-solid fa-check fa-2x" onclick="setActualizaObservacionesLamina()"></i>')
+    
+    
+   // $("#observacionesSalidasEntradas").val(id);
+}
+function setActualizaObservacionesLamina()
+{
+    observacionesSalidasEntradas = $("#observacionesSalidasEntradas").val();
+    var observaciones = $("#observacionesSalidasEntradas").val() == "" ? "(Sin comentarios)" : $("#observacionesSalidasEntradas").val();
+    $('#aceptar').empty();
+    $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntradaLamina(observacionesSalidasEntradas)"></i>');
+
+    $("#datoDialog").empty();
+    $('#datoDialog').text(observaciones);
+    
+    //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type);
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservacionesLamina);
+}
+function getActualizarObservacionesLamina(respuesta)
+{
+    //console.log(respuesta.responseText);
+    if(respuesta.responseText == 1) mostrarTodoSalida();
+    else if(respuesta.responseText == 2) mostrarTodoEntrada();
     else alerta("no se actualizo "+respuesta.responseText);
 }
 
@@ -73,13 +123,30 @@ function enlistarSalidas(arrayJson)
 
     return html1;
 }
-function error(variable)
+function enlistarSalidasLamina(arrayJson)
 {
-    try{
-        variable;
-        return true;
-    }
-    catch{
-        return false;
-    }
+    let html1 = '';
+    var o_c = arrayJson.id_lp;
+    o_c = o_c[o_c.length-1] == 1 ? o_c.slice(0,-1) + "PCM" : o_c.slice(0,-1) + "PACK";
+
+
+    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialogLamina(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">'
+    html1 += ' <ons-list-header>'+ o_c +' <b style="color: rgb(211, 64, 64);">Tomado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += '<ons-list-item modifier="nodivider">'; 
+    html1 += '        <div class="left">';
+    html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';
+    html1 += '        </div>';
+    html1 += '        <div class="center">';
+    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
+    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.nombre+'</b></span>' : "";
+    html1 += '        </div>';
+    html1 += '        <div class="right">';
+    html1 += '            <span class="notification">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '        </div>';
+    html1 += '</ons-list-item>';
+    html1 += '</ons-card>';
+
+    return html1;
 }
