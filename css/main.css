@@ -269,3 +269,12 @@ span.list-item__subtitle{
     margin-top: 1.5px;
     font-weight: bold;
 }
+
+.separacion{
+    position: absolute;
+    background-color: #efeff4;
+    padding-left: 8px;
+    padding-right: 8px;
+    left: 20px;
+    margin-top: 2px;
+}

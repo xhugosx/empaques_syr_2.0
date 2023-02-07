@@ -1,10 +1,14 @@
 function mostrarTodoEntrada()
 {
+    localStorage.setItem("bandera",0);
     setMostrarEntradaCajas();
     setMostrarEntradaLamina();
     //aqui iran las otras dos funciones mostrar insertos y lamina
 }
-
+function setMostrarEntradalaminaSearch(search)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/lamina/select.php?search="+search,getMostrarEntradaLamina)
+}
 function setMostrarEntradaLamina()
 {
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/lamina/select.php',getMostrarEntradaLamina)
@@ -12,9 +16,16 @@ function setMostrarEntradaLamina()
 function getMostrarEntradaLamina(respuesta)
 { 
     var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    var proveedores = resultado.split('*');
+    var proveedor1 = proveedores[0].split('|');
+    var proveedor2 = proveedores[1].split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',arrayJson,enlistarEntradasLamina);
+    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',proveedor1,enlistarEntradasLamina);
+    listaInfinita('datosLaminaInventario1','laminaSalidasEntradasLoading',proveedor2,enlistarEntradasLamina);
+}
+function setMostrarEntradaCajasSearch(search)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/select.php?search="+search,getMostrarEntradaCajas);
 }
 function setMostrarEntradaCajas()
 {
@@ -47,7 +58,7 @@ function enlistarEntradas(arrayJson)
     let html1 = '';
     var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
-    html1 += ' <ons-list-header>'+ arrayJson.id_lp +' <b style="color: rgb(61, 174, 80);">Terminado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += ' <ons-list-header style="background: white">'+ arrayJson.id_lp +' <b style="color: rgb(61, 174, 80);">Terminado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';
     html1 +=              '<i class="fa-solid fa-box fa-2x"></i>';
@@ -69,12 +80,12 @@ function enlistarEntradasLamina(arrayJson)
 {
     let html1 = '';
     var o_c = arrayJson.id_lp;
-    o_c = o_c[o_c.length-1] == 1 ? o_c.slice(0,-1) + "PCM" : o_c.slice(0,-1) + "PACK";
+    o_c =o_c.slice(0,-2);
 
 
     var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialogLamina(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+2+'\')">'
-    html1 += ' <ons-list-header>'+ o_c +' <b style="color: rgb(61, 174, 80);">Recibido: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += ' <ons-list-header style="background: white">'+ o_c +' <b style="color: rgb(61, 174, 80);">Recibido: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';
     html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';

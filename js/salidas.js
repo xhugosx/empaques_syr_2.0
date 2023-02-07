@@ -1,14 +1,18 @@
+
 function mostrarTodoSalida()
 {
+    localStorage.setItem("bandera",1);
     setMostrarSalidaCajas();
     setMostrarSalidaLamina();
     //aqui iran las otras dos funciones
 }
-
-
+function setMostrarSalidaCajasSearch(search)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/select.php?search="+search,getMostrarSalidaCajas);
+}
 function setMostrarSalidaCajas()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/select.php",getMostrarSalidaCajas)
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/select.php",getMostrarSalidaCajas);
 }
 function getMostrarSalidaCajas(respuesta)
 {
@@ -17,19 +21,71 @@ function getMostrarSalidaCajas(respuesta)
     //alerta(resultado);
     listaInfinita('datosCajaEntradaSalida','cajaSalidasEntradasLoading',arrayJson,enlistarSalidas);
 }
-
+function buscarEntradaSalidaCajas(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#cajaSalidasEntradasLoading").empty();
+        $("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        let bandera = localStorage.getItem("bandera");
+        if(bandera == 1) setMostrarSalidaCajasSearch(search);
+        else setMostrarEntradaCajasSearch(search);
+        //console.log(bandera);
+    }
+    else if(search == "") 
+    {
+        //validar si es entrada o salida
+        $("#cajaSalidasEntradasLoading").empty();
+        $("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        let bandera = localStorage.getItem("bandera");
+        if(bandera == 1) setMostrarSalidaCajas();
+        else setMostrarEntradaCajas();
+        //setMostrarEntradaCajas();
+        //setMostrarSalidaCajas();
+    }
+}
+function setMostrarSalidalaminaSearch(search)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php?search="+search,getMostrarSalidaLamina)
+}
 function setMostrarSalidaLamina()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php",getMostrarSalidaLamina)
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php",getMostrarSalidaLamina);
 }
 function getMostrarSalidaLamina(respuesta)
 {
     var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //alerta(resultado);
-    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',arrayJson,enlistarSalidasLamina);
+    var proveedores = resultado.split('*');
+    var proveedor1 = proveedores[0].split('|');
+    var proveedor2 = proveedores[1].split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',proveedor1,enlistarSalidasLamina);
+    listaInfinita('datosLaminaInventario1','laminaSalidasEntradasLoading',proveedor2,enlistarSalidasLamina);
 }
-
+function buscarEntradaSalidaLamina(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        //$("#cajaSalidasEntradasLoading").empty();
+        //$("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        let bandera = localStorage.getItem("bandera");
+        if(bandera == 1) setMostrarSalidalaminaSearch(search);
+        else setMostrarEntradalaminaSearch(search);
+        //console.log(bandera);
+    }
+    else if(search == "") 
+    {
+        //validar si es entrada o salida
+        //$("#cajaSalidasEntradasLoading").empty();
+       //$("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        let bandera = localStorage.getItem("bandera");
+        if(bandera == 1) setMostrarSalidaLamina();
+        else setMostrarEntradaLamina();
+        //setMostrarEntradaCajas();
+        //setMostrarSalidaCajas();
+    }
+}
 function asignarTextSalidaEntrada(observaciones)
 {
     
@@ -105,7 +161,7 @@ function enlistarSalidas(arrayJson)
     var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
     let html1 = "";
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">';
-    html1 += '    <ons-list-header>'+arrayJson.id_lp+' <b style="color: rgb(211, 64, 64);">Entregado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += '    <ons-list-header style="background:white">'+arrayJson.id_lp+' <b style="color: rgb(211, 64, 64);">Entregado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '    <ons-list-item modifier="nodivider">';
     html1 += '        <div class="left">';
     html1 +=              '<i class="fa-solid fa-box fa-2x"></i>';
@@ -127,12 +183,12 @@ function enlistarSalidasLamina(arrayJson)
 {
     let html1 = '';
     var o_c = arrayJson.id_lp;
-    o_c = o_c[o_c.length-1] == 1 ? o_c.slice(0,-1) + "PCM" : o_c.slice(0,-1) + "PACK";
+    o_c = o_c.slice(0,-2);
 
 
     var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialogLamina(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">'
-    html1 += ' <ons-list-header>'+ o_c +' <b style="color: rgb(211, 64, 64);">Tomado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += ' <ons-list-header style="background:white">'+ o_c +' <b style="color: rgb(211, 64, 64);">Tomado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';
     html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';

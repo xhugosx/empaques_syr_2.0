@@ -5,10 +5,20 @@ function mostrarTodoInventario()
     setMostrarInventarioPedidosLamina();
     //aqui iran las otras dos funciones mostrar insertos y lamina
 }
-
+function setMostrarInventarioSearch(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#cajaInventarioLoading").empty();
+        $("#cajaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php?search="+search,getMostrarInventario);
+    }
+    else if(search == "") setMostrarInventario();
+}
 function setMostrarInventario()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php",getMostrarInventario)
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php",getMostrarInventario);
 }
 function getMostrarInventario(respuesta)
 {
@@ -79,7 +89,17 @@ function getMostrarInventarioPedidos(respuesta)
     
     listaInfinita('datosInventarioPedidos','InventarioPedidosLoading',arrayJson,enlistarInventarioCodigo);
 }
-
+function setMostrarInventarioPedidosLaminaSearch(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#laminaInventarioLoading").empty();
+        $("#laminaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectLamina.php?search='+search,getMostrarInventarioPedidosLamina);
+    }
+    else if(search == "") setMostrarInventarioPedidosLamina();
+}
 function setMostrarInventarioPedidosLamina()
 {
     //codigoCliente = codigo;
@@ -89,9 +109,27 @@ function setMostrarInventarioPedidosLamina()
 function getMostrarInventarioPedidosLamina(respuesta)
 {
     var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    
-    listaInfinita('datosLaminaInventario','laminaInventarioLoading',arrayJson,enlistarInventarioLamina);
+    var proveedores = resultado.split('*');
+    var proveedor1 = proveedores[0].split('|');
+    var proveedor2 = proveedores[1].split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    //localStorage.setItem("separador",false);
+    listaInfinita('datosLaminaInventario1','laminaInventarioLoading',proveedor1,enlistarInventarioLamina);
+    listaInfinita('datosLaminaInventario2','laminaInventarioLoading',proveedor2,enlistarInventarioLamina);
+}
+//funcion para actualizar salidas
+function setActualizarSalidaLamina(json)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalidaLamina.php?id_lp="+json.codigo+"&cantidad="+json.inventario+"&salida="+json.salida,getActualizarSalidaLamina)
+}
+function getActualizarSalidaLamina(respuesta)
+{
+    if(respuesta.responseText == 1)
+    {
+        alerta("Salida Generada");
+        setMostrarInventarioPedidosLamina();
+    }
+    else alerta("Hubo un error al generar la salida");
+    //alerta(responseText);
 }
 
 function enlistarInventarioCodigo(arrayJson)
@@ -99,7 +137,7 @@ function enlistarInventarioCodigo(arrayJson)
     let html = "";
     var inventario = arrayJson.entrada - arrayJson.salida
     html += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="alertPromptInventario(\''+arrayJson.id_lp+'\',\''+arrayJson.salida+'\',\''+inventario+'\')">';
-    html += '    <ons-list-header>'+arrayJson.id_lp+'</ons-list-header>';
+    html += '    <ons-list-header style="background: white">'+arrayJson.id_lp+'</ons-list-header>';
     html += '    <ons-list-item modifier="nodivider"> ';
     html += '        <div class="left">';
     html += '            <i class="fa-solid fa-box fa-2x"></i>';
@@ -124,9 +162,9 @@ function enlistarInventarioLamina(arrayJson)
 {
     let html1 = '';
     var o_c = arrayJson.codigo;
-    o_c = o_c[o_c.length-1] == 1 ? o_c.slice(0,-1) + "PCM" : o_c.slice(0,-1) + "PACK";
-    
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="">'
+    o_c = o_c.slice(0,-2);
+   
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="mensajeAlertaDato(\''+conversionJsonArray(arrayJson)+'\')">'
     html1 += ' <ons-list-header style="background:white">'+ o_c +'</ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';
@@ -144,4 +182,37 @@ function enlistarInventarioLamina(arrayJson)
     html1 += '</ons-card>';
     
     return html1;
+}
+
+
+function mensajeAlertaDato(array)
+{
+    array = array.split(",");
+    var json = conversionArrayJson(array);
+
+    alertComfirmDato("Agrega salida menor o igual a: "+ json.inventario +" pza(s)","number",["Cancelar","Enviar"],validacionInventarioLP,json);
+}
+function validacionInventarioLP(input,json)
+{
+    
+    if(input == null || input <= 0) return 0;
+    else 
+    {
+        //console.log(json.inventario);
+        if(input <= parseInt(json.inventario))
+        {
+            var salida = parseInt(input) + parseInt(json.salida == "" ? "0" : json.salida);
+            json.inventario = salida.toString(); 
+            alertComfirm('Se generá la siguiente salida:<br><br> <font size="8px">'+input+' pza(s)</font>',["Aceptar","Cancelar"],validarConfirm,json)
+        }
+        else {
+            alerta("No puedes generar salidas mayores al las del inventario!");
+        }
+       
+    }
+}
+
+function validarConfirm(idx,json)
+{
+    if(idx == 0) setActualizarSalidaLamina(json);
 }

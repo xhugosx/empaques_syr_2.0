@@ -28,6 +28,7 @@
     <script src="./js/programa.js"></script>
     <script src="./js/inventario.js"></script>
     <script src="./js/pedidos_lamina.js"></script>
+    <script src="./js/pedidos_insertos.js"></script>
 
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
@@ -569,6 +570,151 @@
             </form>
         </ons-page>
     </template>
+
+    <template id="actualizarPedidosLamina.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Actualizar Lamina</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-key"></i>
+                            </div>
+                            <div class="center">
+                                
+                                <ons-input type="text" id="o_c" name="o_c" cols="30" rows="1" class="input-100" placeholder="Orden de compra" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                                
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-truck"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="proveedor" id="proveedor">
+                                    <option value="" style="color: #ccc;">(PROVEEDOR)</option>
+                                    <option value="1">PCM</option>
+                                    <option value="2">PACK</option>
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+                
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-ruler-vertical"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="ancho" name="ancho" class="input-100" type="number" step="any" placeholder="Ancho"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-ruler-horizontal"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="largo" name="largo" class="input-100" type="number" step="any" placeholder="Largo"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="pzas_ordenadas" name="pzas_ordenadas" class="input-100" type="number" placeholder="Piezas ordenadas"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-house-crack fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="resistencia" id="resistencia">
+                                    <option value="" style="color: #ccc;">(RESISTENCIA)</option>
+                                    <option value="MICRO">MICRO</option>
+                                    <option value="S/G">S/G</option>
+                                    <option value="21 ECT ESP">21 ECT ESP</option>
+                                    <option value="21 ECT">21 ECT</option>
+                                    <option value="23 ECT">23 ECT</option>
+                                    <option value="26 ECT">26 ECT</option>
+                                    <option value="32 ECT">32 ECT</option>
+                                    <option value="38 ECT">38 ECT</option>
+                                    <option value="42 ECT">42 ECT</option>
+                                    <option value="51 ECT">51 ECT</option>
+                                    <option value="61 ECT">61 ECT</option>
+                                    <option value="71 ECT">71 ECT</option>
+                                    
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider"> 
+                            <label class="left">
+                                <ons-checkbox input-id="checkCaja" onclick="asignarInputCaja(this) "></ons-checkbox>
+                            </label>
+                            <label for="checkCaja" class="center">
+                                Selecciona esta casilla si es para una caja
+                            </label>
+                        </ons-list-item>
+                    </ons-card>
+                    
+                    <div id="llenarInputCaja">
+                        
+                    </div>
+    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calendar-days fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <div class="placeholder">Fecha Orden de Compra!</div> 
+                                <ons-input style="margin-right: 5px;" name="fecha" id="fecha" type="date" class="input-100"></ons-input>
+                                
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-clipboard"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="observaciones" name="observaciones" class="input-100" type="text" placeholder="Observaciones" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setActualizarPL()">Actualizar</ons-button>
+                    </ons-list-item>
+                
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
 <!--FIN DE PEDIDOS DE LAMINAS-->
 
 <!--SALIDAS Y ENTRADAS-->
@@ -579,13 +725,6 @@
                 <div class="center">Entradas y Salidas</div>
                 <!--div class="right"><ons-toolbar-button onclick="alertPromptFiltroCalendario()">Filtrar <i class="fa-solid fa-filter" style="color:rgba(0,118,255);"></i></ons-toolbar-button></i></div-->
             </ons-toolbar>
-
-            <ons-list>
-                <ons-list-item>
-                    <ons-search-input placeholder="Buscar"></ons-search-input>
-                </ons-list-item>
-            </ons-list>
-
              
             <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="cajaSalidasEntradas.html" label="Cajas" icon="fa-box" active></ons-tab>
@@ -605,7 +744,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchCajaEntradasSalidas" placeholder="Buscar: "></ons-search-input>
+                    <ons-search-input placeholder="Buscar: codigo" onkeyup="buscarEntradaSalidaCajas(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -660,13 +799,18 @@
 
         <ons-list>
             <ons-list-item>
-                <ons-search-input id="searchLaminaInventario" placeholder="Buscar: "></ons-search-input>
+                <ons-search-input id="searchLaminaInventario" placeholder="Buscar: Orden de Compra" onkeyup="buscarEntradaSalidaLamina(this.value,event)"></ons-search-input>
             </ons-list-item>
         </ons-list>
         
-        </ons-list>
+        <div class="separacion">PCM</div><hr>
         <ons-list style="background: rgba(76, 175, 80, 0.0) ">
             <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
+        </ons-list>
+
+        <div class="separacion">PACK</div><hr>
+        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-lazy-repeat id="datosLaminaInventario1"></ons-lazy-repeat>
         </ons-list>
 
     </ons-page>
@@ -711,7 +855,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchCajaInventario" placeholder="Buscar: "></ons-search-input>
+                    <ons-search-input id="searchCajaInventario" placeholder="Buscar: Codigo / Producto / Cliente" onkeyup="setMostrarInventarioSearch(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -748,14 +892,20 @@
             <ons-progress-bar indeterminate></ons-progress-bar>
         </div>
 
+        
         <ons-list>
             <ons-list-item>
-                <ons-search-input id="searchLaminaInventario" placeholder="Buscar: "></ons-search-input>
+                <ons-search-input id="searchLaminaInventario" placeholder="Buscar: Orden de Compra" onkeyup="setMostrarInventarioPedidosLaminaSearch(this.value,event)"></ons-search-input>
             </ons-list-item>
         </ons-list>
 
+        <div class="separacion">PCM</div><hr>
         <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
+            <ons-lazy-repeat id="datosLaminaInventario1"></ons-lazy-repeat>
+        </ons-list>
+        <div class="separacion">PACK</div><hr>
+        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-lazy-repeat id="datosLaminaInventario2"></ons-lazy-repeat>
         </ons-list>
 
     </ons-page>
@@ -798,9 +948,9 @@
             </ons-toolbar>
             
             <ons-tabbar swipeable position="bottom">
-                <ons-tab id="clientesPedidos" page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home" active>
+                <ons-tab id="clientesPedidos" page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home">
                 </ons-tab>
-                <ons-tab id="todoPedidos" page="tab2.html" label="Todo" icon="fa-boxes-stacked" active-icon="fa-box" >
+                <ons-tab id="todoPedidos" page="tab2.html" label="Todo" icon="fa-boxes-stacked" active-icon="fa-box" active>
                 </ons-tab>
             </ons-tabbar>
 
@@ -818,7 +968,7 @@
     <template id="tab1.html">
         <ons-page id="Tab1">
             <div id="datosPedidosClientesLoading">
-                <ons-progress-bar indeterminate></ons-progress-bar>
+                
             </div>
 
             <ons-list>
@@ -837,6 +987,9 @@
     <!-- VISTA 2 DE LOS PEDIDOS TODOS LOS PRODUCTOS-->
     <template id="tab2.html">
     <ons-page id="Tab2">
+        <div id="datosPedidosLoading">
+                
+        </div>
 
         <ons-list>
             <ons-list-item>
@@ -882,7 +1035,7 @@
         <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Pedidos</div>
+                <div class="center">Agregar Pedidos</div>
             </ons-toolbar>
 
            
@@ -1011,7 +1164,88 @@
                     
                     
             </ons-card>
-            
+
+            <div id="agregarInserto">
+                <ons-card  style="padding:0px;" class="botonPrograma" >
+                    <ons-list-item modifier="nodivider" expandable onclick="limpiarDatosInserto(this)">
+                        <div class="center">
+                            <i class="fa-solid fa-circle-plus fa-2x"></i>
+                            &nbsp&nbsp
+                            <b style="color: rgb(82, 82, 82)">
+                              Agrega Inserto
+                            </b>
+                        </div>
+                        <div class="expandable-content">
+                            <ons-select  class="input-100" id="selectInserto1" autofocus>
+                                <option value="">Inserto</option>
+                                <option value="DIV. UNICA">DIV. UNICA</option>
+                                <option value="DIV. CORTA">DIV. CORTA</option>
+                                <option value="DIV. LARGA">DIV. LARGA</option>
+                                <option value="CAMA">CAMA</option>
+                                <option value="SUAJADO">SUAJADO</option>
+                                <option value="BASE">BASE</option>
+                                <option value="SEPARADOR">SEPARADOR</option>
+                            </ons-select>
+                            <br><br>
+                            <ons-input id="" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+            </div>
+            <div id="agregarInserto">
+                <ons-card  style="padding:0px;" class="botonPrograma" >
+                    <ons-list-item modifier="nodivider" expandable>
+                        <div class="center">
+                            <i class="fa-solid fa-circle-plus fa-2x"></i>
+                            &nbsp&nbsp
+                            <b style="color: rgb(82, 82, 82)">
+                              Agrega Inserto
+                            </b>
+                        </div>
+                        <div class="expandable-content">
+                            <ons-select  class="input-100" id="selectInserto2" autofocus>
+                                <option value="">Inserto</option>
+                                <option value="DIV. UNICA">DIV. UNICA</option>
+                                <option value="DIV. CORTA">DIV. CORTA</option>
+                                <option value="DIV. LARGA">DIV. LARGA</option>
+                                <option value="CAMA">CAMA</option>
+                                <option value="SUAJADO">SUAJADO</option>
+                                <option value="BASE">BASE</option>
+                                <option value="SEPARADOR">SEPARADOR</option>
+                            </ons-select>
+                            <br><br>
+                            <ons-input id="" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+            </div>
+            <div id="agregarInserto">
+                <ons-card  style="padding:0px;" class="botonPrograma" >
+                    <ons-list-item modifier="nodivider" expandable >
+                        <div class="center">
+                            <i class="fa-solid fa-circle-plus fa-2x"></i>
+                            &nbsp&nbsp
+                            <b style="color: rgb(82, 82, 82)">
+                              Agrega Inserto
+                            </b>
+                        </div>
+                        <div class="expandable-content">
+                            <ons-select  class="input-100" id="selectInserto3" autofocus>
+                                <option value="">Inserto</option>
+                                <option value="DIV. UNICA">DIV. UNICA</option>
+                                <option value="DIV. CORTA">DIV. CORTA</option>
+                                <option value="DIV. LARGA">DIV. LARGA</option>
+                                <option value="CAMA">CAMA</option>
+                                <option value="SUAJADO">SUAJADO</option>
+                                <option value="BASE">BASE</option>
+                                <option value="SEPARADOR">SEPARADOR</option>
+                            </ons-select>
+                            <br><br>
+                            <ons-input id="" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+            </div>
            
         </ons-page>
     </template>
@@ -1387,7 +1621,7 @@
     <template id="dialog.html">
         <ons-dialog id="my-dialog" cancelable >
             <div style="text-align: center; padding: 10px;">
-                <div class="botonCerrar" onclick="cerrarDialog()"><i class="fa-solid fa-circle-xmark fa-lg" style="color: rgb(144, 37, 37);"></i></div> <b>Notas:</b> 
+                <div class="botonCerrar" onclick="cerrarDialog()"><i class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div> <b>Notas:</b> 
                 <br>
                 <p id="datoDialog">
                     
@@ -1405,9 +1639,9 @@
     <template id="dialogPrograma.html">
         <ons-dialog id="my-dialog-programa" cancelable>
             <div style="text-align: center; padding: 10px;">
-                <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-programa');limpiarSelectPrograma()"><i class="fa-solid fa-circle-xmark fa-lg" style="color: rgb(144, 37, 37);"></i></div> <b>Selecciona los procesos</b> 
+                <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-programa');limpiarSelectPrograma()"><i class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div> <b>Selecciona los procesos</b> 
                 <br><br>
-                <ons-list-header>
+                <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
                     Artesanos
                 </ons-list-header>
                 <ons-list-item tappable modifier="nodivider"> 
@@ -1443,7 +1677,7 @@
                     </label>
                 </ons-list-item>
 
-                <ons-list-header>
+                <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
                     AFilador (Cajas)
                 </ons-list-header>
                 <ons-list-item tappable modifier="nodivider"> 
@@ -1463,7 +1697,7 @@
                     </label>
                 </ons-list-item>
 
-                <ons-list-header>
+                <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
                     AFilador (Insertos)
                 </ons-list-header>
                 <ons-list-item tappable modifier="nodivider"> 

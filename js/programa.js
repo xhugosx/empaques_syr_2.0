@@ -100,7 +100,6 @@ function getActualizarEstado(respuesta)
 }
 function setEliminarPrograma(id)
 {
-    
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/delete.php?id='+id,getEliminarPrograma);
 }
 function getEliminarPrograma(respuesta)
@@ -151,8 +150,8 @@ function getProcesosProgramaEntradaPedido(respuesta)
 // funcion para agregar faltante a lista de pedidos
 function setAgregarFaltante(json)
 {
-    
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia,getAgregarFaltante);
+    //console.log('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia);
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&observaciones=',getAgregarFaltante);
 }
 function getAgregarFaltante(respuesta)
 {
@@ -225,7 +224,7 @@ function getAgregarPrograma(respuesta)
     {
         alerta("Producto se agrego al programa");
         cerrarDialogo('my-dialog-programa');
-        buscarDtospedidos()
+        buscarDtospedidos();
     }
     else alerta('hubo un error al insertar!'+respuesta.responseText);
 
@@ -234,10 +233,6 @@ function getAgregarPrograma(respuesta)
     
 }
 
-function asignarEstatusPrograma()
-{
-    servidor(0,0);
-}
 function estatus(dato)
 {
    if(dato==0) return '';
@@ -260,9 +255,6 @@ function verificarError(objeto)
     catch{
         return false
     }
-}
-function prueba(){
-    var icon = '<tr><td> <a  onclick="del('+i +',\'' + mat +'\',\'' +size +'\')"><img src="..wwwroot/img/ELIMINAR.png" id = "icon_delete" class= "img-delete" /></a></td ></tr>';
 }
 function limpiarSelectPrograma()
 {

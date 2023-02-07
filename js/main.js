@@ -1,3 +1,59 @@
+//FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
+function alertComfirmDato(mensaje,tipoDato,botones,miFuncion,json)
+{
+  ons.notification.prompt({
+    title: '',
+    inputType: tipoDato,
+    buttonLabels: botones,
+    message: mensaje,
+    }).then(function(input) {
+     miFuncion(input,json);
+  });
+}
+//FUNCION PARA GENERAR MENSAJE DE CONFIRMACION
+function alertComfirm(mensaje,botones,miFuncion,json)
+{
+  ons.notification.confirm({
+    title :"",
+    message: mensaje,
+    buttonLabels: botones,
+    callback: function(idx) {
+      miFuncion(idx,json);
+    } 
+  });
+}
+//function convertir json en array
+function conversionJsonArray(json)
+{
+  var array = [];
+  for (var clave in json){
+    // Controlando que json realmente tenga esa propiedad
+    if (json.hasOwnProperty(clave)) {
+      // Mostrando en pantalla la clave junto a su valor
+      array.push(clave);
+      array.push(json[clave]);
+    }
+  }
+  return array;
+}
+
+//funcion para convertirArray a Json
+function conversionArrayJson(array)
+{
+  var json = "{"
+  for(var i=0;i<array.length;i+=2)
+  {
+    json += '"'+array[i]+'":'+'"'+array[i+1]+'",';
+
+    //if(i<array.length-1) json += ",";
+  }
+  json = json.slice(0,-1); //esto para eliminar la ultima coma
+  json += "}";
+
+
+  return json = JSON.parse(json);
+}
+
 //ESTA FUNCION ES PARA EJECUTAR UNA FUNCION AL PAR LA SIGUIENTE PAGINA
 function nextPageFunction(miPage,miFuncion)
 {
@@ -33,35 +89,48 @@ function alerta(mensaje,tittle)
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link,miFuncion)
 {
-   var xhttp = new XMLHttpRequest();
+  try{
+    var xhttp = new XMLHttpRequest();
 
-   xhttp.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-
-            miFuncion(this);
-
-        }
-    
-    };
-
-    xhttp.open("GET",link,true);
-    xhttp.send();
+    xhttp.onreadystatechange = function(){
+         if(this.readyState == 4 && this.status == 200){
+ 
+             miFuncion(this);
+ 
+         }
+     
+     };
+ 
+     xhttp.open("GET",link,true);
+     xhttp.send();
+  }
+  catch{
+    alerta("Hubo un error de conexión");
+  }
+   
 }
 function servidorPost(link,miFuncion,data)
 {
-   var xhttp = new XMLHttpRequest();
+  try
+  {
+    var xhttp = new XMLHttpRequest();
 
-   xhttp.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-
-            miFuncion(this);
-
-        }
-    
-    };
-
-    xhttp.open("POST",link,true);
-    xhttp.send(data);
+    xhttp.onreadystatechange = function(){
+         if(this.readyState == 4 && this.status == 200){
+ 
+             miFuncion(this);
+ 
+         }
+     
+     };
+ 
+     xhttp.open("POST",link,true);
+     xhttp.send(data);
+  }
+  catch{
+    alerta("Hubo un error de conexión");
+  }
+  
 }
 
 //ASIGNAR DATOS A UN HTML Y BORRAR UNA SECCION DEL HTML
@@ -90,7 +159,7 @@ function crearObjetMensaje(codigo,contador)
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo,contador);
     });
 }
-function crearObjetMensajePedido(oc,id,codigo,estado,observaciones) 
+function crearObjetMensajePedido(oc,id,codigo,estado,observaciones,fecha) 
 {
   let titulo = "";
   if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
@@ -115,7 +184,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado,observaciones)
         else alerta("Pedido ya se encuentra en inventario");
       }
       else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
-      else if(index==2) alerta("<b>Orden de Compra </b><br>"+oc+"<br><br><b>Observaciones </b><br>"+observaciones);
+      else if(index==2) alerta("<b>Orden de Compra: </b><br>"+oc+"<br><br><b>Observaciones: </b><br>"+observaciones+"<br><br><b>Fecha de entrega estimada:</b><br>"+fecha);
       else if(index==3) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
       else if(index==4) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
       
@@ -310,7 +379,7 @@ function alertPromptInventario(id_lp,salida,inventario)
         }
         
       }
-      else alerta("Cancelado");
+      //else alerta("Cancelado");
   });
 }
 //FUNCION PARA AGREGAR CEROS
@@ -505,7 +574,6 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
   var contador = 1;
   //var resultado;
   var html = '<ons-card id="contenedorPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
-  
 
   var infiniteList = document.getElementById(agregarHtml);
   
@@ -514,11 +582,13 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
         
       if(arrayJson!=""){
         var tempJson = JSON.parse(arrayJson[i]);
+        //console.log(i);
       }
       //alert(miFuncion(tempJson,i));
       return  ons.createElement(arrayJson==""  ? html : miFuncion(tempJson,i));
     },
     countItems: function() {
+      //console.log(arrayJson.length-1);
     return contador = arrayJson=="" ? contador : arrayJson.length-1;
     }
   };
@@ -574,9 +644,12 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
     }).then(function (index) {
       //if(estado != index || index != -1) alerta('No puedes cambiar de estado por ya existen en Inventario')
       var faltante = pzas_ordenadas - entrada;
-      entrada = entrada== "" ? 0 : entrada; 
+      entrada = entrada== "" ? 0 : entrada;
+      if(index == 5) nextPageFunctionData('actualizarPedidosLamina.html',setBuscarActualizarPL,o_c); //actualiza pedido
+      else if(index == 6) alertaConfirPrograma("Estas seguro de eliminar este Pedido de Lamina?",setEliminarPL,o_c); //elimina pedido
+
       if(index == -1) return 0;
-      if(estado == 3 ) alerta("Este pedido ya se encuentra completo en inventario");
+      if(estado == 3 && index != 5 && index != 6) alerta("Este pedido ya se encuentra completo en inventario");
       //else if((entrada > 0 && estado != 2) && index != -1) alerta("No puedes cambiar a este estado por que ya existen en inventario");
       else if(index != -1)
       {
@@ -597,7 +670,7 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
               {
                 ons.notification.confirm({
                   title :"",
-                  message: 'Se generá la siguiente salida:<br><br> <font size="8px">'+input+' pza(s)</font>',
+                  message: 'Se generá la siguiente Entrada:<br><br> <font size="8px">'+input+' pza(s)</font>',
                   buttonLabels: ['Aceptar', 'Cancelar'],
                   callback: function(idx) {
                     if(idx==0) 
@@ -622,8 +695,7 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
         else alerta("No puedes cambiar a este estado por que ya existen en inventario");
         
       
-        if(index == 5) ; //actualiza pedido
-        else if(index == 6) ; //elimina pedido
+        
       }
       
        // elimina el pedido

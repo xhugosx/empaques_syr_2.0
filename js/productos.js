@@ -4,6 +4,7 @@
 //ver productos
 function setProductos()
 {
+    $('#loadingProductos').empty();
     $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=2',getProductos);
 }
