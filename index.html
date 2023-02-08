@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!--here document onsen-->
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <!--link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script-->
+    <script src="node_modules/onsenui/js/onsenui.min.js"></script>
+    <link rel="stylesheet" href="node_modules/onsenui/css/onsen-css-components.min.css">
+    <link rel="stylesheet" href="node_modules/onsenui/css/onsenui.css">
+
 
     <!-- icons -->
     <link href="./css/icons/css/fontawesome.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
     <title>Empaques SyR</title>
 </head>
-<body onload="retroceso()">
+<body>
 
     <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
 
@@ -358,6 +362,24 @@
     
         </ons-page>
     </template>
+
+    <!-- vista de plano -->
+    <template id="verPlano.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Plano</div>
+            </ons-toolbar>
+
+            <div id="loadingPlano"> 
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+            
+            <iframe id="plano" src="" style="width:100%; height:100%;" frameborder="0" ></iframe>
+ 
+        </ons-page>
+    </template>
+
      
 <!--FIN DE PRODUCTOS-->
 

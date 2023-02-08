@@ -89,7 +89,7 @@ function alerta(mensaje,tittle)
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link,miFuncion)
 {
-  try{
+  if(window.navigator.onLine){
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
@@ -104,14 +104,14 @@ function servidor(link,miFuncion)
      xhttp.open("GET",link,true);
      xhttp.send();
   }
-  catch{
-    alerta("Hubo un error de conexión");
+  else{
+    alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');
   }
    
 }
 function servidorPost(link,miFuncion,data)
 {
-  try
+  if(window.navigator.onLine)
   {
     var xhttp = new XMLHttpRequest();
 
@@ -127,8 +127,8 @@ function servidorPost(link,miFuncion,data)
      xhttp.open("POST",link,true);
      xhttp.send(data);
   }
-  catch{
-    alerta("Hubo un error de conexión");
+  else{
+    alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');
   }
   
 }
@@ -154,7 +154,7 @@ function crearObjetMensaje(codigo,contador)
         }
       ]
     }).then(function (index) { 
-      if(index==0) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      if(index==0) nextPageFunctionData('verPlano.html',verPlano,'https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf'); //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
       else if(index==1) nextPageFunctionData('ActualizarProductos.html',setBuscarProductoActualizar,codigo); //alert("modificara "+codigo);
       else if(index==2) alertaConfirm('Estas seguro de eliminar este producto? '+codigo,setEliminarProducto,codigo,contador);
     });
@@ -183,7 +183,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado,observaciones,fecha)
         else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
         else alerta("Pedido ya se encuentra en inventario");
       }
-      else if(index==1) window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      else if(index==1) nextPageFunctionData('verPlano.html',verPlano,'https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf');//window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
       else if(index==2) alerta("<b>Orden de Compra: </b><br>"+oc+"<br><br><b>Observaciones: </b><br>"+observaciones+"<br><br><b>Fecha de entrega estimada:</b><br>"+fecha);
       else if(index==3) nextPageFunctionData('pedidosModificar.html',setModificarBuscarPedido,id); //alert("modificara "+codigo);
       else if(index==4) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedido,id);
@@ -594,11 +594,7 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
   };
 
 }
-function retroceso(){
-  document.addEventListener("backbutton", function(){
-    //alert("entro");
-  }, false);
-}
+
 
 function agregarCeros(numero)
 {

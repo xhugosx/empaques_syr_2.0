@@ -229,3 +229,11 @@ function cargarArchivoProductoActualizar()
 
 }
 
+function verPlano(plano)
+{
+    $("#loadingPlano").empty();
+    $("#plano").attr("src","https://docs.google.com/gview?url="+plano+"&embedded=true")
+    console.log( $("#plano").attr("src"));
+    //$("#plano").getAttribute("src")
+    //alerta(plano);
+}
