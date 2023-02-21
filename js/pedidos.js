@@ -22,6 +22,8 @@ function buscarDtospedidos()
     if(cliente == "") setPedidosCliente();
     if(cliente != "") setPedidosClienteFiltrado(cliente);
 
+    setPedidosInsertos();
+
     $("#searchPedidoCliente").val("");
     $("#searchPedido").val("");
 
@@ -172,27 +174,57 @@ function setAgregarPedido()
     var fecha_oc = $("#pedidoFechaOc").val();
     var observaciones = $("#pedidoObservaciones").val();
     var resistencia = $("#pedidoResistencia").val();
+    var papel = $("#pedidoPapel").val();
     
-    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia))
+    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia) && datoVacio(papel))
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
-        //alert('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&oc='+oc+'&fecha_oc='+fecha_oc);
-    }
-    else
-    {
-        alerta('Espacios vacios! <br>(No escribir "CEROS")');
-    }
         
+        if(localStorage.getItem('insertos'))
+        {
+            let bandera = true;
+
+            for(let i = 0; i<localStorage.getItem('insertos');i++)
+            {
+                //console.log("#inserto"+(i+1));
+                if($("#inserto"+(i+1)).val() == "" || $("#resistencia"+(i+1)).val() == "" || $("#cantidad"+(i+1)).val() == "") 
+                {
+                    //console.log("entro");
+                    bandera = false;
+                    break;
+                    
+                } 
+            }
+            if( bandera ) 
+            {
+                let insertos = [];
+                let resistencias = [];
+                let cantidades = [];
+                for(let i = 0; i<localStorage.getItem('insertos');i++)
+                {
+                    //arrayDatos
+                    resistencias.push($("#resistencia"+(i+1)).val()); 
+                    cantidades.push($("#cantidad"+(i+1)).val());
+                    insertos.push($("#inserto"+(i+1)).val());
+                    
+                }
+                setAgregarPedidoInserto(codigo,resistencias,cantidades,insertos,fecha_oc);
+                servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&papel='+papel+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
+            }
+            else alerta("Espacios vacios en insertos")
+        }
+        else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&papel='+papel+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
+   }
+    else alerta('Espacios vacios en producto! <br>(No escribir "CEROS")');
 }
 function getAgregarPedido(respuesta)
 {
     
     if(respuesta.responseText=="1") 
     {
-        alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?",limpiarRegistrosPedidos,resetearPilaFunction,buscarDtospedidos)
+        alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?",limpiarRegistrosPedidos,resetearPilaFunction,buscarDtospedidos);
     }
     else alerta('hubo un error al insertar!'+respuesta.responseText);
-    
+    //console.log(respuesta.reponseText);
 }
 
 function setBuscarProductoCliente(codigo)
@@ -228,6 +260,8 @@ function getBuscarProductoCliente(respuesta)
         $('#pedidoId').val(anio+agregarCeros(arrayJson[0].codigo)+"-"+cantidad);
         //activar boton agregar
         $("#botonAgregarPedido").attr('disabled', false);
+        //console.log(arrayJson);
+
     }
     $("#pedidoClienteProgress").empty();
     $("#pedidoProductoProgress").empty();
@@ -268,13 +302,13 @@ function getEliminarpedido(respuesta)
 function setModificarBuscarPedido(id)
 {
     var type = filtro ? 1 : 2;
-    console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id);
+    //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id);
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id,getModificarBuscarPedido);
     
 }
 function getModificarBuscarPedido(respuesta)
 {
-    console.log(respuesta.responseText);
+    //console.log(respuesta.responseText);
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     arrayJson[0] = JSON.parse(arrayJson[0]);
@@ -283,6 +317,7 @@ function getModificarBuscarPedido(respuesta)
     $("#pedidoModificarProducto").val(arrayJson[0].producto);
     $("#pedidoModificarCliente").val(arrayJson[0].cliente);
     $("#pedidoModificarResistencia").val(arrayJson[0].resistencia);
+    $("#pedidoModificarPapel").val(arrayJson[0].papel);
     $("#pedidoModificarCantidad").val(arrayJson[0].cantidad);
     $("#pedidoModificarOc").val(arrayJson[0].oc);
     $("#pedidoModificarFechaOc").val(arrayJson[0].fecha_oc);
@@ -299,6 +334,7 @@ function setModificarPedido()
 {
     var id = $("#pedidoModificarId").val();
     var resistencia = $("#pedidoModificarResistencia").val();
+    var papel = $("#pedidoModificarPapel").val();
     var cantidad = $("#pedidoModificarCantidad").val();
     var oc = $("#pedidoModificarOc").val();
     var fecha = $("#pedidoModificarFechaOc").val();
@@ -306,7 +342,7 @@ function setModificarPedido()
 
     if(datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha))
     {
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id+"&observaciones="+observaciones,getModificarPedido)
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&papel="+papel+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id+"&observaciones="+observaciones,getModificarPedido)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
     
@@ -390,18 +426,16 @@ function enlistarPedidos(arrayJson,i)
     html1 += '        <strong>'+arrayJson.codigo+'</strong>';
     html1 += '    </div>';
     html1 += '    <div class="center romperTexto">';
-    html1 += '        <span class="list-item__title">'+arrayJson.producto+'</span>'; 
+    html1 += '        <span class="list-item__title">'+arrayJson.producto+'&nbsp;|&nbsp;<b style="color:#404040">'+arrayJson.resistencia+' '+arrayJson.papel+'</b></span>'; 
     html1 += '        <span class="list-item__subtitle">';
     html1 += '<span>'+arrayJson.cliente+'</span>';
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';
-    html1 += '         <div class="centrar">';
-    html1 += arrayJson.resistencia;               
-    html1 += '               <br>';                    
-    html1 += '               <b>'+separator(arrayJson.cantidad)+' <span style="font-size:10px">pzas</span></b>';
+    html1 += '         <div class="centrar">';                  
+    html1 += '               <b style="font-size:16px">'+separator(arrayJson.cantidad)+' <span style="font-size:14px">pzas</span></b>';
     html1 += '         </div>';
-   html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color1+'" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color1+'" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '    </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
@@ -422,7 +456,14 @@ function limpiarRegistrosPedidos()
     $("#pedidoCliente").val('');
     $("#pedidoCantidad").val('');
     $("#pedidoOc").val('');
-    $("#pedidoFechaOc").val('');
+    $("#pedidoOc").val('');
+    $("#pedidoObservaciones").val('');
+    $("#pedidoResistencia").val('');
+
+    $("#insertos").empty();
+    limpiarLocalStorage();
+    $("#botonAgregarPedido").attr('disabled', true);
+    //$("#pedidoFechaOc").val('');
 }
 
 function limpiarRegistrosPedidos2()

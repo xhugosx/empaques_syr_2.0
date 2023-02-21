@@ -13,8 +13,12 @@ function setMostrarProgramaArtesanos()
 function getMostrarProgramaArtesanos(respuesta)
 {
     var resultado = respuesta.responseText;
-    const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const tempArrayJson  = resultado.split('°'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const arrayJson = tempArrayJson[0].split("|");
+    const arrayJson1 = tempArrayJson[1].split("|");
     //creamos una copia 
+
+    //ENLISTAR PRODUCTOS CAJAS
 
     resultado = enlistarPrograma(arrayJson,1);
     $('#datosProgramaFlexo').empty();
@@ -32,6 +36,8 @@ function getMostrarProgramaArtesanos(respuesta)
     resultado = enlistarPrograma(arrayJson,4);
     $('#datosProgramaSuajado').empty();
     setDataPage('#datosProgramaSuajado',0,resultado);
+
+    //ENLISTAR INSERTOS
 }
 //funcion para mostrar rpograma de afilador 2
 
@@ -43,16 +49,21 @@ function setMostrarProgramaAfilador1()
 function getMostrarProgramaAfilador1(respuesta)
 {
     var resultado = respuesta.responseText;
-    const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const tempArrayJson  = resultado.split('°'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const arrayJson = tempArrayJson[0].split("|");
+    const arrayJson1 = tempArrayJson[1].split("|");
     
+    //ENLISTAR PRODUCTOS CAJAS
 
     resultado = enlistarPrograma(arrayJson,5);
     $('#datosProgramaCortadora1').empty();
     setDataPage('#datosProgramaCortadora1','#loadingCortadora1',resultado);
 
     resultado = enlistarPrograma(arrayJson,6);
-    $('#datosProgramaCaiman').empty();
-    setDataPage('#datosProgramaCaiman',0,resultado);
+    $('#datosProgramaCaiman1').empty();
+    setDataPage('#datosProgramaCaiman1',0,resultado);
+
+    //ENLISTAR INSERTOS
 
 }
 
@@ -64,20 +75,30 @@ function setMostrarProgramaAfilador2()
 function getMostrarProgramaAfilador2(respuesta)
 {
     var resultado = respuesta.responseText;
-    const arrayJson  = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const tempArrayJson  = resultado.split('°'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const arrayJson = tempArrayJson[0].split("|");
+    const arrayJson1 = tempArrayJson[1].split("|");
     
+    //ENLISTAR PRODUCTOS CAJAS
 
-    resultado = enlistarPrograma(arrayJson,7);
-    $('#datosProgramaCortadora2').empty();
-    setDataPage('#datosProgramaCortadora2','#loadingCortadora2',resultado);
 
-    resultado = enlistarPrograma(arrayJson,8);
-    $('#datosProgramaRanurado').empty();
-    setDataPage('#datosProgramaRanurado',0,resultado);
+    //ENLISTAR INSERTOS
 
-    resultado = enlistarPrograma(arrayJson,9);
-    $('#datosProgramaArmadoFlejado').empty();
-    setDataPage('#datosProgramaArmadoFlejado',0,resultado);
+    resultado = enlistarProgramaInserto(arrayJson1,7);
+    $('#datosProgramaCortadora21').empty();
+    setDataPage('#datosProgramaCortadora21','#loadingCortadora2',resultado);
+
+    resultado = enlistarProgramaInserto(arrayJson1,8);
+    $('#datosProgramaRanurado1').empty();
+    setDataPage('#datosProgramaRanurado1',0,resultado);
+
+    resultado = enlistarProgramaInserto(arrayJson1,10);
+    $('#datosProgramaSuajadoI').empty();
+    setDataPage('#datosProgramaSuajadoI',0,resultado);
+
+    resultado = enlistarProgramaInserto(arrayJson1,9);
+    $('#datosProgramaArmadoFlejado1').empty();
+    setDataPage('#datosProgramaArmadoFlejado1',0,resultado);
 
 }
 
@@ -135,7 +156,11 @@ function getLlenarProcesoPrograma(respuesta)
 function setProcesosProgramaEntradaPedido(id,cantidad)
 {
     //id es id de lista de pedidos
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/procesosEntradaProgramaPedido.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido)
+    var codigo = id.split("-");
+    if(codigo[0].length == 7) 
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/procesosEntradaProgramaPedido.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
+    else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/procesosEntradaProgramaPedidoInserto.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
+    
 }
 function getProcesosProgramaEntradaPedido(respuesta)
 {
@@ -199,6 +224,48 @@ function enlistarPrograma(arrayJson,tipo)
         }
 
     }
+    if(html1 == "") html1 += '<ons-card  id="contenedorPrograma"> <center> <h2>Excelente haz terminado!</h2> </center> </ons-card>';
+    html1 += '<br><br>';
+
+    return html1;
+}
+
+function enlistarProgramaInserto(arrayJson,tipo)
+{
+    //alert("entro");
+    if(arrayJson=="" || arrayJson == "0") return '<ons-card  id="contenedorPrograma"> <center> <h2>Excelente haz terminado!</h2> </center> </ons-card>';
+    let html1 = '';
+    //console.log(arrayJson);
+    for(var i=0;i<arrayJson.length-1;i++) 
+    {
+        arrayJson[i] = verificarError(arrayJson[i]) ? JSON.parse(arrayJson[i]) : arrayJson[i]; //convertimos los jsonText en un objeto json
+        if(arrayJson[i].proceso == tipo && arrayJson[i].estado != 3)
+        {
+            //html1 += '<ons-list-header>';                                                                                                 	
+                                                                                                                                                                
+            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\')">';
+            html1 += '<ons-list-item modifier="nodivider">';
+            html1 += '    <div class="left">';
+            html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
+            html1 += '    </div>';
+            html1 += '    <div class="center romperTexto">';
+            html1 += '        <span class="list-item__title">'+arrayJson[i].producto+'| <b>'+arrayJson[i].observaciones+'</b></span>'; 
+            html1 += '        <span class="list-item__subtitle">';
+            html1 += arrayJson[i].cliente;
+            html1 += '        </span>';
+            html1 += '    </div>';
+            html1 += '    <div class="right">';
+            html1 += '         <div class="centrar">';
+            html1 += arrayJson[i].resistencia;               
+            html1 += '               <br>';                    
+            html1 += '               <b>'+ separator(arrayJson[i].cantidad) +' pzas</b>';
+            html1 += '         </div>';
+            html1 += '    </div>';
+            html1 += '</ons-list-item>';
+            html1 += '</ons-card>';
+        }
+
+    }
     if(html1 == "") return '<ons-card  id="contenedorPrograma"> <center> <h2>Excelente haz terminado!</h2> </center> </ons-card>';
     html1 += '<br><br><br>';
 
@@ -207,7 +274,7 @@ function enlistarPrograma(arrayJson,tipo)
 function setagregarPrograma(id)
 {
     var procesos = "";
-    for(var i = 0; i<9 ; i++)
+    for(var i = 0; i<10 ; i++)
     {
         if ($('#check'+(i+1)).prop('checked')) procesos += (i+1) +",";
     } 
@@ -215,19 +282,20 @@ function setagregarPrograma(id)
    if(procesos == "") alerta("No haz seleccionado niguna");
    else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
 
-   
+   console.log('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
 } 
 function getAgregarPrograma(respuesta)
 {
     
-    if(respuesta.responseText=="1") 
+    if(respuesta.responseText=="1" || respuesta.responseText == 2) 
     {
         alerta("Producto se agrego al programa");
-        cerrarDialogo('my-dialog-programa');
+        if(respuesta.responseText == 1) cerrarDialogo('my-dialog-programa');
+        else cerrarDialogo('my-dialog-programa1')
         buscarDtospedidos();
     }
     else alerta('hubo un error al insertar!'+respuesta.responseText);
-
+    //console.log(respuesta.responseText)
     //limpiar select 
     limpiarSelectPrograma();
     

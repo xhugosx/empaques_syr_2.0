@@ -190,6 +190,36 @@ function crearObjetMensajePedido(oc,id,codigo,estado,observaciones,fecha)
       
     });
 }
+function crearObjetMensajePedidoInserto(id,codigo,estado) 
+{
+  let titulo = "";
+  if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
+    ons.openActionSheet({
+      title: titulo,
+      cancelable: true,
+      buttons: [
+        '<b>Programar<b/>',
+        'Ver Plano',
+        'Modificar',
+        {
+          label:'Eliminar',
+          modifier: 'destructive'
+        }
+      ]
+    }).then(function (index) { 
+      if(index==0)  
+      {
+        if(estado == 0) Abrirdialogo('my-dialog-programa1','dialogPrograma1.html',id);
+        else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
+        else alerta("Pedido ya se encuentra en inventario");
+      }
+      else if(index==1) nextPageFunctionData('verPlano.html',verPlano,'https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf');
+      //else if(index==2) alerta("<b>Orden de Compra: </b><br>"+oc+"<br><br><b>Observaciones: </b><br>"+observaciones+"<br><br><b>Fecha de entrega estimada:</b><br>"+fecha);
+      else if(index==2) nextPageFunctionData('pedidosInsertoModificar.html',setModificarBuscarPedidoInserto,id); //alert("modificara "+codigo);
+      else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedidoInserto,id);
+      
+    });
+}
 
 function crearObjetMensajeCliente(id,i) 
 {
@@ -506,6 +536,8 @@ function Abrirdialogo(id,template,idProducto)
       dialog.show();
     });
   }
+  //eliminar div dentro
+  
 }
 function cerrarDialogo(id)
 {
@@ -631,7 +663,7 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
         '<i class="fa-solid fa-circle" style="color: #00A514"></i> COMPLETO',
         '<i class="fa-solid fa-circle" style="color: #000000"></i> CANCELADA',
         '<i class="fa-solid fa-circle" style="color: #E1D000"></i> PROGRAMADO',
-        'Actualizar',
+        'Modificar',
         {
           label:'Eliminar',
           modifier: 'destructive'
@@ -698,19 +730,14 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
     });
 }
 
-/*function alertPromptGenerarSalida(cantidad)
+//funcion para validar si  un arreglo esta vacio o si le falta un dato
+function arrayVacio(array)
 {
-  
-  ons.notification.prompt({
-    title: '',
-    inputType: 'number',
-    defaultValue: fechaHoy(),
-    buttonLabels: [
-      'Filtrar'
-    ],
-    message: 'Agrega salida'
-    }).then(function(input) {
-      
-      alerta("text date: "+input)
-  });
-}*/
+  let j = 0;
+  for(let i=0; i<array.length; i++)
+  {
+    if(array[i] == "") j++;
+  }
+  return j;
+  //return arrays[0];
+}

@@ -56,11 +56,12 @@ function setAgregarPedidoLamina()
     var largo = $('#largoPL').val();
     var p_o = $('#pzas_ordenadasPL').val();
     var resistencia = $('#resistenciaPL').val();
+    var papel = $('#papelPL').val();
     //if($('#checkCaja')[0].checked) var caja = $('#cajaLP').val(); //check para tomar el valor de caja
     var fecha = $('#fechaLP').val();
     //var observaciones = $('#observacionesPL').val();
 
-    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor))
+    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel))
     servidorPost("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/add.php",getAgregarPedidoLamina,formData);
     else alerta("Existen datos vacios");
     
@@ -73,6 +74,7 @@ function getAgregarPedidoLamina(respuesta)
         resetearPilaFunction(mostrarTodoPedidosLamina);
     }
     else alerta("Inserta otra Orden de Compra");
+    console.log(respuesta.responseText);
 }
 function setActualizarEstadoPL(estado,o_c,cantidad,entrada)
 {
@@ -111,6 +113,7 @@ function getBuscarActualizarPL(respuesta)
     $('#largo').val(arrayJson.largo);
     $('#pzas_ordenadas').val(arrayJson.pzas_ordenadas);
     $('#resistencia').val(arrayJson.resistencia);
+    $('#papel').val(arrayJson.papel);
     $('#fecha').val(arrayJson.fecha);
     $('#observaciones').val(arrayJson.observaciones);
     if(arrayJson.caja != "")
@@ -135,9 +138,10 @@ function setActualizarPL()
     var largo = $('#largo').val();
     var p_o = $('#pzas_ordenadas').val();
     var resistencia = $('#resistencia').val();
+    var papel = $('#papel').val();
     var fecha = $('#fecha').val();
 
-    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor))
+    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel))
     servidorPost("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/update.php?&o_c="+o_cTemp,getActualizarPL,formData);
     else alerta("Existen datos vacios");
     
@@ -217,7 +221,7 @@ function enlistarPedidosLamina(arrayJson)
     html1 += '        <strong style="width:38px">'+o_c+'</strong>';
     html1 += '    </div>';
     html1 += '    <div class="center romperTexto">';
-    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
+    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' | <b>'+arrayJson.resistencia+' '+arrayJson.papel+'</b></span>'; 
     html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.cliente+'</b></span>' : "";
     html1 += '    </div>';
     html1 += '    <div class="right">';
