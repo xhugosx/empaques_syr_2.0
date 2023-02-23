@@ -48,6 +48,7 @@ function agregarHtmlInserto()
     html += '                    <option value="71 ECT">71 ECT</option>';
     html += '                </ons-select><br>';
     html += '                <ons-input id="cantidad'+i+'" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>';
+    html += '                <ons-input id="notas'+i+'" type="text" class="input-100" cols="30" rows="1" placeholder="Notas (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>';
     html += '            </div>';
     html += '        </ons-list-item>';
     html += '    </ons-card>';
@@ -77,8 +78,8 @@ function limpiarLocalStorage()
 
 function setAgregarPedidoInserto(...datos)
 {
-    //alert("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]);
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4],getAgregaPedidoInserto);
+    console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4]+"&notas="+datos[5]);
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4]+"&notas="+datos[5],getAgregaPedidoInserto);
 }
 function getAgregaPedidoInserto(respuesta)
 {
@@ -133,6 +134,7 @@ function getModificarBuscarPedidoInserto(respuesta)
     $("#inserto").val(arrayJson[0].observaciones);
     $("#resistencia").val(arrayJson[0].resistencia);
     $("#cantidad").val(arrayJson[0].cantidad);
+    $("#notas").val(arrayJson[0].notas);
 }
 function setModificarPedidoInserto()
 {
@@ -140,10 +142,11 @@ function setModificarPedidoInserto()
     var observaciones = $("#inserto").val();
     var resistencia = $("#resistencia").val();
     var cantidad = $("#cantidad").val();
+    var notas = $("#notas").val();
 
     if(datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(observaciones))
     {
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&id="+id+"&observaciones="+observaciones,getModificarPedidoInserto)
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&id="+id+"&observaciones="+observaciones+"&notas="+notas,getModificarPedidoInserto)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
     
@@ -184,7 +187,7 @@ function enlistarPedidosInsertos(arrayJson,i)
     var color = "";
     var entregado = "";
     var estado = "";
-    if(arrayJson.oc == "FALTANTE") 
+    if(arrayJson.id[(arrayJson.id).length-1] == "F") 
     {
         color = "#a01a1a";
         entregado = "Faltante";
@@ -204,9 +207,9 @@ function enlistarPedidosInsertos(arrayJson,i)
     else if(arrayJson.estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>'; 
     else estado = '<i class="fa-solid fa-circle" style="color: #F2F2F2;"></i>'; 
     
-    var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
+    var color1 = arrayJson.notas == "" ? "gray" : "rgb(115, 168, 115)";
     
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedidoInserto(\''+arrayJson.id+'\',\''+arrayJson.codigo+'\',\''+arrayJson.estado+'\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedidoInserto(\''+arrayJson.id+'\',\''+arrayJson.codigo+'\',\''+arrayJson.estado+'\',\''+arrayJson.notas+'\')">'
     html1 += '<ons-list-header style="background:white;">'+estado+'&emsp;';
     html1 += arrayJson.id;
     html1 += '    &emsp;';

@@ -199,15 +199,17 @@ function setAgregarPedido()
                 let insertos = [];
                 let resistencias = [];
                 let cantidades = [];
+                let notas = [];
                 for(let i = 0; i<localStorage.getItem('insertos');i++)
                 {
                     //arrayDatos
                     resistencias.push($("#resistencia"+(i+1)).val()); 
                     cantidades.push($("#cantidad"+(i+1)).val());
                     insertos.push($("#inserto"+(i+1)).val());
+                    notas.push($("#notas"+(i+1)).val());
                     
                 }
-                setAgregarPedidoInserto(codigo,resistencias,cantidades,insertos,fecha_oc);
+                setAgregarPedidoInserto(codigo,resistencias,cantidades,insertos,fecha_oc,notas);
                 servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&papel='+papel+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
             }
             else alerta("Espacios vacios en insertos")

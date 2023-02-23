@@ -190,7 +190,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado,observaciones,fecha)
       
     });
 }
-function crearObjetMensajePedidoInserto(id,codigo,estado) 
+function crearObjetMensajePedidoInserto(id,codigo,estado,notas) 
 {
   let titulo = "";
   if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
@@ -200,6 +200,7 @@ function crearObjetMensajePedidoInserto(id,codigo,estado)
       buttons: [
         '<b>Programar<b/>',
         'Ver Plano',
+        'Notas',
         'Modificar',
         {
           label:'Eliminar',
@@ -214,9 +215,9 @@ function crearObjetMensajePedidoInserto(id,codigo,estado)
         else alerta("Pedido ya se encuentra en inventario");
       }
       else if(index==1) nextPageFunctionData('verPlano.html',verPlano,'https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf');
-      //else if(index==2) alerta("<b>Orden de Compra: </b><br>"+oc+"<br><br><b>Observaciones: </b><br>"+observaciones+"<br><br><b>Fecha de entrega estimada:</b><br>"+fecha);
-      else if(index==2) nextPageFunctionData('pedidosInsertoModificar.html',setModificarBuscarPedidoInserto,id); //alert("modificara "+codigo);
-      else if(index==3) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedidoInserto,id);
+      else if(index==2) alerta("<b>Notas: </b><br><br>"+notas);
+      else if(index==3) nextPageFunctionData('pedidosInsertoModificar.html',setModificarBuscarPedidoInserto,id); //alert("modificara "+codigo);
+      else if(index==4) alertaConfirm('Estas seguro de eliminar este pedido? '+id,setEliminarPedidoInserto,id);
       
     });
 }
@@ -237,7 +238,7 @@ function crearObjetMensajeCliente(id,i)
     });
 }
 
-function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia) 
+function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia,observaciones) 
 {
   
     ons.openActionSheet({
@@ -257,7 +258,7 @@ function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia)
       if(index == 0) setActualizarEstado(idP,2);
       else if(index == 1) setActualizarEstado(idP,1);
       else if(index == 2) setActualizarEstado(idP,0); 
-      else if(index == 3) alertPrompt(id,cantidad,codigo,resistencia);
+      else if(index == 3) alertPrompt(id,cantidad,codigo,resistencia,observaciones);
       else if(index == 4) alertaConfirPrograma("Estas seguro de eliminar este pedido del programa?",setEliminarPrograma,id);//eliminar
       
     });
@@ -315,7 +316,7 @@ function alertConfirmReporteFaltante(mensaje,json,input)
       }
  });
 }
-function alertPrompt(id,cantidad,codigo,resistencia)
+function alertPrompt(id,cantidad,codigo,resistencia,observaciones)
 {
   //el id es el id de la lista del pedido
   //json = JSON.parse(json);
@@ -342,7 +343,7 @@ function alertPrompt(id,cantidad,codigo,resistencia)
               if(idx==0) 
               {
                 cantidad -= input;
-                json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia"],[id,cantidad,codigo,resistencia]));
+                json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia","observaciones"],[id,cantidad,codigo,resistencia,observaciones]));
       
                 alertConfirmReporteFaltante("La cantidad es menor al del pedido, ¿Deseas generar reporte de faltante?",json,input);
               }

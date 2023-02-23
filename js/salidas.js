@@ -4,11 +4,29 @@ function mostrarTodoSalida()
     localStorage.setItem("bandera",1);
     setMostrarSalidaCajas();
     setMostrarSalidaLamina();
+    setMostrarSalidaInserto();
     //aqui iran las otras dos funciones
 }
+//MOSTRAR SALIDAS INSERTO
+function setMostrarSalidaInserto()
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/inserto/select.php",getMostrarSalidaInserto);
+}
+function getMostrarSalidaInserto(respuesta)
+{
+    var resultado = respuesta.responseText;
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    //alerta(resultado);
+    listaInfinita('datosInsertoInventario','insertoSalidasEntradasLoading',arrayJson,enlistarSalidasInserto);
+}
+
 function setMostrarSalidaCajasSearch(search)
 {
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/select.php?search="+search,getMostrarSalidaCajas);
+}
+function setMostrarSalidaInsertoSearch(search)
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/inserto/select.php?search="+search,getMostrarSalidaInserto);
 }
 function setMostrarSalidaCajas()
 {
@@ -45,6 +63,31 @@ function buscarEntradaSalidaCajas(search,e)
         //setMostrarSalidaCajas();
     }
 }
+function buscarEntradaSalidaInserto(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#insertoSalidasEntradasLoading").empty();
+        $("#insertoSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        let bandera = localStorage.getItem("bandera");
+        if(bandera == 1) setMostrarSalidaInsertoSearch(search);
+        else setMostrarEntradaInsertoSearch(search);
+        
+        //console.log(bandera);
+    }
+    else if(search == "") 
+    {
+        //validar si es entrada o salida
+        $("#insertoSalidasEntradasLoading").empty();
+        $("#insertoSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        let bandera = localStorage.getItem("bandera");
+        if(bandera == 1) setMostrarSalidaInserto();
+        else setMostrarEntradaInserto();
+        //setMostrarEntradaCajas();
+        //setMostrarSalidaCajas();
+    }
+}
 function setMostrarSalidalaminaSearch(search)
 {
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php?search="+search,getMostrarSalidaLamina)
@@ -67,8 +110,8 @@ function buscarEntradaSalidaLamina(search,e)
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13) 
     {
-        //$("#cajaSalidasEntradasLoading").empty();
-        //$("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        $("#laminaSalidasEntradasLoading").empty();
+        $("#laminaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         let bandera = localStorage.getItem("bandera");
         if(bandera == 1) setMostrarSalidalaminaSearch(search);
         else setMostrarEntradalaminaSearch(search);
@@ -77,8 +120,8 @@ function buscarEntradaSalidaLamina(search,e)
     else if(search == "") 
     {
         //validar si es entrada o salida
-        //$("#cajaSalidasEntradasLoading").empty();
-       //$("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        $("#laminaSalidasEntradasLoading").empty();
+        $("#laminaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         let bandera = localStorage.getItem("bandera");
         if(bandera == 1) setMostrarSalidaLamina();
         else setMostrarEntradaLamina();
@@ -111,7 +154,10 @@ function setActualizaObservaciones()
     $("#datoDialog").empty();
     $('#datoDialog').text(observaciones);
     
+    var codigo = idSalidasEntradas.split("-");
+    if(codigo[0].length == 7)
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservaciones.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
+    else servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservacionesInserto.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
 }
 function getActualizarObservaciones(respuesta)
 {
@@ -202,6 +248,30 @@ function enlistarSalidasLamina(arrayJson)
     html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '        </div>';
     html1 += '</ons-list-item>';
+    html1 += '</ons-card>';
+
+    return html1;
+}
+
+function enlistarSalidasInserto(arrayJson)
+{
+    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
+    let html1 = "";
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">';
+    html1 += '    <ons-list-header style="background:white">'+arrayJson.id_lp+' <b style="color: rgb(211, 64, 64);">Entregado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
+    html1 += '    <ons-list-item modifier="nodivider">';
+    html1 += '        <div class="left">';
+    html1 +=              '<i class="fa-solid fa-box fa-2x"></i>';
+    html1 += '        </div>';
+    html1 += '        <div class="center">';
+    html1 += '            <span class="list-item__title"><b>'+arrayJson.inserto+'</b> - '+ arrayJson.resistencia +'</span>';
+    html1 += '            <span class="list-item__subtitle"><b>'+arrayJson.codigo+'</b>&nbsp;'+ arrayJson.producto +'<br>'+ arrayJson.nombre +'</span>';
+    html1 += '        </div>';
+    html1 += '        <div class="right">';
+    html1 += '            <span class="notification">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '        </div>';
+    html1 += '    </ons-list-item>';
     html1 += '</ons-card>';
 
     return html1;

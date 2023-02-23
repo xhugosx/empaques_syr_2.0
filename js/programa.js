@@ -127,8 +127,7 @@ function getEliminarPrograma(respuesta)
 {
     if(respuesta.responseText=="1")
     {
-       
-        alerta("Se ah eliminado del programa");
+        alerta("Se ha eliminado del programa");
         refreshPrograma();
     } 
     else alerta("No se pudo eliminar!");
@@ -175,8 +174,10 @@ function getProcesosProgramaEntradaPedido(respuesta)
 // funcion para agregar faltante a lista de pedidos
 function setAgregarFaltante(json)
 {
-    //console.log('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia);
+    var codigo = (json.id).split("-");
+    if(codigo[0].length == 7) 
     servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&observaciones=',getAgregarFaltante);
+    else servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?id="+json.id+"-F&codigo="+json.codigo+"&resistencia="+json.resistencia+"&cantidad="+json.cantidad+"&observaciones="+json.observaciones,getAgregarFaltante);
 }
 function getAgregarFaltante(respuesta)
 {
@@ -186,6 +187,7 @@ function getAgregarFaltante(respuesta)
         refreshPrograma();
     }
     else alerta("hubo un error"+ respuesta.responseText);
+    console.log(respuesta);
 }
 //funcion para enlistar los programas
 function enlistarPrograma(arrayJson,tipo)
@@ -243,7 +245,7 @@ function enlistarProgramaInserto(arrayJson,tipo)
         {
             //html1 += '<ons-list-header>';                                                                                                 	
                                                                                                                                                                 
-            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\')">';
+            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\',\''+arrayJson[i].observaciones+'\')">';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
@@ -326,7 +328,7 @@ function verificarError(objeto)
 }
 function limpiarSelectPrograma()
 {
-    for(var i = 0; i<9 ; i++)
+    for(var i = 0; i<10 ; i++)
     {
         $('#check'+(i+1)).val([])
     } 

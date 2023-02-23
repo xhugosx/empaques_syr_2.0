@@ -834,17 +834,19 @@
     <!-- VISTA 2 insertos entrada/salida-->
     <template id="insertoSalidasEntradas.html">
     <ons-page>
+        <div id="insertoSalidasEntradasLoading">
+        </div>
 
         <ons-list>
             <ons-list-item>
-                <ons-search-input id="searchInsertoInventario" placeholder="Buscar: "></ons-search-input>
+                <ons-search-input id="searchInsertoEntradaSalida" placeholder="Buscar: inserto / producto / cliente / id" onkeyup="buscarEntradaSalidaInserto(this.value,event)"></ons-search-input>
             </ons-list-item>
         </ons-list>
         
 
-        <div id="datosInsertoInventario">
-            
-        </div>
+        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-lazy-repeat id="datosInsertoInventario"></ons-lazy-repeat>
+        </ons-list>
 
     </ons-page>
     </template>
@@ -929,16 +931,18 @@
     <template id="insertoInventario.html">
     <ons-page id="Tab2">
 
+        <div id="insertoInventarioLoading">
+        </div>
+
         <ons-list>
             <ons-list-item>
-                <ons-search-input id="searchInsertoInventario" placeholder="Buscar: "></ons-search-input>
+                <ons-search-input id="searchInsertoInventario" placeholder="Buscar: codigo / producto / cliente / inserto" onkeyup="setMostrarInventarioInsertoSearch(this.value,event)"></ons-search-input>
             </ons-list-item>
         </ons-list>
         
-
-        <div id="datosInsertoInventario">
-            
-        </div>
+        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-lazy-repeat id="datosInsertoInventario"></ons-lazy-repeat>
+        </ons-list>
 
     </ons-page>
     </template>
@@ -972,26 +976,50 @@
 
     <!-- TEMPLATE PARA MOSTRAR EL INVENTARIO DE LOS PEDIDOS-->
     <template id="InventarioPedidos.html">
-    <ons-page>
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Generar Salidas</div>
-        </ons-toolbar>
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Generar Salidas</div>
+            </ons-toolbar>
 
-        <div id="InventarioPedidosLoading">
-            <ons-progress-bar indeterminate></ons-progress-bar>
-        </div>
+            <div id="InventarioPedidosLoading">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
 
-        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="datosInventarioPedidos"></ons-lazy-repeat>
-        </ons-list>
-        
-        <ons-fab position="bottom right" onclick="setSalidaTotal(codigoCliente)">
-            <i class="fa-solid fa-truck-moving"></i>
-        </ons-fab>
-        
-        
-    </ons-page>
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosInventarioPedidos"></ons-lazy-repeat>
+            </ons-list>
+            
+            <ons-fab position="bottom right" onclick="setSalidaTotal(codigoCliente)">
+                <i class="fa-solid fa-truck-moving"></i>
+            </ons-fab>
+            
+            
+        </ons-page>
+    </template>
+
+    <!--TEMPLATE PARA INSERTO INDEPENDIENTES-->
+    <template id="inventarioPedidosInsertos.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Generar Salidas</div>
+            </ons-toolbar>
+
+            <div id="InventarioPedidosInsertoLoading">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosInventarioPedidosInserto"></ons-lazy-repeat>
+            </ons-list>
+            
+            <ons-fab position="bottom right" onclick="setSalidaTotalInserto(codigoCliente,insertoGlobal)">
+                <i class="fa-solid fa-truck-moving"></i>
+            </ons-fab>
+            
+            
+        </ons-page>
     </template>
 <!-- FIN DE INVENTARIO-->
 
@@ -1502,6 +1530,7 @@
                             <option value="71 ECT">71 ECT</option> 
                         </ons-select><br> 
                         <ons-input id="cantidad" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input> 
+                        <ons-input id="notas" type="notas" class="input-100" cols="30" rows="1" placeholder="Notas (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input> 
                     </div> 
                 </ons-list-item>
                 <ons-list-item modifier="nodivider">
