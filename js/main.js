@@ -22,6 +22,16 @@ function alertComfirm(mensaje,botones,miFuncion,json)
     } 
   });
 }
+function mensajeArriba(titulo,botones,funcion,datos) 
+{
+    ons.openActionSheet({
+      title: titulo,
+      cancelable: true,
+      buttons: botones
+    }).then(function (index) { 
+      funcion(index,datos)
+    });
+}
 //function convertir json en array
 function conversionJsonArray(json)
 {
@@ -238,7 +248,7 @@ function crearObjetMensajeCliente(id,i)
     });
 }
 
-function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia,observaciones) 
+function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia,observaciones,papel) 
 {
   
     ons.openActionSheet({
@@ -258,7 +268,7 @@ function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia,obs
       if(index == 0) setActualizarEstado(idP,2);
       else if(index == 1) setActualizarEstado(idP,1);
       else if(index == 2) setActualizarEstado(idP,0); 
-      else if(index == 3) alertPrompt(id,cantidad,codigo,resistencia,observaciones);
+      else if(index == 3) alertPrompt(id,cantidad,codigo,resistencia,observaciones,papel);
       else if(index == 4) alertaConfirPrograma("Estas seguro de eliminar este pedido del programa?",setEliminarPrograma,id);//eliminar
       
     });
@@ -316,7 +326,7 @@ function alertConfirmReporteFaltante(mensaje,json,input)
       }
  });
 }
-function alertPrompt(id,cantidad,codigo,resistencia,observaciones)
+function alertPrompt(id,cantidad,codigo,resistencia,observaciones,papel)
 {
   //el id es el id de la lista del pedido
   //json = JSON.parse(json);
@@ -343,7 +353,7 @@ function alertPrompt(id,cantidad,codigo,resistencia,observaciones)
               if(idx==0) 
               {
                 cantidad -= input;
-                json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia","observaciones"],[id,cantidad,codigo,resistencia,observaciones]));
+                json = JSON.parse(crearJson(["id","cantidad","codigo","resistencia","observaciones","papel"],[id,cantidad,codigo,resistencia,observaciones,papel]));
       
                 alertConfirmReporteFaltante("La cantidad es menor al del pedido, ¿Deseas generar reporte de faltante?",json,input);
               }
@@ -550,6 +560,22 @@ function alertToast(mensaje,tiempo)
   ons.notification.toast(mensaje, { timeout: tiempo, animation: 'ascend' })
 }
 
+function showDialogo(id,idHtml)
+{
+  var dialog = document.getElementById(id);  
+  
+  if (dialog) {
+    dialog.show();
+  } else {
+    ons.createElement(idHtml, { append: true }).then(function(dialog) {
+        dialog.show();
+      });
+  }
+}
+function hideDialogo(id)
+{
+  document.getElementById(id).hide();
+}
 
 
 /*function alertPromptFiltroCalendario()

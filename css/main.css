@@ -180,6 +180,9 @@ i{
     border-radius: 20px;
     font-family: 'Candara';
 }
+.botonPrograma > b {
+     color: rgb(113, 113, 113);
+}
 
 .contenedor2Programa{
     background-color: rgba(255, 255, 255, 0.464);
@@ -278,3 +281,60 @@ span.list-item__subtitle{
     left: 20px;
     margin-top: 2px;
 }
+.important{
+    height: 45px;
+}
+.important > b{
+    font-size: 14px;
+    color: rgb(113, 113, 113);
+}
+
+.input-number
+{
+    width: 100px;
+    padding: 0 12px;
+    vertical-align: top;
+    text-align: center;
+    outline: none;
+}
+  
+.input-number,
+.input-number-decrement,
+.input-number-increment{
+    border: 1px solid #ccc;
+    height: 40px;
+    user-select: none;
+}
+  
+.input-number-decrement,
+.input-number-increment
+{
+    display: inline-block;
+  width: 30px;
+  line-height: 40px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+    
+}
+.input-number-decrement:active,.input-number-increment:active
+{
+    background: #ddd;
+}
+
+.input-number-decrement
+{
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    background: rgb(209, 96, 96);
+    
+}
+ 
+.input-number-increment
+{
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    background: rgb(98, 155, 100);
+}
+  

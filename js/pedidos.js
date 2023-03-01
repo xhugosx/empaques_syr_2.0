@@ -461,6 +461,7 @@ function limpiarRegistrosPedidos()
     $("#pedidoOc").val('');
     $("#pedidoObservaciones").val('');
     $("#pedidoResistencia").val('');
+    $("#pedidoPapel").val('');
 
     $("#insertos").empty();
     limpiarLocalStorage();

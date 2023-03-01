@@ -34,6 +34,24 @@
     <script src="./js/inventario.js"></script>
     <script src="./js/pedidos_lamina.js"></script>
     <script src="./js/pedidos_insertos.js"></script>
+    <script src="./js/consumibles.js"></script>
+    
+
+    <script>
+        /*document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady(){
+            document.addEventListener("backbutton", function(e){
+                if($.mobile.activePage.is('#homepage')){
+                    e.preventDefault();
+                    navigator.app.exitApp();
+                }
+                else {
+                    navigator.app.backHistory();
+                }
+            }, false);
+        }*/
+    </script>
 
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
@@ -58,32 +76,36 @@
                 <div class="title">
                     ADMINISTRACIÓN
                 </div>
+                <ons-card class="botonPrograma important" onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
+                    <i class="fa-solid fa-rectangle-list fa-lg"></i> <b>Pedidos pendientes</b> 
+                </ons-card>
+                <ons-card class="botonPrograma important" onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
+                    <i class="fa-solid fa-layer-group fa-lg"></i> <b>Pedidos lámina</b>
+                </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('clientes.html',setClientes)">
-                    <i class="fa-solid fa-users"></i> Clientes
+                    <i class="fa-solid fa-users"></i> <b>Clientes</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('productos1.html',setProductos)">
-                    <i class="fa-solid fa-boxes-stacked"></i> Productos
+                    <i class="fa-solid fa-boxes-stacked"></i> <b>Productos</b> 
                 </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
-                    <i class="fa-solid fa-rectangle-list"></i> Pedidos pendientes
-                </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
-                    <i class="fa-solid fa-layer-group"></i> Pedidos lámina
-                </ons-card>
+                
             </ons-card>
 
             <ons-card id="contenedorPrograma">
                 <div class="title">
                     PRODUCCIÓN
                 </div>
+                <ons-card class="botonPrograma" onclick="nextPageFunction('consumible.html',setConsumible)" >
+                    <i class="fa-solid fa-toolbox"></i> <b>Consumible</b> 
+                </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('inventario.html',mostrarTodoInventario)" >
-                    <i class="fa-solid fa-clipboard-list"></i> Inventario
+                    <i class="fa-solid fa-clipboard-list"></i> <b>Inventario</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoEntrada)">
-                    <i class="fa-solid fa-plus"></i> Entradas
+                    <i class="fa-solid fa-plus"></i> <b>Entradas</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoSalida)" >
-                    <i class="fa-solid fa-minus"></i> Salidas
+                    <i class="fa-solid fa-minus"></i> <b>Salidas</b> 
                 </ons-card>
             </ons-card>
 
@@ -97,10 +119,10 @@
                         CAJAS
                     </h4>
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaArtesanos.html',setMostrarProgramaArtesanos)">
-                        <i class="fa-solid fa-box"></i> Flexo
+                        <i class="fa-solid fa-box"></i> <b>Flexo</b> 
                     </ons-card>
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
-                        <i class="fa-solid fa-box"></i> Cortadora
+                        <i class="fa-solid fa-box"></i> <b>Cortadora</b> 
                     </ons-card>
                 </ons-card>
                 <ons-card class="contenedor2Programa">
@@ -108,7 +130,7 @@
                         INSERTOS
                     </h4>
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador2.html',setMostrarProgramaAfilador2)">
-                        <i class="fa-solid fa-box-open"></i> Cortadora
+                        <i class="fa-solid fa-box-open"></i> <b>Cortadora</b> 
                     </ons-card>
                 </ons-card>
                 
@@ -1022,6 +1044,82 @@
         </ons-page>
     </template>
 <!-- FIN DE INVENTARIO-->
+
+<!-- CONSUMIBLES -->
+
+    <!-- vista caja inventario-->
+    <template id="consumible.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Consumibles</div>
+            </ons-toolbar>
+            <div id="consumibleLoading">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchrConsumibleLoading" placeholder="Buscar: descripcion / cantidad" onkeyup="setMostrarConsumibleSearch(this.value,event)"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosConsumible"></ons-lazy-repeat>
+            </ons-list>
+
+            <ons-fab onclick="nextPage('agregarConsumible.html')" position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+            
+        </ons-page>
+    </template>
+
+    <template id="agregarConsumible.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Consumible</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form id="formPedidoLamina">
+                <ons-card id="contenedorInput"> 
+                
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="descripcion" name="descriopcion" class="input-100" type="text" step="any" placeholder="descripcion" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="cantidad" name="cantidad" class="input-100" type="number" step="any" placeholder="Cantidad"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+    
+
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setAgregarConsumible()">Agregar</ons-button>
+                    </ons-list-item>
+                
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
+
+<!-- FIN SE CONSUMIBLES -->
 
 <!-- PEDIDOS -->
     <template id="pedidos.html">
@@ -1948,6 +2046,21 @@
                     </ons-list-item>
                 </div>
 
+            </div>
+        </ons-dialog>
+    </template>
+
+    <template id="dialogConsumibleSalida.html">
+        <ons-dialog id="my-dialogConsumible" cancelable >
+            <div style="text-align: center; padding: 10px;">
+                <div class="botonCerrar" onclick="hideDialogo('my-dialogConsumible')"><i class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div> <b>Piezas:</b> 
+                <br>
+                <p id="datoDialog">
+                    <span class="input-number-decrement" onclick="decrementar()"><i style="color: white;" class="fa-solid fa-minus"></i></span>
+                    <input id="salidaConsumible" class="input-number" type="text" value="1" min="0" max="10">
+                    <span class="input-number-increment" onclick="incrementar()"><i style="color: white;" class="fa-solid fa-plus"></i></span>
+                </p>
+                <ons-button modifier="large" onclick="setActualizarConsumible(idConsumible)">Actualizar</ons-button>
             </div>
         </ons-dialog>
     </template>

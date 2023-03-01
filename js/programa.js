@@ -36,7 +36,7 @@ function getMostrarProgramaArtesanos(respuesta)
     resultado = enlistarPrograma(arrayJson,4);
     $('#datosProgramaSuajado').empty();
     setDataPage('#datosProgramaSuajado',0,resultado);
-
+//console.log(arrayJson)
     //ENLISTAR INSERTOS
 }
 //funcion para mostrar rpograma de afilador 2
@@ -64,7 +64,6 @@ function getMostrarProgramaAfilador1(respuesta)
     setDataPage('#datosProgramaCaiman1',0,resultado);
 
     //ENLISTAR INSERTOS
-
 }
 
 function setMostrarProgramaAfilador2()
@@ -176,7 +175,7 @@ function setAgregarFaltante(json)
 {
     var codigo = (json.id).split("-");
     if(codigo[0].length == 7) 
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&observaciones=',getAgregarFaltante);
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=',getAgregarFaltante);
     else servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?id="+json.id+"-F&codigo="+json.codigo+"&resistencia="+json.resistencia+"&cantidad="+json.cantidad+"&observaciones="+json.observaciones,getAgregarFaltante);
 }
 function getAgregarFaltante(respuesta)
@@ -187,7 +186,7 @@ function getAgregarFaltante(respuesta)
         refreshPrograma();
     }
     else alerta("hubo un error"+ respuesta.responseText);
-    console.log(respuesta);
+    //console.log(respuesta);
 }
 //funcion para enlistar los programas
 function enlistarPrograma(arrayJson,tipo)
@@ -203,7 +202,7 @@ function enlistarPrograma(arrayJson,tipo)
         {
             //html1 += '<ons-list-header>';                                                                                                 	
                                                                                                                                                                 
-            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\')">';
+            html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\',\'\',\''+arrayJson[i].papel+'\')">';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';

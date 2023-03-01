@@ -46,8 +46,8 @@ function agregarHtmlInserto()
     html += '                    <option value="51 ECT">51 ECT</option>';
     html += '                    <option value="61 ECT">61 ECT</option>';
     html += '                    <option value="71 ECT">71 ECT</option>';
-    html += '                </ons-select><br>';
-    html += '                <ons-input id="cantidad'+i+'" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>';
+    html += '                </ons-select><br><br>';
+    html += '                <ons-input id="cantidad'+i+'" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input><br><br><br>';
     html += '                <ons-input id="notas'+i+'" type="text" class="input-100" cols="30" rows="1" placeholder="Notas (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>';
     html += '            </div>';
     html += '        </ons-list-item>';
