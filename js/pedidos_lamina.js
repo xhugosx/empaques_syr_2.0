@@ -191,7 +191,7 @@ function asignarInputCaja(value)
         html += '            <i class="fa-solid fa-box"></i>';
         html += '        </div>';
         html += '        <div class="center">';
-        html += '            <ons-input name="caja" id="cajaLP" class="input-100" type="text" placeholder="Codigo Caja"  onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>';
+        html += '            <ons-input name="caja" id="cajaLP" class="input-100" type="text" placeholder="Codigo Caja (separa por comas)"  onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>';
         html += '        </div>';
         html += '    </ons-list-item>';
         html += '</ons-card>';
@@ -208,9 +208,21 @@ function asignarInputCaja(value)
 
 function enlistarPedidosLamina(arrayJson)
 {
+    var span = "";
+    if(arrayJson.producto != "")
+    {
+        var cajas = (arrayJson.caja).split(",");
+        var productos = (arrayJson.producto).split(",");
+        var clientes = (arrayJson.cliente).split(",");
+        for(var i = 0; i<cajas.length;i++)
+        {
+            span += '<span class="list-item__subtitle">'+ cajas[i] +' '+ productos[i] +' - <b>'+ clientes[i] +'</b></span>';
+        }
+    }
+    
     let html1 = "";
     var o_c  = arrayJson.o_c.slice(0,-2);
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\',\''+arrayJson.observaciones+'\')">'
     html1 += '<ons-list-header style="background:'+colorEstado(arrayJson.estado)+'; color:white;">';
     html1 += arrayJson.entrada != "" ? '      <div class="contenedorHead" style="color:'+colorEstado(arrayJson.estado)+';">llego: '+separator(arrayJson.entrada)+' pzas</div>' : "";
     html1 +=        estadoLamina(arrayJson.estado)+' | ';
@@ -221,8 +233,8 @@ function enlistarPedidosLamina(arrayJson)
     html1 += '        <strong style="width:38px">'+o_c+'</strong>';
     html1 += '    </div>';
     html1 += '    <div class="center romperTexto">';
-    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' | <b>'+arrayJson.resistencia+' '+arrayJson.papel+'</b></span>'; 
-    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.cliente+'</b></span>' : "";
+    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' | <b>'+arrayJson.resistencia+' '+arrayJson.papel+'</b></span>';
+    html1 += arrayJson.producto != "" ? span : "";
     html1 += '    </div>';
     html1 += '    <div class="right">';
     html1 += '         <div class="centrar">';

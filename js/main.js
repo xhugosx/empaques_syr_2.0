@@ -677,7 +677,7 @@ function agregarClase(i){
   }, 1500);
 }
 //crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\')
-function crearMensajePL(estado,entrada,pzas_ordenadas,o_c) 
+function crearMensajePL(estado,entrada,pzas_ordenadas,o_c,observaciones) 
 {
   //var titulo = '<i class="fa-solid fa-circle" style="color: '+colorEstado(estado)+';"></i> '+estadoLamina(estado);
   
@@ -690,6 +690,7 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
         '<i class="fa-solid fa-circle" style="color: #00A514"></i> COMPLETO',
         '<i class="fa-solid fa-circle" style="color: #000000"></i> CANCELADA',
         '<i class="fa-solid fa-circle" style="color: #E1D000"></i> PROGRAMADO',
+        'Observaciones',
         'Modificar',
         {
           label:'Eliminar',
@@ -700,11 +701,12 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
       //if(estado != index || index != -1) alerta('No puedes cambiar de estado por ya existen en Inventario')
       var faltante = pzas_ordenadas - entrada;
       entrada = entrada== "" ? 0 : entrada;
-      if(index == 5) nextPageFunctionData('actualizarPedidosLamina.html',setBuscarActualizarPL,o_c); //actualiza pedido
-      else if(index == 6) alertaConfirPrograma("Estas seguro de eliminar este Pedido de Lamina?",setEliminarPL,o_c); //elimina pedido
+      if(index == 5) alerta("<b>Observaciones:</b><br><br>"+observaciones);
+      else if(index == 6) nextPageFunctionData('actualizarPedidosLamina.html',setBuscarActualizarPL,o_c); //actualiza pedido
+      else if(index == 7) alertaConfirPrograma("Estas seguro de eliminar este Pedido de Lamina?",setEliminarPL,o_c); //elimina pedido
 
       if(index == -1) return 0;
-      if(estado == 3 && index != 5 && index != 6) alerta("Este pedido ya se encuentra completo en inventario");
+      if(estado == 3 && index != 5 && index != 6 && index != 7) alerta("Este pedido ya se encuentra completo en inventario");
       //else if((entrada > 0 && estado != 2) && index != -1) alerta("No puedes cambiar a este estado por que ya existen en inventario");
       else if(index != -1)
       {
@@ -746,6 +748,7 @@ function crearMensajePL(estado,entrada,pzas_ordenadas,o_c)
           if(index == 0) setActualizarEstadoPL(1,o_c);//en este solo actualiza el estado del pedido
           else if(index == 3) setActualizarEstadoPL(4,o_c);//actualiza el estado
           else if(index == 4) setActualizarEstadoPL(5,o_c);//actuliza el estado
+          
         }
         else alerta("No puedes cambiar a este estado por que ya existen en inventario");
         

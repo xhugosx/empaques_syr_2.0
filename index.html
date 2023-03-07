@@ -35,6 +35,11 @@
     <script src="./js/pedidos_lamina.js"></script>
     <script src="./js/pedidos_insertos.js"></script>
     <script src="./js/consumibles.js"></script>
+    <script src="./js/egresos.js"></script>
+
+
+    <!-- script de graficas -->
+    <script src="./js/graficas/Chart.js"></script>
     
 
     <script>
@@ -77,16 +82,16 @@
                     ADMINISTRACIÓN
                 </div>
                 <ons-card class="botonPrograma important" onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
-                    <i class="fa-solid fa-rectangle-list fa-lg"></i> <b>Pedidos pendientes</b> 
+                    <i class="fa-solid fa-rectangle-list fa-lg"></i> <b> Pedidos pendientes</b> 
                 </ons-card>
                 <ons-card class="botonPrograma important" onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
-                    <i class="fa-solid fa-layer-group fa-lg"></i> <b>Pedidos lámina</b>
+                    <i class="fa-solid fa-layer-group fa-lg"></i> <b> Pedidos lámina</b>
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('clientes.html',setClientes)">
-                    <i class="fa-solid fa-users"></i> <b>Clientes</b> 
+                    <i class="fa-solid fa-users"></i> <b> Clientes</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('productos1.html',setProductos)">
-                    <i class="fa-solid fa-boxes-stacked"></i> <b>Productos</b> 
+                    <i class="fa-solid fa-boxes-stacked"></i> <b> Productos</b> 
                 </ons-card>
                 
             </ons-card>
@@ -96,16 +101,16 @@
                     PRODUCCIÓN
                 </div>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('consumible.html',setConsumible)" >
-                    <i class="fa-solid fa-toolbox"></i> <b>Consumible</b> 
+                    <i class="fa-solid fa-toolbox"></i> <b> Consumible</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('inventario.html',mostrarTodoInventario)" >
-                    <i class="fa-solid fa-clipboard-list"></i> <b>Inventario</b> 
+                    <i class="fa-solid fa-clipboard-list"></i> <b> Inventario</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoEntrada)">
-                    <i class="fa-solid fa-plus"></i> <b>Entradas</b> 
+                    <i class="fa-solid fa-plus"></i> <b> Entradas</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoSalida)" >
-                    <i class="fa-solid fa-minus"></i> <b>Salidas</b> 
+                    <i class="fa-solid fa-minus"></i> <b> Salidas</b> 
                 </ons-card>
             </ons-card>
 
@@ -119,10 +124,10 @@
                         CAJAS
                     </h4>
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaArtesanos.html',setMostrarProgramaArtesanos)">
-                        <i class="fa-solid fa-box"></i> <b>Flexo</b> 
+                        <i class="fa-solid fa-box"></i> <b> Flexo</b> 
                     </ons-card>
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
-                        <i class="fa-solid fa-box"></i> <b>Cortadora</b> 
+                        <i class="fa-solid fa-box"></i> <b> Cortadora</b> 
                     </ons-card>
                 </ons-card>
                 <ons-card class="contenedor2Programa">
@@ -130,15 +135,44 @@
                         INSERTOS
                     </h4>
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador2.html',setMostrarProgramaAfilador2)">
-                        <i class="fa-solid fa-box-open"></i> <b>Cortadora</b> 
+                        <i class="fa-solid fa-box-open"></i> <b> Cortadora</b> 
                     </ons-card>
                 </ons-card>
                 
             </ons-card>
 
+            <ons-card id="contenedorPrograma">
+                <div class="title">
+                    CONTROL DE GASTOS
+                </div>
+                <ons-card class="botonPrograma" onclick="nextPageFunction('finanzas.html',preubaEgresos)" >
+                    <i class="fa-solid fa-money-bill-trend-up fa-lg"></i> <b> Ingresos</b> 
+                </ons-card>
+                <ons-card class="botonPrograma" onclick="" >
+                    <i class="fa-solid fa-money-bill-trend-up fa-lg" style="transform: rotate(180deg);"></i> <b> Egresos</b> 
+                </ons-card>
+                <ons-card class="botonPrograma" onclick="">
+                    <i class="fa-solid fa-chart-line fa-lg"></i> <b> Comparacion - Graficas</b> 
+                </ons-card>
+            </ons-card>
+
         </ons-page>
     </template>
 <!-- fin pagina pricipal -->
+
+<!-- CONTROL DE GASTOS-->
+<template id="finanzas.html">
+    <ons-page id="prueba">
+        <ons-toolbar>
+            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+            <div class="center">Control de gastos</div>
+        </ons-toolbar>
+
+        <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+        <canvas id="prueba_grafica" width="100" height="90"></canvas>
+
+    </ons-page>
+</template>
 
 <!-- CLIENTES -->
     <template id="clientes.html">
@@ -564,6 +598,7 @@
                                     <option value="48 ECT">48 ECT</option>
                                     <option value="51 ECT">51 ECT</option>
                                     <option value="61 ECT">61 ECT</option>
+                                    <option value="68 ECT">68 ECT</option>
                                     <option value="71 ECT">71 ECT</option>
                                     
                                 </ons-select>
@@ -593,7 +628,7 @@
                                 <ons-checkbox input-id="checkCaja" onclick="asignarInputCaja(this)"></ons-checkbox>
                             </label>
                             <label for="checkCaja" class="center">
-                                Selecciona esta casilla si es para una caja
+                                Selecciona esta casilla si es para algun(os) producto(s)
                             </label>
                         </ons-list-item>
                     </ons-card>
@@ -726,6 +761,7 @@
                                     <option value="48 ECT">48 ECT</option>
                                     <option value="51 ECT">51 ECT</option>
                                     <option value="61 ECT">61 ECT</option>
+                                    <option value="68 ECT">61 ECT</option>
                                     <option value="71 ECT">71 ECT</option>
                                     
                                 </ons-select>
@@ -755,7 +791,7 @@
                                 <ons-checkbox input-id="checkCaja" onclick="asignarInputCaja(this) "></ons-checkbox>
                             </label>
                             <label for="checkCaja" class="center">
-                                Selecciona esta casilla si es para una caja
+                                elecciona esta casilla si es para algun(os) producto(s)
                             </label>
                         </ons-list-item>
                     </ons-card>
