@@ -35,7 +35,7 @@ function getConsumibles(respuesta)
 //agregar consumible
 function setAgregarConsumible()
 {
-    let descripcion = $('#descripcion').val();
+    let descripcion = ($('#descripcion').val()).toUpperCase();
     let cantidad = $('#cantidad').val();
     if(datoVacio(descripcion) && datoVacio(cantidad))
     {

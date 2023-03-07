@@ -337,4 +337,10 @@ span.list-item__subtitle{
     border-radius: 0 10px 10px 0;
     background: rgb(98, 155, 100);
 }
+input[type="text"] {
+    text-transform: uppercase;
+}
+#cantidadTotal{
+    font-size: 30px;
+}
   

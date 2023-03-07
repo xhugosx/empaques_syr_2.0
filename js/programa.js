@@ -5,7 +5,25 @@ function refreshPrograma()
     setMostrarProgramaArtesanos();
     setMostrarProgramaAfilador1();
     setMostrarProgramaAfilador2();
+    setMostrarProgramaProveedores();
 }
+
+function setMostrarProgramaProveedores()
+{
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaProveedores)
+}
+function getMostrarProgramaProveedores(respuesta)
+{
+    var resultado = respuesta.responseText;
+    const tempArrayJson  = resultado.split('°'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    const arrayJson = tempArrayJson[0].split("|");
+
+    resultado = enlistarPrograma(arrayJson,11);
+    $('#datosPedidoProveedores').empty();
+    setDataPage('#datosPedidoProveedores','#loadingpedidosProveedores',resultado);
+   
+}
+
 function setMostrarProgramaArtesanos()
 {
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaArtesanos)
@@ -275,7 +293,7 @@ function enlistarProgramaInserto(arrayJson,tipo)
 function setagregarPrograma(id)
 {
     var procesos = "";
-    for(var i = 0; i<10 ; i++)
+    for(var i = 0; i<11 ; i++)
     {
         if ($('#check'+(i+1)).prop('checked')) procesos += (i+1) +",";
     } 
@@ -327,7 +345,7 @@ function verificarError(objeto)
 }
 function limpiarSelectPrograma()
 {
-    for(var i = 0; i<10 ; i++)
+    for(var i = 0; i<11 ; i++)
     {
         $('#check'+(i+1)).val([])
     } 

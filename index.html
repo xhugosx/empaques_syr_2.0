@@ -36,6 +36,7 @@
     <script src="./js/pedidos_insertos.js"></script>
     <script src="./js/consumibles.js"></script>
     <script src="./js/egresos.js"></script>
+    <script src="./js/ingresos.js"></script>
 
 
     <!-- script de graficas -->
@@ -129,6 +130,9 @@
                     <ons-card class="botonPrograma" onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
                         <i class="fa-solid fa-box"></i> <b> Cortadora</b> 
                     </ons-card>
+                    <ons-card class="botonPrograma" onclick="nextPageFunction('pedidosProveedor.html',setMostrarProgramaProveedores)">
+                        <i class="fa-solid fa-users"></i> <b> Pedidos a proveedores</b> 
+                    </ons-card>
                 </ons-card>
                 <ons-card class="contenedor2Programa">
                     <h4>
@@ -145,10 +149,10 @@
                 <div class="title">
                     CONTROL DE GASTOS
                 </div>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('finanzas.html',preubaEgresos)" >
+                <ons-card class="botonPrograma" onclick="nextPageFunction('ingresos.html',setIngresos)" >
                     <i class="fa-solid fa-money-bill-trend-up fa-lg"></i> <b> Ingresos</b> 
                 </ons-card>
-                <ons-card class="botonPrograma" onclick="" >
+                <ons-card class="botonPrograma" onclick="nextPageFunction('egresos.html',setEgresos)"  >
                     <i class="fa-solid fa-money-bill-trend-up fa-lg" style="transform: rotate(180deg);"></i> <b> Egresos</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="">
@@ -161,15 +165,53 @@
 <!-- fin pagina pricipal -->
 
 <!-- CONTROL DE GASTOS-->
-<template id="finanzas.html">
+<template id="ingresos.html">
     <ons-page id="prueba">
         <ons-toolbar>
             <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Control de gastos</div>
+            <div class="center">Ingresos</div>
         </ons-toolbar>
 
         <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
-        <canvas id="prueba_grafica" width="100" height="90"></canvas>
+        <center>
+            <div style="width:55vh">
+                <canvas id="grafica" width="100vh" height="70%"></canvas>
+            </div>  
+        </center>
+        
+        <ons-card id="contenedorPrograma">
+            <div class="tittle">Cantidad Total: </div> 
+            <center>
+              <b id="cantidadTotal"></b>  
+            </center>
+            
+        </ons-card>
+        
+        
+
+    </ons-page>
+</template>
+
+<template id="egresos.html">
+    <ons-page id="prueba">
+        <ons-toolbar>
+            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+            <div class="center">Egresos</div>
+        </ons-toolbar>
+
+        <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+        <center>
+            <div style="width:55vh">
+                <canvas id="grafica" width="100vh" height="70%"></canvas>
+            </div>  
+        </center>
+        <ons-card id="contenedorPrograma">
+            <div class="tittle">Cantidad Total: </div> 
+            <center>
+              <b id="cantidadTotal"></b>  
+            </center>
+            
+        </ons-card>
 
     </ons-page>
 </template>
@@ -1128,7 +1170,7 @@
                                 <i class="fa-solid fa-toolbox"></i>
                             </div>
                             <div class="center">
-                                <ons-input id="descripcion" name="descriopcion" class="input-100" type="text" step="any" placeholder="descripcion" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                                <ons-input id="descripcion" name="descriopcion" class="input-100" type="text" step="any" placeholder="Descripcion" style="text-transform: uppercase;"></ons-input>
                             </div>
                         </ons-list-item>
                     </ons-card>
@@ -1694,7 +1736,7 @@
             
             <ons-tabbar swipeable position="bottom">
                 <ons-tab id="clientesPedidos" page="flexo.html" label="Flexo" icon="fa-gear" active></ons-tab>
-                <ons-tab id="todoPedidos" page="pegado.html" label="Pegado" icon="fa-droplet" ></ons-tab>
+                <ons-tab id="todoPedidos" page="pegado.html" label="Pegado - flejado" icon="fa-droplet" ></ons-tab>
                 <ons-tab id="todoPedidos" page="impresion.html" label="Impresion" icon="fa-fill-drip" ></ons-tab>
                 <ons-tab id="todoPedidos" page="suajado.html" label="Suajado" icon="fa-scissors"></ons-tab>
             </ons-tabbar>
@@ -1794,6 +1836,45 @@
                 <ons-tab id="clientesPedidos" page="cortadora1.html" label="Cortadora" icon="fa-scissors, material:md-home" active></ons-tab>
                 <ons-tab id="todoPedidos" page="caiman.html" label="Caiman" icon="fa-grip-lines-vertical"></ons-tab>
             </ons-tabbar>
+           
+        </ons-page>
+    </template>
+
+    <template id="cortadora1.html">
+        <ons-page>
+            <div id="loadingCortadora1">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+            <br>
+            <center>
+                <i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado 
+                - 
+                <i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso 
+                -
+                <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);"></i> Pendiente 
+            </center>
+            <br>
+            <div class="separacion">CAJAS</div><hr>
+            <div id="datosProgramaCortadora1">
+                
+            </div>
+
+        </ons-page>
+    </template>
+
+     <!-- programa afilador cajas -->
+     <template id="pedidosProveedor.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Pedidos a Proveedores</div>
+            </ons-toolbar>
+            <div id="loadingpedidosProveedores">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+            <div id="datosPedidoProveedores">
+                
+            </div>
            
         </ons-page>
     </template>
@@ -2023,6 +2104,21 @@
                             Caiman
                         </label>
                     </ons-list-item>
+                </div>
+
+                <div id="pedidoProveedor">
+                    <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
+                        Pedido
+                    </ons-list-header>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-checkbox input-id="check11"></ons-checkbox>
+                        </label>
+                        <label for="check11" class="center">
+                            Proveedor
+                        </label>
+                    </ons-list-item>
+                    
                 </div>
                 <ons-list-item modifier="nodivider">
                     <ons-button id="botonPrograma" onclick="setagregarPrograma(idPedido)" modifier="large">

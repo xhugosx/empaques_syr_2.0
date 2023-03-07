@@ -1,31 +1,30 @@
-function setEgresos()
+function setIngresos()
 {
     //let anio = "";
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/egresoTotal.php',getEgresos);
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/ingresos/ingresoTotal.php',getIngresos);
 }
-function getEgresos(respuesta)
+function getIngresos(respuesta)
 {
     let resultado = respuesta.responseText;
     let importes = resultado.split("|");
     importes.pop();
-    //importes[0] = separator(importes[0]);
-    //aler(trespuesta);
+
     $("#cantidadTotal").text("$ "+suma(importes));
-    
+
     var grafica = document.getElementById("grafica").getContext("2d");
     var chart = new Chart(grafica,{
        type: "line",
        data:{
-        labels: meses(),
+           labels: meses(),
            datasets:[
                {
-                   label:"Gastos",
-                   backgroundColor: 'rgba(229,112,126,0.2)',
-                   borderColor: 'rgba(229,112,126,1)',
-                   data: importes,
+                   label:"Ganancias",
+                   backgroundColor: 'rgba(163,221,203,0.2)',
+                   borderColor: 'rgba(163,221,203,1)',
+                   data: importes
 
                }
-           ],
+           ]
        },
        options: {
         tooltips: {
@@ -52,20 +51,4 @@ function getEgresos(respuesta)
         
       }
     });
-}
-
-
-
-function meses()
-{
-    return ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"]
-}
-function suma(array)
-{
-    let total = 0;
-    for(let i=0; i<array.length;i++)
-    {
-        total+=parseFloat(array[i]);
-    }
-    return separator(total.toFixed(2));
 }
