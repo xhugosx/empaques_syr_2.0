@@ -150,9 +150,12 @@ function getEliminarPrograma(respuesta)
     else alerta("No se pudo eliminar!");
 }
 
-function setLlenarProcesoPrograma(id)
+function setLlenarProcesoPrograma(datos)
 {
-    Abrirdialogo('my-dialog-programa','dialogPrograma.html',id)
+    let id = datos[0];
+    let tipo = datos[1];
+    if(tipo == 1) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
+    else Abrirdialogo('my-dialog-programa1','dialogPrograma1.html',id);
     servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/selectProcesos.php?id="+id,getLlenarProcesoPrograma);
 }
 function getLlenarProcesoPrograma(respuesta)
@@ -268,7 +271,7 @@ function enlistarProgramaInserto(arrayJson,tipo)
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
             html1 += '    </div>';
             html1 += '    <div class="center romperTexto">';
-            html1 += '        <span class="list-item__title">'+arrayJson[i].producto+'| <b>'+arrayJson[i].observaciones+'</b></span>'; 
+            html1 += '        <span class="list-item__title"><b>'+arrayJson[i].observaciones+'</b> | <span style="font-size:11px">'+arrayJson[i].producto+'</span></span>'; 
             html1 += '        <span class="list-item__subtitle">';
             html1 += arrayJson[i].cliente;
             html1 += '        </span>';

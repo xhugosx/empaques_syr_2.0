@@ -30,7 +30,6 @@ function setMostrarPedidosLamina()
 function getMostrarPedidosLamina(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
-    //alert(resultado)
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     listaInfinita('datospedidosLamina','loadingPedidosLamina',arrayJson,enlistarPedidosLamina);
 }

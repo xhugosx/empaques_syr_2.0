@@ -16,11 +16,6 @@ function getProductos(respuesta)
 
     listaInfinita('datosProductos','loadingProductos',arrayJson,enlistarProductos);
 
-    /*resultado = enlistarProductos(arrayJson);
-
-    $('#datosProductos').empty();
-    setDataPage('#datosProductos','#loadingProductos',resultado);*/
-
 }
 //fin de ver productos
 
@@ -172,6 +167,7 @@ function getProductosBarraBusqueda(respuesta)
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson,i)
 {
+    //console.log(arrayJson);
     let html1 = "";
     html1 += '<ons-card style="padding:0px;" class="botonPrograma" id="list-cliente'+i+'" onclick="crearObjetMensaje(\''+arrayJson.codigo+'\','+i+')">';
     html1 += '<ons-list-item class="" modifier="nodivider">';
@@ -182,7 +178,7 @@ function enlistarProductos(arrayJson,i)
     html1 += '    <span class="list-item__title romperTexto"><b>'+ arrayJson.codigo +'</b> </span>';
     html1 += '    <span class="list-item__subtitle">'+ arrayJson.producto +'</span>';
     html1 += '  </div>"';
-    html1 += '  <div class="right">$'+ arrayJson.precio +'</div>';
+    html1 += '  <div class="right">'+ExistePlano(arrayJson.file)+'$'+ arrayJson.precio +'</div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
 
@@ -233,4 +229,9 @@ function verPlano(plano)
 {
     $("#loadingPlano").empty();
     $("#plano").attr("src","https://docs.google.com/gview?url="+plano+"&embedded=true");
+}
+
+function ExistePlano(file)
+{
+    return file == 1 ? '<i class="fa-solid fa-file-circle-check fa-lg" style="color:#00bb2d"></i>' :'<i class="fa-solid fa-file-circle-xmark fa-lg" style="color:#ff6961"></i>'
 }

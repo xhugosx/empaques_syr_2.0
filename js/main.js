@@ -1,3 +1,9 @@
+/*/FUNCION PARA CREAR UNA PROMESA Y DEVOLVER ALGO
+function promesa()
+{
+  
+}*/
+
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
 function alertComfirmDato(mensaje,tipoDato,botones,miFuncion,json)
 {
@@ -22,6 +28,7 @@ function alertComfirm(mensaje,botones,miFuncion,json)
     } 
   });
 }
+
 function mensajeArriba(titulo,botones,funcion,datos) 
 {
     ons.openActionSheet({
@@ -62,6 +69,13 @@ function conversionArrayJson(array)
 
 
   return json = JSON.parse(json);
+}
+function conversionTextoArray(txt)
+{
+  let arrayJson = [];
+  for(let i=0; i<txt.length; i++) arrayJson.push(JSON.parse(txt[i]));
+  console.log(arrayJson);
+  return arrayJson;
 }
 
 //ESTA FUNCION ES PARA EJECUTAR UNA FUNCION AL PAR LA SIGUIENTE PAGINA
@@ -190,7 +204,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado,observaciones,fecha)
       if(index==0)  
       {
         if(estado == 0) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
-        else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
+        else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,[id,1]);
         else alerta("Pedido ya se encuentra en inventario");
       }
       else if(index==1) nextPageFunctionData('verPlano.html',verPlano,'https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf');//window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
@@ -221,7 +235,7 @@ function crearObjetMensajePedidoInserto(id,codigo,estado,notas)
       if(index==0)  
       {
         if(estado == 0) Abrirdialogo('my-dialog-programa1','dialogPrograma1.html',id);
-        else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,id);
+        else if(estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?",setLlenarProcesoPrograma,[id,0]);
         else alerta("Pedido ya se encuentra en inventario");
       }
       else if(index==1) nextPageFunctionData('verPlano.html',verPlano,'https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf');
@@ -611,6 +625,13 @@ function llenarFecha()
 {
   $('#pedidoFechaOc').val(fechaHoy());
 }
+
+//funcion para llenar input date
+
+function dateHoy(id)
+{
+  $('#'+id).val(fechaHoy());
+}
 //funcion para crear objetos
 function crearJson(nombres,variables)
 {
@@ -640,8 +661,8 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
     createItemContent: function(i) {
         
       if(arrayJson!=""){
+        //alert(arrayJson[i]);
         var tempJson = JSON.parse(arrayJson[i]);
-        //console.log(i);
       }
       //alert(miFuncion(tempJson,i));
       return  ons.createElement(arrayJson==""  ? html : miFuncion(tempJson,i));
@@ -651,7 +672,7 @@ function listaInfinita(agregarHtml,eliminarLoadingHtml,arrayJson,miFuncion)
     return contador = arrayJson=="" ? contador : arrayJson.length-1;
     }
   };
-
+  infiniteList.refresh();
 }
 
 
@@ -771,3 +792,21 @@ function arrayVacio(array)
   return j;
   //return arrays[0];
 }
+
+function vacio(...datos)
+{
+  for(let i=0; i<datos.length;i++) if(datos[i] == "") return false;
+  return true;
+}
+
+function metodoPago(dato)
+{
+  if(dato == 1) return "Efectivo (1)";
+  else if(dato == 2) return "Cheque (2)";
+  else if(dato == 3) return "Efectivo (03)";
+  else if(dato == 4) return "Tarjeta de Credito (04)"
+  else if(dato == 28) return "Tarjeta de debito (28)";
+  else if(dato == 99) return "Por definir (99)";
+}
+
+

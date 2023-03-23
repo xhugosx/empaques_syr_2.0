@@ -343,4 +343,26 @@ input[type="text"] {
 #cantidadTotal{
     font-size: 30px;
 }
-  
+.anio{
+    font-size: 20px;
+    color: #606060;
+    font-family: arial;
+}
+.flecha{
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #1ba0d1b9;
+    border-radius: 30px;
+    width: 50px;
+    height: 30px;
+    padding-top: 1.3vh;
+    color: #ffffff;
+    cursor: pointer;
+}
+.flecha::before{
+    top: 50px;
+}
+.flecha:active{
+    color: #1A9CE8;
+}
+

@@ -33,6 +33,7 @@ function getMostrarInventarioInserto(respuesta)
     var resultado = respuesta.responseText;
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     listaInfinita('datosInsertoInventario','insertoInventarioLoading',arrayJson,enlistarInventarioInserto);
+    //console.log(respuesta.responseText);
 }
 
 //MOSTRAR INVENTARIO DE INSERTOS INDIVIDUALES
@@ -47,7 +48,6 @@ function getMostrarInventarioPedidosInserto(respuesta)
 {
     var resultado = respuesta.responseText;
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    
     listaInfinita('datosInventarioPedidosInserto','InventarioPedidosInsertoLoading',arrayJson,enlistarInventarioCodigoInserto);
 }
 
@@ -191,7 +191,7 @@ function getActualizarSalidaLamina(respuesta)
 function enlistarInventario(arrayJson)
 {
     let html1 = "";
-
+    //console.log(arrayJson);
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'InventarioPedidos.html\',setMostrarInventarioPedidos,\''+arrayJson.codigo+'\')">';
     html1 += '<ons-list-item modifier="nodivider chevron">'; 
     html1 += '        <div class="left">';
@@ -214,6 +214,7 @@ function enlistarInventario(arrayJson)
 function enlistarInventarioCodigo(arrayJson)
 {
     let html = "";
+    //console.log(arrayJson);
     var inventario = arrayJson.entrada - arrayJson.salida
     html += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="alertPromptInventario(\''+arrayJson.id_lp+'\',\''+arrayJson.salida+'\',\''+inventario+'\')">';
     html += '    <ons-list-header style="background: white">'+arrayJson.id_lp+'</ons-list-header>';
@@ -267,11 +268,11 @@ function enlistarInventarioLamina(arrayJson)
 function enlistarInventarioInserto(arrayJson)
 {
     let html1 = "";
-
+    //console.log(arrayJson);
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'inventarioPedidosInsertos.html\',setMostrarInventarioPedidosInserto,[\''+arrayJson.codigo+'\',\''+arrayJson.inserto+'\'])">';
     html1 += '<ons-list-item modifier="nodivider chevron">'; 
     html1 += '        <div class="left">';
-    html1 +=              '<i class="fa-solid fa-box fa-2x"></i>';
+    html1 +=              '<i class="fa-solid fa-box-open fa-2x"></i>';
     html1 += '        </div>';
     html1 += '        <div class="center">';
     html1 += '            <span class="list-item__title"><b>'+arrayJson.inserto+'</b> - '+ arrayJson.resistencia +'</span>';
@@ -291,12 +292,13 @@ function enlistarInventarioInserto(arrayJson)
 function enlistarInventarioCodigoInserto(arrayJson)
 {
     let html = "";
+    //console.log(arrayJson);
     var inventario = arrayJson.entrada - arrayJson.salida
     html += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="alertPromptInventario(\''+arrayJson.id_lp+'\',\''+arrayJson.salida+'\',\''+inventario+'\')">';
     html += '    <ons-list-header style="background: white">'+arrayJson.id_lp+'</ons-list-header>';
     html += '    <ons-list-item modifier="nodivider"> ';
     html += '        <div class="left">';
-    html += '            <i class="fa-solid fa-box fa-2x"></i>';
+    html += '            <i class="fa-solid fa-box-open fa-2x"></i>';
     html += '        </div>';
     html += '        <div class="center">';
     html += '            <span class="list-item__title"><b>'+arrayJson.inserto+'</b> - '+arrayJson.resistencia+'</span>';

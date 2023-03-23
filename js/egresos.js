@@ -1,33 +1,46 @@
 function setEgresos()
 {
-    //let anio = "";
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/egresoTotal.php',getEgresos);
+  $("#loadingEgreso").empty();
+  $('#loadingEgreso').append("<ons-progress-bar indeterminate></ons-progress-bar>");
+  var anio = $("#anioG").text();
+  servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/egresoTotal.php?anio='+anio,getEgresos);
 }
 function getEgresos(respuesta)
 {
-    let resultado = respuesta.responseText;
-    let importes = resultado.split("|");
+  let resultado = respuesta.responseText;
+  let importes = resultado.split("|");
+  if(importes.length>1) listaInfinita('mesesEgresos','loadingEgreso',importes,enlitsarMesEgreso);
+  else 
+  {
     importes.pop();
-    //importes[0] = separator(importes[0]);
-    //aler(trespuesta);
-    $("#cantidadTotal").text("$ "+suma(importes));
-    
+    listaInfinita('mesesEgresos','loadingEgreso',importes,enlitsarMesEgreso);
+    importes.push("");
+  }
+  importes.pop();
+  $("#cantidadTotal").text("$ "+suma(importes));
+  if(chart) 
+  {
+    chart.data.datasets[0].data = importes;
+    chart.update();
+  }
+  else 
+  {
     var grafica = document.getElementById("grafica").getContext("2d");
-    var chart = new Chart(grafica,{
-       type: "line",
-       data:{
+    chart = new Chart(grafica,{
+      type: "line",
+      data:{
         labels: meses(),
-           datasets:[
-               {
-                   label:"Gastos",
-                   backgroundColor: 'rgba(229,112,126,0.2)',
-                   borderColor: 'rgba(229,112,126,1)',
-                   data: importes,
+          datasets:[
+              {
+                  label:"Gastos",
+                  backgroundColor: 'rgba(229,112,126,0.2)',
+                  borderColor: 'rgba(229,112,126,1)',
+                  data: importes,
 
-               }
-           ],
-       },
-       options: {
+              }
+          ],
+      },
+      options: {
         tooltips: {
             callbacks: {
               label (t, d) {
@@ -52,13 +65,36 @@ function getEgresos(respuesta)
         
       }
     });
+  }
+}
+function enlitsarMesEgreso(arrayJson,i)
+{
+  let html1 = "";
+
+  html1 += '<ons-card style="padding:0px;" class="botonPrograma"> ';
+  html1 += '    <ons-list-item class="" modifier="nodivider">'; 
+  html1 += '        <div class="left"> ';
+  html1 += '            <i class="fa-solid fa-money-bill-trend-up fa-2x" style="transform: rotate(180deg);"></i> ';
+  html1 += '        </div> ';
+  html1 += '        <div class="center"> ';
+  html1 += '            <b> '+mes(i)+' </b>';
+  html1 += '        </div>';
+  html1 += '        <div class="right" style="color: red;"><b>$ ' + arrayJson.toLocaleString("en")+'</b></div> ';
+  html1 += '    </ons-list-item> ';
+  html1 += '</ons-card>';
+  return html1;
 }
 
 
 
 function meses()
 {
-    return ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"]
+    return ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+}
+function mes(numero)
+{
+  var mes = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  return mes[numero];
 }
 function suma(array)
 {
@@ -69,3 +105,20 @@ function suma(array)
     }
     return separator(total.toFixed(2));
 }
+
+
+function prevE() {
+  //var carousel = document.getElementById(id);
+  //carousel.prev();
+  var anio = parseInt($("#anioG").text())-1;
+  $("#anioG").text(anio);
+  setEgresos();
+};
+
+function nextE() {
+  //var carousel = document.getElementById(id);
+  //carousel.next();
+  var anio = parseInt($("#anioG").text())+1;
+  $("#anioG").text(anio);
+  setEgresos();
+};

@@ -27,7 +27,7 @@ function getConsumibles(respuesta)
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    listaInfinita('datosConsumible','consumibleLoading',arrayJson,enlistarInventarioCodigoInserto);
+    listaInfinita('datosConsumible','consumibleLoading',arrayJson,enlistarConsumible);
 
 }
 //fin de mostrar inventario consumibles
@@ -92,7 +92,7 @@ function getActualizarConsumible(respuesta)
 }
 //fin de actualizar de consumible
 
-function enlistarInventarioCodigoInserto(json)
+function enlistarConsumible(json)
 {
     let html1 = "";
     html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="alertaConsumible(\''+conversionJsonArray(json)+'\')">';
