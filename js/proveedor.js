@@ -1,8 +1,25 @@
+
+var tipoFilter = 0;
+//FUNCION PARA HACER UNA BUSQUEDA POR NOMBRE O CODIGO
+function setProveedorBarraBusqueda(busqueda,e)
+{
+    //asignar el progress bar 
+    if(busqueda=="") setProveedor();
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#insertoInventarioLoading").empty();
+        $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/proveedores/select.php?search='+busqueda+'&type='+tipoFilter,getProveedor);
+    }
+   
+}
+
 function setProveedor()
 {
     $('#loadingProveedor').empty();
     $('#loadingProveedor').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/proveedores/select.php',getProveedor);
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/proveedores/select.php?type='+tipoFilter,getProveedor);
 }
 function getProveedor(respuesta)
 {
@@ -60,8 +77,20 @@ function accionConfirmProveedor(index,codigo) { if(index==0) setEliminarProveedo
 function enlistarProveedor(arrayJson)
 {
     let html1 = "";
+    
     html1 += '<ons-card class="botonPrograma" onclick="mensajeProveedor(\''+arrayJson.codigo+'\')">';
-    html1 += '    <i class="fa-solid fa-user-large fa-lg"></i> <strong>'+ agregarCeros(arrayJson.codigo)+'</strong> &nbsp;'+arrayJson.nombre+'';
+
+    html1 += '<ons-lit-header style="background: white"><strong>'+ agregarCeros(arrayJson.codigo)+'</strong></ons-list-header>';
+    html1 += '<ons-list-item class="" modifier="nodivider">';
+    html1 += '  <div class="left">';
+    html1 += '      <i class="fa-solid fa-user-large fa-2x"></i> ';
+    html1 += '  </div>';
+    html1 += '  <div class="center">';
+    html1 += '  <b>'+arrayJson.nombre+'</b>';
+    html1 += '  </div>"';
+    html1 += '  <div class="right">'+ tipoEgreso(arrayJson.tipo) +'</div>';
+    html1 += '</ons-list-item>';
+
     html1 += '</ons-card>';
     return html1;
 }

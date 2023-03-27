@@ -77,8 +77,8 @@ function getEliminarConsumible(respuesta)
 function setActualizarConsumible(id)
 {
     let cantidad = $('#salidaConsumible').val();
-    if(cantidad > 0) servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/consumibles/update.php?id='+id+'&cantidad='+cantidad,getActualizarConsumible);
-    else alerta("Debe ser mayor a 1");    
+    if(cantidad >= 0) servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/consumibles/update.php?id='+id+'&cantidad='+cantidad,getActualizarConsumible);
+    else alerta("No puede ser menor a 0");    
 }
 function getActualizarConsumible(respuesta)
 {
@@ -143,5 +143,5 @@ function incrementar()
 function decrementar()
 {
     let cantidad = $('#salidaConsumible').val();
-    if(cantidad != 1) $('#salidaConsumible').val(parseInt(cantidad)-1);
+    if(cantidad > 0) $('#salidaConsumible').val(parseInt(cantidad)-1);
 }

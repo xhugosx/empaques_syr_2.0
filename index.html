@@ -38,6 +38,7 @@
     <script src="./js/egresos.js"></script>
     <script src="./js/ingresos.js"></script>
     <script src="./js/proveedor.js"></script>
+    <script src="./js/ganancias.js"></script>
 
 
     <!-- script de graficas -->
@@ -89,7 +90,7 @@
                 <ons-card class="botonPrograma important" onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
                     <i class="fa-solid fa-layer-group fa-lg"></i> <b> Pedidos lámina</b>
                 </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('proveedor.html',setProveedor)">
+                <ons-card class="botonPrograma" onclick="nextPageFunction('proveedor.html',setProveedor);tipoFilter = 0">
                     <i class="fa-solid fa-users"></i> <b> Proveedores</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="nextPageFunction('clientes.html',setClientes)">
@@ -153,7 +154,7 @@
                 <div class="title">
                     CONTROL DE GASTOS
                 </div>
-                <ons-card class="botonPrograma" onclick="">
+                <ons-card class="botonPrograma" onclick="asignarAnio(); nextPageFunction('ingresosEgresos.html',setIngresosEgresos);chart=''">
                     <i class="fa-solid fa-chart-line fa-lg"></i> <b> Comparacion - Graficas</b> 
                 </ons-card>
                 <ons-card class="botonPrograma" onclick="asignarAnio(); nextPageFunction('ingresos.html',setIngresos);chart=''; " >
@@ -169,27 +170,25 @@
     </template>
 <!-- fin pagina pricipal -->
 
+
 <!-- CONTROL DE GASTOS-->
-<!-- ver ingresos -->
-<template id="ingresos.html">
-    <ons-page id="prueba">
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Ingresos</div>
-        </ons-toolbar>
-        <div id="loadingIngreso">
 
-        </div>
-        <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+    <!--  ver comparativa de graficas de ingresos y egresos -->
+    <template id="ingresosEgresos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center"> Graficas </div>
+            </ons-toolbar>
+            <div id="loadingIngreso">
 
-        <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
-            <div class="tittle">Cantidad Total: </div>
+            </div>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
 
-            
-                <center><span id="cantidadTotal"></span>
-                    <br>
-                    
-                    <canvas id="grafica" width="100vh" height="50px"></canvas>
+            <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
+                <br>
+                
+                <canvas id="grafica" width="100vh" height="70px"></canvas>
                     
                 </center>
                 
@@ -198,50 +197,592 @@
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
-                            <i class="fa-solid fa-arrow-left flecha" onclick="prevI()"></i>
+                            <i class="fa-solid fa-arrow-left flecha" onclick="prevIE()"></i>
                             <span id="anioG"> <!--Aqui va el anio--> </span>
-                            <i class="fa-solid fa-arrow-right flecha" onclick="nextI()"></i>
+                            <i class="fa-solid fa-arrow-right flecha" onclick="nextIE()"></i>
                         </div>
                     </center>
                 </ons-card>
-        </ons-card>
+            </ons-card>
 
-        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="Ingresos"></ons-lazy-repeat>
-        </ons-list>
-        <br><br><br><br><br>
-        <ons-fab onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)" position="bottom right">
-            <i class="fa-solid fa-plus"></i>
-         </ons-fab>
+        </ons-page>
+    </template>
+
+    <!-- ver ingresos -->
+    <template id="ingresos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Ingresos</div>
+            </ons-toolbar>
+            <div id="loadingIngreso">
+
+            </div>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+
+            <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
+                <div class="tittle">Cantidad Total: </div>
+
+                
+                    <center><span id="cantidadTotal"></span>
+                        <br>
+                        
+                        <canvas id="grafica" width="100vh" height="50px"></canvas>
+                        
+                    </center>
+                    
+                    <div class="tittle" style="font-size: 20px;">Año</div>
+
+                    <ons-card id="contenedorPrograma" style="background-color: #efefef;">
+                        <center>
+                            <div class="anio">
+                                <i class="fa-solid fa-arrow-left flecha" onclick="prevI()"></i>
+                                <span id="anioG"> <!--Aqui va el anio--> </span>
+                                <i class="fa-solid fa-arrow-right flecha" onclick="nextI()"></i>
+                            </div>
+                        </center>
+                    </ons-card>
+            </ons-card>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="Ingresos"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+            <ons-fab onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)" position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
+            <ons-fab onclick="setIngresos()" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </ons-fab>
+
+        </ons-page>
+    </template>
+
+    <!-- agregar ingreso-->
+    <template id="agregarIngresos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Ingresos</div>
+            </ons-toolbar>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+            <ons-card id="contenedorInput">
+                <form id="formingreso">
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-user fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" id="cliente" name="cliente">
+                                    <option value="" style="color: #ccc;">(CLIENTE)</option>
+                                </ons-select>
         
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calendar-days fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="fecha" name="fecha" type="date" class="input-100" cols="30" rows="2"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="factura" name="factura" class="input-100" cols="30" rows="2" placeholder="Factura" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-dollar-sign fa-lg" ></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="importe" name="importe" type="number" class="input-100" cols="30" rows="2" placeholder="IMPORTE" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-hand-holding-dollar fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="metodo" id="metodo">
+                                    <option value="" style="color: #ccc;">(METODO PAGO)</option>
+                                    <option value="1"> 01 EFECTIVO</option>
+                                    <option value="2"> 02 CHEQUE </option>
+                                    <option value="3"> 03 TRANSFERENCIA </option>
+                                    <option value="4"> 04 TARJETA DE CREDITO </option>
+                                    <option value="28"> 28 TARJETA DE DEBITO </option>
+                                    <option value="99"> 99 POR DEFINIR</option>
+                                </ons-select>
+        
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-clipboard fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="observaciones" name="observaciones" class="input-100" cols="30" rows="2" placeholder="Observaciones (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setAgregarIngreso()">Agregar</ons-button>
+                    </ons-list-item>
+                </form>
 
-    </ons-page>
-</template>
+            </ons-card>
 
-<!-- agregar ingreso-->
-<template id="agregarIngresos.html">
+        </ons-page>
+    </template>
+
+    <!-- Modificar ingreso-->
+    <template id="modificarIngresos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Modificar Ingresos</div>
+            </ons-toolbar>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+            <ons-card id="contenedorInput">
+                <form id="formingreso">
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-id-card-clip"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="id" name="id" class="input-100" cols="30" rows="2" disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-user fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" id="cliente" name="cliente">
+                                    <option value="" style="color: #ccc;">(CLIENTE)</option>
+                                </ons-select>
+        
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calendar-days fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="fecha" name="fecha" type="date" class="input-100" cols="30" rows="2"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="factura" name="factura" class="input-100" cols="30" rows="2" placeholder="Factura" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-dollar-sign fa-lg" ></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="importe" name="importe" type="number" class="input-100" cols="30" rows="2" placeholder="IMPORTE" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-hand-holding-dollar fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="metodo" id="metodo">
+                                    <option value="" style="color: #ccc;">(METODO PAGO)</option>
+                                    <option value="1"> 01 EFECTIVO</option>
+                                    <option value="2"> 02 CHEQUE </option>
+                                    <option value="3"> 03 TRANSFERENCIA </option>
+                                    <option value="4"> 04 TARJETA DE CREDITO </option>
+                                    <option value="28"> 28 TARJETA DE DEBITO </option>
+                                    <option value="99"> 99 POR DEFINIR</option>
+                                </ons-select>
+        
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-clipboard fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="observaciones" name="observaciones" class="input-100" cols="30" rows="2" placeholder="Observaciones (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setModificarIngreso()">Modificar</ons-button>
+                    </ons-list-item>
+                </form>
+
+            </ons-card>
+
+        </ons-page>
+    </template>
+
+    <!--ver ingresos por el mes-->
+    <template id="ingresosMensual.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Ingresos Clientes</div>
+            </ons-toolbar>
+            <div id="loadingIngresoMes">
+
+            </div>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+
+            <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
+                <div class="tittle">Cantidad Total: </div>
+
+                
+                    <center><span id="cantidadTotalMes"></span>
+                        <br>
+                        
+                        <canvas id="graficaMes" width="100vh" height="45px"></canvas>
+                    </center>
+            </ons-card>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="mesesIngresos"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+            
+
+        </ons-page>
+    </template>
+
+    <!--ver ingresos por el mes de cada cliente-->
+    <template id="ingresosMensualCliente.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Facturas</div>
+            </ons-toolbar>
+            <div id="loadingIngresoMesCliente">
+
+            </div>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="mesesIngresosCliente"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+            
+
+        </ons-page>
+    </template>
+
+    <!-- ver ingresos anual-->
+    <template id="egresos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Egresos</div>
+            </ons-toolbar>
+
+            <div id="loadingEgreso">
+
+            </div>
+
+            <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
+                <div class="tittle">Cantidad Total: </div>
+
+                <center>
+                    <span id="cantidadTotal"></span>
+                    <br>
+                    
+                    <canvas id="grafica" width="100vh" height="50px"></canvas>
+                    
+                </center>
+                <div class="tittle" style="font-size: 20px;">Año</div>
+                <ons-card id="contenedorPrograma" style="background-color: #efefef;">
+                    <center>
+                        <div class="anio">
+                            <i class="fa-solid fa-arrow-left flecha" onclick="prevE()"></i>
+                            <span id="anioG"> <!-- aqui ira el anio --></span>
+
+                            <i class="fa-solid fa-arrow-right flecha" onclick="nextE()"></i>
+                        </div>
+                    </center>
+                    
+                </ons-card>    
+                    
+            </ons-card>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="egresos"></ons-lazy-repeat>
+            </ons-list>
+
+            <br><br><br>
+            <ons-fab onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); " position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
+            <ons-fab onclick="setEgresos()" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </ons-fab>
+
+        </ons-page>
+    </template>
+
+    <!--ver Egreso por el mes-->
+    <template id="egresoMensual.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Egresos Proveedores</div>
+            </ons-toolbar>
+            <div id="loadinEgresoMes">
+
+            </div>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+
+            <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
+                <div class="tittle">Cantidad Total: </div>
+
+                
+                    <center><span id="cantidadTotalMes"></span>
+                        <br>
+                        <canvas id="graficaMes" width="100vh" height="45px"></canvas>
+                    </center>
+            </ons-card>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="mesesEgresos"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+            
+
+        </ons-page>
+    </template>
+
+    <!--ver Egreso por el mes-->
+    <template id="egresoMensualTipo.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center" id="titulo"> Egresos </div>
+            </ons-toolbar>
+            <div id="loadinEgresoMesTipo">
+
+            </div>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="mesesTipoEgresos"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+
+        </ons-page>
+    </template>
+
+    <!-- agregar egreso-->
+    <template id="agregarEgresos.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Egresos</div>
+            </ons-toolbar>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+            <ons-card id="contenedorInput">
+                <form id="formEgreso">
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-user fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" id="proveedor" name="proveedor" onchange="setEgresoTipo(this.value)">
+                                    <option value="" style="color: #ccc;">(PROVEEDOR)</option>
+                                </ons-select>
+        
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-clipboard-check fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="tipo" name="tipo" type="text" placeholder="Tipo" class="input-100" cols="30" rows="2" disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-calendar-days fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="fecha" name="fecha" type="date" class="input-100" cols="30" rows="2"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="factura" name="factura" class="input-100" cols="30" rows="2" placeholder="Factura (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-dollar-sign fa-lg" ></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="importe" name="importe" type="number" class="input-100" cols="30" rows="2" placeholder="IMPORTE" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-hand-holding-dollar fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select  class="input-100" name="metodo" id="metodo">
+                                    <option value="" style="color: #ccc;">(METODO PAGO)</option>
+                                    <option value="1"> 01 EFECTIVO</option>
+                                    <option value="2"> 02 CHEQUE </option>
+                                    <option value="3"> 03 TRANSFERENCIA </option>
+                                    <option value="4"> 04 TARJETA DE CREDITO </option>
+                                    <option value="28"> 28 TARJETA DE DEBITO </option>
+                                    <option value="99"> 99 POR DEFINIR</option>
+                                </ons-select>
+        
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-clipboard fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="observaciones" name="observaciones" class="input-100" cols="30" rows="2" placeholder="Observaciones (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+        
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setAgregarEgreso()">Agregar</ons-button>
+                    </ons-list-item>
+                </form>
+
+            </ons-card>
+
+        </ons-page>
+    </template>
+
+<!-- Modificar Egreso-->
+<template id="modificarEgresos.html">
     <ons-page id="prueba">
         <ons-toolbar>
             <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Agregar Ingresos</div>
+            <div class="center">Modificar Egresos</div>
         </ons-toolbar>
         <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
         <ons-card id="contenedorInput">
-            <form id="formingreso">
+            <form id="formEgreso">
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-id-card-clip fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="id" name="id" type="text" placeholder="Id" class="input-100" cols="30" rows="2" disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
                 <ons-card class="contenedorInputSub">
                     <ons-list-item modifier="nodivider">
                         <div class="left">
                             <i class="fa-regular fa-user fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-select  class="input-100" id="cliente" name="cliente">
-                                <option value="" style="color: #ccc;">(CLIENTE)</option>
+                            <ons-select  class="input-100" id="proveedor" name="proveedor" onchange="setEgresoTipo(this.value)">
+                                <option value="" style="color: #ccc;">(PROVEEDOR)</option>
                             </ons-select>
     
                         </div>
                     </ons-list-item>
                 </ons-card>
     
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-clipboard-check fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="tipo" name="tipo" type="text" placeholder="Tipo" class="input-100" cols="30" rows="2" disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
                 <ons-card class="contenedorInputSub">
                     <ons-list-item modifier="nodivider">
                         <div class="left">
@@ -259,7 +800,7 @@
                             <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="factura" name="factura" class="input-100" cols="30" rows="2" placeholder="Factura" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            <ons-input id="factura" name="factura" class="input-100" cols="30" rows="2" placeholder="Factura (opcional)" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -308,7 +849,7 @@
                 </ons-card>
     
                 <ons-list-item modifier="nodivider">
-                    <ons-button modifier="large" onclick="setAgregarIngreso()">Agregar</ons-button>
+                    <ons-button modifier="large" onclick="setModificarEgreso()">Modificar</ons-button>
                 </ons-list-item>
             </form>
 
@@ -317,202 +858,100 @@
     </ons-page>
 </template>
 
-<!--ver ingresos por el mes-->
-<template id="ingresosMensual.html">
-    <ons-page id="prueba">
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Ingresos Clientes</div>
-        </ons-toolbar>
-        <div id="loadingIngresoMes">
-
-        </div>
-        <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
-
-        <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
-            <div class="tittle">Cantidad Total: </div>
-
-            
-                <center><span id="cantidadTotalMes"></span>
-                    <br>
-                    
-                    <canvas id="graficaMes" width="100vh" height="45px"></canvas>
-                </center>
-                
-                <!--ons-card id="contenedorPrograma" style="background-color: #efefef;">
-                    <center>
-                        <div class="anio">
-                            <i class="fa-solid fa-arrow-left flecha" onclick="prevI()"></i>
-                            <span id="anioG">  </span>
-                            <i class="fa-solid fa-arrow-right flecha" onclick="nextI()"></i>
-                        </div>
-                    </center>
-                </ons-card-->
-        </ons-card>
-
-        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="mesesIngresos"></ons-lazy-repeat>
-        </ons-list>
-        <br><br><br><br><br>
-        
-
-    </ons-page>
-</template>
-
-<!--ver ingresos por el mes de cada cliente-->
-<template id="ingresosMensualCliente.html">
-    <ons-page id="prueba">
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Facturas</div>
-        </ons-toolbar>
-        <div id="loadingIngresoMesCliente">
-
-        </div>
-        <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
-
-
-        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="mesesIngresosCliente"></ons-lazy-repeat>
-        </ons-list>
-        <br><br><br><br><br>
-        
-
-    </ons-page>
-</template>
-
-<template id="egresos.html">
-    <ons-page id="prueba">
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Egresos</div>
-        </ons-toolbar>
-
-        <div id="loadingEgreso">
-
-        </div>
-
-        <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255);">
-            <div class="tittle">Cantidad Total: </div>
-
-            <center>
-                <span id="cantidadTotal"></span>
-                <br>
-                
-                <canvas id="grafica" width="100vh" height="50px"></canvas>
-                 
-            </center>
-                <div class="tittle" style="font-size: 20px;">Año</div>
-                <ons-card id="contenedorPrograma" style="background-color: #efefef;">
-                    <center>
-                        <div class="anio">
-                            <i class="fa-solid fa-arrow-left flecha" onclick="prevE()"></i>
-                            <span id="anioG"></span>
-
-                            <i class="fa-solid fa-arrow-right flecha" onclick="nextE()"></i>
-                        </div>
-                    </center>
-                    
-                </ons-card>    
-                    
-           
-            
-            
-        </ons-card>
-
-        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="mesesEgresos"></ons-lazy-repeat>
-        </ons-list>
-
-    </ons-page>
-</template>
 <!-- FINAL DE CONTROL DE GASTOS -->
 
 <!-- PROVEEDOR -->
-<template id="proveedor.html">
-    <ons-page id="prueba">
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Proveedores</div>
-        </ons-toolbar>
+    <template id="proveedor.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Proveedores</div>
+                <div class="right" >
+                    <ons-toolbar-button onclick="showDialogo('my-dialog-FiltroProveedor','dialogFiltroProveedor.html')" style="color:white; font-size:18px">
+                        Filtro
+                        <i class="fa-solid fa-filter"></i>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
 
-        <ons-progress-bar id="loadingProveedor"  indeterminate ></ons-progress-bar>
+            <div id="loadingProveedor"></div>
+            
 
-        <ons-list>
-            <ons-list-item>
-                <ons-search-input onkeyup="setProveedorBarraBusqueda(this.value,event)" placeholder="Buscar: Nombre / Tipo "></ons-search-input>
-            </ons-list-item>
-        </ons-list>
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input onkeyup="setProveedorBarraBusqueda(this.value,event)" placeholder="Buscar: Codigo / Nombre  "></ons-search-input>
+                </ons-list-item>
+            </ons-list>
 
-          
-        <ons-list style="background: rgba(76, 175, 80, 0.0) ">
-            <ons-lazy-repeat id="datosProveedor"></ons-lazy-repeat>
-        </ons-list>
+            
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosProveedor"></ons-lazy-repeat>
+            </ons-list>
 
-        <br><br><br><br><br>
+            <br><br><br><br><br>
 
-        <ons-fab onclick="nextPage('agregarproveedor.html')" position="bottom right">
-           <i class="fa-solid fa-plus"></i>
-        </ons-fab>
+            <ons-fab onclick="nextPage('agregarproveedor.html')" position="bottom right">
+            <i class="fa-solid fa-plus"></i>
+            </ons-fab>
 
-        <ons-fab onclick="setProveedor()" position="bottom left">
-            <i class="fa-solid fa-arrows-rotate"></i>
-        </ons-fab>
-    </ons-page>
-</template>
+            <ons-fab onclick="setProveedor()" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </ons-fab>
+        </ons-page>
+    </template>
 
-<!--Agregar proveedor-->
-<template id="agregarproveedor.html">
-    <ons-page id="prueba">
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-            <div class="center">Agregar proveedor</div>
-        </ons-toolbar>
+    <!--Agregar proveedor-->
+    <template id="agregarproveedor.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar proveedor</div>
+            </ons-toolbar>
 
-        <!--aqui iran los input de los datos-->
-        
-        <ons-card id="contenedorInput">
-            <ons-card class="contenedorInputSub">
+            <!--aqui iran los input de los datos-->
+            
+            <ons-card id="contenedorInput">
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-user-large fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="nombreproveedor" class="input-100" cols="30" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-users fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-select  class="input-100" name="proveedor" id="selectTipo">
+                                <option value="" style="color: #ccc;">(TIPO)</option>
+                                <option value="1">CONSUMIBLE</option>
+                                <option value="2">LAMINA</option>
+                                <option value="3">SERVICIO</option>
+                                <option value="4">GRABADOS Y SUAJES</option>
+                                <option value="5">MAQUILA</option>
+                                <option value="6">GASOLINA</option>
+                                <option value="7">HERRAMIENTA</option>
+                                <option value="9">PAGOS FIJOS</option>
+                                <option value="8">OTROS</option>
+                            </ons-select>
+
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
                 <ons-list-item modifier="nodivider">
-                    <div class="left">
-                        <i class="fa-regular fa-user-large fa-lg"></i>
-                    </div>
-                    <div class="center">
-                        <ons-input id="nombreproveedor" class="input-100" cols="30" rows="2" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
-                    </div>
+                    <ons-button modifier="large" onclick="setAgregarProveedor()">Agregar</ons-button>
                 </ons-list-item>
             </ons-card>
-
-            <ons-card class="contenedorInputSub">
-                <ons-list-item modifier="nodivider">
-                    <div class="left">
-                        <i class="fa-regular fa-users fa-lg"></i>
-                    </div>
-                    <div class="center">
-                        <ons-select  class="input-100" name="proveedor" id="selectTipo">
-                            <option value="" style="color: #ccc;">(TIPO)</option>
-                            <option value="1">CONSUMIBLE</option>
-                            <option value="2">LAMINA</option>
-                            <option value="3">SERVICIO</option>
-                            <option value="4">GRABADOS Y SUAJES</option>
-                            <option value="5">MAQUILA</option>
-                            <option value="6">GASOLINA</option>
-                            <option value="7">HERRAMIENTA</option>
-                            <option value="9">PAGOS FIJOS</option>
-                            <option value="8">OTROS</option>
-                        </ons-select>
-
-                    </div>
-                </ons-list-item>
-            </ons-card>
-
-            <ons-list-item modifier="nodivider">
-                <ons-button modifier="large" onclick="setAgregarProveedor()">Agregar</ons-button>
-            </ons-list-item>
-        </ons-card>
-        
-    </ons-page>
-</template>
+            
+        </ons-page>
+    </template>
 <!-- FIN DE PROVEEDORES-->
 
 <!-- CLIENTES -->
@@ -932,6 +1371,7 @@
                                     <option value="21 ECT">21 ECT</option>
                                     <option value="23 ECT">23 ECT</option>
                                     <option value="26 ECT">26 ECT</option>
+                                    <option value="29 ECT">29 ECT</option>
                                     <option value="32 ECT">32 ECT</option>
                                     <option value="36 ECT">36 ECT</option>
                                     <option value="38 ECT">38 ECT</option>
@@ -1095,6 +1535,7 @@
                                     <option value="21 ECT">21 ECT</option>
                                     <option value="23 ECT">23 ECT</option>
                                     <option value="26 ECT">26 ECT</option>
+                                    <option value="29 ECT">29 ECT</option>
                                     <option value="32 ECT">32 ECT</option>
                                     <option value="36 ECT">36 ECT</option>
                                     <option value="38 ECT">38 ECT</option>
@@ -1132,7 +1573,7 @@
                                 <ons-checkbox input-id="checkCaja" onclick="asignarInputCaja(this) "></ons-checkbox>
                             </label>
                             <label for="checkCaja" class="center">
-                                elecciona esta casilla si es para algun(os) producto(s)
+                                Selecciona esta casilla si es para algun(os) producto(s)
                             </label>
                         </ons-list-item>
                     </ons-card>
@@ -1415,7 +1856,7 @@
 
 <!-- CONSUMIBLES -->
 
-    <!-- vista caja inventario-->
+    <!-- Victa completa -->
     <template id="consumible.html">
         <ons-page>
             <ons-toolbar>
@@ -1425,6 +1866,25 @@
             <div id="consumibleLoading">
                 <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
+
+            <ons-tabbar swipeable position="bottom">
+                <ons-tab id="existencia" page="consumible1.html" label="Inventario" icon="fa-user-large, material:md-home" active>
+                </ons-tab>
+                <ons-tab id="sinExistencia" page="consumible2.html" label="Sin existencia" icon="fa-boxes-stacked" active-icon="fa-box" >
+                </ons-tab>
+            </ons-tabbar>
+
+            <ons-fab onclick="nextPage('agregarConsumible.html')" position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+            
+        </ons-page>
+    </template>
+
+    <!-- vista consumible en existencia -->
+    
+    <template id="consumible1.html">
+        <ons-page>
 
             <ons-list>
                 <ons-list-item>
@@ -1436,13 +1896,28 @@
                 <ons-lazy-repeat id="datosConsumible"></ons-lazy-repeat>
             </ons-list>
 
-            <ons-fab onclick="nextPage('agregarConsumible.html')" position="bottom right">
-                <i class="fa-solid fa-plus"></i>
-            </ons-fab>
             
         </ons-page>
     </template>
 
+    <!-- vista sin existencia de consumible -->
+    <template id="consumible2.html">
+        <ons-page>
+            
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchrConsumibleLoading" placeholder="Buscar: descripcion / cantidad" onkeyup="setMostrarConsumibleSearch(this.value,event)"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosConsumible"></ons-lazy-repeat>
+            </ons-list>
+
+            
+        </ons-page>
+    </template>
+    <!-- agregar consumible -->
     <template id="agregarConsumible.html">
         <ons-page>
             <ons-toolbar>
@@ -1681,6 +2156,7 @@
                                 <option value="21 ECT">21 ECT</option>
                                 <option value="23 ECT">23 ECT</option>
                                 <option value="26 ECT">26 ECT</option>
+                                <option value="29 ECT">29 ECT</option>
                                 <option value="32 ECT">32 ECT</option>
                                 <option value="36 ECT">36 ECT</option>
                                 <option value="38 ECT">38 ECT</option>
@@ -1866,6 +2342,7 @@
                                 <option value="21 ECT">21 ECT</option>
                                 <option value="23 ECT">23 ECT</option>
                                 <option value="26 ECT">26 ECT</option>
+                                <option value="29 ECT">29 ECT</option>
                                 <option value="32 ECT">32 ECT</option>
                                 <option value="36 ECT">36 ECT</option>
                                 <option value="38 ECT">38 ECT</option>
@@ -1987,7 +2464,8 @@
                             <option value="21 ECT ESP">21 ECT ESP</option> 
                             <option value="21 ECT">21 ECT</option> 
                             <option value="23 ECT">23 ECT</option> 
-                            <option value="26 ECT">26 ECT</option> 
+                            <option value="26 ECT">26 ECT</option>
+                            <option value="29 ECT">29 ECT</option> 
                             <option value="32 ECT">32 ECT</option> 
                             <option value="38 ECT">38 ECT</option> 
                             <option value="42 ECT">42 ECT</option> 
@@ -2479,7 +2957,7 @@
                 <br>
                 <p id="datoDialog">
                     <span class="input-number-decrement" onclick="decrementar()"><i style="color: white;" class="fa-solid fa-minus"></i></span>
-                    <input id="salidaConsumible" class="input-number" type="text" value="1" min="0" max="10">
+                    <input id="salidaConsumible" class="input-number" type="text"  >
                     <span class="input-number-increment" onclick="incrementar()"><i style="color: white;" class="fa-solid fa-plus"></i></span>
                 </p>
                 <ons-button modifier="large" onclick="setActualizarConsumible(idConsumible)">Actualizar</ons-button>
@@ -2487,5 +2965,108 @@
         </ons-dialog>
     </template>
 
+    <!-- DIALOGO PARA FILTRO -->
+    <template id="dialogFiltroProveedor.html">
+        <ons-dialog id="my-dialog-FiltroProveedor" cancelable>
+            <div style="text-align: center; padding: 10px;">
+                <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-FiltroProveedor');"><i class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div> <b>Filtro</b> 
+                <br><br>
+                <div id="inserto">
+                    <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
+                        Tipo
+                    </ons-list-header>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="1"></ons-radio>
+                        </label>
+                        <label for="1" class="center">
+                            Consumible
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="2"></ons-radio>
+                        </label>
+                        <label for="2" class="center">
+                            Lamina
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="3"></ons-radio>
+                        </label>
+                        <label for="3" class="center">
+                            Servicio
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="4"></ons-radio>
+                        </label>
+                        <label for="4" class="center">
+                            Suajes y Grabados
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="5"></ons-radio>
+                        </label>
+                        <label for="5" class="center">
+                            Maquila
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="6"></ons-radio>
+                        </label>
+                        <label for="6" class="center">
+                            Gasolina
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="7"></ons-radio>
+                        </label>
+                        <label for="7" class="center">
+                            Herramienta
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="8"></ons-radio>
+                        </label>
+                        <label for="8" class="center">
+                            Otros
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item tappable modifier="nodivider"> 
+                        <label class="left">
+                            <ons-radio name="tipo" input-id="9"></ons-radio>
+                        </label>
+                        <label for="9" class="center">
+                            Pagos Fijos
+                        </label>
+                    </ons-list-item>
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <ons-button modifier="large" onclick="filtrarRadio()">
+                                Buscar 
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </ons-button>
+                        </div>  
+                        <div class="right">
+                            <ons-button onclick="borrarRadioProveedor()" modifier="large">
+                                Borrar
+                            </ons-button>
+                        
+                        </div>
+                       
+                    </ons-list-item>
+                    
+                </div>
+
+            </div>
+        </ons-dialog>
+    </template>
 </body>
 </html>

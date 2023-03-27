@@ -447,10 +447,10 @@ function agregarCeros(numero)
 }
 
 //genera un pop de la pila de ventanas de la app *return* y ejecuta una funcion
-function resetearPilaFunction(miFuncion)
+function resetearPilaFunction(miFuncion,data)
 {
     document.querySelector('ons-navigator').popPage().then(function(){
-        miFuncion();
+        miFuncion(data);
     }); 
 }
 
@@ -533,7 +533,7 @@ function abrirDialogLamina(texto,_id,tipo) {
   setTimeout(() => {
     $("#datoDialog").empty();
     $("#datoDialog").append('<ons-progress-circular indeterminate style="margin-bottom:10px"></ons-progress-circular>');
-  }, 1);
+  }, 10);
   setTimeout(() => {
     $("#datoDialog").empty();
     $("#datoDialog").append(texto);
@@ -809,4 +809,48 @@ function metodoPago(dato)
   else if(dato == 99) return "Por definir (99)";
 }
 
+function meses()
+{
+    return ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+}
 
+/*function tipoEgreso(dato)
+{
+  dato--;
+  let tipo = ["Consumible","Lamina","Servicio","Suajes y Grabados","Maquila","Gasolina","Herramienta","Otros","Pagos Fijos"];
+  return tipo[dato];
+
+}*/
+
+//no se esta usando
+function tipoEgreso(dato)
+{
+  const egreso = {
+    1: "Consumible",
+    2: "Lamina",
+    3: "Servicio",
+    4: "Suajes y Grabados",
+    5: "Maquila",
+    6: "Gasolina",
+    7: "Herramienta",
+    8: "Otros",
+    9: "Pagos Fijos"
+  }
+  return egreso[dato];
+}
+
+function filtrarRadio()
+{
+  tipoFilter = $('input[name=tipo]:checked')[0].id;
+  setProveedor();
+  cerrarDialogo('my-dialog-FiltroProveedor');
+}
+function borrarRadioProveedor()
+{
+  //console.log($('input[name=tipo]:checked').val())
+  if(tipoFilter > 0) $('input[name=tipo]:checked')[0].checked = false;
+
+  tipoFilter = 0;
+  setProveedor();
+  cerrarDialogo('my-dialog-FiltroProveedor');
+}

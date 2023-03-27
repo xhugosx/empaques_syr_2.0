@@ -233,5 +233,5 @@ function verPlano(plano)
 
 function ExistePlano(file)
 {
-    return file == 1 ? '<i class="fa-solid fa-file-circle-check fa-lg" style="color:#00bb2d"></i>' :'<i class="fa-solid fa-file-circle-xmark fa-lg" style="color:#ff6961"></i>'
+    return file == 1 ? '<i class="fa-solid fa-file-circle-check fa-lg" style="color:#00bb2d"></i>' :'<i class="fa-solid fa-file-circle-xmark fa-lg" style="color:#ff6961"></i>';
 }
