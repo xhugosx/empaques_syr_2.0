@@ -2,13 +2,18 @@ function mostrarTodoPedidosLamina()
 {
     $('#loadingPedidosLamina').append("<ons-progress-bar indeterminate></ons-progress-bar>");
     $('#loadingPedidosLaminaPACK').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    setMostrarPedidosLamina();
-    setMostrarPedidosLaminaPACK();
+
+    //console.log($('#searchPCM').val());
+    if($('#searchPCM').val() === "" || $('#searchPCM').val() === undefined) setMostrarPedidosLamina();
+    else setMostrarBusquedaLamina($('#searchPCM').val(),13);
+    if($('#searchPACK').val() === "" || $('#searchPACK').val() === undefined) setMostrarPedidosLaminaPACK();
+    else setMostrarBusquedaLaminaPack($('#searchPACK').val(),13);
 }
 function setMostrarBusquedaLamina(search,e)
 { 
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    //alerta(e.which);
+    if (tecla==13 || e == 13) 
     {
         servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=1&search='+search,getMostrarPedidosLamina);
     }
@@ -17,11 +22,27 @@ function setMostrarBusquedaLamina(search,e)
 function setMostrarBusquedaLaminaPack(search,e)
 { 
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=2&search='+search,getMostrarPedidosLaminaPACK);
     }
     else if(search == "") setMostrarPedidosLaminaPACK();
+}
+function setMostrarPedidosLaminaFecha(fecha)
+{
+    $('#loadingPedidosLaminaFecha').empty("");
+    $('#loadingPedidosLaminaFecha').append("<ons-progress-bar indeterminate></ons-progress-bar>");
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/selectDate.php?fecha="+fecha,getMostrarPedidosLaminaFecha)
+}
+function getMostrarPedidosLaminaFecha(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    
+    var cantidadTotal = arrayJson[arrayJson.length-1];
+   $('#cantidadLaminas').text(new Intl.NumberFormat().format(cantidadTotal));
+
+    listaInfinita('datospedidosLaminaFecha','loadingPedidosLaminaFecha',arrayJson,enlistarPedidosLamina);
 }
 function setMostrarPedidosLamina()
 {
@@ -58,9 +79,10 @@ function setAgregarPedidoLamina()
     var papel = $('#papelPL').val();
     //if($('#checkCaja')[0].checked) var caja = $('#cajaLP').val(); //check para tomar el valor de caja
     var fecha = $('#fechaLP').val();
+    var fecha_entrega = $('#fechaLPE').val();
     //var observaciones = $('#observacionesPL').val();
 
-    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel))
+    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
     servidorPost("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/add.php",getAgregarPedidoLamina,formData);
     else alerta("Existen datos vacios");
     
@@ -114,6 +136,7 @@ function getBuscarActualizarPL(respuesta)
     $('#resistencia').val(arrayJson.resistencia);
     $('#papel').val(arrayJson.papel);
     $('#fecha').val(arrayJson.fecha);
+    $('#fecha_entrega').val(arrayJson.fecha_entrega);
     $('#observaciones').val(arrayJson.observaciones);
     if(arrayJson.caja != "")
     {
@@ -139,8 +162,9 @@ function setActualizarPL()
     var resistencia = $('#resistencia').val();
     var papel = $('#papel').val();
     var fecha = $('#fecha').val();
+    var fecha_entrega = $('#fecha_entrega').val();
 
-    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel))
+    if(datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
     servidorPost("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/update.php?&o_c="+o_cTemp,getActualizarPL,formData);
     else alerta("Existen datos vacios");
     
@@ -223,7 +247,7 @@ function enlistarPedidosLamina(arrayJson)
     var o_c  = arrayJson.o_c.slice(0,-2);
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\',\''+arrayJson.observaciones+'\')">'
     html1 += '<ons-list-header style="background:'+colorEstado(arrayJson.estado)+'; color:white;">';
-    html1 += arrayJson.entrada != "" ? '      <div class="contenedorHead" style="color:'+colorEstado(arrayJson.estado)+';">llego: '+separator(arrayJson.entrada)+' pzas</div>' : "";
+    html1 += arrayJson.entrada != '' ? '<div class="contenedorHead" style="color:'+colorEstado(arrayJson.estado)+';">llego: '+separator(arrayJson.entrada)+' pzas</div>' : '<div class="contenedorHeadFecha" style="color:white;">Estimado: '+sumarDias(arrayJson.fecha_entrega,0)+'</div>';
     html1 +=        estadoLamina(arrayJson.estado)+' | ';
     html1 +=        sumarDias(arrayJson.fecha,0) //aqui ira una fecha 
     html1 += '</ons-list-header>';

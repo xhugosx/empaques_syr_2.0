@@ -224,20 +224,19 @@ function enlistarPrograma(arrayJson,tipo)
             //html1 += '<ons-list-header>';                                                                                                 	
                                                                                                                                                                 
             html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\',\'\',\''+arrayJson[i].papel+'\')">';
+            html1 += '<ons-list-header style="background:rgba(255, 255, 255, 0);color:white">'+arrayJson[i].id +'</ons-list-header>';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
             html1 += '    </div>';
             html1 += '    <div class="center romperTexto">';
-            html1 += '        <span class="list-item__title">'+arrayJson[i].producto+'</span>'; 
+            html1 += '        <span class="list-item__title">'+arrayJson[i].producto+' | <b>'+arrayJson[i].resistencia+'</b></span>'; 
             html1 += '        <span class="list-item__subtitle">';
             html1 += arrayJson[i].cliente;
             html1 += '        </span>';
             html1 += '    </div>';
             html1 += '    <div class="right">';
-            html1 += '         <div class="centrar">';
-            html1 += arrayJson[i].resistencia;               
-            html1 += '               <br>';                    
+            html1 += '         <div class="centrar">';                  
             html1 += '               <b>'+ separator(arrayJson[i].cantidad) +' pzas</b>';
             html1 += '         </div>';
             html1 += '    </div>';
@@ -266,20 +265,19 @@ function enlistarProgramaInserto(arrayJson,tipo)
             //html1 += '<ons-list-header>';                                                                                                 	
                                                                                                                                                                 
             html1 += '<ons-card style="padding:0px" class="botonPrograma" '+estadoColor(arrayJson[i].estado)+' onclick="crearObjetMensajeProcesoPrograma(\''+arrayJson[i].idP+'\',\''+arrayJson[i].id+'\',\''+arrayJson[i].cantidad+'\',\''+arrayJson[i].codigo+'\',\''+arrayJson[i].resistencia+'\',\''+arrayJson[i].observaciones+'\')">';
+            html1 += '<ons-list-header style="background:rgba(255, 255, 255, 0); color:white">'+arrayJson[i].id +'</ons-list-header>';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
             html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
             html1 += '    </div>';
             html1 += '    <div class="center romperTexto">';
-            html1 += '        <span class="list-item__title"><b>'+arrayJson[i].observaciones+'</b> | <span style="font-size:11px">'+arrayJson[i].producto+'</span></span>'; 
+            html1 += '        <span class="list-item__title"><b>'+arrayJson[i].observaciones+' - '+arrayJson[i].resistencia+'</b> | <span style="font-size:11px">'+arrayJson[i].producto+'</span></span>'; 
             html1 += '        <span class="list-item__subtitle">';
             html1 += arrayJson[i].cliente;
             html1 += '        </span>';
             html1 += '    </div>';
             html1 += '    <div class="right">';
-            html1 += '         <div class="centrar">';
-            html1 += arrayJson[i].resistencia;               
-            html1 += '               <br>';                    
+            html1 += '         <div class="centrar">';                   
             html1 += '               <b>'+ separator(arrayJson[i].cantidad) +' pzas</b>';
             html1 += '         </div>';
             html1 += '    </div>';

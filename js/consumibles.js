@@ -1,3 +1,10 @@
+//funcion para refrescar todo
+function refresConsumible()
+{
+    setConsumible0();
+    setConsumible();
+}
+
 //mostrar consumible search
 function setMostrarConsumibleSearch(search,e)
 {
@@ -16,6 +23,39 @@ function setMostrarConsumibleSearch(search,e)
     
 }
 //fin de mostrar consumible search
+//funcion para hacer busquedad search con 0
+//mostrar consumible search
+function setMostrarConsumible0Search(search,e)
+{
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13) 
+    {
+        $("#consumible0Loading").empty();
+        $("#consumible0Loading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/consumibles/selectSinExistencia.php?search='+search,getConsumible0);
+    }
+    else if(search == ""){
+        $("#consumible0Loading").empty();
+        $("#consumible0Loading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        setConsumible0();
+    } 
+    
+}
+
+//funcion para buscar ambos consultas de consumibles
+function setConsumible0()
+{
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/consumibles/selectSinExistencia.php',getConsumible0);
+}
+function getConsumible0(respuesta)
+{
+    var resultado = respuesta.responseText;//respuesta del servidor
+    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    $('#sinExistencia').attr("badge", arrayJson.length-1);
+    listaInfinita('datosConsumible0','consumible0Loading',arrayJson,enlistarConsumible);
+
+
+}
 
 //mostrar inventario consumibles
 function setConsumible()
@@ -26,7 +66,7 @@ function getConsumibles(respuesta)
 {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-
+    $('#existencia').attr("badge", arrayJson.length-1);
     listaInfinita('datosConsumible','consumibleLoading',arrayJson,enlistarConsumible);
 
 }
@@ -50,7 +90,7 @@ function getAgregarConsumible(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Consumible agregado");
-        resetearPilaFunction(setConsumible);
+        resetearPilaFunction(refresConsumible);
     }  
     else alerta("No se pudo Agregar");
 }
@@ -66,7 +106,7 @@ function getEliminarConsumible(respuesta)
     if(respuesta.responseText=="1") 
     {
         alerta("Consumible Eliminado");
-        setConsumible();
+        refresConsumible();
     }  
     else alerta("No se pudo Eliminar");
 }
@@ -85,12 +125,32 @@ function getActualizarConsumible(respuesta)
     if(respuesta.responseText=="1") 
     {
         alertToast("Piezas Actualizadas!",2000)
-        setConsumible();
+        refresConsumible();
         hideDialogo('my-dialogConsumible');
     }  
     else alerta("No se pudo Actualizar");
 }
 //fin de actualizar de consumible
+
+//actualizar consumible descripcion
+
+function setActualizarConsumibleDes(id)
+{
+    let descripcion = $('#salidaConsumibleDes').val().toUpperCase();
+    if(vacio(descripcion)) servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/consumibles/updateDes.php?id='+id+'&descripcion='+descripcion,getActualizarConsumibleDes);
+    else alerta("No puede estar vacio");    
+}
+function getActualizarConsumibleDes(respuesta)
+{
+    if(respuesta.responseText=="1") 
+    {
+        alertToast("Descripcion Actualizada!",2000)
+        refresConsumible();
+        hideDialogo('my-dialogConsumibleDes');
+    }  
+    else alerta("No se pudo Actualizar");
+}
+//fin de actualizar de consumible descripcion
 
 function enlistarConsumible(json)
 {
@@ -114,11 +174,19 @@ function alertaConsumible(array)
 {
     array = array.split(",");
     var json = conversionArrayJson(array);
-    mensajeArriba("Opciones",["<b>Piezas disponibles</b>",{label:'Eliminar',modifier: 'destructive'}],mensajeAccion,json);
+    mensajeArriba("Opciones",["Modificar Descripcion","<b>Piezas disponibles</b>",{label:'Eliminar',modifier: 'destructive'}],mensajeAccion,json);
 }
 function mensajeAccion(index,json)
 {
-    if(index == 0)
+    if(index == 0) 
+    {
+        showDialogo("my-dialogConsumibleDes","dialogConsumibleDes.html"); 
+        setTimeout(() => {
+         $('#salidaConsumibleDes').val(json.descripcion);
+         idConsumible = json.id;
+        }, 1);
+    }
+    else if(index == 1)
     {
        showDialogo("my-dialogConsumible","dialogConsumibleSalida.html"); 
        setTimeout(() => {
@@ -127,7 +195,7 @@ function mensajeAccion(index,json)
        }, 1);
        
     } 
-    else if(index == 1) alertComfirm("Estas seguro de eliminar este consumible?",["Aceptar","Cancelar"],alertaEliminar,json)
+    else if(index == 2) alertComfirm("Estas seguro de eliminar este consumible?",["Aceptar","Cancelar"],alertaEliminar,json)
 }
 
 function alertaEliminar(index,json)

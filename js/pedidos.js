@@ -24,8 +24,8 @@ function buscarDtospedidos()
 
     setPedidosInsertos();
 
-    $("#searchPedidoCliente").val("");
-    $("#searchPedido").val("");
+    //$("#searchPedidoCliente").val("");
+    //$("#searchPedido").val("");
 
 }
 function solicitarInfoPedido(codigo,e)
@@ -65,7 +65,10 @@ function getPedidosCliente(respuesta)
 function setBusquedaPendiente()
 {
     var type = filtro ? 1 : 2;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type,getBusquedaPendiente);
+    var busqueda = $('#searchPedido').val();
+    //console.log(busqueda);
+    if(busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type,getBusquedaPendiente);
+    else setSearchPedidos(busqueda,13);
 }
 function getBusquedaPendiente(respuesta)
 {
@@ -82,7 +85,9 @@ function setPedidosClienteFiltrado(codigo)
 {
     var type = filtro ? 1 : 2;
     cliente = codigo;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo),getPedidosClienteFiltrado);
+    var busqueda = $('#searchPedidosClientesFiltrados').val();
+    if(busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo),getPedidosClienteFiltrado);
+    else setsearchPedidosClienteFiltrado(busqueda,13,cliente);
 }
 function getPedidosClienteFiltrado(respuesta)
 {
@@ -98,7 +103,7 @@ function setSearchPedidos(search,e)
 {
     
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         $("#datosPedidosLoading").empty();
         $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
@@ -146,7 +151,7 @@ function getSearchPedidosCliente(respuesta)
 function setsearchPedidosClienteFiltrado(search,e,codigo)
 {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         $("#datosPedidosClientesLoadingFiltroLoading").empty();
         $("#datosPedidosClientesLoadingFiltroLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");

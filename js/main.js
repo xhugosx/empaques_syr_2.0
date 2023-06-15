@@ -67,7 +67,7 @@ function conversionArrayJson(array)
   json = json.slice(0,-1); //esto para eliminar la ultima coma
   json += "}";
 
-
+  //console.log(json);
   return json = JSON.parse(json);
 }
 function conversionTextoArray(txt)
@@ -188,7 +188,7 @@ function crearObjetMensajePedido(oc,id,codigo,estado,observaciones,fecha)
   let titulo = "";
   if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
     ons.openActionSheet({
-      title: titulo,
+      title: titulo+" "+id,
       cancelable: true,
       buttons: [
         '<b>Programar<b/>',
@@ -266,7 +266,7 @@ function crearObjetMensajeProcesoPrograma(idP,id,cantidad,codigo,resistencia,obs
 {
   
     ons.openActionSheet({
-      title: 'ASIGNAR PROCESO',
+      title: 'ASIGNAR PROCESO - '+ codigo,
       cancelable: true,
       buttons: [
         '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado ',
@@ -803,9 +803,9 @@ function metodoPago(dato)
 {
   if(dato == 1) return "Efectivo (1)";
   else if(dato == 2) return "Cheque (2)";
-  else if(dato == 3) return "Efectivo (03)";
+  else if(dato == 3) return "Transferencia (03)";
   else if(dato == 4) return "Tarjeta de Credito (04)"
-  else if(dato == 28) return "Tarjeta de debito (28)";
+  else if(dato == 28) return "Tarjeta de Debito (28)";
   else if(dato == 99) return "Por definir (99)";
 }
 
@@ -853,4 +853,16 @@ function borrarRadioProveedor()
   tipoFilter = 0;
   setProveedor();
   cerrarDialogo('my-dialog-FiltroProveedor');
+}
+
+function validarEntradaSalidaP()
+{
+  if(salida) setEditarCantidadSalidaP();
+  else setEditarCantidadEntradaP();
+}
+
+function validarEntradaSalidaI()
+{
+  if(salida) setEditarCantidadSalidaI();
+  else setEditarCantidadEntradaI();
 }

@@ -1,3 +1,44 @@
+var salida;
+
+//funcion para editar cantidad producto
+function setEditarCantidadSalidaP()
+{
+    let cantidad = $("#cantidad").val();
+    let id = $("#id").val();
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaP);
+}
+function getEditarCantidadSalidaP(respuesta)
+{
+    if(respuesta.responseText == 1 )
+    {
+        alerta("Registro editado");
+        mostrarTodoSalida();
+        $("#cantidad").val("");
+        $("#id").val("");
+        hideDialogo('my-dialogEditarEntradaSalidaP');
+    }
+    else alerta("No se pudo Modificar por un error");
+}
+
+//funcion para editar cantidad inserto
+function setEditarCantidadSalidaI()
+{
+    let cantidad = $("#cantidadI").val();
+    let id = $("#idI").val();
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaI);
+}
+function getEditarCantidadSalidaI(respuesta)
+{
+    if(respuesta.responseText == 1 )
+    {
+        alerta("Registro editado");
+        mostrarTodoSalida();
+        $("#cantidadI").val("");
+        $("#idI").val("");
+        hideDialogo('my-dialogEditarEntradaSalidaI');
+    }
+    else alerta("No se pudo Modificar por un error");
+}
 
 function mostrarTodoSalida()
 {

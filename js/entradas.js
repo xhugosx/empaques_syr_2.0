@@ -1,3 +1,47 @@
+var entrada;
+
+//funcion para editar cantidad de entradas y salidas productos
+function setEditarCantidadEntradaP()
+{
+    let cantidad = $("#cantidad").val();
+    let id = $("#id").val();
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaP);
+}
+function getEditarCantidadEntradaP(respuesta)
+{
+    if(respuesta.responseText == 1 )
+    {
+        alerta("Registro editado");
+        mostrarTodoEntrada();
+        $("#cantidad").val("");
+        $("#id").val("");
+        hideDialogo('my-dialogEditarEntradaSalidaP');
+    }
+    else alerta("No se pudo Modificar por un error");
+}
+
+//fucnones para editar entradas y salidas de insertos
+function setEditarCantidadEntradaI()
+{
+    let cantidad = $("#cantidadI").val();
+    let id = $("#idI").val();
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaI);
+}
+function getEditarCantidadEntradaI(respuesta)
+{
+    if(respuesta.responseText == 1 )
+    {
+        alerta("Registro editado");
+        mostrarTodoEntrada();
+        $("#cantidadI").val("");
+        $("#idI").val("");
+        hideDialogo('my-dialogEditarEntradaSalidaI');
+    }
+    else alerta("No se pudo Modificar por un error");
+    console.log(respuesta.responseText);
+}
+
+//funcion para refresh
 function mostrarTodoEntrada()
 {
     localStorage.setItem("bandera",0);

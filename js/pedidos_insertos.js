@@ -91,7 +91,9 @@ function getAgregaPedidoInserto(respuesta)
 function setPedidosInsertos()
 {
     var type = filtro ? 1 : 2;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?type="+type,getPedidosInsertos)
+    var busqueda = $('#searchPedidoInserto').val();
+    if(busqueda == "" || busqueda == undefined)servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?type="+type,getPedidosInsertos);
+    else setSearchPedidosInsertos(busqueda,13);
 }
 function getPedidosInsertos(respuesta)
 {
@@ -165,7 +167,7 @@ function setSearchPedidosInsertos(search,e)
 {
     
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e==13) 
     {
         var type = filtro ? 1 : 2;
         servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?type="+type+"&search="+search,getSearchPedidosInsertos);

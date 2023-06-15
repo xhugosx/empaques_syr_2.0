@@ -272,6 +272,21 @@ span.list-item__subtitle{
     margin-top: 1.5px;
     font-weight: bold;
 }
+.contenedorHeadFecha{
+    position:absolute;
+    right:0px;
+    margin-right:2vh;
+    font-size:11px;
+    height:15px;
+    width: auto;
+    border-radius:20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    padding-bottom: 7px;
+    margin-top: 1.5px;
+    font-weight: bold;
+}
 
 .separacion{
     position: absolute;
@@ -327,7 +342,7 @@ span.list-item__subtitle{
 {
     border-right: none;
     border-radius: 10px 0 0 10px;
-    background: rgb(209, 96, 96);
+    background: rgb(64, 157, 196);
     
 }
  
@@ -335,7 +350,7 @@ span.list-item__subtitle{
 {
     border-left: none;
     border-radius: 0 10px 10px 0;
-    background: rgb(98, 155, 100);
+    background: rgb(43, 105, 162);
 }
 input[type="text"] {
     text-transform: uppercase;
@@ -364,5 +379,15 @@ input[type="text"] {
 }
 .flecha:active{
     color: #1A9CE8;
+}
+
+ons-fab{
+    margin-bottom: 20px;
+}
+
+#cantidadLaminas{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
 }
 

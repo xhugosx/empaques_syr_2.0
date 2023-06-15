@@ -28,7 +28,7 @@ function setMesIngreso(mes)
   $('#loadingIngresoMes').append("<ons-progress-bar indeterminate></ons-progress-bar>");
   let anio = $("#anioG").text();
   mes = mes ? mes : mesIngreso;
-  console.log(anio,mes);
+  //console.log(anio,mes);
   servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/ingresos/ingresoMensual.php?anio="+anio+"&mes="+mes,getMesIngreso);
 }
 function getMesIngreso(respuesta)
@@ -205,7 +205,7 @@ function enlitsarIngreso(arrayJson,i)
   html1 += '            <i class="fa-solid fa-money-bill-trend-up fa-2x"></i> ';
   html1 += '        </div> ';
   html1 += '        <div class="center"> ';
-  html1 += '            <b> '+mes(i)+' </b>';
+  html1 += '            <b> '+mesNombre(i)+' </b>';
   html1 += '        </div>';
   html1 += '        <div class="right" style="color: green; font-size:15px"><span>$ ' + arrayJson.toLocaleString("es-MX")+'</span></div> ';
   html1 += '    </ons-list-item> ';
@@ -308,7 +308,7 @@ function graficaIngresoCliente(json)
           labels: clientes,
           datasets:[
               {
-                label: mes(mesIngreso-1),
+                label: mesNombre(mesIngreso-1),
                 backgroundColor: 'rgba(163,221,203,0.2)',
                 borderColor: 'rgba(163,221,203,1)',
                 data: importes

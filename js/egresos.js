@@ -220,7 +220,7 @@ function enlitsarEgreso(arrayJson,i)
   html1 += '            <i class="fa-solid fa-money-bill-trend-up fa-2x" style="transform: rotate(180deg);"></i> ';
   html1 += '        </div> ';
   html1 += '        <div class="center"> ';
-  html1 += '            <b> '+mes(i)+' </b>';
+  html1 += '            <b> '+mesNombre(i)+' </b>';
   html1 += '        </div>';
   html1 += '        <div class="right" style="color: red;font-size:14px">$ ' + arrayJson.toLocaleString("en")+'</div> ';
   html1 += '    </ons-list-item> ';
@@ -231,6 +231,7 @@ function enlitsarEgreso(arrayJson,i)
 //funcion para graficar egresos al año
 function graficaEgresoAnual(importes)
 {
+  console.log(importes);
   if(chart) 
   {
     chart.data.datasets[0].data = importes;
@@ -324,7 +325,7 @@ function graficaEgresoMes(json)
         labels: tipos,
         datasets:[
           {
-            label: mes(mesIngreso-1),
+            label: mesNombre(mesIngreso-1),
             backgroundColor: 'rgba(229,112,126,0.2)',
             borderColor: 'rgba(229,112,126,1)',
             data: importes,
@@ -372,7 +373,7 @@ function enlitsarMesProveedorEgreso(arrayJson)
   html1 += '            <i class="fa-solid fa-user fa-2x"></i> ';
   html1 += '        </div> ';
   html1 += '        <div class="center"> ';
-  html1 += '            <span class="list-item__title"><b> 0'+ arrayJson.idProveedor +' '+ arrayJson.proveedor +'</b></span>';
+  html1 += '            <span class="list-item__title"><b> 0'+ arrayJson.idProveedor +' '+ arrayJson.proveedor +'</b> - '+ metodoPago(arrayJson.metodo)+'</span>';
   html1 += '            <span class="list-item__subtitle"><div style="color:grey; font-size: 15px;">'+ factura +' '+ observaciones +'</div></span>'; 
   html1 += '        </div>';
   html1 += '        <div class="right"><span style="color: red;font-size:14px">$' + new Intl.NumberFormat('es-MX').format(arrayJson.importe)+'</span> </div> ';
@@ -408,7 +409,7 @@ function getConfirmEliminarEgreso(index,id)
 //FIN DE FUNCIONES PARA NOTIFICACIONES 
 
 
-function mes(numero)
+function mesNombre(numero)
 {
   var mes = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   return mes[numero];

@@ -30,10 +30,11 @@ function setMostrarInventarioInserto()
 }
 function getMostrarInventarioInserto(respuesta)
 {
+    //console.log(respuesta.responseText);
     var resultado = respuesta.responseText;
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     listaInfinita('datosInsertoInventario','insertoInventarioLoading',arrayJson,enlistarInventarioInserto);
-    //console.log(respuesta.responseText);
+    
 }
 
 //MOSTRAR INVENTARIO DE INSERTOS INDIVIDUALES
@@ -94,7 +95,7 @@ function getActualizarSalida(respuesta)
         resetearPilaFunction(mostrarTodoInventario);
     }
     else alerta("no se pudo actualizar");
-    console.log(respuesta.responseText);
+    //console.log(respuesta.responseText);
 
 }
 
@@ -244,16 +245,24 @@ function enlistarInventarioLamina(arrayJson)
     let html1 = '';
     var o_c = arrayJson.codigo;
     o_c = o_c.slice(0,-2);
-   
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="mensajeAlertaDato(\''+conversionJsonArray(arrayJson)+'\')">'
+
+    var span = "";
+    var cajas = (arrayJson.caja).split("@");
+    var productos = (arrayJson.producto).split("@");
+    var clientes = (arrayJson.cliente).split("@");
+    for(var i = 0; i<cajas.length-1;i++) span += '<span class="list-item__subtitle">'+ cajas[i] +' '+ productos[i] +' - <b>'+ clientes[i] +'</b></span>';
+
+    //console.log(arrayJson);
+   //console.log(arrayJson);
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="mensajeAlertaDato([\'codigo\',\''+arrayJson.codigo+'\',\'inventario\',\''+arrayJson.inventario+'\',\'salida\',\''+arrayJson.salida+'\'])">'
     html1 += ' <ons-list-header style="background:white">'+ o_c +'</ons-list-header>';
     html1 += '<ons-list-item modifier="nodivider">'; 
     html1 += '        <div class="left">';
     html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';
     html1 += '        </div>';
-    html1 += '        <div class="center">';
+    html1 += '        <div class="center romperTexto">';
     html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
-    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.cliente+'</b></span>' : "";
+    html1 += span;
     html1 += '        </div>';
     html1 += '        <div class="right">';
     html1 += '            <span class="notification" style="background: rgb(8, 136, 205);">'+ separator(arrayJson.inventario) +' <font size="2px">pza(s)</font></span>';
@@ -319,9 +328,7 @@ function enlistarInventarioCodigoInserto(arrayJson)
 //EXTRAS
 function mensajeAlertaDato(array)
 {
-    array = array.split(",");
     var json = conversionArrayJson(array);
-
     alertComfirmDato("Agrega salida menor o igual a: "+ json.inventario +" pza(s)","number",["Cancelar","Enviar"],validacionInventarioLP,json);
 }
 function validacionInventarioLP(input,json)
@@ -330,7 +337,7 @@ function validacionInventarioLP(input,json)
     if(input == null || input <= 0) return 0;
     else 
     {
-        //console.log(json.inventario);
+        //alert(json.inventario);
         if(input <= parseInt(json.inventario))
         {
             var salida = parseInt(input) + parseInt(json.salida == "" ? "0" : json.salida);
@@ -348,3 +355,4 @@ function validarConfirm(idx,json)
 {
     if(idx == 0) setActualizarSalidaLamina(json);
 }
+
