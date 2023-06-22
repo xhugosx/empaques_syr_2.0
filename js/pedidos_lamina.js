@@ -1,3 +1,10 @@
+var filtroLamina = false;
+function asignarFiltroLamina(valor)
+{
+    filtroLamina = valor.checked;
+    mostrarTodoPedidosLamina()
+
+}
 function mostrarTodoPedidosLamina()
 {
     $('#loadingPedidosLamina').append("<ons-progress-bar indeterminate></ons-progress-bar>");
@@ -12,19 +19,20 @@ function mostrarTodoPedidosLamina()
 function setMostrarBusquedaLamina(search,e)
 { 
     tecla = (document.all) ? e.keyCode : e.which;
-    //alerta(e.which);
+    var tipo = filtroLamina ? 2 : 1;
     if (tecla==13 || e == 13) 
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=1&search='+search,getMostrarPedidosLamina);
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=1&search='+search+'&type='+tipo,getMostrarPedidosLamina);
     }
     else if(search == "") setMostrarPedidosLamina();
 }
 function setMostrarBusquedaLaminaPack(search,e)
 { 
     tecla = (document.all) ? e.keyCode : e.which;
+    var tipo = filtroLamina ? 2 : 1;
     if (tecla==13 || e == 13) 
     {
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=2&search='+search,getMostrarPedidosLaminaPACK);
+        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=2&search='+search+'&type='+tipo,getMostrarPedidosLaminaPACK);
     }
     else if(search == "") setMostrarPedidosLaminaPACK();
 }
@@ -46,7 +54,8 @@ function getMostrarPedidosLaminaFecha(respuesta)
 }
 function setMostrarPedidosLamina()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=1",getMostrarPedidosLamina)
+    var tipo = filtroLamina ? 2 : 1;
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=1&type="+tipo,getMostrarPedidosLamina)
 }
 function getMostrarPedidosLamina(respuesta)
 {
@@ -56,7 +65,8 @@ function getMostrarPedidosLamina(respuesta)
 }
 function setMostrarPedidosLaminaPACK()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor="+2,getMostrarPedidosLaminaPACK)
+    var tipo = filtroLamina ? 2 : 1;
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?proveedor=2&type="+tipo,getMostrarPedidosLaminaPACK)
 }
 function getMostrarPedidosLaminaPACK(respuesta)
 {

@@ -44,11 +44,7 @@
     <script src="./js/calendario.js"></script>
 
     <script src="./cordova.js"></script>
-
-    <!-- prueba para convertir html en pdf -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 
     <!-- script de graficas -->
     <script src="./js/graficas/Chart.js"></script>
@@ -1359,6 +1355,9 @@
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Laminas</div>
+                <div class="right">
+                    Todo<ons-checkbox style="margin: 10px;" onclick="asignarFiltroLamina(this)"></ons-checkbox>
+                </div>
             </ons-toolbar>
 
 
