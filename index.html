@@ -1361,10 +1361,11 @@
             </ons-toolbar>
 
 
-            <ons-tabbar swipeable position="top">
-                <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving"></ons-tab>
+            <ons-tabbar swipeable position="top" modifier="autogrow">
+                <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving" active></ons-tab>
                 <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
-                <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days" active></ons-tab>
+                <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days" ></ons-tab>
+                <ons-tab id="calendario" page="ordenes.html" label="O. Compra" icon="fa-folder-open" ></ons-tab>
             </ons-tabbar>
 
             
@@ -1373,7 +1374,7 @@
 
     <!-- vista pedidos lamina pcm-->
     <template id="pPCM.html">
-        <ons-page>
+        <ons-page >
 
             <div id="loadingPedidosLamina">
             </div>
@@ -1389,22 +1390,34 @@
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datospedidosLamina"></ons-lazy-repeat>
             </ons-list>
-            <br><br><br><br>
+            <br><br><br><br><br><br><br>
 
-            <ons-fab onclick="mostrarTodoPedidosLamina()" position="bottom left">
+            <ons-fab class="fijadoIzquierda" onclick="mostrarTodoPedidosLamina()" position="bottom left">
                 <i class="fa-solid fa-refresh"></i>
             </ons-fab>
 
-            <ons-fab onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
+            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
-                <i class="fa-solid fa-plus"></i>
+                <span>Agregar pedido</span>
+               
             </ons-fab>
+
+            <!--ons-card class="cookies" style="padding: 15px;">
+                <center class="contenedor-flexbox">
+                    <ons-button  onclick="mostrarTodoPedidosLamina()" style="width: 15%; margin: 5px;border-radius: 20px;">
+                        <i class="fa-solid fa-refresh" style="color: white;"></i> 
+                    </ons-button>
+                    <ons-button modifier="" onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})" style="width: 85%;border-radius: 20px; margin: 5px">
+                         Agregar pedido
+                    </ons-button>
+                </center>
+            </ons-card-->
 
         </ons-page>
     </template>
     <!-- vista pedidos lamina pack-->
     <template id="pPACK.html">
-        <ons-page>
+        <ons-page >
 
             <div id="loadingPedidosLaminaPACK">
             </div>
@@ -1420,15 +1433,15 @@
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datospedidosLaminaPACK"></ons-lazy-repeat>
             </ons-list>
-            <br><br><br><br>
+            <br><br><br><br><br><br><br>
 
             <ons-fab onclick="mostrarTodoPedidosLamina()" position="bottom left">
                 <i class="fa-solid fa-refresh"></i>
             </ons-fab>
 
-            <ons-fab onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
+            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
-                <i class="fa-solid fa-plus"></i>
+                <span>Agregar pedido</span>
             </ons-fab>
 
         </ons-page>
@@ -1461,20 +1474,84 @@
 
                 <div class="calendar__dates" id="dates" ></div>
             </div>
-            <ons-card style="border-radius: 20px; background-color: #1ba0d1b9;">
-                <center>
-                    <span id="cantidadLaminas">
-                        
-                    </span>
-                    <span style="color: white;"> - Laminas</span>
-                </center>
-                
-            </ons-card>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datospedidosLaminaFecha"></ons-lazy-repeat>
             </ons-list>
-            <br><br><br><br>
+            <br><br><br><br><br><br><br>
+
+
+            <ons-fab  class="fijadoCentro" position="bottom right">
+                <span id="cantidadLaminas">
+                      selecciona primero un dia 
+                </span>
+            </ons-fab>
+            
+
+        </ons-page>
+    </template>
+    <!-- vista de ordenes de compra-->
+    <template id="ordenes.html">
+        <ons-page >
+
+            <div id="loadingOrdenes">
+            </div>
+
+            <ons-card class="contenedor-flexbox" style="padding: 0;">
+                <ons-list-item tappable modifier="nodivider">
+                    <label class="left">
+                      <ons-radio name="color" input-id="radio-1" checked></ons-radio>
+                    </label>
+                    <label for="radio-1" class="center">
+                      PCM
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable modifier="nodivider">
+                    <label class="left">
+                      <ons-radio name="color" input-id="radio-2"></ons-radio>
+                    </label>
+                    <label for="radio-2" class="center">
+                      PACK
+                    </label>
+                  </ons-list-item>
+                </ons-list>
+                
+            </ons-card>
+
+            <div class="contenedor-flexbox">
+                
+                <span class="ordenesLamina">
+                    <i class="fa-solid fa-file-pdf fa-3x"></i>
+                    <br><br>
+                    <font> 2023 / 153 </font>
+                </span>
+                <span class="ordenesLamina">
+                    <i class="fa-solid fa-file-pdf fa-3x"></i>
+                    <br><br>
+                    <font> 2023 / 153 </font>
+                </span>
+                <span class="ordenesLamina">
+                    <i class="fa-solid fa-file-pdf fa-3x"></i>
+                    <br><br>
+                    <font> 2023 / 153 </font>
+                </span>
+                <span class="ordenesLamina">
+                    <i class="fa-solid fa-file-pdf fa-3x"></i>
+                    <br><br>
+                    <font> 2023 / 153 </font>
+                </span>
+                
+                
+            </div>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosOrdenes"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br><br><br>
+            <ons-fab  class="fijadoDerecha extraCentrar" position="bottom right">
+                <span>Agregar orden de compra</span>
+            </ons-fab>
+
 
             
 

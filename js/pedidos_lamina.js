@@ -48,7 +48,7 @@ function getMostrarPedidosLaminaFecha(respuesta)
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     
     var cantidadTotal = arrayJson[arrayJson.length-1];
-   $('#cantidadLaminas').text(new Intl.NumberFormat().format(cantidadTotal));
+   $('#cantidadLaminas').text(new Intl.NumberFormat().format(cantidadTotal) + " Lám.");
 
     listaInfinita('datospedidosLaminaFecha','loadingPedidosLaminaFecha',arrayJson,enlistarPedidosLamina);
 }
@@ -126,7 +126,8 @@ function getActualizarEstadoPL(respuesta)
 
 function setBuscarActualizarPL(search)
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?search='+search,getBuscarActualizarPL);
+    var tipo = filtroLamina ? 2 : 1;
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_lamina/select.php?search='+search+"&type="+tipo,getBuscarActualizarPL);
 }
 function getBuscarActualizarPL(respuesta)
 {
