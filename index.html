@@ -327,13 +327,15 @@
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="Ingresos"></ons-lazy-repeat>
             </ons-list>
-            <br><br><br><br><br>
-            <ons-fab onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)" position="bottom right">
-                <i class="fa-solid fa-plus"></i>
-            </ons-fab>
+            <br><br><br><br><br><br><br>
 
             <ons-fab onclick="setIngresos()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+            </ons-fab>
+
+            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)"
+                position="bottom right">
+                <span>Agregar Ingreso</span>
             </ons-fab>
 
         </ons-page>
@@ -656,13 +658,14 @@
                 <ons-lazy-repeat id="egresos"></ons-lazy-repeat>
             </ons-list>
 
-            <br><br><br>
-            <ons-fab onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); " position="bottom right">
-                <i class="fa-solid fa-plus"></i>
-            </ons-fab>
-
+            <br><br><br><br><br><br><br>
             <ons-fab onclick="setEgresos()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+            </ons-fab>
+
+            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); "
+                position="bottom right">
+                <span>Agregar Egreso</span>
             </ons-fab>
 
         </ons-page>
@@ -1001,13 +1004,15 @@
 
             <br><br><br><br><br>
 
-            <ons-fab onclick="nextPage('agregarproveedor.html')" position="bottom right">
-                <i class="fa-solid fa-plus"></i>
-            </ons-fab>
-
             <ons-fab onclick="setProveedor()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
+
+            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregarproveedor.html')" 
+                position="bottom right">
+                <span>Agregar proveedor</span>
+            </ons-fab>
+
         </ons-page>
     </template>
 
@@ -1087,8 +1092,10 @@
 
             </div>
             <br><br><br>
-            <ons-fab onclick="nextPage('agregarClientes.html')" position="bottom right">
-                <i class="fa-solid fa-plus"></i>
+
+            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregarClientes.html')"
+                position="bottom right">
+                <span>Agregar Cliente</span>
             </ons-fab>
 
             <ons-fab onclick="setClientes()" position="bottom left">
@@ -1176,8 +1183,9 @@
 
             <br><br><br><br><br>
 
-            <ons-fab position="bottom right" onclick="nextPage('agregaProductos.html')">
-                <i class="fa-solid fa-plus"></i>
+            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregaProductos.html')"
+                position="bottom right">
+                <span>Agregar producto</span>
             </ons-fab>
 
             <ons-fab onclick="setProductos()" position="bottom left">
@@ -1507,15 +1515,7 @@
                       PCM
                     </label>
                 </ons-list-item>
-                <ons-list-item tappable modifier="nodivider">
-                    <label class="left">
-                      <ons-radio name="color" input-id="radio-2"></ons-radio>
-                    </label>
-                    <label for="radio-2" class="center">
-                      PACK
-                    </label>
-                  </ons-list-item>
-                </ons-list>
+                
                 
             </ons-card>
 
@@ -1523,56 +1523,17 @@
             <span style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">CARPETAS</span>
             <hr>
             <br>
-            <div class="contenedor-flexbox">
-                
-                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
-                    <i class="fa-solid fa-folder fa-3x" id="2023"></i>
-                    <br><br>
-                    <font> 2023 </font>
-                </span>
-                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
-                    <i class="fa-solid fa-folder fa-3x" id="2024"></i>
-                    <br><br>
-                    <font> 2024 </font>
-                </span>
-                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
-                    <i class="fa-solid fa-folder fa-3x" id="2025"></i>
-                    <br><br>
-                    <font> 2025 </font>
-                </span>
-                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
-                    <i class="fa-solid fa-folder fa-3x" id="2026"></i>
-                    <br><br>
-                    <font> 2026 </font>
-                </span>
+
+            <div id="carpetasAnio">
 
             </div>
+
             <br>
             <span style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">ORDENES DE COMPRA</span>
             <hr>
             <br>
-            <div class="contenedor-flexbox">
-                
-                <span class="ordenesLamina">
-                    <i class="fa-solid fa-file-pdf fa-3x"></i>
-                    <br><br>
-                    <font> 2023 / 153 </font>
-                </span>
-                <span class="ordenesLamina">
-                    <i class="fa-solid fa-file-pdf fa-3x"></i>
-                    <br><br>
-                    <font> 2023 / 153 </font>
-                </span>
-                <span class="ordenesLamina">
-                    <i class="fa-solid fa-file-pdf fa-3x"></i>
-                    <br><br>
-                    <font> 2023 / 153 </font>
-                </span>
-                <span class="ordenesLamina">
-                    <i class="fa-solid fa-file-pdf fa-3x"></i>
-                    <br><br>
-                    <font> 2023 / 153 </font>
-                </span>
+
+            <div id="ordenes">
 
             </div>
 
@@ -1580,12 +1541,29 @@
                 <ons-lazy-repeat id="datosOrdenes"></ons-lazy-repeat>
             </ons-list>
             <br><br><br><br><br><br><br>
-            <ons-fab  class="fijadoDerecha extraCentrar" position="bottom right" onclick="nextPage('agregarOrdenes.html')">
+            <ons-fab  class="fijadoDerecha extraCentrar" position="bottom right" onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
+                
                 <span>Agregar orden de compra</span>
             </ons-fab>
 
 
             
+
+        </ons-page>
+    </template>
+    <!-- ver ordenes -->
+    <template id="verOrden.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Ordenes</div>
+            </ons-toolbar>
+
+            <div id="loadingOrden">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <iframe id="ordenArchivo" src="" style="width:100%; height:100%;" frameborder="0"></iframe>
 
         </ons-page>
     </template>
@@ -1598,17 +1576,17 @@
                 <div class="center">Agregar Ordenes de compra</div>
             </ons-toolbar>
 
-            <form id="formProducto">
+            <form id="formOrdenes">
 
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-regular fa-key fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="codigo" id="codigoProducto1" cols="12" rows="1" maxlength="9"
-                                    class="input-100" placeholder="Codigo" type="date"></ons-input>
+                            
+                            <div class="center contenedor-flexbox">
+                                <i class="fa-regular fa-circle-minus fa-3x botonAnio" style="margin: 20px;" onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())-1)"></i>
+                                <span style="font-size:x-large" id="yearOrden" ></span>
+                                <i class="fa-regular fa-circle-plus fa-3x botonAnio" style="margin: 20px;" onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())+1)"></i>
+                               
                             </div>
                         </ons-list-item>
                     </ons-card>
@@ -1621,16 +1599,16 @@
                             <div class="center">
                                 <ons-input name="pdf" onchange="cargarArchivoProducto()" type="file" id="pdfProducto"
                                     cols="30" rows="1" placeholder="archivo"
-                                    style="opacity: 0%; position: absolute;" multiple></ons-input>
+                                    style="opacity: 0%; position: absolute;"></ons-input>
                                 <div id="pdfNombreProducto" class="nombreArchivo">
-                                    Selecciona un archivo -orden de compra en pdg-
+                                    Selecciona un archivo
                                 </div>
                             </div>
                         </ons-list-item>
                     </ons-card>
 
                     <ons-list-item modifier="nodivider">
-                        <ons-button modifier="large" onclick="setAgregarProducto()">Agregar</ons-button>
+                        <ons-button modifier="large" onclick="setAgregarOrden()">Agregar</ons-button>
                     </ons-list-item>
 
             </form>
@@ -2059,10 +2037,11 @@
             <ons-list style="background: rgba(76, 175, 80, 0.0)">
                 <ons-lazy-repeat id="datosCajaEntradaSalida"></ons-lazy-repeat>
             </ons-list>
-            <br><br>
-            <ons-fab position="bottom right"
-                onclick="showDialogo('my-dialogEditarEntradaSalidaP','dialogEditarEntradaSalidaP.html')">
-                <i class="fa-solid fa-pen-to-square"></i>
+            <br><br><br><br><br>
+
+            <ons-fab  class="fijadoDerecha" onclick="showDialogo('my-dialogEditarEntradaSalidaP','dialogEditarEntradaSalidaP.html')"
+                position="bottom right">
+                <span>EDITAR - Entrada / Salida</span>
             </ons-fab>
 
         </ons-page>
@@ -2293,8 +2272,9 @@
                 </ons-tab>
             </ons-tabbar>
 
-            <ons-fab onclick="nextPage('agregarConsumible.html')" position="bottom right">
-                <i class="fa-solid fa-plus"></i>
+            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregarConsumible.html')"
+                position="bottom right">
+                <span>Agregar consumible</span>
             </ons-fab>
 
         </ons-page>
@@ -2425,9 +2405,10 @@
                 <i class="fa-regular fa-plus"></i>
             </ons-fab-->
 
-            <ons-fab onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
+           
+            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
                 position="bottom right">
-                <i class="fa-solid fa-plus"></i>
+                <span>Agregar pedido</span>
             </ons-fab>
 
 

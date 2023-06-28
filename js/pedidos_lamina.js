@@ -15,6 +15,8 @@ function mostrarTodoPedidosLamina()
     else setMostrarBusquedaLamina($('#searchPCM').val(),13);
     if($('#searchPACK').val() === "" || $('#searchPACK').val() === undefined) setMostrarPedidosLaminaPACK();
     else setMostrarBusquedaLaminaPack($('#searchPACK').val(),13);
+
+    setBuscarAnio();
 }
 function setMostrarBusquedaLamina(search,e)
 { 
