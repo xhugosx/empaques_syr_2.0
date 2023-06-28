@@ -42,6 +42,7 @@
     <script src="./js/ganancias.js"></script>
     <script src="./js/home.js"></script>
     <script src="./js/calendario.js"></script>
+    <script src="./js/ordenes.js"></script>
 
     <script src="./cordova.js"></script>
     
@@ -1518,6 +1519,38 @@
                 
             </ons-card>
 
+            <br>
+            <span style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">CARPETAS</span>
+            <hr>
+            <br>
+            <div class="contenedor-flexbox">
+                
+                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
+                    <i class="fa-solid fa-folder fa-3x" id="2023"></i>
+                    <br><br>
+                    <font> 2023 </font>
+                </span>
+                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
+                    <i class="fa-solid fa-folder fa-3x" id="2024"></i>
+                    <br><br>
+                    <font> 2024 </font>
+                </span>
+                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
+                    <i class="fa-solid fa-folder fa-3x" id="2025"></i>
+                    <br><br>
+                    <font> 2025 </font>
+                </span>
+                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
+                    <i class="fa-solid fa-folder fa-3x" id="2026"></i>
+                    <br><br>
+                    <font> 2026 </font>
+                </span>
+
+            </div>
+            <br>
+            <span style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">ORDENES DE COMPRA</span>
+            <hr>
+            <br>
             <div class="contenedor-flexbox">
                 
                 <span class="ordenesLamina">
@@ -1540,20 +1573,69 @@
                     <br><br>
                     <font> 2023 / 153 </font>
                 </span>
-                
-                
+
             </div>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosOrdenes"></ons-lazy-repeat>
             </ons-list>
             <br><br><br><br><br><br><br>
-            <ons-fab  class="fijadoDerecha extraCentrar" position="bottom right">
+            <ons-fab  class="fijadoDerecha extraCentrar" position="bottom right" onclick="nextPage('agregarOrdenes.html')">
                 <span>Agregar orden de compra</span>
             </ons-fab>
 
 
             
+
+        </ons-page>
+    </template>
+
+    <!-- AGREGAR ORDENES DE COMPRA -->
+    <template id="agregarOrdenes.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Ordenes de compra</div>
+            </ons-toolbar>
+
+            <form id="formProducto">
+
+                <ons-card id="contenedorInput">
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-key fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input name="codigo" id="codigoProducto1" cols="12" rows="1" maxlength="9"
+                                    class="input-100" placeholder="Codigo" type="date"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-file-pdf fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input name="pdf" onchange="cargarArchivoProducto()" type="file" id="pdfProducto"
+                                    cols="30" rows="1" placeholder="archivo"
+                                    style="opacity: 0%; position: absolute;" multiple></ons-input>
+                                <div id="pdfNombreProducto" class="nombreArchivo">
+                                    Selecciona un archivo -orden de compra en pdg-
+                                </div>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setAgregarProducto()">Agregar</ons-button>
+                    </ons-list-item>
+
+            </form>
+
+            </ons-card>
 
         </ons-page>
     </template>
