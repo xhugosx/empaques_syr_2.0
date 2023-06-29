@@ -30,7 +30,11 @@ function setAgregarOrden()
         var form = $('#formOrdenes')[0];
         var formData = new FormData(form);
 
-        servidorPost('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/ordenes/add.php?year='+$('#yearOrden').text(),getAgregarOrden,formData);
+        var michelle = $('#michelle').prop('checked');
+
+        var carpeta = michelle ? $('#yearOrden').text() + "-M" : $('#yearOrden').text();
+        //console.log('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/ordenes/add.php?year='+carpeta,michelle);
+        servidorPost('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/ordenes/add.php?year='+carpeta,getAgregarOrden,formData);
     }
     else alerta("Espacios en blanco");
 }
@@ -86,7 +90,7 @@ function getBuscarOrden(respuesta)
 {
     var resultado = respuesta.responseText;
     var arrayJson = resultado.split('|');
-    console.log(respuesta.responseText);
+    //console.log(respuesta.responseText);
     var html = "";
 
     for(let i=0;i<arrayJson.length-1;i+=4)
@@ -96,7 +100,7 @@ function getBuscarOrden(respuesta)
         for(let j=i; j<i+4 && j<arrayJson.length-1;j++)
         {
             var tempJson = JSON.parse(arrayJson[j]);
-            html += '<span class="ordenesLamina" onclick="mensajeOrden([\''+tempJson.id+'\',\''+tempJson.anio+'\',\''+tempJson.path+'\'])">';
+            html += '<span class="ordenesLamina" onclick="mensajeOrden([\''+tempJson.id+'\',\''+tempJson.carpeta+'\',\''+tempJson.path+'\'])">';
             html += '    <i class="fa-solid fa-file-pdf fa-3x"></i>';
             html += '    <br><br>';
             html += '    <font> '+tempJson.path+' </font>';

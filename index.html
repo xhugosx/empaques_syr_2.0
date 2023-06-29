@@ -1374,7 +1374,7 @@
                 <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving" active></ons-tab>
                 <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
                 <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days" ></ons-tab>
-                <ons-tab id="calendario" page="ordenes.html" label="O. Compra" icon="fa-folder-open" ></ons-tab>
+                <ons-tab  page="ordenes.html" label="O. Compra" icon="fa-folder-open" ></ons-tab>
             </ons-tabbar>
 
             
@@ -1588,6 +1588,17 @@
                                 <i class="fa-regular fa-circle-plus fa-3x botonAnio" style="margin: 20px;" onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())+1)"></i>
                                
                             </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                              <ons-checkbox input-id="michelle"></ons-checkbox>
+                            </label>
+                            <label for="michelle" class="center">
+                              Selecciona esta casilla si es de MICHELLE
+                            </label>
                         </ons-list-item>
                     </ons-card>
 
