@@ -442,9 +442,7 @@ ons-fab{
 .contenedor-flexbox {
     display: flex; /*Convertimos al menú en flexbox*/
     justify-content: center; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
-    align-items: center; /*con esto alineamos de manera vertical*/
-    
-    
+    align-items: center; /*con esto alineamos de manera vertical*/   
 }
 span>.fa-folder-open{
     color: #0c4b70 !important;
