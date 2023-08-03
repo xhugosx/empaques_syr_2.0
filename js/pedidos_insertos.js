@@ -1,4 +1,4 @@
-
+//var filtro = false;
 function agregarHtmlInserto()
 {
     //validar si existe la variable de cantidad de insertos si no crearla
@@ -90,9 +90,9 @@ function getAgregaPedidoInserto(respuesta)
 
 function setPedidosInsertos()
 {
-    var type = filtro ? 1 : 2;
+    //var type = filtro ? 1 : 2;
     var busqueda = $('#searchPedidoInserto').val();
-    if(busqueda == "" || busqueda == undefined)servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?type="+type,getPedidosInsertos);
+    if(busqueda == "" || busqueda == undefined)servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal,getPedidosInsertos);
     else setSearchPedidosInsertos(busqueda,13);
 }
 function getPedidosInsertos(respuesta)
@@ -120,8 +120,8 @@ function getEliminarpedidoInserto(respuesta)
 }
 function setModificarBuscarPedidoInserto(id)
 {
-    var type = filtro ? 1 : 2;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?type="+type+"&search="+id,getModificarBuscarPedidoInserto);
+    //var type = filtro ? 1 : 2;
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?search="+id+"&filtro=" + filtroGlobal + "&estado=" + estadoGlobal,getModificarBuscarPedidoInserto);
     
 }
 function getModificarBuscarPedidoInserto(respuesta)
@@ -169,8 +169,8 @@ function setSearchPedidosInsertos(search,e)
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13 || e==13) 
     {
-        var type = filtro ? 1 : 2;
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?type="+type+"&search="+search,getSearchPedidosInsertos);
+        //var type = filtro ? 1 : 2;
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?search="+search+"&filtro=" + filtroGlobal + "&estado=" + estadoGlobal,getSearchPedidosInsertos);
     }
     else if(search == "") setPedidosInsertos();
 }
@@ -182,6 +182,26 @@ function getSearchPedidosInsertos(respuesta)
     listaInfinita('datosPedidosInsertos','',arrayJson,enlistarPedidosInsertos);
 
 }
+
+//funcion para actualizar el estado del pedido de los insertos
+
+function setActualizarEstadoPedidoInserto(datos) {
+    let id = datos[0];
+    let estado = datos[1];
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedidoInserto);
+}
+function getActulizarestadoPedidoInserto(respuesta)
+{
+    if (respuesta.responseText == 1) {
+        alerta("Estado Actualizado");
+        buscarDtospedidos();
+        //$('#facturaF').val("");
+        //$('#cantidadF').val("");
+        //hideDialogo('my-dialogAgregarFactura')
+    }
+    else alerta("Hubo un error al tratar de modificar el Estado...");
+}
+
 function enlistarPedidosInsertos(arrayJson,i)
 {
     //alerta(""+arrayJson)
@@ -205,9 +225,10 @@ function enlistarPedidosInsertos(arrayJson,i)
         color = "rgb(61, 121, 75)";
     }
     
-    if (arrayJson.estado == 1)estado = '<i class="fa-solid fa-circle" style="color: #EC641A;"></i>'; 
-    else if(arrayJson.estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>'; 
-    else estado = '<i class="fa-solid fa-circle" style="color: #F2F2F2;"></i>'; 
+    if (arrayJson.estado == 0) estado = '⚪';
+    else if (arrayJson.estado == 1) estado = '🟠';
+    else if (arrayJson.estado == 2) estado = '🟢';
+    else if (arrayJson.estado == 3) estado = '🟩';
     
     var color1 = arrayJson.notas == "" ? "gray" : "rgb(115, 168, 115)";
     

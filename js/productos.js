@@ -6,7 +6,10 @@ function setProductos()
 {
     $('#loadingProductos').empty();
     $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=2',getProductos);
+    var busqueda = $('#busquedaProductos1').val();
+    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=2',getProductos);
+    else setProductosBarraBusqueda(busqueda,13);
+    //servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=2',getProductos);
 }
 function getProductos(respuesta)
 {
@@ -148,7 +151,7 @@ function setProductosBarraBusqueda(busqueda,e)
     if(busqueda=="") setProductos();
 
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
         servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/productos/select.php?type=3&search='+busqueda,getProductosBarraBusqueda);

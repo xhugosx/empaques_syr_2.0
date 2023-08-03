@@ -1,59 +1,86 @@
-
 @font-face {
     font-family: 'Candara';
     src: url('../font/JosefinSans-VariableFont_wght.ttf');
 }
-body{
+
+body {
     font-family: 'Candara';
     font-size: 13px;
 }
-ons-toolbar>div.center, ons-toolbar>div.left{
+
+ons-toolbar>div.center,
+ons-toolbar>div.left {
     font-family: 'Candara';
-}
-p,label,textarea,ons-input,input.search-input, input.text-input,select.select-input,div.alert-dialog, div.action-sheet, div.alert-dialog-button,center,span,font{
-    font-family: 'Candara';
-}
-span.notification,div{
-    font-family: 'Candara';
-}
-.boton-cliente{
-    margin: 8px;
-}
-textarea,ons-input{
-    text-transform:uppercase;
 }
 
-div.right > i{
+p,
+label,
+textarea,
+ons-input,
+input.search-input,
+input.text-input,
+select.select-input,
+div.alert-dialog,
+div.action-sheet,
+div.alert-dialog-button,
+center,
+span,
+font {
+    font-family: 'Candara';
+}
+
+span.notification,
+div {
+    font-family: 'Candara';
+}
+
+.boton-cliente {
+    margin: 8px;
+}
+
+textarea,
+ons-input {
+    text-transform: uppercase;
+}
+
+div.right>i {
     margin: 10px;
     cursor: pointer;
 }
-.romperTexto{
-    
-    overflow:hidden;
-    white-space:nowrap;
+
+.romperTexto {
+
+    overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
 
 }
-#programaStyle:hover{
-    cursor: pointer; 
+
+#programaStyle:hover {
+    cursor: pointer;
 }
-#programaStyle:active{
+
+#programaStyle:active {
     box-shadow: 0px 0px 10px 0px #333 inset
 }
-#programaStyle{
+
+#programaStyle {
     background-color: rgba(133, 133, 133, 0.438);
     color: rgba(79, 79, 79, 0.758);
     border-radius: 50px;
     padding: 1%;
-    
+
 }
-textarea{
+
+textarea {
     overflow: hidden;
 }
-.centrar{
+
+.centrar {
     text-align: center;
 }
-.boton-icono{
+
+.boton-icono {
     display: grid;
     justify-content: center;
     align-items: center;
@@ -63,223 +90,241 @@ textarea{
     cursor: pointer;
     background-color: white;
     -webkit-filter: drop-shadow(0px 1px 2px rgba(51, 51, 51, 0.645));
-    
+
 }
-.boton-icono:active{
+
+.boton-icono:active {
     background-color: rgba(255, 255, 255, 0.616);
 }
 
-ons-search-input{
+ons-search-input {
     width: 100%;
     border-radius: 40px;
 }
-ons-search-input > input{
+
+ons-search-input>input {
     border-radius: 40px;
 }
 
-.imagen-logo{
+.imagen-logo {
     margin-top: 3px;
 }
 
 
-.list-cliente-animation, .list-producto-animation{
+.list-cliente-animation,
+.list-producto-animation {
     animation-duration: 2s;
     animation-name: animTexto;
 }
-  
+
 @keyframes animTexto {
     10% {
         transform: translateX(0px);
     }
-    20%{
+
+    20% {
         transform: translateX(-20px);
     }
+
     70% {
         transform: translateX(200vh);
     }
+
     100% {
         transform: translateX(205vh);
     }
 }
 
-body{
+body {
 
-    overflow-x:hidden;
-    
+    overflow-x: hidden;
+
 }
 
-.input-100{
+.input-100 {
     width: 98%;
 }
 
-i{
-    color: #7BB5E8;/*rgba(215,172,118,1);*/
+i {
+    color: #7BB5E8;
+    /*rgba(215,172,118,1);*/
 }
+
 /*ons-fab > span > i{
     color: rgb(210, 210, 210);
 }*/
-.botonCerrar{
-    position:absolute; 
-    width:25px;
+.botonCerrar {
+    position: absolute;
+    width: 25px;
     height: 25px;
-    border-radius:10px;
+    border-radius: 10px;
     cursor: pointer;
 }
-.programa{
+
+.programa {
     position: absolute;
     font-weight: bold;
-    
+
 }
 
-#proceso
-{
- background-color: rgba(215,172,118,1);
- color: white;
+#proceso {
+    background-color: rgba(215, 172, 118, 1);
+    color: white;
 }
-#terminado{
+
+#terminado {
     background-color: rgba(35, 154, 75, 0.933);
     color: white;
 }
-#pendiente{
+
+#pendiente {
     background-color: rgb(209, 209, 209);
 }
 
-.programaTitle{
+.programaTitle {
     font: bold;
     margin: 0%;
-    
+
 }
-#contenedorInput{
-    background:rgba(255, 255, 255, 0);
+
+#contenedorInput {
+    background: rgba(255, 255, 255, 0);
     font: bold;
     border: 2px solid #ffffff;
     border-radius: 30px;
     padding: 0%;
 }
-.contenedorInputSub{
+
+.contenedorInputSub {
     border-radius: 20px;
     padding: 0%;
 }
-#contenedorPrograma{
-    background:rgba(255, 255, 255, 0);
+
+#contenedorPrograma {
+    background: rgba(255, 255, 255, 0);
     font: bold;
     border: 2px solid #ffffff;
     border-radius: 30px;
 }
-#contenedorPrograma > div{
-    color: rgb(93, 76, 50);
+
+#contenedorPrograma>.title {
+    color: rgb(48, 70, 72);
     font: bold;
     font-family: 'Candara';
+    font-weight: 450;
 }
 
-.botonPrograma:active{
+.botonPrograma:active {
     box-shadow: 0px 0px 10px -6px black inset;
 }
-.botonPrograma{
+
+.botonPrograma {
     cursor: pointer;
     border-radius: 20px;
     font-family: 'Candara';
 }
-.botonPrograma > b {
-     color: rgb(113, 113, 113);
+
+.botonPrograma>b {
+    color: rgb(113, 113, 113);
 }
 
-.contenedor2Programa{
+.contenedor2Programa {
     background-color: rgba(255, 255, 255, 0.464);
     border: 2px solid #ffffff;
     border-radius: 40px;
-    justify-content  : center;
+    justify-content: center;
     font-family: 'Candara';
-    
-    
+
+
 }
-.contenedor2Programa > h4{
-    color:rgb(114, 99, 81);
+
+.contenedor2Programa>h4 {
+    color: rgb(114, 99, 81);
     margin: auto;
     font-family: 'Candara';
 }
-ons-toolbar > div.center, ons-toolbar > div.right {
+
+ons-toolbar>div.center,
+ons-toolbar>div.right {
     font-weight: bold;
     color: white;
-    
+
 }
-ons-toolbar.toolbar{
-    background-color: #1A9CE8;/*rgb(225, 186, 138);*/
+
+ons-toolbar.toolbar {
+    background-color: #1A9CE8;
+    /*rgb(225, 186, 138);*/
     color: white;
 }
-ons-back-button.back-button{
+
+ons-back-button.back-button {
     color: white;
 }
-span.back-button__icon{
+
+span.back-button__icon {
     fill: white;
 }
 
 ons-list-header.list-header {
     border-radius: 20px 20px 0px 0px;
 }
-.list-item__left{
+
+.list-item__left {
     display: flex;
     justify-content: center;
 }
 
-ons-button.button--large{
+ons-button.button--large {
     border-radius: 20px;
 }
-ons-list-header{
+
+ons-list-header {
     background-color: #ededed;
 }
-.placeholder{
+
+.placeholder {
     color: rgb(167, 167, 167);
     font-family: 'Candara';
 }
-span.list-item__subtitle{
+
+span.list-item__subtitle {
     font-size: 9px;
 }
-.nombreArchivo{
-    font-family: 'Candara'; 
+
+.nombreArchivo {
+    font-family: 'Candara';
     font-size: 15px;
 }
-.subirPx{
+
+.subirPx {
     bottom: 50px;
 }
 
-.agrandar{
+.agrandar {
     animation: agrandar .8s;
-  }
+}
+
 @keyframes agrandar {
     0% {
-      width: 10%;
-      height: 0%;
+        width: 10%;
+        height: 0%;
     }
+
     100% {
-      width: 97%;
-      height:100%;
+        width: 97%;
+        height: 100%;
     }
-  }
-.contenedorHead{
-    position:absolute;
-    right:0px;
-    margin-right:2vh;
-    font-size:10px;
-    background:white;
-    height:15px;
-    width: auto;
-    border-radius:20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    text-align: center;
-    padding-bottom: 7px;
-    margin-top: 1.5px;
-    font-weight: bold;
 }
-.contenedorHeadFecha{
-    position:absolute;
-    right:0px;
-    margin-right:2vh;
-    font-size:11px;
-    height:15px;
+
+.contenedorHead {
+    position: absolute;
+    right: 0px;
+    margin-right: 2vh;
+    font-size: 10px;
+    background: white;
+    height: 15px;
     width: auto;
-    border-radius:20px;
+    border-radius: 20px;
     padding-left: 5px;
     padding-right: 5px;
     text-align: center;
@@ -288,7 +333,23 @@ span.list-item__subtitle{
     font-weight: bold;
 }
 
-.separacion{
+.contenedorHeadFecha {
+    position: absolute;
+    right: 0px;
+    margin-right: 2vh;
+    font-size: 11px;
+    height: 15px;
+    width: auto;
+    border-radius: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    padding-bottom: 7px;
+    margin-top: 1.5px;
+    font-weight: bold;
+}
+
+.separacion {
     position: absolute;
     background-color: #efeff4;
     padding-left: 8px;
@@ -296,74 +357,77 @@ span.list-item__subtitle{
     left: 20px;
     margin-top: 2px;
 }
-.important{
+
+.important {
     height: 45px;
 }
-.important > b{
+
+.important>b {
     font-size: 14px;
     color: rgb(113, 113, 113);
 }
 
-.input-number
-{
+.input-number {
     width: 100px;
     padding: 0 12px;
     vertical-align: top;
     text-align: center;
     outline: none;
 }
-  
+
 .input-number,
 .input-number-decrement,
-.input-number-increment{
+.input-number-increment {
     border: 1px solid #ccc;
     height: 40px;
     user-select: none;
 }
-  
+
 .input-number-decrement,
-.input-number-increment
-{
+.input-number-increment {
     display: inline-block;
-  width: 30px;
-  line-height: 40px;
-  color: #ffffff;
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
-    
+    width: 30px;
+    line-height: 40px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+
 }
-.input-number-decrement:active,.input-number-increment:active
-{
+
+.input-number-decrement:active,
+.input-number-increment:active {
     background: #ddd;
 }
 
-.input-number-decrement
-{
+.input-number-decrement {
     border-right: none;
     border-radius: 10px 0 0 10px;
     background: rgb(64, 157, 196);
-    
+
 }
- 
-.input-number-increment
-{
+
+.input-number-increment {
     border-left: none;
     border-radius: 0 10px 10px 0;
     background: rgb(43, 105, 162);
 }
+
 input[type="text"] {
     text-transform: uppercase;
 }
-#cantidadTotal{
+
+#cantidadTotal {
     font-size: 30px;
 }
-.anio{
+
+.anio {
     font-size: 20px;
     color: #606060;
     font-family: arial;
 }
-.flecha{
+
+.flecha {
     margin-left: 20px;
     margin-right: 20px;
     background-color: #1ba0d1b9;
@@ -374,22 +438,25 @@ input[type="text"] {
     color: #ffffff;
     cursor: pointer;
 }
-.flecha::before{
+
+.flecha::before {
     top: 50px;
 }
-.flecha:active{
+
+.flecha:active {
     color: #1A9CE8;
 }
 
-ons-fab{
+ons-fab {
     margin-bottom: 20px;
 }
 
-#cantidadLaminas{
+#cantidadLaminas {
     font-size: 20px;
     color: white;
 }
-.fijadoDerecha{
+
+.fijadoDerecha {
     width: 75% !important;
     border-radius: 20px !important;
     font-size: 15px !important;
@@ -397,7 +464,8 @@ ons-fab{
     background-color: white !important;
 
 }
-.fijadoDerecha>span{
+
+.fijadoDerecha>span {
     background-color: #2979ff;
     padding: 10px 20% 10px 20%;
     border-radius: 20px;
@@ -405,7 +473,7 @@ ons-fab{
     width: 100%;
 }
 
-.fijadoCentro{
+.fijadoCentro {
     width: 92% !important;
     border-radius: 20px !important;
     font-size: 20px !important;
@@ -413,14 +481,15 @@ ons-fab{
     color: #1A9CE8 !important;
 
 }
-.extraCentrar{
+
+.extraCentrar {
     width: 95% !important;
-    
+
     height: auto !important;
 }
 
 
-.ordenesLamina{
+.ordenesLamina {
     background-color: #ffffff00;
     margin: 10px;
     padding: 2%;
@@ -430,25 +499,60 @@ ons-fab{
     font-size: 10px;
     width: 20%;
 }
-.ordenesLamina:active{
+
+.ordenesLamina:active {
     opacity: 30%;
 }
-.ordenesLamina>i{
+
+.ordenesLamina>i {
     color: #1A9CE8;
 }
 
 
 
 .contenedor-flexbox {
-    display: flex; /*Convertimos al menú en flexbox*/
-    justify-content: center; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
-    align-items: center; /*con esto alineamos de manera vertical*/   
+    display: flex;
+    /*Convertimos al menú en flexbox*/
+    justify-content: center;
+    /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
+    align-items: center;
+    /*con esto alineamos de manera vertical*/
+}
+.contenedor-flexboxLados {
+    display: flex;
+    /*Convertimos al menú en flexbox*/
+    justify-content: space-between;
+    /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
+    align-items:baseline;
+    /*con esto alineamos de manera vertical*/
 }
 
-span>.fa-folder-open{
+span>.fa-folder-open {
     color: #0c4b70 !important;
 }
 
-.botonAnio:active{
+.botonAnio:active {
     opacity: 30%;
+}
+
+.botonInicio {
+    width: 100% !important;
+}
+
+#page1>.toolbar {
+    height: 110px !important;
+    border-radius: 0 0 50px 50px;
+    border: 0;-webkit-box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
+    background-color: rgb(255, 255, 255);
+}
+
+.page__background {
+    /*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=475acc&c2=34515f&gt=c&gd=dtl
+*/
+    background: #475ACC;
+    background: conic-gradient(from 315deg, #45bef5, #698390);
 }

@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Permissions-Policy" content="interest-cohort">
 
+    <!-- Browser Color - Chrome, Firefox OS, Opera -->
+    <meta name="theme-color" content="white">
+    <!-- Browser Color - Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="white">
+    <!-- Browser Color - iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+
     <!--here document onsen-->
     <!--link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
@@ -45,7 +52,7 @@
     <script src="./js/ordenes.js"></script>
 
     <script src="./cordova.js"></script>
-    
+
 
     <!-- script de graficas -->
     <script src="./js/graficas/Chart.js"></script>
@@ -78,33 +85,114 @@
 
 
 
-    <!--ons-splitter>
-        <ons-splitter-side id="menu" side="left" width="320px" collapse swipeable>
+    <ons-splitter>
+        <ons-splitter-side id="menu" side="right" width="320px" collapse>
             <ons-page>
                 <ons-list>
-                    <center><img src="media/Logo_oficial.svg" width="150" alt="" style="margin: 5px;"></center>
 
-                    <ons-list-item onclick="nextPage('historialPedidos.html'); document.getElementById('menu').close()"
-                        tappable modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-calendar-days"></i></div>
-                        <div class="center">Historial de pedidos</div>
-                        <div class="right"><i class="fa-solid fa-chevron-right" style="color:gray"></i></div>
-                    </ons-list-item>
-                    <ons-list-item onclick="fn.load('settings.html')" tappable>
-                        Settings
-                    </ons-list-item>
-                    <ons-list-item onclick="fn.load('about.html')" tappable>
-                        About
-                    </ons-list-item>
+                    <center>
+                        <h4 style="color: #808fa2;">
+                            Filtros
+                        </h4>
+                    </center>
+                    <ons-list>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="pedidoRadio" input-id="Actuales" checked value="1"></ons-radio>
+                            </label>
+                            <label for="Actuales" class="center">
+                                Actuales
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="pedidoRadio" input-id="Faltantes" value="2"></ons-radio>
+                            </label>
+                            <label for="Faltantes" class="center">
+                                Faltantes
+                            </label>
+                        </ons-list-item>
+                    </ons-list>
+                    <ons-list>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-1" value="0" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-1" class="center">
+                                ⚪ Pendiente
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-2" value="1" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-2" class="center">
+                                🟠 Proceso
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-3" value="2" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-3" class="center">
+                                🟢 Terminado
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-4" value="3" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-4" class="center">
+                                🟩 Terminado sin procesos
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-5" value="4" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-5" class="center">
+                                🔵 Entregado
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-6" value="5" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-6" class="center">
+                                🟣 E. Parcial
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-7" value="6" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-7" class="center">
+                                ⚫ Cancelado
+                            </label>
+                        </ons-list-item>
+                        <br>
+                        <ons-list-item modifier="nodivider">
+                            <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
+                                Aplicar
+                            </ons-button>
+                        </ons-list-item>
+                        <br><br><ons-list-item modifier="nodivider">
+                            <ons-button id="botonPrograma" modifier="large"
+                                style="background-color: #426590; padding: 0;" onclick="resetearFiltroPedidos();">
+                                Resetear
+                            </ons-button>
+                        </ons-list-item>
+                    </ons-list>
+
                 </ons-list>
             </ons-page>
         </ons-splitter-side>
-        <ons-splitter-content>
+        <ons-splitter-content id="content">
             <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
         </ons-splitter-content>
-    </ons-splitter-->
+    </ons-splitter>
 
-    <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
+
 
     <!-- PAGINAS PARA LOS MENUS -->
     <template id="historialPedidos.html">
@@ -125,7 +213,7 @@
 
             </ons-card>
 
-            
+
 
 
         </ons-page>
@@ -136,118 +224,207 @@
     <template id="home.html">
         <ons-page id="page1">
             <ons-toolbar>
-                <div class="left">
-                    <!--ons-toolbar-button onclick="document.getElementById('menu').open()">
-                        <i class="fa-solid fa-bars" style="color: white"></i>
-                    </ons-toolbar-button-->
-                </div>
-                <div class="center">
-                    <img src="./media/empaquessyr.svg" width="150px" class="imagen-logo">
+                <div id="inicio" class="center" style="height:auto; text-align: center;">
+                    <img src="media/Logo_oficial.svg" height="90px" style="margin: 10px;" style="position: relative;">
                 </div>
             </ons-toolbar>
+            <ons-tabbar swipeable position="bottom" modifier="autogrow">
+                <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
+                <ons-tab page="produccion.html" label="Producción" icon="fa-gears"></ons-tab>
+                <ons-tab page="programa.html" label="Programa" icon="fa-clipboard"></ons-tab>
+                <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar"></ons-tab>
+            </ons-tabbar>
 
-            <div id="wrapper"></div>
-            <ons-card id="contenedorPrograma">
-                <div class="title">
+        </ons-page>
+    </template>
+
+    <!-- administracion-->
+    <template id="administracion.html">
+        <ons-page>
+
+            <br><br><br><br><br><br>
+            <ons-card id="contenedorPrograma" style="position: relative;">
+                <div class="title contenedor-flexbox">
                     ADMINISTRACIÓN
                 </div>
-                <ons-card class="botonPrograma important" onclick="nextPageFunction('pedidos.html',buscarDtospedidos)" style="background-color: #1A9CE8;;">
-                    <i class="fa-solid fa-rectangle-list fa-lg" style="color:white"></i> <b style="color:white"> Pedidos pendientes</b>
-                </ons-card>
-                <ons-card class="botonPrograma important"
-                    onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
-                    <i class="fa-solid fa-layer-group fa-lg"></i> <b> Pedidos lámina</b>
-                </ons-card>
-                <ons-card class="botonPrograma"
-                    onclick="nextPageFunction('proveedor.html',setProveedor);tipoFilter = 0">
-                    <i class="fa-solid fa-users"></i> <b> Proveedores</b>
-                </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('clientes.html',setClientes)">
-                    <i class="fa-solid fa-users"></i> <b> Clientes</b>
-                </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('productos1.html',setProductos)">
-                    <i class="fa-solid fa-boxes-stacked"></i> <b> Productos</b>
-                </ons-card>
-
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="background-color: #1d4e89; text-align: center; "
+                        onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
+                        <i class="fa-solid fa-rectangle-list fa-4x" style="color:white; margin: 5px; "></i>
+                        <br>
+                        <span style="color:white"> Pedidos pendientes</span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center;"
+                        onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
+                        <i class="fa-solid fa-layer-group fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Pedidos lámina</span>
+                    </ons-card>
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPageFunction('proveedor.html',setProveedor);tipoFilter = 0">
+                        <i class="fa-solid fa-users fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Proveedores</span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center; "
+                        onclick="nextPageFunction('clientes.html',setClientes)">
+                        <i class="fa-solid fa-users fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Clientes </span>
+                    </ons-card>
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPageFunction('productos1.html',setProductos)">
+                        <i class="fa-solid fa-boxes fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Productos</span>
+                    </ons-card>
+                </div>
             </ons-card>
+        </ons-page>
+    </template>
+    <!-- fin de administracion-->
 
+    <!-- produccion -->
+    <template id="produccion.html">
+        <ons-page>
+            <br><br><br><br><br><br>
             <ons-card id="contenedorPrograma">
-                <div class="title">
+                <div class="title contenedor-flexbox">
                     PRODUCCIÓN
                 </div>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('consumible.html',refresConsumible)">
-                    <i class="fa-solid fa-toolbox"></i> <b> Consumible</b>
-                </ons-card>
-                <ons-card class="botonPrograma" onclick="nextPageFunction('inventario.html',mostrarTodoInventario)">
-                    <i class="fa-solid fa-clipboard-list"></i> <b> Inventario</b>
-                </ons-card>
-                <ons-card class="botonPrograma"
-                    onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoEntrada);entrada = true; salida = false">
-                    <i class="fa-solid fa-plus"></i> <b> Entradas</b>
-                </ons-card>
-                <ons-card class="botonPrograma"
-                    onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoSalida);salida = true; entrada = false">
-                    <i class="fa-solid fa-minus"></i> <b> Salidas</b>
-                </ons-card>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="background-color: #1d4e89; text-align: center; "
+                        onclick="nextPageFunction('inventario.html',mostrarTodoInventario)">
+                        <i class="fa-solid fa-clipboard-list fa-4x" style="margin: 5px; color: white;"></i>
+                        <br>
+                        <span style="color: white;"> Inventario </span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center; "
+                        onclick="nextPageFunction('consumible.html',refresConsumible)">
+                        <i class="fa-solid fa-toolbox fa-4x" style=" margin: 5px; "></i>
+                        <br>
+                        <span> Consumible </span>
+                    </ons-card>
+
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoEntrada);entrada = true; salida = false">
+                        <i class="fa-solid fa-plus fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Entradas </span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center;"
+                        onclick="nextPageFunction('salidasyEntradas.html',mostrarTodoSalida);salida = true; entrada = false">
+                        <i class="fa-solid fa-minus fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Salidas </span>
+                    </ons-card>
+                </div>
+
             </ons-card>
 
-            <ons-card id="contenedorPrograma">
+        </ons-page>
+    </template>
+    <!-- fin de produccion-->
 
-                <div class="title">
-                    PROGRAMA
+    <!-- programa -->
+    <template id="programa.html">
+        <ons-page>
+            <br><br><br><br><br><br>
+            <ons-card id="contenedorPrograma">
+                <div class="title contenedor-flexbox">
+                    CAJAS
                 </div>
-                <ons-card class="contenedor2Programa">
-                    <h4>
-                        CAJAS
-                    </h4>
-                    <ons-card class="botonPrograma"
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
                         onclick="nextPageFunction('programaArtesanos.html',setMostrarProgramaArtesanos)">
-                        <i class="fa-solid fa-box"></i> <b> Flexo</b>
+                        <i class="fa-solid fa-box fa-4x" style=" margin: 5px; "></i>
+                        <br>
+                        <span> Flexo </span>
                     </ons-card>
-                    <ons-card class="botonPrograma"
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
                         onclick="nextPageFunction('programaAfilador.html',setMostrarProgramaAfilador1)">
-                        <i class="fa-solid fa-box"></i> <b> Cortadora</b>
+                        <i class="fa-solid fa-box fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Cortadora </span>
                     </ons-card>
-                    <ons-card class="botonPrograma"
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center; "
                         onclick="nextPageFunction('pedidosProveedor.html',setMostrarProgramaProveedores)">
-                        <i class="fa-solid fa-users"></i> <b> Pedidos a proveedores</b>
+                        <i class="fa-solid fa-users fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Pedidos a proveedores </span>
                     </ons-card>
-                </ons-card>
-                <ons-card class="contenedor2Programa">
-                    <h4>
-                        INSERTOS
-                    </h4>
-                    <ons-card class="botonPrograma"
-                        onclick="nextPageFunction('programaAfilador2.html',setMostrarProgramaAfilador2)">
-                        <i class="fa-solid fa-box-open"></i> <b> Cortadora</b>
-                    </ons-card>
-                </ons-card>
+                </div>
 
             </ons-card>
 
             <ons-card id="contenedorPrograma">
-                <div class="title">
-                    CONTROL DE GASTOS
+                <div class="title contenedor-flexbox">
+                    Insertos
                 </div>
-                <ons-card class="botonPrograma"
-                    onclick="asignarAnio(); nextPageFunction('ingresosEgresos.html',setIngresosEgresos);chart=''">
-                    <i class="fa-solid fa-chart-line fa-lg"></i> <b> Comparacion - Graficas</b>
-                </ons-card>
-                <ons-card class="botonPrograma"
-                    onclick="asignarAnio(); nextPageFunction('ingresos.html',setIngresos);chart=''; ">
-                    <i class="fa-solid fa-money-bill-trend-up fa-lg"></i> <b> Ingresos</b>
-                </ons-card>
-                <ons-card class="botonPrograma"
-                    onclick="asignarAnio();nextPageFunction('egresos.html',setEgresos);chart='';">
-                    <i class="fa-solid fa-money-bill-trend-up fa-lg" style="transform: rotate(180deg);"></i> <b>
-                        Egresos</b>
-                </ons-card>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPageFunction('programaAfilador2.html',setMostrarProgramaAfilador2)">
+                        <i class="fa-solid fa-box-open fa-4x" style=" margin: 5px; "></i>
+                        <br>
+                        <span> Cortadora </span>
+                    </ons-card>
+                </div>
+                </div>
 
             </ons-card>
 
 
         </ons-page>
     </template>
+    <!-- fin de programa-->
+
+    <!-- control de ingresos -->
+    <template id="controlGastos.html">
+        <ons-page>
+            <br><br><br><br><br><br>
+            <ons-card id="contenedorPrograma">
+                <div class="title contenedor-flexbox">
+
+                    CONTROL DE GASTOS
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="background-color: #1d4e89; text-align: center; "
+                        onclick="asignarAnio(); nextPageFunction('ingresosEgresos.html',setIngresosEgresos);chart=''">
+                        <i class="fa-solid fa-chart-line fa-4x" style="color:white; margin: 5px; "></i>
+                        <br>
+                        <span style="color:white"> Graficas comparativas</span>
+                    </ons-card>
+
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="asignarAnio(); nextPageFunction('ingresos.html',setIngresos);chart=''; ">
+                        <i class="fa-solid fa-money-bill-trend-up fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Ingresos</span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center; "
+                        onclick="asignarAnio();nextPageFunction('egresos.html',setEgresos);chart='';">
+                        <i class="fa-solid fa-money-bill-trend-up fa-4x"
+                            style="transform: rotate(180deg); margin: 5px;"></i>
+                        <br>
+                        <span> Egresos </span>
+                    </ons-card>
+                </div>
+
+            </ons-card>
+        </ons-page>
+    </template>
+    <!-- fin de control de ingresos -->
+
     <!-- fin pagina pricipal -->
 
 
@@ -333,7 +510,7 @@
                 <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)"
+            <ons-fab class="fijadoDerecha" onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)"
                 position="bottom right">
                 <span>Agregar Ingreso</span>
             </ons-fab>
@@ -663,7 +840,7 @@
                 <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); "
+            <ons-fab class="fijadoDerecha" onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); "
                 position="bottom right">
                 <span>Agregar Egreso</span>
             </ons-fab>
@@ -1008,8 +1185,7 @@
                 <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregarproveedor.html')" 
-                position="bottom right">
+            <ons-fab class="fijadoDerecha" onclick="nextPage('agregarproveedor.html')" position="bottom right">
                 <span>Agregar proveedor</span>
             </ons-fab>
 
@@ -1069,6 +1245,80 @@
 
         </ons-page>
     </template>
+
+    <!-- ACTUALIZAR INFORMACION DE PROVEEDORES -->
+    <!--MODIFICAR PEDIDO-->
+    <template id="modificarProveedor.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Editar Proveedor</div>
+            </ons-toolbar>
+
+
+            <ons-card id="contenedorInput">
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-user fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="id" class="input-100" cols="30" rows="2" placeholder="Id"
+                                disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-calculator fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input type="text" id="nombre" class="input-100" cols="30" rows="1"
+                                placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-users fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-select class="input-100" name="proveedor" id="selectTipo">
+                                <option value="" style="color: #ccc;">(TIPO)</option>
+                                <option value="1">CONSUMIBLE</option>
+                                <option value="2">LAMINA</option>
+                                <option value="3">SERVICIO</option>
+                                <option value="4">GRABADOS Y SUAJES</option>
+                                <option value="5">MAQUILA</option>
+                                <option value="6">GASOLINA</option>
+                                <option value="7">HERRAMIENTA</option>
+                                <option value="9">PAGOS FIJOS</option>
+                                <option value="8">OTROS</option>
+                            </ons-select>
+
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-list-item modifier="nodivider">
+                    <div class="center">
+                        <ons-button id="botonAgregarPedido" modifier="large"
+                            onclick="setEditarProveedor()">Modificar</ons-button>
+                    </div>
+
+                </ons-list-item>
+
+            </ons-card>
+
+
+        </ons-page>
+    </template>
+    <!-- FIN DE ACTUALIZAR PROVEEDOR-->
+
     <!-- FIN DE PROVEEDORES-->
 
     <!-- CLIENTES -->
@@ -1093,8 +1343,7 @@
             </div>
             <br><br><br>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregarClientes.html')"
-                position="bottom right">
+            <ons-fab class="fijadoDerecha" onclick="nextPage('agregarClientes.html')" position="bottom right">
                 <span>Agregar Cliente</span>
             </ons-fab>
 
@@ -1149,6 +1398,51 @@
 
         </ons-page>
     </template>
+
+    <!--Editar cliente-->
+    <template id="editarClientes.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Editar cliente</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+
+            <ons-card id="contenedorInput">
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-key"></i>
+                        </div>
+                        <div class="center">
+
+                            <ons-input type="number" id="id" cols="30" rows="1" maxlength="3"
+                                class="input-100" placeholder="codigo" disabled></ons-input>
+
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-user-large"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="nombre" class="input-100" cols="30" rows="2" placeholder="Nombre"
+                                onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-list-item modifier="nodivider">
+                    <ons-button modifier="large" onclick="setEditarCliente()">Editar</ons-button>
+                </ons-list-item>
+            </ons-card>
+
+        </ons-page>
+    </template>
     <!-- FIN DE CLIENTES-->
 
     <!-- PRODUCTOS -->
@@ -1183,8 +1477,7 @@
 
             <br><br><br><br><br>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregaProductos.html')"
-                position="bottom right">
+            <ons-fab class="fijadoDerecha" onclick="nextPage('agregaProductos.html')" position="bottom right">
                 <span>Agregar producto</span>
             </ons-fab>
 
@@ -1352,10 +1645,11 @@
 
             <iframe id="plano" src="" style="width:100%; height:100%;" frameborder="0"></iframe>
 
-            <ons-fab  class="fijadoDerecha" onclick="document.getElementById('plano').focus(); document.getElementById('plano').contentWindow.print();"
+            <!--ons-fab class="fijadoDerecha"
+                onclick="document.getElementById('plano').focus(); document.getElementById('plano').contentWindow.print();"
                 position="bottom right">
                 <span>Imprimir</span>
-            </ons-fab>
+            </ons-fab-->
         </ons-page>
     </template>
 
@@ -1377,17 +1671,17 @@
             <ons-tabbar swipeable position="top" modifier="autogrow">
                 <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving" active></ons-tab>
                 <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
-                <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days" ></ons-tab>
-                <ons-tab  page="ordenes.html" label="O. Compra" icon="fa-folder-open" ></ons-tab>
+                <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days"></ons-tab>
+                <ons-tab page="ordenes.html" label="O. Compra" icon="fa-folder-open"></ons-tab>
             </ons-tabbar>
 
-            
+
         </ons-page>
     </template>
 
     <!-- vista pedidos lamina pcm-->
     <template id="pPCM.html">
-        <ons-page >
+        <ons-page>
 
             <div id="loadingPedidosLamina">
             </div>
@@ -1409,10 +1703,11 @@
                 <i class="fa-solid fa-refresh"></i>
             </ons-fab>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
+            <ons-fab class="fijadoDerecha"
+                onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
                 <span>Agregar pedido</span>
-               
+
             </ons-fab>
 
             <!--ons-card class="cookies" style="padding: 15px;">
@@ -1430,7 +1725,7 @@
     </template>
     <!-- vista pedidos lamina pack-->
     <template id="pPACK.html">
-        <ons-page >
+        <ons-page>
 
             <div id="loadingPedidosLaminaPACK">
             </div>
@@ -1452,7 +1747,8 @@
                 <i class="fa-solid fa-refresh"></i>
             </ons-fab>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
+            <ons-fab class="fijadoDerecha"
+                onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
                 <span>Agregar pedido</span>
             </ons-fab>
@@ -1468,11 +1764,11 @@
 
             <div class="calendar">
                 <div class="calendar__info">
-                    <div class="calendar__prev" id="prev-month"><i class="fa-solid fa-backward centrari" ></i></div>
+                    <div class="calendar__prev" id="prev-month"><i class="fa-solid fa-backward centrari"></i></div>
                     <div id="month__number" style="opacity: 0%;"></div>
                     <div class="calendar__month" id="month"></div>
                     <div class="calendar__year" id="year"></div>
-                    <div class="calendar__next" id="next-month"><i class="fa-solid fa-forward centrari" ></i></div>
+                    <div class="calendar__next" id="next-month"><i class="fa-solid fa-forward centrari"></i></div>
                 </div>
 
                 <div class="calendar__week">
@@ -1485,7 +1781,7 @@
                     <div class="calendar__day calendar__item">Dom</div>
                 </div>
 
-                <div class="calendar__dates" id="dates" ></div>
+                <div class="calendar__dates" id="dates"></div>
             </div>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
@@ -1494,18 +1790,18 @@
             <br><br><br><br><br><br><br>
 
 
-            <ons-fab  class="fijadoCentro" position="bottom right">
+            <ons-fab class="fijadoCentro" position="bottom right">
                 <span id="cantidadLaminas">
-                      selecciona primero un dia 
+                    selecciona primero un dia
                 </span>
             </ons-fab>
-            
+
 
         </ons-page>
     </template>
     <!-- vista de ordenes de compra-->
     <template id="ordenes.html">
-        <ons-page >
+        <ons-page>
 
             <div id="loadingOrdenes">
             </div>
@@ -1513,18 +1809,19 @@
             <ons-card class="contenedor-flexbox" style="padding: 0;">
                 <ons-list-item tappable modifier="nodivider">
                     <label class="left">
-                      <ons-radio name="color" input-id="radio-1" checked></ons-radio>
+                        <ons-radio name="color" input-id="radio-1" checked></ons-radio>
                     </label>
                     <label for="radio-1" class="center">
-                      PCM
+                        PCM
                     </label>
                 </ons-list-item>
-                
-                
+
+
             </ons-card>
 
             <br>
-            <span style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">CARPETAS</span>
+            <span
+                style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">CARPETAS</span>
             <hr>
             <br>
 
@@ -1533,7 +1830,9 @@
             </div>
 
             <br>
-            <span style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">ORDENES DE COMPRA</span>
+            <span
+                style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">ORDENES
+                DE COMPRA</span>
             <hr>
             <br>
 
@@ -1545,13 +1844,14 @@
                 <ons-lazy-repeat id="datosOrdenes"></ons-lazy-repeat>
             </ons-list>
             <br><br><br><br><br><br><br>
-            <ons-fab  class="fijadoDerecha extraCentrar" position="bottom right" onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
-                
+            <ons-fab class="fijadoDerecha extraCentrar" position="bottom right"
+                onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
+
                 <span>Agregar orden de compra</span>
             </ons-fab>
 
 
-            
+
 
         </ons-page>
     </template>
@@ -1585,12 +1885,14 @@
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
-                            
+
                             <div class="center contenedor-flexbox">
-                                <i class="fa-regular fa-circle-minus fa-3x botonAnio" style="margin: 20px;" onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())-1)"></i>
-                                <span style="font-size:x-large" id="yearOrden" ></span>
-                                <i class="fa-regular fa-circle-plus fa-3x botonAnio" style="margin: 20px;" onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())+1)"></i>
-                               
+                                <i class="fa-regular fa-circle-minus fa-3x botonAnio" style="margin: 20px;"
+                                    onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())-1)"></i>
+                                <span style="font-size:x-large" id="yearOrden"></span>
+                                <i class="fa-regular fa-circle-plus fa-3x botonAnio" style="margin: 20px;"
+                                    onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())+1)"></i>
+
                             </div>
                         </ons-list-item>
                     </ons-card>
@@ -1598,10 +1900,10 @@
                     <ons-card class="contenedorInputSub">
                         <ons-list-item tappable modifier="nodivider">
                             <label class="left">
-                              <ons-checkbox input-id="michelle"></ons-checkbox>
+                                <ons-checkbox input-id="michelle"></ons-checkbox>
                             </label>
                             <label for="michelle" class="center">
-                              Selecciona esta casilla si es de MICHELLE
+                                Selecciona esta casilla si es de MICHELLE
                             </label>
                         </ons-list-item>
                     </ons-card>
@@ -1984,8 +2286,8 @@
                             </div>
                             <div class="center">
                                 <div class="placeholder">Fecha Entrega Estimada!</div>
-                                <ons-input style="margin-right: 5px;" name="fecha_entrega" id="fecha_entrega" type="date"
-                                    class="input-100"></ons-input>
+                                <ons-input style="margin-right: 5px;" name="fecha_entrega" id="fecha_entrega"
+                                    type="date" class="input-100"></ons-input>
 
                             </div>
                         </ons-list-item>
@@ -2054,7 +2356,8 @@
             </ons-list>
             <br><br><br><br><br>
 
-            <ons-fab  class="fijadoDerecha" onclick="showDialogo('my-dialogEditarEntradaSalidaP','dialogEditarEntradaSalidaP.html')"
+            <ons-fab class="fijadoDerecha"
+                onclick="showDialogo('my-dialogEditarEntradaSalidaP','dialogEditarEntradaSalidaP.html')"
                 position="bottom right">
                 <span>EDITAR - Entrada / Salida</span>
             </ons-fab>
@@ -2287,8 +2590,7 @@
                 </ons-tab>
             </ons-tabbar>
 
-            <ons-fab  class="fijadoDerecha" onclick="nextPage('agregarConsumible.html')"
-                position="bottom right">
+            <ons-fab class="fijadoDerecha" onclick="nextPage('agregarConsumible.html')" position="bottom right">
                 <span>Agregar consumible</span>
             </ons-fab>
 
@@ -2397,8 +2699,16 @@
                 <div class="left"><ons-back-button onclick="reiniciarFilter()">Regresar</ons-back-button></div>
                 <div class="center">Pedidos</div>
                 <div class="right">
-                    Entregado<ons-checkbox style="margin: 10px;" onclick="asignarFiltro(this)"></ons-checkbox>
+                    <ons-toolbar-button onclick="var menu = document.getElementById('menu'); menu.open();"
+                        style="color:white; font-size:18px">
+                        Filtro
+                        <i class="fa-solid fa-filter"></i>
+                    </ons-toolbar-button>
                 </div>
+
+                <!--div class="right">
+                    Entregado<ons-checkbox style="margin: 10px;" onclick="asignarFiltro(this)"></ons-checkbox>
+                </div-->
             </ons-toolbar>
             <br><br>
             <ons-tabbar swipeable position="top">
@@ -2420,8 +2730,9 @@
                 <i class="fa-regular fa-plus"></i>
             </ons-fab-->
 
-           
-            <ons-fab  class="fijadoDerecha" onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
+
+            <ons-fab class="fijadoDerecha"
+                onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
                 position="bottom right">
                 <span>Agregar pedido</span>
             </ons-fab>
@@ -2511,7 +2822,8 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchPedidosClientesFiltrados" onkeyup="setsearchPedidosClienteFiltrado(this.value,event,cliente)"
+                    <ons-search-input id="searchPedidosClientesFiltrados"
+                        onkeyup="setsearchPedidosClienteFiltrado(this.value,event,cliente)"
                         placeholder="Buscar"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -2995,8 +3307,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">CAJAS</div>
-            <hr>
+
             <div id="datosProgramaFlexo">
 
             </div>
@@ -3015,8 +3326,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">CAJAS</div>
-            <hr>
+
             <div id="datosProgramaPegado">
 
             </div>
@@ -3035,8 +3345,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">CAJAS</div>
-            <hr>
+
             <div id="datosProgramaImpresion">
 
             </div>
@@ -3055,8 +3364,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">CAJAS</div>
-            <hr>
+
             <div id="datosProgramaSuajado">
 
             </div>
@@ -3136,8 +3444,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">CAJAS</div>
-            <hr>
+
             <div id="datosProgramaCortadora1">
 
             </div>
@@ -3156,10 +3463,6 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-
-
-            <div class="separacion">CAJAS</div>
-            <hr>
             <div id="datosProgramaCaiman1">
 
             </div>
@@ -3200,8 +3503,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">INSERTOS</div>
-            <hr>
+
             <div id="datosProgramaCortadora21">
 
             </div>
@@ -3220,8 +3522,6 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">INSERTOS</div>
-            <hr>
             <div id="datosProgramaRanurado1">
 
             </div>
@@ -3240,8 +3540,7 @@
                 <i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);;"></i> Pendiente
             </center>
             <br>
-            <div class="separacion">INSERTOS</div>
-            <hr>
+
             <div id="datosProgramaSuajadoI">
 
             </div>
@@ -3261,8 +3560,7 @@
             </center>
             <br>
 
-            <div class="separacion">INSERTOS</div>
-            <hr>
+
             <div id="datosProgramaArmadoFlejado1">
 
             </div>
@@ -3297,68 +3595,71 @@
         <ons-dialog id="my-dialog-programa" cancelable>
             <div style="text-align: center; padding: 10px;">
                 <div class="botonCerrar" onclick="cerrarDialogo('my-dialog-programa');limpiarSelectPrograma()"><i
-                        class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div> <b>Selecciona
-                    los procesos</b>
+                        class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div>
+                <b>Selecciona los procesos</b>
                 <br><br>
-                <div id="flexo">
-                    <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
-                        FLEXO (cajas)
-                    </ons-list-header>
-                    <ons-list-item tappable modifier="nodivider">
-                        <label class="left">
-                            <ons-checkbox input-id="check1"></ons-checkbox>
-                        </label>
-                        <label for="check1" class="center">
-                            Flexo
-                        </label>
-                    </ons-list-item>
-                    <ons-list-item tappable modifier="nodivider">
-                        <label class="left">
-                            <ons-checkbox input-id="check2"></ons-checkbox>
-                        </label>
-                        <label for="check2" class="center">
-                            Pegado - Flejado
-                        </label>
-                    </ons-list-item>
-                    <ons-list-item tappable modifier="nodivider">
-                        <label class="left">
-                            <ons-checkbox input-id="check3"></ons-checkbox>
-                        </label>
-                        <label for="check3" class="center">
-                            Impresion
-                        </label>
-                    </ons-list-item>
-                    <ons-list-item tappable modifier="nodivider">
-                        <label class="left">
-                            <ons-checkbox input-id="check4"></ons-checkbox>
-                        </label>
-                        <label for="check4" class="center">
-                            Suajado
-                        </label>
-                    </ons-list-item>
+                <div class="contenedor-flexbox">
+                    <div id="flexo">
+                        <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
+                            FLEXO (cajas)
+                        </ons-list-header>
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                                <ons-checkbox input-id="check1"></ons-checkbox>
+                            </label>
+                            <label for="check1" class="center">
+                                Flexo
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                                <ons-checkbox input-id="check2"></ons-checkbox>
+                            </label>
+                            <label for="check2" class="center">
+                                Pegado - Flejado
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                                <ons-checkbox input-id="check3"></ons-checkbox>
+                            </label>
+                            <label for="check3" class="center">
+                                Impresion
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                                <ons-checkbox input-id="check4"></ons-checkbox>
+                            </label>
+                            <label for="check4" class="center">
+                                Suajado
+                            </label>
+                        </ons-list-item>
+                    </div>
+
+                    <div id="cortadora">
+                        <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
+                            CORTADORA (Cajas)
+                        </ons-list-header>
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                                <ons-checkbox input-id="check5"></ons-checkbox>
+                            </label>
+                            <label for="check5" class="center">
+                                Cortadora
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable modifier="nodivider">
+                            <label class="left">
+                                <ons-checkbox input-id="check6"></ons-checkbox>
+                            </label>
+                            <label for="check6" class="center">
+                                Caiman
+                            </label>
+                        </ons-list-item>
+                    </div>
                 </div>
 
-                <div id="cortadora">
-                    <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
-                        CORTADORA (Cajas)
-                    </ons-list-header>
-                    <ons-list-item tappable modifier="nodivider">
-                        <label class="left">
-                            <ons-checkbox input-id="check5"></ons-checkbox>
-                        </label>
-                        <label for="check5" class="center">
-                            Cortadora
-                        </label>
-                    </ons-list-item>
-                    <ons-list-item tappable modifier="nodivider">
-                        <label class="left">
-                            <ons-checkbox input-id="check6"></ons-checkbox>
-                        </label>
-                        <label for="check6" class="center">
-                            Caiman
-                        </label>
-                    </ons-list-item>
-                </div>
 
                 <div id="pedidoProveedor">
                     <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
@@ -3374,6 +3675,15 @@
                     </ons-list-item>
 
                 </div>
+
+                <ons-list-item modifier="nodivider">
+                    <ons-button id="botonPrograma"
+                        onclick="setActualizarEstadoPedido([idPedido,3]);cerrarDialogo('my-dialog-programa');"
+                        modifier="large" style="padding: 0;">
+                        <span style="font-size: 12px;">Terminado sin procesos</span>
+                    </ons-button>
+                </ons-list-item>
+
                 <ons-list-item modifier="nodivider">
                     <ons-button id="botonPrograma" onclick="setagregarPrograma(idPedido)" modifier="large">
                         Programar
@@ -3426,6 +3736,13 @@
                         <label for="check9" class="center">
                             Armador - Flejado
                         </label>
+                    </ons-list-item>
+                    <ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma"
+                            onclick="setActualizarEstadoPedidoInserto([idPedido,3]);cerrarDialogo('my-dialog-programa1');"
+                            modifier="large" style="padding: 0;">
+                            <span style="font-size: 12px;">Terminado sin procesos</span>
+                        </ons-button>
                     </ons-list-item>
                     <ons-list-item modifier="nodivider">
                         <ons-button id="botonPrograma" onclick="setagregarPrograma(idPedido)" modifier="large">
@@ -3613,6 +3930,29 @@
 
                 </div>
 
+            </div>
+        </ons-dialog>
+    </template>
+
+    <template id="dialogAgregarFactura.html">
+        <ons-dialog id="my-dialogAgregarFactura" cancelable>
+            <div style="text-align: center; padding: 10px; ">
+                <div class="botonCerrar" onclick="hideDialogo('my-dialogAgregarFactura')"><i
+                        class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div>
+                <b>Factura</b>
+                <br>
+                <p>
+                    <br>
+                    <ons-input id="facturaF" type="text" class="input-100" cols="30" rows="2"
+                        placeholder="factura"></ons-input>
+                    <br><br>
+                    <ons-input id="cantidadF" type="number" class="input-100" cols="30" rows="2"
+                        placeholder="Cantidad"></ons-input>
+                    <ons-input type="date" class="input-100" cols="30" rows="2" id="fechaFactura"></ons-input>
+                </p>
+
+                <ons-button modifier="large--quiet"
+                    onclick="validarFacturaPedido(idPedido,estadoPedido)">Enviar</ons-button>
             </div>
         </ons-dialog>
     </template>

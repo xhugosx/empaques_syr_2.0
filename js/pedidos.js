@@ -1,26 +1,20 @@
 //variable global para ver si filtrar o no
-var filtro = false;
+var filtroGlobal = 1;
+var estadoGlobal = "";
 //variable global para saber que cliente se filtro
 var cliente = "";
-function reiniciarCliente(){ cliente = "" }
-function asignarFiltro(valor)
-{
-    filtro = valor.checked;
-    buscarDtospedidos();
+function reiniciarCliente() { cliente = "" }
 
-}
-
-function buscarDtospedidos()
-{
+function buscarDtospedidos() {
     //asignar barra carga
     $("#datosPedidosClientesLoading").empty();
     $("#datosPedidosLoading").empty();
     $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
     $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
 
-    if(cliente == "") setBusquedaPendiente();
-    if(cliente == "") setPedidosCliente();
-    if(cliente != "") setPedidosClienteFiltrado(cliente);
+    if (cliente == "") setBusquedaPendiente();
+    if (cliente == "") setPedidosCliente();
+    if (cliente != "") setPedidosClienteFiltrado(cliente);
 
     setPedidosInsertos();
 
@@ -28,233 +22,202 @@ function buscarDtospedidos()
     //$("#searchPedido").val("");
 
 }
-function solicitarInfoPedido(codigo,e)
-{
+function solicitarInfoPedido(codigo, e) {
     tecla = (document.all) ? e.keyCode : e.which;
-    if(codigo.length == 7 || tecla == 13)
-    { 
+    if (codigo.length == 7 || tecla == 13) {
         //funcion para solicitarInventario
         setBuscarInventario(codigo);
         //funcion para solicitar el ultimo registrado
-        setBuscarProductoCliente(codigo);   
+        setBuscarProductoCliente(codigo);
     }
-    else
-    {
+    else {
         limpiarRegistrosPedidos2();
     }
-    
+
 }
 //BUSQUEDA POR CLIENTE VISTA 1
-function setPedidosCliente()
-{
-    var type = filtro ? 1 : 2;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?type="+type,getPedidosCliente)
+function setPedidosCliente() {
+    //var type = filtro ? 1 : 2;
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getPedidosCliente)
 }
-function getPedidosCliente(respuesta)
-{
+function getPedidosCliente(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    
-    $('#clientesPedidos').attr("badge", arrayJson.length-1);
 
-    listaInfinita('datosPedidosClientes','datosPedidosClientesLoading',arrayJson,enlistarPedidosCliente);
+    $('#clientesPedidos').attr("badge", arrayJson.length - 1);
+
+    listaInfinita('datosPedidosClientes', 'datosPedidosClientesLoading', arrayJson, enlistarPedidosCliente);
 
 }
 
 //BUQUEDA POR TODOS VISTA 2
-function setBusquedaPendiente()
-{
-    var type = filtro ? 1 : 2;
+function setBusquedaPendiente() {
+    //var type = filtro ? 1 : 2;
     var busqueda = $('#searchPedido').val();
     //console.log(busqueda);
-    if(busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type,getBusquedaPendiente);
-    else setSearchPedidos(busqueda,13);
+    if (busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getBusquedaPendiente);
+    else setSearchPedidos(busqueda, 13);
 }
-function getBusquedaPendiente(respuesta)
-{
+function getBusquedaPendiente(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    $('#todoPedidos').attr("badge", arrayJson.length-1);
+    $('#todoPedidos').attr("badge", arrayJson.length - 1);
 
-    listaInfinita('datosPedidos','datosPedidosLoading',arrayJson,enlistarPedidos);
+    listaInfinita('datosPedidos', 'datosPedidosLoading', arrayJson, enlistarPedidos);
 }
 
 //PEDIDOS FILTRADO POR CLIENTE
-function setPedidosClienteFiltrado(codigo)
-{
-    var type = filtro ? 1 : 2;
+function setPedidosClienteFiltrado(codigo) {
+    //var type = filtro ? 1 : 2;
     cliente = codigo;
     var busqueda = $('#searchPedidosClientesFiltrados').val();
-    if(busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo),getPedidosClienteFiltrado);
-    else setsearchPedidosClienteFiltrado(busqueda,13,cliente);
+    if (busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getPedidosClienteFiltrado);
+    else setsearchPedidosClienteFiltrado(busqueda, 13, cliente);
 }
-function getPedidosClienteFiltrado(respuesta)
-{
+function getPedidosClienteFiltrado(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    listaInfinita('datosPedidosClienteFiltrado','datosPedidosClientesLoadingFiltroLoading',arrayJson,enlistarPedidos);
+    listaInfinita('datosPedidosClienteFiltrado', 'datosPedidosClientesLoadingFiltroLoading', arrayJson, enlistarPedidos);
     //cliente = "";
 }
 
 //funcion para barra de busqueda pedidos
-function setSearchPedidos(search,e)
-{
-    
+function setSearchPedidos(search, e) {
+
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13 || e == 13) 
-    {
+    if (tecla == 13 || e == 13) {
         $("#datosPedidosLoading").empty();
         $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        var type = filtro ? 1 : 2;
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+search,getSearchPedidos);
+        //var type = filtro ? 1 : 2;
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getSearchPedidos);
     }
-    else if(search == "") setBusquedaPendiente();
+    else if (search == "") setBusquedaPendiente();
 }
 
-function getSearchPedidos(respuesta)
-{
+function getSearchPedidos(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
     //resultado = enlistarPedidos(arrayJson);
 
-    listaInfinita('datosPedidos','datosPedidosLoading',arrayJson,enlistarPedidos);
+    listaInfinita('datosPedidos', 'datosPedidosLoading', arrayJson, enlistarPedidos);
 }
 
 // function para barra de busqueda pedidos por cliente
 
-function setSearchPedidosCliente(search,e)
-{
+function setSearchPedidosCliente(search, e) {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
-    {
+    if (tecla == 13) {
         $("#datosPedidosClientesLoading").empty();
         $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         var type = filtro ? 1 : 2;
         //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?type="+type+"&search="+search);
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?type="+type+"&search="+search,getSearchPedidosCliente);
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getSearchPedidosCliente);
     }
-    else if(search == "") setPedidosCliente();
+    else if (search == "") setPedidosCliente();
 }
 
-function getSearchPedidosCliente(respuesta)
-{
+function getSearchPedidosCliente(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosPedidosClientes','datosPedidosClientesLoading',arrayJson,enlistarPedidosCliente);
+    listaInfinita('datosPedidosClientes', 'datosPedidosClientesLoading', arrayJson, enlistarPedidosCliente);
 
 }
 
 // funcion para buscar con cliente filtrado 
 //PEDIDOS FILTRADO POR CLIENTE
-function setsearchPedidosClienteFiltrado(search,e,codigo)
-{
+function setsearchPedidosClienteFiltrado(search, e, codigo) {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13 || e == 13) 
-    {
+    if (tecla == 13 || e == 13) {
         $("#datosPedidosClientesLoadingFiltroLoading").empty();
         $("#datosPedidosClientesLoadingFiltroLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        var type = filtro ? 1 : 2;
+        //var type = filtro ? 1 : 2;
         cliente = codigo;
         //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo)+"&search="+search);
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo)+"&search="+search,getSearchPedidosClienteFiltrado);
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getSearchPedidosClienteFiltrado);
     }
-    else if(search == "") setPedidosClienteFiltrado(codigo);
+    else if (search == "") setPedidosClienteFiltrado(codigo);
 }
-function getSearchPedidosClienteFiltrado(respuesta)
-{
+function getSearchPedidosClienteFiltrado(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosPedidosClienteFiltrado','datosPedidosClientesLoadingFiltroLoading',arrayJson,enlistarPedidos);
+    listaInfinita('datosPedidosClienteFiltrado', 'datosPedidosClientesLoadingFiltroLoading', arrayJson, enlistarPedidos);
 }
 
 //funcion paran agregar pedidos
-function setAgregarPedido()
-{
+function setAgregarPedido() {
     var id = $("#pedidoId").val();
     var codigo = $("#pedidoCodigo").val();
-    var cantidad =  $("#pedidoCantidad").val();
+    var cantidad = $("#pedidoCantidad").val();
     var oc = $("#pedidoOc").val();
     var fecha_oc = $("#pedidoFechaOc").val();
     var observaciones = $("#pedidoObservaciones").val();
     var resistencia = $("#pedidoResistencia").val();
     var papel = $("#pedidoPapel").val();
-    
-    if(datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia) && datoVacio(papel))
-    {
-        
-        if(localStorage.getItem('insertos'))
-        {
+
+    if (datoVacio(id) && datoVacio(codigo) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha_oc) && datoVacio(resistencia) && datoVacio(papel)) {
+
+        if (localStorage.getItem('insertos')) {
             let bandera = true;
 
-            for(let i = 0; i<localStorage.getItem('insertos');i++)
-            {
+            for (let i = 0; i < localStorage.getItem('insertos'); i++) {
                 //console.log("#inserto"+(i+1));
-                if($("#inserto"+(i+1)).val() == "" || $("#resistencia"+(i+1)).val() == "" || $("#cantidad"+(i+1)).val() == "") 
-                {
+                if ($("#inserto" + (i + 1)).val() == "" || $("#resistencia" + (i + 1)).val() == "" || $("#cantidad" + (i + 1)).val() == "") {
                     //console.log("entro");
                     bandera = false;
                     break;
-                    
-                } 
+
+                }
             }
-            if( bandera ) 
-            {
+            if (bandera) {
                 let insertos = [];
                 let resistencias = [];
                 let cantidades = [];
                 let notas = [];
-                for(let i = 0; i<localStorage.getItem('insertos');i++)
-                {
+                for (let i = 0; i < localStorage.getItem('insertos'); i++) {
                     //arrayDatos
-                    resistencias.push($("#resistencia"+(i+1)).val()); 
-                    cantidades.push($("#cantidad"+(i+1)).val());
-                    insertos.push($("#inserto"+(i+1)).val());
-                    notas.push($("#notas"+(i+1)).val());
-                    
+                    resistencias.push($("#resistencia" + (i + 1)).val());
+                    cantidades.push($("#cantidad" + (i + 1)).val());
+                    insertos.push($("#inserto" + (i + 1)).val());
+                    notas.push($("#notas" + (i + 1)).val());
+
                 }
-                setAgregarPedidoInserto(codigo,resistencias,cantidades,insertos,fecha_oc,notas);
-                servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&papel='+papel+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
+                setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas);
+                servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
             }
             else alerta("Espacios vacios en insertos")
         }
-        else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+id+'&codigo='+codigo+'&cantidad='+cantidad+'&resistencia='+resistencia+'&papel='+papel+'&oc='+oc+'&fecha_oc='+fecha_oc+'&observaciones='+observaciones,getAgregarPedido);
-   }
+        else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
+    }
     else alerta('Espacios vacios en producto! <br>(No escribir "CEROS")');
 }
-function getAgregarPedido(respuesta)
-{
-    
-    if(respuesta.responseText=="1") 
-    {
-        alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?",limpiarRegistrosPedidos,resetearPilaFunction,buscarDtospedidos);
+function getAgregarPedido(respuesta) {
+
+    if (respuesta.responseText == "1") {
+        alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?", limpiarRegistrosPedidos, resetearPilaFunction, buscarDtospedidos);
     }
-    else alerta('hubo un error al insertar!'+respuesta.responseText);
+    else alerta('hubo un error al insertar!' + respuesta.responseText);
     //console.log(respuesta.reponseText);
 }
 
-function setBuscarProductoCliente(codigo)
-{
-    
+function setBuscarProductoCliente(codigo) {
+
     $("#pedidoProducto").val("Buscando...");
     $("#pedidoCliente").val("Buscando...");
     $("#botonAgregarPedido").attr('disabled', true);
-    
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search="+codigo,getBuscarProductoCliente);
-   
+
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectProductoCliente.php?search=" + codigo, getBuscarProductoCliente);
+
 }
-function getBuscarProductoCliente(respuesta)
-{
+function getBuscarProductoCliente(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
-    if(resultado == "")
-    {
+    if (resultado == "") {
         $("#pedidoProducto").val("sin resultados...");
         $("#pedidoCliente").val("sin resultados...");
     }
-    else
-    {
-        
+    else {
+
         var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
         arrayJson[0] = JSON.parse(arrayJson[0]);
         $("#pedidoProducto").val(reducirTexto(arrayJson[0].producto));
@@ -264,7 +227,7 @@ function getBuscarProductoCliente(respuesta)
         let anio = moonLanding.getFullYear();
 
         let cantidad = arrayJson[0].cantidad == "" ? 1 : parseInt(arrayJson[0].cantidad) + 1;
-        $('#pedidoId').val(anio+agregarCeros(arrayJson[0].codigo)+"-"+cantidad);
+        $('#pedidoId').val(anio + agregarCeros(arrayJson[0].codigo) + "-" + cantidad);
         //activar boton agregar
         $("#botonAgregarPedido").attr('disabled', false);
         //console.log(arrayJson);
@@ -272,33 +235,27 @@ function getBuscarProductoCliente(respuesta)
     }
     $("#pedidoClienteProgress").empty();
     $("#pedidoProductoProgress").empty();
-   
+
 }
-function setBuscarInventario(codigo)
-{
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php?search='+codigo,getBuscarInventario)
+function setBuscarInventario(codigo) {
+    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php?search=' + codigo, getBuscarInventario)
 }
-function getBuscarInventario(respuesta)
-{
-    if(respuesta.responseText != "")
-    {
+function getBuscarInventario(respuesta) {
+    if (respuesta.responseText != "") {
         var resultado = respuesta.responseText;//respuesta del servidor
         var arrayJson = resultado.split('|');
         arrayJson = JSON.parse(arrayJson[0]);
-        alerta('En existencia: <strong>'+separator(arrayJson.inventario)+'</strong> Pzas');
+        alerta('En existencia: <strong>' + separator(arrayJson.inventario) + '</strong> Pzas');
         //alerta(resultado);
-    } 
+    }
     //else alerta("Sin existencia en inventario");
 }
 //eliminar pedido
-function setEliminarPedido(id)
-{
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/delete.php?id="+id,getEliminarpedido);
+function setEliminarPedido(id) {
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/delete.php?id=" + id, getEliminarpedido);
 }
-function getEliminarpedido(respuesta)
-{
-    if(respuesta.responseText == 1) 
-    {  
+function getEliminarpedido(respuesta) {
+    if (respuesta.responseText == 1) {
         alerta("Pedido Eliminado");
         buscarDtospedidos();
     }
@@ -306,15 +263,13 @@ function getEliminarpedido(respuesta)
 }
 
 //buscar modificar pedido
-function setModificarBuscarPedido(id)
-{
-    var type = filtro ? 1 : 2;
+function setModificarBuscarPedido(id) {
+    //var type = filtro ? 1 : 2;
     //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id);
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id,getModificarBuscarPedido);
-    
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?search=" + id + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getModificarBuscarPedido);
+
 }
-function getModificarBuscarPedido(respuesta)
-{
+function getModificarBuscarPedido(respuesta) {
     //console.log(respuesta.responseText);
     var resultado = respuesta.responseText;//respuesta del servidor
     var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -330,15 +285,14 @@ function getModificarBuscarPedido(respuesta)
     $("#pedidoModificarFechaOc").val(arrayJson[0].fecha_oc);
     $("#pedidoModificarObservaciones").val(arrayJson[0].observaciones);
     //resultado = enlistarPedidos(arrayJson);
-    
-   //alert(resultado);
-    
+
+    //alert(resultado);
+
 }
 
 
 //modificar pedido
-function setModificarPedido()
-{
+function setModificarPedido() {
     var id = $("#pedidoModificarId").val();
     var resistencia = $("#pedidoModificarResistencia").val();
     var papel = $("#pedidoModificarPapel").val();
@@ -347,17 +301,14 @@ function setModificarPedido()
     var fecha = $("#pedidoModificarFechaOc").val();
     var observaciones = $("#pedidoModificarObservaciones").val();
 
-    if(datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha))
-    {
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia="+resistencia+"&papel="+papel+"&cantidad="+cantidad+"&oc="+oc+"&fecha_oc="+fecha+"&id="+id+"&observaciones="+observaciones,getModificarPedido)
+    if (datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha)) {
+        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
-    
+
 }
-function getModificarPedido(respuesta)
-{
-    if(respuesta.responseText == 1) 
-    {  
+function getModificarPedido(respuesta) {
+    if (respuesta.responseText == 1) {
         alerta("Pedido Actualizado");
         resetearPilaFunction(buscarDtospedidos);
     }
@@ -365,12 +316,51 @@ function getModificarPedido(respuesta)
 }
 
 
+
+// modificar el estado del pedido
+function setActualizarEstadoPedido(datos) {
+    let id = datos[0];
+    let estado = datos[1];
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedido);
+}
+function setActualizarEstadoPedido2(datos) {
+    let id = datos[0];
+    let estado = datos[1];
+    let factura = datos[2];
+    let cantidad = datos[3];
+    let fecha = datos[4];
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado + "&factura=" + factura + "&cantidad=" + cantidad + "&fecha=" + fecha, getActulizarestadoPedido);
+
+}
+function getActulizarestadoPedido(respuesta) {
+    if (respuesta.responseText == 1) {
+        alerta("Estado Actualizado");
+        buscarDtospedidos();
+        $('#facturaF').val("");
+        $('#cantidadF').val("");
+        hideDialogo('my-dialogAgregarFactura')
+    }
+    else alerta("Hubo un error al tratar de modificar el Estado...");
+}
+
+//validar datos de factura
+
+function validarFacturaPedido(id, estado) {
+    var factura = $('#facturaF').val();
+    var cantidad = $('#cantidadF').val();
+    var fecha = $('#fechaFactura').val();
+    if (factura == "" || cantidad == "" || fecha == "") alerta("Espacios vacios!");
+    else if (cantidad == 0) alerta("Escribe un numero mayo a 0");
+    else setActualizarEstadoPedido2([id, estado, factura, cantidad, fecha]);
+
+}
+
+
 //ENLISTAR DATOS CLIENTES
-function enlistarPedidosCliente(arrayJson)
-{
+function enlistarPedidosCliente(arrayJson) {
     let html1 = "";
 
-    html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\''+arrayJson.codigo+'\')">'
+    html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'pedidosFiltroCliente.html\',setPedidosClienteFiltrado,\'' + arrayJson.codigo + '\')">'
     html1 += '<ons-list-item modifier="chevron nodivider" >';
     //html1 += '<ons-list-item modifier="chevron" tappable onclick="crearObjetMensajePedido()">';
     html1 += '    <div class="left">';
@@ -382,81 +372,78 @@ function enlistarPedidosCliente(arrayJson)
     html1 += arrayJson.cliente;
     html1 += '    </div>';
     html1 += '    <div class="right">';
-    html1 += '        <span class="notification">'+arrayJson.contador+'</span>';
+    html1 += '        <span class="notification">' + arrayJson.contador + '</span>';
     html1 += '    </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
-    
+
     return html1;
 }
 //ENLISTAR PEDIDOS
 var estadoTemp = "";
-function enlistarPedidos(arrayJson,i)
-{
+function enlistarPedidos(arrayJson, i) {
     //alerta(""+arrayJson)
     let html1 = "";
     var color = "";
     var entregado = "";
     var estado = "";
-    if(arrayJson.oc == "FALTANTE") 
-    {
+    if (arrayJson.oc == "FALTANTE") {
         color = "#a01a1a";
         entregado = "Faltante";
     }
-    else if(arrayJson.fechaSalida != "") 
-    {
+    else if (arrayJson.fechaSalida != "") {
         color = "rgb(8, 136, 205)";
-        entregado = "Entregado: "+ sumarDias(arrayJson.fechaSalida,0);
+        entregado = "Entregado: " + sumarDias(arrayJson.fechaSalida, 0);
     }
-    else 
-    {
-        entregado = 'Entrega: '+sumarDias(arrayJson.fecha_oc,20);
+    else {
+        entregado = 'Entrega: ' + sumarDias(arrayJson.fecha_oc, 20);
         color = "rgb(61, 121, 75)";
     }
-    
-    if (arrayJson.estado == 1)estado = '<i class="fa-solid fa-circle" style="color: #EC641A;"></i>'; 
-    else if(arrayJson.estado == 2) estado = '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i>'; 
-    else estado = '<i class="fa-solid fa-circle" style="color: #F2F2F2;"></i>'; 
-    
+    if (arrayJson.estado == 0) estado = '⚪';
+    else if (arrayJson.estado == 1) estado = '🟠';
+    else if (arrayJson.estado == 2) estado = '🟢';
+    else if (arrayJson.estado == 3) estado = '🟩';
+    else if (arrayJson.estado == 6) estado = '⚫';
+    else if (arrayJson.estado == 4) estado = '🔵';
+    else if (arrayJson.estado == 5) estado = '🟣';
+
     var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\''+arrayJson.oc+'\',\''+arrayJson.id+'\',\''+arrayJson.codigo+'\',\''+arrayJson.estado+'\',\''+arrayJson.observaciones+'\',\''+sumarDias(arrayJson.fecha_oc,20)+'\')">'
-    html1 += '<ons-list-header style="background:white;">'+estado+'&emsp;';
+
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 20) + '\')">'
+    html1 += '<ons-list-header style="background:white;">' + estado + '&emsp;';
     html1 += arrayJson.id;
     html1 += '    &emsp;';
-    html1 += '    <b style="color: '+color+';">';
-    html1 +=        entregado; //aqui ira una fecha 
+    html1 += '    <b style="color: ' + color + ';">';
+    html1 += entregado; //aqui ira una fecha 
     html1 += '    </b>';
     html1 += '</ons-list-header>';
-    html1 += '<ons-list-item modifier="nodivider">'; 
+    html1 += '<ons-list-item modifier="nodivider">';
     html1 += '    <div class="left">';
-    html1 += '        <strong>'+arrayJson.codigo+'</strong>';
+    html1 += '        <strong>' + arrayJson.codigo + '</strong>';
     html1 += '    </div>';
     html1 += '    <div class="center romperTexto">';
-    html1 += '        <span class="list-item__title">'+arrayJson.producto+'&nbsp;|&nbsp;<b style="color:#404040">'+arrayJson.resistencia+' '+arrayJson.papel+'</b></span>'; 
+    html1 += '        <span class="list-item__title">' + arrayJson.producto + '&nbsp;|&nbsp;<b style="color:#404040">' + arrayJson.resistencia + ' ' + arrayJson.papel + '</b></span>';
     html1 += '        <span class="list-item__subtitle">';
-    html1 += '<span>'+arrayJson.cliente+'</span>';
+    html1 += '<span>' + arrayJson.cliente + '</span>';
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';
-    html1 += '         <div class="centrar">';                  
-    html1 += '               <b style="font-size:16px">'+separator(arrayJson.cantidad)+' <span style="font-size:14px">pzas</span></b>';
+    html1 += '         <div class="centrar">';
+    html1 += '               <b style="font-size:16px">' + separator(arrayJson.cantidad) + ' <span style="font-size:14px">pzas</span></b>';
     html1 += '         </div>';
-    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color1+'" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: ' + color1 + '" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '    </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
-    
+
     return html1;
 }
 
-function reiniciarFilter()
-{
+function reiniciarFilter() {
     filtro = false;
 }
 
-function limpiarRegistrosPedidos()
-{
+function limpiarRegistrosPedidos() {
     $("#pedidoId").val('');
     $("#pedidoCodigo").val('');
     $("#pedidoProducto").val('');
@@ -474,11 +461,37 @@ function limpiarRegistrosPedidos()
     //$("#pedidoFechaOc").val('');
 }
 
-function limpiarRegistrosPedidos2()
-{
+function limpiarRegistrosPedidos2() {
     $("#pedidoId").val('');
     $("#pedidoProducto").val('');
     $("#pedidoCliente").val('');
     $("#botonAgregarPedido").attr('disabled', true);
 }
+function aplicarFiltro() {
+    let activoFijo = document.querySelector('input[name=pedidoRadio]:checked').value;
+    var ids = document.querySelectorAll("input[name='estado']:checked");
+    var a = [];
+    for (var i = 0; i < ids.length; i++) {
+        a += ids[i].value + ",";
+    }
+    //console.log(activoFijo,a);
 
+    filtroGlobal = activoFijo;
+    estadoGlobal = a;
+    buscarDtospedidos();
+    menu.close();
+    //$('#splitter-page').hide();
+}
+
+function resetearFiltroPedidos() {
+    //document.querySelector('input[name=pedidoRadio]:checked').value = ;
+    $('input[name=pedidoRadio]').prop('checked', false);
+    $('#Actuales').prop('checked', true);
+    $('input[type=checkbox]').prop('checked', false);
+
+    filtroGlobal = 1;
+    estadoGlobal = "";
+    buscarDtospedidos();
+
+    menu.close();
+}
