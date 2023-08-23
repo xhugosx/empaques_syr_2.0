@@ -225,13 +225,13 @@
         <ons-page id="page1">
             <ons-toolbar>
                 <div id="inicio" class="center" style="height:auto; text-align: center;">
-                    <img src="media/Logo_oficial.svg" height="90px" style="margin: 10px;" style="position: relative;">
+                    <img src="media/Logo_oficial.svg" height="80px" style="margin: 10px;" style="position: relative;">
                 </div>
             </ons-toolbar>
             <ons-tabbar swipeable position="bottom" modifier="autogrow">
                 <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
-                <ons-tab page="produccion.html" label="Producción" icon="fa-gears"></ons-tab>
-                <ons-tab page="programa.html" label="Programa" icon="fa-clipboard"></ons-tab>
+                <ons-tab page="produccion.html" label="Producción" icon="fa-clipboard"></ons-tab>
+                <ons-tab page="programa.html" label="Programa" icon="fa-gears"></ons-tab>
                 <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar"></ons-tab>
             </ons-tabbar>
 
@@ -419,7 +419,14 @@
                         <span> Egresos </span>
                     </ons-card>
                 </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center;" onclick="">
+                        <i class="fa-solid fa-file-invoice-dollar fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span style=""> Facturas</span>
+                    </ons-card>
 
+                </div>
             </ons-card>
         </ons-page>
     </template>
@@ -1275,8 +1282,8 @@
                             <i class="fa-solid fa-calculator fa-lg"></i>
                         </div>
                         <div class="center">
-                            <ons-input type="text" id="nombre" class="input-100" cols="30" rows="1"
-                                placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                            <ons-input type="text" id="nombre" class="input-100" cols="30" rows="1" placeholder="Nombre"
+                                onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -1417,8 +1424,8 @@
                         </div>
                         <div class="center">
 
-                            <ons-input type="number" id="id" cols="30" rows="1" maxlength="3"
-                                class="input-100" placeholder="codigo" disabled></ons-input>
+                            <ons-input type="number" id="id" cols="30" rows="1" maxlength="3" class="input-100"
+                                placeholder="codigo" disabled></ons-input>
 
                         </div>
                     </ons-list-item>
@@ -1645,6 +1652,7 @@
 
             <iframe id="plano" src="" style="width:100%; height:100%;" frameborder="0"></iframe>
 
+            <!--object id="plano" class="pdfview" type="application/pdf" data=" "></object-->
             <!--ons-fab class="fijadoDerecha"
                 onclick="document.getElementById('plano').focus(); document.getElementById('plano').contentWindow.print();"
                 position="bottom right">
@@ -1807,21 +1815,14 @@
             </div>
 
             <ons-card class="contenedor-flexbox" style="padding: 0;">
-                <ons-list-item tappable modifier="nodivider">
-                    <label class="left">
-                        <ons-radio name="color" input-id="radio-1" checked></ons-radio>
-                    </label>
-                    <label for="radio-1" class="center">
-                        PCM
-                    </label>
-                </ons-list-item>
+
 
 
             </ons-card>
 
             <br>
             <span
-                style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">CARPETAS</span>
+                style="position: absolute; margin-left: 20px; background-color: #ffffff;padding: 0px 10px 0px 10px; padding: 5px; border-radius: 10px;">CARPETAS</span>
             <hr>
             <br>
 
@@ -1831,7 +1832,7 @@
 
             <br>
             <span
-                style="position: absolute; margin-left: 20px; background-color: #efeff4;padding: 0px 10px 0px 10px;">ORDENES
+                style="position: absolute; margin-left: 20px; background-color: #ffffff;padding: 0px 10px 0px 10px; padding: 5px; border-radius: 10px;">ORDENES
                 DE COMPRA</span>
             <hr>
             <br>
@@ -2405,13 +2406,13 @@
                         onkeyup="buscarEntradaSalidaLamina(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
-
+            <br>
             <div class="separacion">PCM</div>
             <hr>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
             </ons-list>
-
+            <br>
             <div class="separacion">PACK</div>
             <hr>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
@@ -2509,14 +2510,17 @@
                         onkeyup="setMostrarInventarioPedidosLaminaSearch(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
-
+            <br>
             <div class="separacion">PCM</div>
             <hr>
+            <br>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario1"></ons-lazy-repeat>
             </ons-list>
+            <br>
             <div class="separacion">PACK</div>
             <hr>
+            <br>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario2"></ons-lazy-repeat>
             </ons-list>
@@ -3948,6 +3952,7 @@
                     <br><br>
                     <ons-input id="cantidadF" type="number" class="input-100" cols="30" rows="2"
                         placeholder="Cantidad"></ons-input>
+                    <br><br>
                     <ons-input type="date" class="input-100" cols="30" rows="2" id="fechaFactura"></ons-input>
                 </p>
 

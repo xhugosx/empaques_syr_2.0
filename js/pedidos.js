@@ -410,7 +410,7 @@ function enlistarPedidos(arrayJson, i) {
     var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
 
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 20) + '\')">'
-    html1 += '<ons-list-header style="background:white;">' + estado + '&emsp;';
+    html1 += '<ons-list-header style="background-color: rgba(255, 255, 255, 0)">' + estado + '&emsp;';
     html1 += arrayJson.id;
     html1 += '    &emsp;';
     html1 += '    <b style="color: ' + color + ';">';
@@ -435,7 +435,7 @@ function enlistarPedidos(arrayJson, i) {
     html1 += '    </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
-
+    console.log(arrayJson);
     return html1;
 }
 

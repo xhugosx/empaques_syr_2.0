@@ -126,8 +126,9 @@ function enlistarClientes(arrayJson) {
 
     for (var i = 0; i < arrayJson.length - 1; i++) {
         arrayJson[i] = JSON.parse(arrayJson[i]); //convertimos los jsonText en un objeto json
-        html1 += '<ons-card class="botonPrograma" id="list-cliente' + i + '" onclick="crearObjetMensajeCliente(' + arrayJson[i].codigo + ',' + i + ')">';
-        html1 += '    <i class="fa-solid fa-user-large fa-lg"></i> <strong>' + agregarCeros(arrayJson[i].codigo) + '</strong> &nbsp;' + arrayJson[i].nombre + '';
+        html1 += '<ons-card class="botonPrograma" id="list-cliente' + i + '"  onclick="crearObjetMensajeCliente(' + arrayJson[i].codigo + ',' + i + ')">';
+        html1 += '    <i class="fa-solid fa-user-large fa-lg"></i> <strong>' + agregarCeros(arrayJson[i].codigo) + '</strong> &nbsp;' + arrayJson[i].nombre + '<br>';
+        html1 += '<span class="usuario">RFC: <span id="rfc'+i+'">' + arrayJson[i].rfc + '</span>&emsp;&emsp;Contraseña: <span id="contrasena'+i+'">'+ arrayJson[i].contraseña +'</span></span>'
         html1 += '</ons-card>';
     }
     html1 += '<br><br><br>';

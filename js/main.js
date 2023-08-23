@@ -162,7 +162,14 @@ function crearObjetMensaje(codigo, contador) {
       }
     ]
   }).then(function (index) {
-    if (index == 0) nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf'); //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+    if (index == 0) {
+      let navegador = navigator.userAgent;
+      if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+      } else {
+        window.open('https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+      }
+    }  //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
     else if (index == 1) nextPageFunctionData('ActualizarProductos.html', setBuscarProductoActualizar, codigo); //alert("modificara "+codigo);
     else if (index == 2) alertaConfirm('Estas seguro de eliminar este producto? ' + codigo, setEliminarProducto, codigo, contador);
   });
@@ -200,7 +207,17 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
     else if (index == 1 && botonEstado == "Estado") {
       crearObjetMensajePedidoEstado(id); // aqui se cambiara el estado
     }
-    else if (index == 2) nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');//window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+    else if (index == 2) {
+      let navegador = navigator.userAgent;
+      if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+        //console.log("Estás usando un dispositivo móvil!!");
+        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+      } else {
+        window.open('https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+      }
+      //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+
+    }
     else if (index == 3) alerta("<b>Orden de Compra: </b><br>" + oc + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br><br><b>Fecha de entrega estimada:</b><br>" + fecha);
     else if (index == 4) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id); //alert("modificara "+codigo);
     else if (index == 5) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedido, id);
@@ -210,25 +227,35 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
 
 function crearObjetMensajePedidoEstado(id) {
   ons.openActionSheet({
-    title: "Estado",
+    title: "<b>Estado</b>",
     cancelable: true,
     buttons: [
-      "Entregado",
-      "E. Parcial",
+      estadoPedidos(4),
+      estadoPedidos(5),
     ]
   }).then(function (index) {
-    
-    if(index == 0){
+
+    if (index == 0) {
       idPedido = id;
       estadoPedido = 4;
     } //setActualizarEstadoPedido([id,4]);
-    else if(index == 1)  {
+    else if (index == 1) {
       idPedido = id;
       estadoPedido = 5;
     }//setActualizarEstadoPedido([id,5]);
 
-    if(index == 0 || index == 1) Abrirdialogo('my-dialogAgregarFactura','dialogAgregarFactura.html', id);
+    if (index == 0 || index == 1) {
+
+      Abrirdialogo('my-dialogAgregarFactura', 'dialogAgregarFactura.html', id, fechaFactura);
+      setTimeout(() => {
+
+      }, 500);
+    }
+
   });
+}
+function fechaFactura() {
+  $('#fechaFactura').val(fechaHoy());
 }
 var estadoPedido;
 
@@ -249,7 +276,7 @@ function crearObjetMensajePedidoInserto(id, codigo, estado, notas) {
     ]
   }).then(function (index) {
     if (index == 0) {
-      if (estado == 0) Abrirdialogo('my-dialog-programa1', 'dialogPrograma1.html', id); 
+      if (estado == 0) Abrirdialogo('my-dialog-programa1', 'dialogPrograma1.html', id);
       else if (estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?", setLlenarProcesoPrograma, [id, 0]);
       else alerta("Pedido ya se encuentra en inventario");
     }
@@ -272,9 +299,11 @@ function estadoPedidos(estado) {
 
 function crearObjetMensajeCliente(id, i) {
   ons.openActionSheet({
-    title: 'OPCIONES',
+    title: 'OPCIONES / ' + agregarCeros(id),
     cancelable: true,
     buttons: [
+      'Copiar RFC',
+      'Copiar Contraseña',
       'Editar',
       {
         label: 'Eliminar',
@@ -282,9 +311,20 @@ function crearObjetMensajeCliente(id, i) {
       }
     ]
   }).then(function (index) {
-    if(index == 0) nextPageFunctionData('editarClientes.html', setBuscarEditarCliente, id);
-    else if (index == 1) alertaConfirm('Estas seguro de eliminar este cliente ' + agregarCeros(id) + '?<br><font color="red">(Recuerda que esto eliminara todos lo enlazado Archivos, Pedidos, Inventario)</font>', setEliminarCliente, id, i);
+    if (index == 0) { copyToClipboard('#rfc' + i); alertToast("Copiado al portapapeles!", 2000); }
+    else if (index == 1) { copyToClipboard('#contrasena' + i); alertToast("Copiado al portapapeles!", 2000); }
+    else if (index == 2) nextPageFunctionData('editarClientes.html', setBuscarEditarCliente, id);
+    else if (index == 3) alertaConfirm('Estas seguro de eliminar este cliente ' + agregarCeros(id) + '?<br><font color="red">(Recuerda que esto eliminara todos lo enlazado Archivos, Pedidos, Inventario)</font>', setEliminarCliente, id, i);
   });
+}
+
+//funcion para copiar rfc o contraseña del usuario
+function copyToClipboard(elemento) {
+  var $temp = $("<input>")
+  $("body").append($temp);
+  $temp.val($(elemento).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
 }
 
 function crearObjetMensajeProcesoPrograma(idP, id, cantidad, codigo, resistencia, observaciones, papel) {
@@ -554,7 +594,7 @@ function cerrarDialog() {
 }
 
 
-function Abrirdialogo(id, template, idProducto) {
+function Abrirdialogo(id, template, idProducto, funcion) {
   if (idProducto != "") idPedido = idProducto;
 
   var dialog = document.getElementById(id);
@@ -564,6 +604,7 @@ function Abrirdialogo(id, template, idProducto) {
   } else {
     ons.createElement(template, { append: true }).then(function (dialog) {
       dialog.show();
+      if (funcion) funcion();
     });
   }
   //eliminar div dentro
@@ -690,9 +731,8 @@ function agregarClase(i) {
     $('.list-cliente-animation').remove();
   }, 1500);
 }
-//crearMensajePL(\''+arrayJson.estado+'\',\''+arrayJson.entrada+'\',\''+arrayJson.pzas_ordenadas+'\',\''+arrayJson.o_c+'\')
+
 function crearMensajePL(estado, entrada, pzas_ordenadas, o_c, observaciones) {
-  //var titulo = '<i class="fa-solid fa-circle" style="color: '+colorEstado(estado)+';"></i> '+estadoLamina(estado);
 
   ons.openActionSheet({
     title: 'ESTADO',
@@ -725,7 +765,7 @@ function crearMensajePL(estado, entrada, pzas_ordenadas, o_c, observaciones) {
 
       if (index == 1 || index == 2) //en este actualiza y manda datos a entrada (menor al valor que muestra las piezas ordenadas)
       {
-
+        //alerta(index);
         ons.notification.prompt({
           title: '',
           inputType: 'number',
@@ -735,15 +775,15 @@ function crearMensajePL(estado, entrada, pzas_ordenadas, o_c, observaciones) {
           ],
           message: 'Existencia en inventario: ' + entrada + ' de ' + pzas_ordenadas
         }).then(function (input) {
-          if (input !== null && input > 0 && input !== "") {
+          if (input !== null && input >= 0 && input !== "") {
             ons.notification.confirm({
               title: "",
               message: 'Se generá la siguiente Entrada:<br><br> <font size="8px">' + input + ' pza(s)</font>',
-              buttonLabels: ['Aceptar', 'Cancelar'],
+              buttonLabels: ['Cancelar', 'Aceptar'],
               callback: function (idx) {
-                if (idx == 0) {
+                if (idx == 1) {
                   var suma = parseInt(input) + parseInt(entrada);
-                  if (input >= faltante) setActualizarEstadoPL(3, o_c, suma, entrada);
+                  if (index == 2) setActualizarEstadoPL(3, o_c, suma, entrada);
                   else setActualizarEstadoPL(2, o_c, suma, entrada);
 
                 }
