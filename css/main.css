@@ -288,7 +288,7 @@ ons-list-header {
 }
 
 span.list-item__subtitle {
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .nombreArchivo {
@@ -577,4 +577,8 @@ ons-list>ons-card:active{
     /* Mejorar aspecto */
     border-radius: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+th,td{
+    padding: 7px 7px 0 0;
 }

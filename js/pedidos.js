@@ -54,7 +54,7 @@ function getPedidosCliente(respuesta) {
 function setBusquedaPendiente() {
     //var type = filtro ? 1 : 2;
     var busqueda = $('#searchPedido').val();
-    //console.log(busqueda);
+    //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal);
     if (busqueda == "" || busqueda == undefined) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getBusquedaPendiente);
     else setSearchPedidos(busqueda, 13);
 }
@@ -91,6 +91,7 @@ function setSearchPedidos(search, e) {
         $("#datosPedidosLoading").empty();
         $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         //var type = filtro ? 1 : 2;
+
         servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getSearchPedidos);
     }
     else if (search == "") setBusquedaPendiente();
@@ -111,7 +112,7 @@ function setSearchPedidosCliente(search, e) {
     if (tecla == 13) {
         $("#datosPedidosClientesLoading").empty();
         $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        var type = filtro ? 1 : 2;
+        //var type = filtro ? 1 : 2;
         //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?type="+type+"&search="+search);
         servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getSearchPedidosCliente);
     }
@@ -266,7 +267,7 @@ function getEliminarpedido(respuesta) {
 function setModificarBuscarPedido(id) {
     //var type = filtro ? 1 : 2;
     //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?type="+type+"&search="+id);
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAll.php?search=" + id + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal, getModificarBuscarPedido);
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/selectAllEditar.php?id=" + id, getModificarBuscarPedido);
 
 }
 function getModificarBuscarPedido(respuesta) {
@@ -409,7 +410,7 @@ function enlistarPedidos(arrayJson, i) {
 
     var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
 
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 20) + '\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 0) + '\')">'
     html1 += '<ons-list-header style="background-color: rgba(255, 255, 255, 0)">' + estado + '&emsp;';
     html1 += arrayJson.id;
     html1 += '    &emsp;';
@@ -424,19 +425,55 @@ function enlistarPedidos(arrayJson, i) {
     html1 += '    <div class="center romperTexto">';
     html1 += '        <span class="list-item__title">' + arrayJson.producto + '&nbsp;|&nbsp;<b style="color:#404040">' + arrayJson.resistencia + ' ' + arrayJson.papel + '</b></span>';
     html1 += '        <span class="list-item__subtitle">';
-    html1 += '<span>' + arrayJson.cliente + '</span>';
+    html1 += '<span>' + arrayJson.cliente + '</span><br> <b>O. C: ' + arrayJson.oc + '</b>';
+    html1 += enlistarFacturas(arrayJson);
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';
     html1 += '         <div class="centrar">';
     html1 += '               <b style="font-size:16px">' + separator(arrayJson.cantidad) + ' <span style="font-size:14px">pzas</span></b>';
     html1 += '         </div>';
-    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: ' + color1 + '" class="fa-solid fa-comment-dots fa-2x"></i></div>';
+    html1 += '            <div style="position: absolute;bottom:85%; right: 10px;" ><i style="color: ' + color1 + '" class="fa-solid fa-comment-dots fa-2x"></i></div>';
     html1 += '    </div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
-    console.log(arrayJson);
+    //console.log(arrayJson);
     return html1;
+}
+function enlistarFacturas(registro) {
+    var html = "";
+    if(registro.estado != 4 && registro.estado != 5) return "";
+    else{
+        var facturas = (registro.facturas).split(",");
+        var entregas = (registro.entregado).split(",");
+        var fechas = (registro.fecha_factura).split(",");
+        var suma = 0;
+        
+        html += "<span><table>";
+        html += '<tr>';
+        html += '    <th>Factura</th>';
+        html += '    <th>Entregado</th>';
+        html += '    <th>Fecha</th>';
+        html += '</tr>';
+        for (let j = 0; j < entregas.length; j++) {
+
+            html += '<tr>';
+            html += '    <td>' + facturas[j] + '</td>';
+            html += '    <td>' + separator(entregas[j]) + ' pzas.</td>';
+            html += '    <td>' + fechas[j] + '</td>';
+            html += '</tr>';
+            suma += parseInt(entregas[j]); 
+        }
+        html += '<tr>';
+        html += '    <td></td>';
+        html += '    <td><b>Total: </b></td>';
+        html += '    <td><b>' + separator(suma) + ' pzas.</b></td>';
+        html += '</tr>';
+        html += "</table></span>";
+        //console.log(html);
+        return html;
+    }
+    
 }
 
 function reiniciarFilter() {

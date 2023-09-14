@@ -419,14 +419,14 @@
                         <span> Egresos </span>
                     </ons-card>
                 </div>
-                <div class="contenedor-flexbox">
+                <!--div class="contenedor-flexbox">
                     <ons-card class="botonPrograma botonInicio" style="text-align: center;" onclick="">
                         <i class="fa-solid fa-file-invoice-dollar fa-4x" style="margin: 5px; "></i>
                         <br>
                         <span style=""> Facturas</span>
                     </ons-card>
 
-                </div>
+                </div-->
             </ons-card>
         </ons-page>
     </template>
@@ -1341,7 +1341,7 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input onkeyup="setClientesBarraBusqueda(this.value,event)"
-                        placeholder="Buscar: codigo / nombre"></ons-search-input>
+                        placeholder="Buscar: codigo / nombre" id="busquedaCliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -1378,9 +1378,9 @@
                         </div>
                         <div class="center">
 
-                            <ons-input type="number" id="codigoCliente" cols="30" rows="1" maxlength="3"
-                                class="input-100" placeholder="codigo"
-                                onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                            <ons-input type="number" id="codigo" cols="30" rows="1" maxlength="3"
+                                class="input-100" placeholder="CODIGO"
+                                onkeyup="javascript:this.value=this.value.toUpperCase(); contrasenaCliente()"></ons-input>
 
                         </div>
                     </ons-list-item>
@@ -1392,8 +1392,32 @@
                             <i class="fa-regular fa-user-large"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="nombreCliente" class="input-100" cols="30" rows="2" placeholder="Nombre"
+                            <ons-input id="nombre" class="input-100" cols="30" rows="2" placeholder="Nombre"
                                 onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-id-card"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="RFC" class="input-100" cols="30" rows="2" placeholder="RFC"
+                                onkeyup="javascript:this.value=this.value.toUpperCase(); contrasenaCliente()"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-lock"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="contrasena" class="input-100" cols="30" rows="2" placeholder="contraseña Se Genera en automatico..."
+                                onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -1424,8 +1448,8 @@
                         </div>
                         <div class="center">
 
-                            <ons-input type="number" id="id" cols="30" rows="1" maxlength="3" class="input-100"
-                                placeholder="codigo" disabled></ons-input>
+                            <ons-input type="number" id="codigo" cols="30" rows="1" maxlength="3" class="input-100"
+                                placeholder="CODIGO" disabled></ons-input>
 
                         </div>
                     </ons-list-item>
@@ -1439,6 +1463,30 @@
                         <div class="center">
                             <ons-input id="nombre" class="input-100" cols="30" rows="2" placeholder="Nombre"
                                 onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-id-card"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="RFC" class="input-100" cols="30" rows="2" placeholder="RFC"
+                                onkeyup="javascript:this.value=this.value.toUpperCase(); contrasenaCliente()"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-lock"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="contrasena" class="input-100" cols="30" rows="2" placeholder="contraseña Se Genera en automatico..."
+                                onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -3210,6 +3258,32 @@
         </ons-page>
     </template>
 
+    
+    <!--MODIFICAR pedido de facturas-->
+    <template id="facturasModificar.html">
+        <ons-page id="prueba">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Pedidos</div>
+            </ons-toolbar>
+
+
+            <ons-card id="contenedorInput">
+               
+
+                <ons-list-item modifier="nodivider">
+                    <div class="center">
+                        <ons-button id="botonAgregarPedido" modifier="large"
+                            onclick="">Modificar</ons-button>
+                    </div>
+
+                </ons-list-item>
+
+            </ons-card>
+
+
+        </ons-page>
+    </template>
     <!-- FIN DE PEDIDOS -->
 
     <!-- PEDIDOS INSERTOS -->
@@ -3221,7 +3295,7 @@
                 <div class="center">Modificar Inserto</div>
             </ons-toolbar>
 
-            <ons-card id="contenedorInput">
+            <ons-card id="contenedorInput" style="background-color: white !important ;">
                 <div>
                     <ons-list-item modifier="nodivider">
                         <div class="center">

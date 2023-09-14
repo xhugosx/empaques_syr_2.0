@@ -175,6 +175,7 @@ function crearObjetMensaje(codigo, contador) {
   });
 }
 function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
+  observaciones = observaciones == "" ? "Sin observaciones" : observaciones;
   let titulo = estadoPedidos(estado);
   let botonEstado = estado == 0 || estado == 1 || estado == 6 ? "Cancelar" : "Estado";
   //if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
@@ -218,11 +219,20 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
       //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
 
     }
-    else if (index == 3) alerta("<b>Orden de Compra: </b><br>" + oc + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br><br><b>Fecha de entrega estimada:</b><br>" + fecha);
-    else if (index == 4) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id); //alert("modificara "+codigo);
+    else if (index == 3) alerta("<b>Orden de Compra: </b><br>" + oc + "<br><br><b>Fecha del pedido:</b><br>" + fecha + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br>");
+    else if (index == 4) {
+      if (estado != 4 && estado != 5) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id); 
+      else alertComfirm("Qué deseas Modificar?", ["Pedido", "Facturas","<b style=\"color:red\">Cancelar</b>"], modificarPedidoFaturas, id);
+    }
     else if (index == 5) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedido, id);
 
   });
+}
+function modificarPedidoFaturas(index, id) {
+  //alerta(index + " " + id);
+  if(index == 0) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
+  else if(index == 1) alerta("Se modificaran las facturas");
+
 }
 
 function crearObjetMensajePedidoEstado(id) {

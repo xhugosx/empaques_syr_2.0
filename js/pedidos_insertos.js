@@ -121,7 +121,7 @@ function getEliminarpedidoInserto(respuesta)
 function setModificarBuscarPedidoInserto(id)
 {
     //var type = filtro ? 1 : 2;
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAll.php?search="+id+"&filtro=" + filtroGlobal + "&estado=" + estadoGlobal,getModificarBuscarPedidoInserto);
+    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/selectAllEditar.php?id="+id,getModificarBuscarPedidoInserto);
     
 }
 function getModificarBuscarPedidoInserto(respuesta)
