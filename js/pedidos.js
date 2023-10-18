@@ -351,10 +351,11 @@ function validarFacturaPedido(id, estado) {
     var cantidad = $('#cantidadF').val();
     var fecha = $('#fechaFactura').val();
     if (factura == "" || cantidad == "" || fecha == "") alerta("Espacios vacios!");
-    else if (cantidad == 0) alerta("Escribe un numero mayo a 0");
+    else if (cantidad == 0) alerta("Escribe un numero mayor a 0");
     else setActualizarEstadoPedido2([id, estado, factura, cantidad, fecha]);
 
 }
+
 
 
 //ENLISTAR DATOS CLIENTES
@@ -442,13 +443,13 @@ function enlistarPedidos(arrayJson, i) {
 }
 function enlistarFacturas(registro) {
     var html = "";
-    if(registro.estado != 4 && registro.estado != 5) return "";
-    else{
+    if (registro.estado != 4 && registro.estado != 5) return "";
+    else {
         var facturas = (registro.facturas).split(",");
         var entregas = (registro.entregado).split(",");
         var fechas = (registro.fecha_factura).split(",");
         var suma = 0;
-        
+
         html += "<span><table>";
         html += '<tr>';
         html += '    <th>Factura</th>';
@@ -462,7 +463,7 @@ function enlistarFacturas(registro) {
             html += '    <td>' + separator(entregas[j]) + ' pzas.</td>';
             html += '    <td>' + fechas[j] + '</td>';
             html += '</tr>';
-            suma += parseInt(entregas[j]); 
+            suma += parseInt(entregas[j]);
         }
         html += '<tr>';
         html += '    <td></td>';
@@ -473,7 +474,7 @@ function enlistarFacturas(registro) {
         //console.log(html);
         return html;
     }
-    
+
 }
 
 function reiniciarFilter() {

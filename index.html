@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Permissions-Policy" content="interest-cohort">
 
+    <link rel="shortcut icon" href="media/Logo_oficial.svg">
+
     <!-- Browser Color - Chrome, Firefox OS, Opera -->
     <meta name="theme-color" content="white">
     <!-- Browser Color - Windows Phone -->
@@ -50,6 +52,7 @@
     <script src="./js/home.js"></script>
     <script src="./js/calendario.js"></script>
     <script src="./js/ordenes.js"></script>
+    <script src="./js/factura.js"></script>
 
     <script src="./cordova.js"></script>
 
@@ -1378,8 +1381,8 @@
                         </div>
                         <div class="center">
 
-                            <ons-input type="number" id="codigo" cols="30" rows="1" maxlength="3"
-                                class="input-100" placeholder="CODIGO"
+                            <ons-input type="number" id="codigo" cols="30" rows="1" maxlength="3" class="input-100"
+                                placeholder="CODIGO"
                                 onkeyup="javascript:this.value=this.value.toUpperCase(); contrasenaCliente()"></ons-input>
 
                         </div>
@@ -1416,8 +1419,9 @@
                             <i class="fa-regular fa-lock"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="contrasena" class="input-100" cols="30" rows="2" placeholder="contraseña Se Genera en automatico..."
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            <ons-input id="contrasena" class="input-100" cols="30" rows="2"
+                                placeholder="contraseña Se Genera en automatico..."
+                                onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -1485,8 +1489,9 @@
                             <i class="fa-regular fa-lock"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="contrasena" class="input-100" cols="30" rows="2" placeholder="contraseña Se Genera en automatico..."
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" ></ons-input>
+                            <ons-input id="contrasena" class="input-100" cols="30" rows="2"
+                                placeholder="contraseña Se Genera en automatico..."
+                                onkeyup="javascript:this.value=this.value.toUpperCase();"></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -1701,11 +1706,9 @@
             <iframe id="plano" src="" style="width:100%; height:100%;" frameborder="0"></iframe>
 
             <!--object id="plano" class="pdfview" type="application/pdf" data=" "></object-->
-            <!--ons-fab class="fijadoDerecha"
-                onclick="document.getElementById('plano').focus(); document.getElementById('plano').contentWindow.print();"
-                position="bottom right">
-                <span>Imprimir</span>
-            </ons-fab-->
+            <ons-fab position="bottom right" id="actualizarPlano" onclick="">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </ons-fab>
         </ons-page>
     </template>
 
@@ -2826,7 +2829,7 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchPedido" onkeyup="setSearchPedidos(this.value,event)"
-                        placeholder="Buscar: id / codigo / producto"></ons-search-input>
+                        placeholder="Buscar: id / codigo / producto / Orden de compra"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -3093,7 +3096,7 @@
         <ons-page id="prueba">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Pedidos</div>
+                <div class="center">Modificar Pedido</div>
             </ons-toolbar>
 
 
@@ -3258,28 +3261,34 @@
         </ons-page>
     </template>
 
-    
+
     <!--MODIFICAR pedido de facturas-->
     <template id="facturasModificar.html">
-        <ons-page id="prueba">
+        <ons-page id="modificarFactura">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center">Pedidos</div>
+                <div class="center">Modificar Facturas</div>
             </ons-toolbar>
 
+            <div id="progressBarFacturas">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
 
-            <ons-card id="contenedorInput">
-               
+            <ons-card id="contenedorInput" style="padding: 10px;">
 
-                <ons-list-item modifier="nodivider">
-                    <div class="center">
-                        <ons-button id="botonAgregarPedido" modifier="large"
-                            onclick="">Modificar</ons-button>
-                    </div>
-
-                </ons-list-item>
+                <center>
+                    <span id="id_pedido" class="id_pedido">
+                        2023019-20
+                    </span>
+                </center>
 
             </ons-card>
+
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosFacturas"></ons-lazy-repeat>
+            </ons-list>>
+
 
 
         </ons-page>

@@ -232,6 +232,7 @@ function verPlano(plano)
 {
     $("#loadingPlano").empty();
     $("#plano").attr("src","https://docs.google.com/gview?url="+plano+"&embedded=true");
+    $("#actualizarPlano").attr("onclick","verPlano(\'"+plano+"\')");
     //$("#plano").attr("data",plano);
 }
 

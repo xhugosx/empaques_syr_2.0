@@ -582,3 +582,21 @@ ons-list>ons-card:active{
 th,td{
     padding: 7px 7px 0 0;
 }
+.id_pedido{
+    margin: 100px !important;
+    font-size: large;
+    color: white;
+}
+.accionFactura{
+    padding: 13px;
+    margin: 0 5px 0 0;
+    /* background-color: grey; */
+    border-radius: 50px;
+    border: rgb(221, 220, 220) 3px outset;
+}
+.accionFactura:hover{
+    border: rgb(155, 155, 155) 3px inset;
+}
+.accionFactura:active{
+    opacity: 10%;
+}

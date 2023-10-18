@@ -231,7 +231,7 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
 function modificarPedidoFaturas(index, id) {
   //alerta(index + " " + id);
   if(index == 0) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
-  else if(index == 1) alerta("Se modificaran las facturas");
+  else if(index == 1) nextPageFunctionData('facturasModificar.html', setModificarBuscarFacturas, id);
 
 }
 
