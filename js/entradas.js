@@ -5,7 +5,8 @@ function setEditarCantidadEntradaP()
 {
     let cantidad = $("#cantidad").val();
     let id = $("#id").val();
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaP);
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/php/entrada/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaP);
+    else alerta("Datos vacios"); 
 }
 function getEditarCantidadEntradaP(respuesta)
 {
@@ -25,7 +26,9 @@ function setEditarCantidadEntradaI()
 {
     let cantidad = $("#cantidadI").val();
     let id = $("#idI").val();
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaI);
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/php/entrada/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaI);
+    else alerta("Datos vacios"); 
+    
 }
 function getEditarCantidadEntradaI(respuesta)
 {
@@ -38,7 +41,7 @@ function getEditarCantidadEntradaI(respuesta)
         hideDialogo('my-dialogEditarEntradaSalidaI');
     }
     else alerta("No se pudo Modificar por un error");
-    console.log(respuesta.responseText);
+    //console.log(respuesta.responseText);
 }
 
 //funcion para refresh
@@ -53,7 +56,7 @@ function mostrarTodoEntrada()
 //MOSTRAR ENTRADA INSERTO 
 function setMostrarEntradaInserto()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/inserto/select.php",getMostrarEntradaInserto)
+    servidor("https://empaquessr.com/sistema/php/entrada/inserto/select.php",getMostrarEntradaInserto)
 }
 function getMostrarEntradaInserto(respuesta)
 {
@@ -66,11 +69,11 @@ function getMostrarEntradaInserto(respuesta)
 //MOSTRAR ENTRADA LAMINA
 function setMostrarEntradalaminaSearch(search)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/lamina/select.php?search="+search,getMostrarEntradaLamina)
+    servidor("https://empaquessr.com/sistema/php/entrada/lamina/select.php?search="+search,getMostrarEntradaLamina)
 }
 function setMostrarEntradaLamina()
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/lamina/select.php',getMostrarEntradaLamina)
+    servidor('https://empaquessr.com/sistema/php/entrada/lamina/select.php',getMostrarEntradaLamina)
 }
 function getMostrarEntradaLamina(respuesta)
 { 
@@ -84,15 +87,15 @@ function getMostrarEntradaLamina(respuesta)
 }
 function setMostrarEntradaCajasSearch(search)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/select.php?search="+search,getMostrarEntradaCajas);
+    servidor("https://empaquessr.com/sistema/php/entrada/caja/select.php?search="+search,getMostrarEntradaCajas);
 }
 function setMostrarEntradaInsertoSearch(search)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/inserto/select.php?search="+search,getMostrarEntradaInserto);
+    servidor("https://empaquessr.com/sistema/php/entrada/inserto/select.php?search="+search,getMostrarEntradaInserto);
 }
 function setMostrarEntradaCajas()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/select.php",getMostrarEntradaCajas)
+    servidor("https://empaquessr.com/sistema/php/entrada/caja/select.php",getMostrarEntradaCajas)
 }
 function getMostrarEntradaCajas(respuesta)
 {
@@ -103,7 +106,7 @@ function getMostrarEntradaCajas(respuesta)
 }
 function setEliminarEntrada(id)
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/entrada/caja/delete.php?id='+id,getEliminarEntrada);
+    servidor('https://empaquessr.com/sistema/php/entrada/caja/delete.php?id='+id,getEliminarEntrada);
 }
 function getEliminarEntrada(respuesta)
 {

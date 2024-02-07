@@ -20,9 +20,9 @@
     <!--link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script-->
-    <script src="./node_modules/onsenui/js/onsenui.min.js"></script>
-    <link rel="stylesheet" href="./node_modules/onsenui/css/onsen-css-components.min.css">
-    <link rel="stylesheet" href="./node_modules/onsenui/css/onsenui.css">
+    <script src="./onsen_modules/onsenui/js/onsenui.min.js"></script>
+    <link rel="stylesheet" href="./onsen_modules/onsenui/css/onsen-css-components.min.css">
+    <link rel="stylesheet" href="./onsen_modules/onsenui/css/onsenui.css">
 
 
     <!-- icons -->
@@ -53,6 +53,7 @@
     <script src="./js/calendario.js"></script>
     <script src="./js/ordenes.js"></script>
     <script src="./js/factura.js"></script>
+    <script src="./js/calendarioPedidos.js"></script>
 
     <script src="./cordova.js"></script>
 
@@ -60,26 +61,10 @@
     <!-- script de graficas -->
     <script src="./js/graficas/Chart.js"></script>
 
-
-    <script>
-        /*document.addEventListener("deviceready", onDeviceReady, false);
-
-        function onDeviceReady(){
-            document.addEventListener("backbutton", function(e){
-                if($.mobile.activePage.is('#homepage')){
-                    e.preventDefault();
-                    navigator.app.exitApp();
-                }
-                else {
-                    navigator.app.backHistory();
-                }
-            }, false);
-        }*/
-    </script>
-
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/calendario.css">
+    <link rel="stylesheet" href="./css/calendarioPedidos.css">
 
     <title>Empaques SyR</title>
 </head>
@@ -88,17 +73,33 @@
 
 
 
-    <ons-splitter>
+    <ons-splitter id="onsplitter">
         <ons-splitter-side id="menu" side="right" width="320px" collapse>
             <ons-page>
                 <ons-list>
 
                     <center>
-                        <h4 style="color: #808fa2;">
+                        <h4 style="color: #808fa2; font-weight: bold;">
                             Filtros
                         </h4>
                     </center>
                     <ons-list>
+                        <ons-list-item>
+                            <label class="left">
+                                <h4 style="color: #808fa2;">
+
+                                    Año
+                                </h4>
+                            </label>
+                            <label class="center">
+                                <div class="year-input">
+
+                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
+                                    <input type="text" id="currentYear" readonly>
+                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
+                                </div>
+                            </label>
+                        </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">
                                 <ons-radio name="pedidoRadio" input-id="Actuales" checked value="1"></ons-radio>
@@ -173,19 +174,20 @@
                                 ⚫ Cancelado
                             </label>
                         </ons-list-item>
-                        <br>
-                        <ons-list-item modifier="nodivider">
-                            <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
-                                Aplicar
-                            </ons-button>
-                        </ons-list-item>
-                        <br><br><ons-list-item modifier="nodivider">
-                            <ons-button id="botonPrograma" modifier="large"
-                                style="background-color: #426590; padding: 0;" onclick="resetearFiltroPedidos();">
-                                Resetear
-                            </ons-button>
-                        </ons-list-item>
                     </ons-list>
+                    <ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
+                            Aplicar
+                        </ons-button>
+                    </ons-list-item>
+                    <br><br><ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" modifier="large" style="background-color: #426590; padding: 0;"
+                            onclick="resetearFiltroPedidos();">
+                            <ons-icon icon="fa-trash"></ons-icon>
+                            Resetear
+                        </ons-button>
+                    </ons-list-item>
+
 
                 </ons-list>
             </ons-page>
@@ -231,7 +233,7 @@
                     <img src="media/Logo_oficial.svg" height="80px" style="margin: 10px;" style="position: relative;">
                 </div>
             </ons-toolbar>
-            <ons-tabbar swipeable position="bottom" modifier="autogrow">
+            <ons-tabbar position="bottom" modifier="autogrow">
                 <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
                 <ons-tab page="produccion.html" label="Producción" icon="fa-clipboard"></ons-tab>
                 <ons-tab page="programa.html" label="Programa" icon="fa-gears"></ons-tab>
@@ -464,9 +466,9 @@
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
-                            <i class="fa-solid fa-arrow-left flecha" onclick="prevIE()"></i>
+                            <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="prevIE()"></i>
                             <span id="anioG"> <!--Aqui va el anio--> </span>
-                            <i class="fa-solid fa-arrow-right flecha" onclick="nextIE()"></i>
+                            <i class="fa-solid fa-arrow-right flechaDerecha" onclick="nextIE()"></i>
                         </div>
                     </center>
                 </ons-card>
@@ -503,9 +505,9 @@
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
-                            <i class="fa-solid fa-arrow-left flecha" onclick="prevI()"></i>
+                            <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="prevI()"></i>
                             <span id="anioG"> <!--Aqui va el anio--> </span>
-                            <i class="fa-solid fa-arrow-right flecha" onclick="nextI()"></i>
+                            <i class="fa-solid fa-arrow-right flechaDerecha" onclick="nextI()"></i>
                         </div>
                     </center>
                 </ons-card>
@@ -518,11 +520,12 @@
 
             <ons-fab onclick="setIngresos()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
             </ons-fab>
 
-            <ons-fab class="fijadoDerecha" onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)"
-                position="bottom right">
-                <span>Agregar Ingreso</span>
+            <ons-fab onclick="nextPageFunction('agregarIngresos.html',setIngresoClientes)" position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
         </ons-page>
@@ -537,7 +540,7 @@
             </ons-toolbar>
             <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
             <ons-card id="contenedorInput">
-                <form id="formingreso">
+                <form onsubmit="return false;" id="formingreso">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
                             <div class="left">
@@ -642,7 +645,7 @@
             </ons-toolbar>
             <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
             <ons-card id="contenedorInput">
-                <form id="formingreso">
+                <form onsubmit="return false;" id="formingreso">
 
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
@@ -830,10 +833,10 @@
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
-                            <i class="fa-solid fa-arrow-left flecha" onclick="prevE()"></i>
+                            <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="prevE()"></i>
                             <span id="anioG"> <!-- aqui ira el anio --></span>
 
-                            <i class="fa-solid fa-arrow-right flecha" onclick="nextE()"></i>
+                            <i class="fa-solid fa-arrow-right flechaDerecha" onclick="nextE()"></i>
                         </div>
                     </center>
 
@@ -841,18 +844,19 @@
 
             </ons-card>
 
-            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
                 <ons-lazy-repeat id="egresos"></ons-lazy-repeat>
             </ons-list>
 
             <br><br><br><br><br><br><br>
             <ons-fab onclick="setEgresos()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
             </ons-fab>
 
-            <ons-fab class="fijadoDerecha" onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); "
-                position="bottom right">
-                <span>Agregar Egreso</span>
+            <ons-fab onclick="nextPageFunction('agregarEgresos.html',accionEgresoProveedor); " position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
         </ons-page>
@@ -917,7 +921,7 @@
             </ons-toolbar>
             <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
             <ons-card id="contenedorInput">
-                <form id="formEgreso">
+                <form onsubmit="return false;" id="formEgreso">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
                             <div class="left">
@@ -1035,7 +1039,7 @@
             </ons-toolbar>
             <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
             <ons-card id="contenedorInput">
-                <form id="formEgreso">
+                <form onsubmit="return false;" id="formEgreso">
 
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
@@ -1193,10 +1197,12 @@
 
             <ons-fab onclick="setProveedor()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
             </ons-fab>
 
-            <ons-fab class="fijadoDerecha" onclick="nextPage('agregarproveedor.html')" position="bottom right">
-                <span>Agregar proveedor</span>
+            <ons-fab onclick="nextPage('agregarproveedor.html')" position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
         </ons-page>
@@ -1353,12 +1359,14 @@
             </div>
             <br><br><br>
 
-            <ons-fab class="fijadoDerecha" onclick="nextPage('agregarClientes.html')" position="bottom right">
-                <span>Agregar Cliente</span>
+            <ons-fab onclick="nextPage('agregarClientes.html')" position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
             <ons-fab onclick="setClientes()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
             </ons-fab>
         </ons-page>
     </template>
@@ -1535,14 +1543,20 @@
                 <ons-lazy-repeat id="datosProductos"></ons-lazy-repeat>
             </ons-list>
 
-            <br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
 
-            <ons-fab class="fijadoDerecha" onclick="nextPage('agregaProductos.html')" position="bottom right">
+            <ons-fab onclick="nextPage('agregaProductos.html')" position="bottom right">
                 <span>Agregar producto</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
             <ons-fab onclick="setProductos()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
+            </ons-fab>
+            <ons-fab onclick="setDescargarProductosExcel()" position="bottom left" style="bottom:85px;">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <span>Descargar</span>
             </ons-fab>
 
         </ons-page>
@@ -1556,7 +1570,7 @@
                 <div class="center">Agregar Productos</div>
             </ons-toolbar>
 
-            <form id="formProducto">
+            <form onsubmit="return false;" id="formProducto">
 
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
@@ -1629,7 +1643,7 @@
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Actualizar Productos</div>
             </ons-toolbar>
-            <form id="formProductoActualizar">
+            <form onsubmit="return false;" id="formProductoActualizar">
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
@@ -1727,7 +1741,7 @@
             </ons-toolbar>
 
 
-            <ons-tabbar swipeable position="top" modifier="autogrow">
+            <ons-tabbar position="top" modifier="autogrow">
                 <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving" active></ons-tab>
                 <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
                 <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days"></ons-tab>
@@ -1760,13 +1774,14 @@
 
             <ons-fab class="fijadoIzquierda" onclick="mostrarTodoPedidosLamina()" position="bottom left">
                 <i class="fa-solid fa-refresh"></i>
+                <span>Actualizar</span>
             </ons-fab>
 
-            <ons-fab class="fijadoDerecha"
+            <ons-fab
                 onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
-                <span>Agregar pedido</span>
-
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
             <!--ons-card class="cookies" style="padding: 15px;">
@@ -1804,12 +1819,14 @@
 
             <ons-fab onclick="mostrarTodoPedidosLamina()" position="bottom left">
                 <i class="fa-solid fa-refresh"></i>
+                <span>Actualizar</span>
             </ons-fab>
 
-            <ons-fab class="fijadoDerecha"
+            <ons-fab
                 onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
-                <span>Agregar pedido</span>
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
         </ons-page>
@@ -1821,26 +1838,15 @@
             <div id="loadingPedidosLaminaFecha">
             </div>
 
-            <div class="calendar">
-                <div class="calendar__info">
-                    <div class="calendar__prev" id="prev-month"><i class="fa-solid fa-backward centrari"></i></div>
-                    <div id="month__number" style="opacity: 0%;"></div>
-                    <div class="calendar__month" id="month"></div>
-                    <div class="calendar__year" id="year"></div>
-                    <div class="calendar__next" id="next-month"><i class="fa-solid fa-forward centrari"></i></div>
+            <div id="contenedorCalendario">
+                <div id="mes">
+                    <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
+                            style="color: white;"></i></span>
+                    <span id="nombreMes"></span>
+                    <span onclick="cambiarMes('siguiente')"><i class="fas fa-arrow-right"
+                            style="color: white;"></i></span>
                 </div>
-
-                <div class="calendar__week">
-                    <div class="calendar__day calendar__item">Lun</div>
-                    <div class="calendar__day calendar__item">Mar</div>
-                    <div class="calendar__day calendar__item">Mie</div>
-                    <div class="calendar__day calendar__item">Jue</div>
-                    <div class="calendar__day calendar__item">Vie</div>
-                    <div class="calendar__day calendar__item">Sab</div>
-                    <div class="calendar__day calendar__item">Dom</div>
-                </div>
-
-                <div class="calendar__dates" id="dates"></div>
+                <div id="dias"></div>
             </div>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
@@ -1851,7 +1857,7 @@
 
             <ons-fab class="fijadoCentro" position="bottom right">
                 <span id="cantidadLaminas">
-                    selecciona primero un dia
+                    Selecciona un dia
                 </span>
             </ons-fab>
 
@@ -1871,20 +1877,15 @@
 
             </ons-card>
 
-            <br>
-            <span
-                style="position: absolute; margin-left: 20px; background-color: #ffffff;padding: 0px 10px 0px 10px; padding: 5px; border-radius: 10px;">CARPETAS</span>
             <hr>
-            <br>
+            <span class="tituloOrden">CARPETAS</span>
+            <hr>
 
             <div id="carpetasAnio">
 
             </div>
-
-            <br>
-            <span
-                style="position: absolute; margin-left: 20px; background-color: #ffffff;padding: 0px 10px 0px 10px; padding: 5px; border-radius: 10px;">ORDENES
-                DE COMPRA</span>
+            <hr>
+            <span class="tituloOrden">ORDENES DE COMPRA</span>
             <hr>
             <br>
 
@@ -1896,10 +1897,9 @@
                 <ons-lazy-repeat id="datosOrdenes"></ons-lazy-repeat>
             </ons-list>
             <br><br><br><br><br><br><br>
-            <ons-fab class="fijadoDerecha extraCentrar" position="bottom right"
-                onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
-
-                <span>Agregar orden de compra</span>
+            <ons-fab position="bottom right" onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
+                <span>Agregar PDF </span>
+                <i class="fa-solid fa-file-circle-plus"></i>
             </ons-fab>
 
 
@@ -1932,7 +1932,7 @@
                 <div class="center">Agregar Ordenes de compra</div>
             </ons-toolbar>
 
-            <form id="formOrdenes">
+            <form onsubmit="return false;" id="formOrdenes">
 
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
@@ -1996,7 +1996,7 @@
             </ons-toolbar>
 
             <!--aqui iran los input de los datos-->
-            <form id="formPedidoLamina">
+            <form id="formPedidoLamina" onsubmit="return false;">
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
@@ -2185,7 +2185,7 @@
             </ons-toolbar>
 
             <!--aqui iran los input de los datos-->
-            <form id="formPedidoLamina">
+            <form onsubmit="return false;" id="formPedidoLamina">
                 <ons-card id="contenedorInput">
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
@@ -2377,7 +2377,7 @@
                 <!--div class="right"><ons-toolbar-button onclick="alertPromptFiltroCalendario()">Filtrar <i class="fa-solid fa-filter" style="color:rgba(0,118,255);"></i></ons-toolbar-button></i></div-->
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="clientesPedidos" page="cajaSalidasEntradas.html" label="Cajas" icon="fa-box"
                     active></ons-tab>
                 <ons-tab id="todoPedidos" page="insertoSalidasEntradas.html" label="Insertos"
@@ -2408,10 +2408,10 @@
             </ons-list>
             <br><br><br><br><br>
 
-            <ons-fab class="fijadoDerecha"
-                onclick="showDialogo('my-dialogEditarEntradaSalidaP','dialogEditarEntradaSalidaP.html')"
+            <ons-fab onclick="showDialogo('my-dialogEditarEntradaSalidaP','dialogEditarEntradaSalidaP.html')"
                 position="bottom right">
-                <span>EDITAR - Entrada / Salida</span>
+                <span>Editar</span>
+                <i class="fa-solid fa-pen-to-square"></i>
             </ons-fab>
 
         </ons-page>
@@ -2438,6 +2438,7 @@
             <br><br>
             <ons-fab position="bottom right"
                 onclick="showDialogo('my-dialogEditarEntradaSalidaI','dialogEditarEntradaSalidaI.html')">
+                Editar
                 <i class="fa-solid fa-pen-to-square"></i>
             </ons-fab>
 
@@ -2494,7 +2495,7 @@
             </ons-list>
 
 
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="clientesPedidos" page="cajaInventario.html" label="Cajas" icon="fa-box" active></ons-tab>
                 <ons-tab id="todoPedidos" page="insertoInventario.html" label="Insertos" icon="fa-box-open"></ons-tab>
                 <ons-tab id="todoPedidos" page="laminaInventario.html" label="Lamina" icon="fa-layer-group"></ons-tab>
@@ -2561,17 +2562,15 @@
                         onkeyup="setMostrarInventarioPedidosLaminaSearch(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
-            <br>
-            <div class="separacion">PCM</div>
             <hr>
-            <br>
+            <span class="tituloOrden">PCM</span>
+            <hr>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario1"></ons-lazy-repeat>
             </ons-list>
-            <br>
-            <div class="separacion">PACK</div>
             <hr>
-            <br>
+            <span class="tituloOrden">PACK</span>
+            <hr>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario2"></ons-lazy-repeat>
             </ons-list>
@@ -2638,15 +2637,16 @@
                 <div class="center">Consumibles</div>
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="existencia" page="consumible1.html" label="Inventario" icon="fa-clipboard-check" active>
                 </ons-tab>
                 <ons-tab id="sinExistencia" page="consumible2.html" label="Sin existencia" icon="fa-circle-xmark">
                 </ons-tab>
             </ons-tabbar>
 
-            <ons-fab class="fijadoDerecha" onclick="nextPage('agregarConsumible.html')" position="bottom right">
-                <span>Agregar consumible</span>
+            <ons-fab onclick="nextPage('agregarConsumible.html')" position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
             </ons-fab>
 
         </ons-page>
@@ -2663,7 +2663,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchrConsumibleLoading" placeholder="Buscar: descripcion / cantidad"
+                    <ons-search-input id="searchConsumible" placeholder="Buscar: descripcion / cantidad"
                         onkeyup="setMostrarConsumibleSearch(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -2686,7 +2686,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchrConsumible0Loading" placeholder="Buscar: descripcion / cantidad"
+                    <ons-search-input id="searchConsumible0" placeholder="Buscar: descripcion / cantidad"
                         onkeyup="setMostrarConsumible0Search(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -2707,7 +2707,7 @@
             </ons-toolbar>
 
             <!--aqui iran los input de los datos-->
-            <form id="formPedidoLamina">
+            <form onsubmit="return false;" id="formPedidoLamina">
                 <ons-card id="contenedorInput">
 
                     <ons-card class="contenedorInputSub">
@@ -2754,19 +2754,16 @@
                 <div class="left"><ons-back-button onclick="reiniciarFilter()">Regresar</ons-back-button></div>
                 <div class="center">Pedidos</div>
                 <div class="right">
-                    <ons-toolbar-button onclick="var menu = document.getElementById('menu'); menu.open();"
+                    <ons-toolbar-button onclick="var menu = document.getElementById('menu'); menu.open(); llenarAnio()"
                         style="color:white; font-size:18px">
                         Filtro
                         <i class="fa-solid fa-filter"></i>
                     </ons-toolbar-button>
                 </div>
 
-                <!--div class="right">
-                    Entregado<ons-checkbox style="margin: 10px;" onclick="asignarFiltro(this)"></ons-checkbox>
-                </div-->
             </ons-toolbar>
             <br><br>
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="clientesPedidos" page="tab1.html" label="Clientes" icon="fa-user-large, material:md-home">
                 </ons-tab>
                 <ons-tab id="todoPedidos" page="tab2.html" label="Cajas" icon="fa-boxes-stacked" active-icon="fa-box"
@@ -2775,24 +2772,20 @@
                 <ons-tab id="todoPedidosInsertos" page="tab3.html" label="Insertos" icon="fa-box-open"
                     active-icon="fa-table-cells-large">
                 </ons-tab>
+                <ons-tab id="todoPedidosInsertos" page="tab4.html" label="Entregas" icon="fa-calendar-days">
+                </ons-tab>
             </ons-tabbar>
 
             <ons-fab onclick="buscarDtospedidos()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
             </ons-fab>
 
-            <!--ons-fab onclick="nextPageFunction('pedidosAgregar.html',llenarFecha)" position="bottom right">
-                <i class="fa-regular fa-plus"></i>
-            </ons-fab-->
-
-
-            <ons-fab class="fijadoDerecha"
-                onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
+            <ons-fab onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
                 position="bottom right">
-                <span>Agregar pedido</span>
+                <span>Agregar</span>
+                <i class="fa-regular fa-plus"></i>
             </ons-fab>
-
-
 
             </ons-speed-dial>
         </ons-page>
@@ -2811,6 +2804,7 @@
                         placeholder="Buscar: codigo / cliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
+
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosPedidosClientes"></ons-lazy-repeat>
@@ -2834,7 +2828,9 @@
             </ons-list>
 
 
-            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
                 <ons-lazy-repeat id="datosPedidos"></ons-lazy-repeat>
             </ons-list>
             <br><br><br><br><br>
@@ -2843,7 +2839,7 @@
 
     <!--VISTA 3 DE LOS PEDIDOS DE INSERTOS-->
     <template id="tab3.html">
-        <ons-page id="Tab2">
+        <ons-page id="Tab3">
             <div id="datosPedidosInsertosLoading">
 
             </div>
@@ -2856,9 +2852,28 @@
             </ons-list>
 
 
-            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
                 <ons-lazy-repeat id="datosPedidosInsertos"></ons-lazy-repeat>
             </ons-list>
+            <br><br><br><br><br>
+        </ons-page>
+    </template>
+
+    <!--VISTA 4 DE LOS PEDIDOS EN UN CALENDARIO-->
+    <template id="tab4.html">
+        <ons-page id="calendarioPedidos">
+            <div id="contenedorCalendario">
+                <div id="mes">
+                    <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
+                            style="color: white;"></i></span>
+                    <span id="nombreMes"></span>
+                    <span onclick="cambiarMes('siguiente')"><i class="fas fa-arrow-right"
+                            style="color: white;"></i></span>
+                </div>
+                <div id="dias"></div>
+            </div>
+
             <br><br><br><br><br>
         </ons-page>
     </template>
@@ -3370,7 +3385,7 @@
                 <div class="center">Programa</div>
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="clientesPedidos" page="flexo.html" label="Flexo" icon="fa-gear" active></ons-tab>
                 <ons-tab id="todoPedidos" page="pegado.html" label="Pegado - flejado" icon="fa-droplet"></ons-tab>
                 <ons-tab id="todoPedidos" page="impresion.html" label="Impresion" icon="fa-fill-drip"></ons-tab>
@@ -3468,7 +3483,7 @@
                 <div class="center">Programa</div>
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="clientesPedidos" page="cortadora1.html" label="Cortadora"
                     icon="fa-scissors, material:md-home" active></ons-tab>
                 <ons-tab id="todoPedidos" page="caiman.html" label="Caiman" icon="fa-grip-lines-vertical"></ons-tab>
@@ -3564,7 +3579,7 @@
                 <div class="center">Programa</div>
             </ons-toolbar>
 
-            <ons-tabbar swipeable position="top">
+            <ons-tabbar position="top">
                 <ons-tab id="clientesPedidos" page="cortadora2.html" label="Cortadora" icon="fa-scissors"
                     active></ons-tab>
                 <ons-tab id="todoPedidos" page="ranurado.html" label="Ranurado" icon="fa-grip-lines-vertical"></ons-tab>
@@ -4046,6 +4061,9 @@
     </template>
 
     <!-- dIALOGO PARA EDITAR ENTRADA O SALIDA -->
+
+    <!-- AQUI SE PONDRA EL LINK PARA CREAR EL ARCHIVO EN EXCEL DE LA LISTA DE PRODUCTOS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 
 </body>
 

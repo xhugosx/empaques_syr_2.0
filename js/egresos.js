@@ -6,7 +6,7 @@ function setMesProveedorEgreso(tipo)
   let anio = $("#anioG").text();
   let mes = mesIngreso;
 
-  servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/egresoMensualTipo.php?anio="+anio+"&mes="+mes+"&tipo="+tipo,getMesProveedorEgreso);
+  servidor("https://empaquessr.com/sistema/php/egresos/egresoMensualTipo.php?anio="+anio+"&mes="+mes+"&tipo="+tipo,getMesProveedorEgreso);
 }
 function getMesProveedorEgreso(respuesta)
 {
@@ -26,7 +26,7 @@ function setMesEgreso(mes)
   mes = mes ? mes : mesIngreso;
   //console.log(anio,mes);
 
-  servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/egresoMensual.php?anio="+anio+"&mes="+mes,getMesEgreso);
+  servidor("https://empaquessr.com/sistema/php/egresos/egresoMensual.php?anio="+anio+"&mes="+mes,getMesEgreso);
 }
 function getMesEgreso(respuesta)
 {
@@ -44,7 +44,7 @@ function setEgresos()
   $("#loadingEgreso").empty();
   $('#loadingEgreso').append("<ons-progress-bar indeterminate></ons-progress-bar>");
   var anio = $("#anioG").text();
-  servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/egresoTotal.php?anio='+anio,getEgresos);
+  servidor('https://empaquessr.com/sistema/php/egresos/egresoTotal.php?anio='+anio,getEgresos);
 }
 function getEgresos(respuesta)
 {
@@ -70,7 +70,7 @@ function accionEgresoProveedor()
 }
 function setEgresoProveedor()
 {
-  servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/proveedores/select.php?type=0", getEgresoProveedor);
+  servidor("https://empaquessr.com/sistema/php/proveedores/select.php?type=0", getEgresoProveedor);
 }
 function getEgresoProveedor(respuesta)
 {
@@ -87,7 +87,7 @@ function getEgresoProveedor(respuesta)
 }
 function setEgresoTipo(id)
 {
-  servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/proveedores/select.php?search="+id+"&type=0",getEgresoTipo)
+  servidor("https://empaquessr.com/sistema/php/proveedores/select.php?search="+id+"&type=0",getEgresoTipo)
 }
 function getEgresoTipo(respuesta)
 {
@@ -111,7 +111,7 @@ function setModificarEgreso()
 
   if(vacio(proveedor,fecha,importe,metodoPago))
   {
-    servidorPost("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/update.php?id="+id,getModificarEgreso,formData);
+    servidorPost("https://empaquessr.com/sistema/php/egresos/update.php?id="+id,getModificarEgreso,formData);
   }
   else alerta("Espacios vacios!");
   //servidor(,)
@@ -141,7 +141,7 @@ function setAgregarEgreso()
 
   if(vacio(proveedor,fecha,importe,metodoPago))
   {
-    servidorPost("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/add.php",getAgregarEgreso,formData);
+    servidorPost("https://empaquessr.com/sistema/php/egresos/add.php",getAgregarEgreso,formData);
   }
   else alerta("Espacios vacios!");
   //servidor(,)
@@ -162,7 +162,7 @@ function getAgregarEgreso(respuesta)
 
 function setBuscarEgreso(id)
 {
-  servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/select.php?id="+id,getBuscarEgreso);
+  servidor("https://empaquessr.com/sistema/php/egresos/select.php?id="+id,getBuscarEgreso);
 }
 function getBuscarEgreso(respuesta)
 {
@@ -170,7 +170,7 @@ function getBuscarEgreso(respuesta)
   var json = JSON.parse(respuesta.responseText);
 
   setEgresoProveedor();
-  console.log(json);
+  //console.log(json);
   $('#id').val(json.id);
  
   $('#fecha').val(json.fecha);
@@ -194,7 +194,7 @@ function getBuscarEgreso(respuesta)
 //FUNCION PARA ELIMINAR EGRESO
 function setEliminarEgreso(id)
 {
-  servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/egresos/delete.php?id="+id,getEliminarEgreso);
+  servidor("https://empaquessr.com/sistema/php/egresos/delete.php?id="+id,getEliminarEgreso);
 }
 function getEliminarEgreso(respuesta)
 {
@@ -231,7 +231,7 @@ function enlitsarEgreso(arrayJson,i)
 //funcion para graficar egresos al año
 function graficaEgresoAnual(importes)
 {
-  console.log(importes);
+  //console.log(importes);
   if(chart) 
   {
     chart.data.datasets[0].data = importes;

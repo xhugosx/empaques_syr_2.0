@@ -5,7 +5,9 @@ function setEditarCantidadSalidaP()
 {
     let cantidad = $("#cantidad").val();
     let id = $("#id").val();
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaP);
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/php/salida/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaP);
+    else alerta("Datos vacios"); 
+    
 }
 function getEditarCantidadSalidaP(respuesta)
 {
@@ -17,7 +19,7 @@ function getEditarCantidadSalidaP(respuesta)
         $("#id").val("");
         hideDialogo('my-dialogEditarEntradaSalidaP');
     }
-    else alerta("No se pudo Modificar por un error");
+    else alerta("No se encontraron resultados");
 }
 
 //funcion para editar cantidad inserto
@@ -25,7 +27,9 @@ function setEditarCantidadSalidaI()
 {
     let cantidad = $("#cantidadI").val();
     let id = $("#idI").val();
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaI);
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/php/salida/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaI);
+    else alerta("Datos vacios"); 
+    
 }
 function getEditarCantidadSalidaI(respuesta)
 {
@@ -37,7 +41,7 @@ function getEditarCantidadSalidaI(respuesta)
         $("#idI").val("");
         hideDialogo('my-dialogEditarEntradaSalidaI');
     }
-    else alerta("No se pudo Modificar por un error");
+    else alerta("No se encontraron resultados");
 }
 
 function mostrarTodoSalida()
@@ -51,7 +55,7 @@ function mostrarTodoSalida()
 //MOSTRAR SALIDAS INSERTO
 function setMostrarSalidaInserto()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/inserto/select.php",getMostrarSalidaInserto);
+    servidor("https://empaquessr.com/sistema/php/salida/inserto/select.php",getMostrarSalidaInserto);
 }
 function getMostrarSalidaInserto(respuesta)
 {
@@ -63,15 +67,15 @@ function getMostrarSalidaInserto(respuesta)
 
 function setMostrarSalidaCajasSearch(search)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/select.php?search="+search,getMostrarSalidaCajas);
+    servidor("https://empaquessr.com/sistema/php/salida/caja/select.php?search="+search,getMostrarSalidaCajas);
 }
 function setMostrarSalidaInsertoSearch(search)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/inserto/select.php?search="+search,getMostrarSalidaInserto);
+    servidor("https://empaquessr.com/sistema/php/salida/inserto/select.php?search="+search,getMostrarSalidaInserto);
 }
 function setMostrarSalidaCajas()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/caja/select.php",getMostrarSalidaCajas);
+    servidor("https://empaquessr.com/sistema/php/salida/caja/select.php",getMostrarSalidaCajas);
 }
 function getMostrarSalidaCajas(respuesta)
 {
@@ -131,11 +135,11 @@ function buscarEntradaSalidaInserto(search,e)
 }
 function setMostrarSalidalaminaSearch(search)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php?search="+search,getMostrarSalidaLamina)
+    servidor("https://empaquessr.com/sistema/php/salida/lamina/select.php?search="+search,getMostrarSalidaLamina)
 }
 function setMostrarSalidaLamina()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/salida/lamina/select.php",getMostrarSalidaLamina);
+    servidor("https://empaquessr.com/sistema/php/salida/lamina/select.php",getMostrarSalidaLamina);
 }
 function getMostrarSalidaLamina(respuesta)
 {
@@ -197,8 +201,8 @@ function setActualizaObservaciones()
     
     var codigo = idSalidasEntradas.split("-");
     if(codigo[0].length == 7)
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservaciones.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
-    else servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservacionesInserto.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
+    servidor("https://empaquessr.com/sistema/php/inventario/updateObservaciones.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
+    else servidor("https://empaquessr.com/sistema/php/inventario/updateObservacionesInserto.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
 }
 function getActualizarObservaciones(respuesta)
 {
@@ -232,8 +236,8 @@ function setActualizaObservacionesLamina()
     $("#datoDialog").empty();
     $('#datoDialog').text(observaciones);
     
-    //console.log("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type);
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservacionesLamina);
+    //console.log("https://empaquessr.com/sistema/php/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type);
+    servidor("https://empaquessr.com/sistema/php/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservacionesLamina);
 }
 function getActualizarObservacionesLamina(respuesta)
 {

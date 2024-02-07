@@ -2,6 +2,7 @@ var codigoCliente = "";
 var insertoGlobal = "";
 function mostrarTodoInventario()
 {
+    
     setMostrarInventario();
     setMostrarInventarioPedidosLamina();
     setMostrarInventarioInserto();
@@ -12,11 +13,11 @@ function mostrarTodoInventario()
 function setMostrarInventarioInsertoSearch(search,e)
 {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         $("#insertoInventarioLoading").empty();
         $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectInsertoAll.php?search="+search,getMostrarInventarioInserto);
+        servidor("https://empaquessr.com/sistema/php/inventario/selectInsertoAll.php?search="+search,getMostrarInventarioInserto);
     }
     else if(search == "") setMostrarInventarioInserto();
 }
@@ -26,7 +27,14 @@ function setMostrarInventarioInserto()
 {
     $("#insertoInventarioLoading").empty();
     $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectInsertoAll.php",getMostrarInventarioInserto);
+    var busqueda = $('#searchInsertoInventario').val();
+    if( busqueda == "" || busqueda == undefined) servidor("https://empaquessr.com/sistema/php/inventario/selectInsertoAll.php",getMostrarInventarioInserto);
+    else { 
+        //alerta("entro");
+        setMostrarInventarioInsertoSearch(busqueda,13);
+    } 
+    
+    //console.log(busqueda);
 }
 function getMostrarInventarioInserto(respuesta)
 {
@@ -42,7 +50,7 @@ function setMostrarInventarioPedidosInserto(array)
 {
     codigoCliente = array[0];
     insertoGlobal = array[1];
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectCodigoInserto.php?codigo='+array[0]+'&inserto='+array[1],getMostrarInventarioPedidosInserto);
+    servidor('https://empaquessr.com/sistema/php/inventario/selectCodigoInserto.php?codigo='+array[0]+'&inserto='+array[1],getMostrarInventarioPedidosInserto);
 }
 
 function getMostrarInventarioPedidosInserto(respuesta)
@@ -60,7 +68,7 @@ function setMostrarInventarioSearch(search,e)
     {
         $("#cajaInventarioLoading").empty();
         $("#cajaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php?search="+search,getMostrarInventario);
+        servidor("https://empaquessr.com/sistema/php/inventario/select.php?search="+search,getMostrarInventario);
     }
     else if(search == "") setMostrarInventario();
 }
@@ -68,7 +76,9 @@ function setMostrarInventarioSearch(search,e)
 //MOSTRAR INVENTARIO DE CAJAS
 function setMostrarInventario()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/select.php",getMostrarInventario);
+    var busqueda = $('#searchCajaInventario').val();
+    if( busqueda == "") servidor("https://empaquessr.com/sistema/php/inventario/select.php",getMostrarInventario);
+    else setMostrarInventarioSearch(busqueda,13);
 }
 function getMostrarInventario(respuesta)
 {
@@ -82,8 +92,8 @@ function setActualizarSalida(salida,cantidad,id)
 {
     var codigo = id.split("-");
     if(codigo[0].length == 7)
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalida.php?cantidad="+cantidad+"&id_lp="+id+"&salida="+salida,getActualizarSalida);
-    else servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalidaInserto.php?cantidad="+cantidad+"&id_lp="+id+"&salida="+salida,getActualizarSalida); 
+    servidor("https://empaquessr.com/sistema/php/inventario/updateSalida.php?cantidad="+cantidad+"&id_lp="+id+"&salida="+salida,getActualizarSalida);
+    else servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaInserto.php?cantidad="+cantidad+"&id_lp="+id+"&salida="+salida,getActualizarSalida); 
     //console.log("entro aqui",codigo,cantidad);
 }
 function getActualizarSalida(respuesta)
@@ -107,7 +117,7 @@ function setSalidaTotal(codigo)
         message: "Se dará salida a todo el inventario",
         buttonLabels: ['SI', 'NO'],
         callback: function(idx) {
-            if(idx==0) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalidaTodo.php?codigo="+codigo,getActualizarSalida);;
+            if(idx==0) servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaTodo.php?codigo="+codigo,getActualizarSalida);;
           }
    });
     
@@ -121,7 +131,7 @@ function setSalidaTotalInserto(codigo,inserto)
         message: "Se dará salida a todo el inventario",
         buttonLabels: ['SI', 'NO'],
         callback: function(idx) {
-            if(idx==0) servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalidaTodoInserto.php?codigo="+codigo+"&inserto="+inserto,getActualizarSalida);;
+            if(idx==0) servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaTodoInserto.php?codigo="+codigo+"&inserto="+inserto,getActualizarSalida);;
           }
    });
     
@@ -130,7 +140,7 @@ function setSalidaTotalInserto(codigo,inserto)
 function setMostrarInventarioPedidos(codigo)
 {
     codigoCliente = codigo;
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectCodigo.php?codigo='+codigo,getMostrarInventarioPedidos);
+    servidor('https://empaquessr.com/sistema/php/inventario/selectCodigo.php?codigo='+codigo,getMostrarInventarioPedidos);
 }
 
 function getMostrarInventarioPedidos(respuesta)
@@ -145,11 +155,11 @@ function getMostrarInventarioPedidos(respuesta)
 function setMostrarInventarioPedidosLaminaSearch(search,e)
 {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         $("#laminaInventarioLoading").empty();
         $("#laminaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectLamina.php?search='+search,getMostrarInventarioPedidosLamina);
+        servidor('https://empaquessr.com/sistema/php/inventario/selectLamina.php?search='+search,getMostrarInventarioPedidosLamina);
     }
     else if(search == "") setMostrarInventarioPedidosLamina();
 }
@@ -158,7 +168,10 @@ function setMostrarInventarioPedidosLaminaSearch(search,e)
 function setMostrarInventarioPedidosLamina()
 {
     //codigoCliente = codigo;
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/selectLamina.php',getMostrarInventarioPedidosLamina);
+    var busqueda = $('#searchLaminaInventario').val();
+    if(busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/inventario/selectLamina.php',getMostrarInventarioPedidosLamina);
+    else setMostrarInventarioPedidosLaminaSearch(busqueda,13);
+    //console.log(busqueda);
 }
 
 function getMostrarInventarioPedidosLamina(respuesta)
@@ -175,7 +188,7 @@ function getMostrarInventarioPedidosLamina(respuesta)
 //ACTUALIZAR SALIDAS DE LAMINA
 function setActualizarSalidaLamina(json)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/inventario/updateSalidaLamina.php?id_lp="+json.codigo+"&cantidad="+json.inventario+"&salida="+json.salida,getActualizarSalidaLamina)
+    servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaLamina.php?id_lp="+json.codigo+"&cantidad="+json.inventario+"&salida="+json.salida,getActualizarSalidaLamina)
 }
 function getActualizarSalidaLamina(respuesta)
 {
@@ -250,8 +263,8 @@ function enlistarInventarioLamina(arrayJson)
     var cajas = (arrayJson.caja).split("@");
     var productos = (arrayJson.producto).split("@");
     var clientes = (arrayJson.cliente).split("@");
-    for(var i = 0; i<cajas.length-1;i++) span += '<span class="list-item__subtitle">'+ cajas[i] +' '+ productos[i] +' - <b>'+ clientes[i] +'</b></span>';
-
+    for(var i = 0; i<cajas.length-1 && cajas[i] != "";i++) span += '<span class="list-item__subtitle">'+ cajas[i] +' '+ productos[i] +' - <b>'+ clientes[i] +'</b></span>';
+    
     //console.log(arrayJson);
    //console.log(arrayJson);
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="mensajeAlertaDato([\'codigo\',\''+arrayJson.codigo+'\',\'inventario\',\''+arrayJson.inventario+'\',\'salida\',\''+arrayJson.salida+'\'])">'

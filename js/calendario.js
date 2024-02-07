@@ -1,4 +1,4 @@
-document.addEventListener('init', function (event) {
+/*document.addEventListener('init', function (event) {
     var page = event.target;
 
     if (page.id === 'calendario') {
@@ -114,10 +114,6 @@ function mostrarFecha(event) {
     let anio1 = document.getElementById('year').innerHTML;
     let mes1 = mesesNumero(document.getElementById('month').innerHTML);
 
-    //console.log(document.getElementsByClassName('calendar__selected'));
-
-    //if( document.getElementsByClassName('calendar__selected') != null ) 
-    //document.getElementsByClassName('calendar__date calendar__item').classList.remove('calendar__selected');
     $(".calendar__date").removeClass("calendar__selected");
 
     event.target.classList.add('calendar__selected');
@@ -126,21 +122,103 @@ function mostrarFecha(event) {
     setMostrarPedidosLaminaFecha(fecha1)
 }
 
-function mesesNumero(mes1) {
-    //console.log(mes);
-    switch (mes1) {
-        case "Enero": return "01";
-        case "Febrero": return "02";
-        case "Marzo": return "03";
-        case "Abril": return "04";
-        case "Mayo": return "05";
-        case "Junio": return "06";
-        case "Julio": return "07";
-        case "Agosto": return "08";
-        case "Septiembre": return "09";
-        case "Octubre": return "10";
-        case "Noviembre": return "11";
-        case "Diciembre": return "12";
+function mesesNumero(mes) {
+    const meses = {
+        Enero: "01",
+        Febrero: "02",
+        Marzo: "03",
+        Abril: "04",
+        Mayo: "05",
+        Junio: "06",
+        Julio: "07",
+        Agosto: "08",
+        Septiembre: "09",
+        Octubre: "10",
+        Noviembre: "11",
+        Diciembre: "12"
+    };
+
+    return meses[mes]; // Devolver el número del mes o una cadena vacía si no se encuentra el mes
+}*/
+
+
+
+document.addEventListener('init', function (event) {
+    var page = event.target;
+
+    if (page.id === 'calendario') {
+        const mesElemento = document.getElementById('nombreMes');
+        const diasElemento = document.getElementById('dias');
+
+        let fechaActual = new Date();
+        let mes = fechaActual.getMonth();
+        let año = fechaActual.getFullYear();
+        let diaSeleccionado = null;
+
+        // Función para obtener el nombre del mes
+        function obtenerNombreMes(mes) {
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            return meses[mes];
+        }
+
+        // Función para cambiar entre meses
+        window.cambiarMes = function (direccion) {
+            if (direccion === 'anterior') {
+                mes = (mes === 0) ? 11 : mes - 1;
+                año = (mes === 11) ? año - 1 : año;
+            } else {
+                mes = (mes === 11) ? 0 : mes + 1;
+                año = (mes === 0) ? año + 1 : año;
+            }
+
+            mostrarCalendario();
+        }
+
+        // Función para mostrar el calendario
+        function mostrarCalendario() {
+            mesElemento.textContent = obtenerNombreMes(mes) + ' ' + año;
+            diasElemento.innerHTML = '';
+
+            // Obtener el primer día del mes y el número de días en el mes
+            const primerDia = new Date(año, mes, 1);
+            const ultimoDia = new Date(año, mes + 1, 0);
+
+            // Crear celdas para los días del mes
+            for (let i = 1; i <= ultimoDia.getDate(); i++) {
+                const diaElemento = document.createElement('div');
+                diaElemento.className = 'dia';
+
+                const numeroDia = document.createElement('span');
+                numeroDia.className = 'numero-dia';
+                numeroDia.textContent = i;
+                diaElemento.appendChild(numeroDia);
+
+                diaElemento.addEventListener('click', function () {
+                    //console.log(event);
+                    if (diaSeleccionado) {
+                        diaSeleccionado.classList.remove('selected');
+                    }
+
+                    diaElemento.classList.add('selected');
+                    diaSeleccionado = diaElemento;
+
+                    const fechaSeleccionada = new Date(año, mes, i);
+                    const fechaFormateada = obtenerFechaFormateada(fechaSeleccionada);
+                    setMostrarPedidosLaminaFecha(fechaFormateada);
+                    //alert('Has clic en el día ' + i);
+                });
+
+                diasElemento.appendChild(diaElemento);
+            }
+        }
+        function obtenerFechaFormateada(fecha) {
+            const año = fecha.getFullYear();
+            const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+            const dia = fecha.getDate().toString().padStart(2, '0');
+            return `${año}-${mes}-${dia}`;
+        }
+        // Mostrar el calendario al cargar la página
+        mostrarCalendario();
     }
 
-}
+});

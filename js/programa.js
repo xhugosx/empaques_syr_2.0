@@ -10,7 +10,7 @@ function refreshPrograma()
 
 function setMostrarProgramaProveedores()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaProveedores)
+    servidor("https://empaquessr.com/sistema/php/programa/select.php",getMostrarProgramaProveedores)
 }
 function getMostrarProgramaProveedores(respuesta)
 {
@@ -26,7 +26,7 @@ function getMostrarProgramaProveedores(respuesta)
 
 function setMostrarProgramaArtesanos()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaArtesanos)
+    servidor("https://empaquessr.com/sistema/php/programa/select.php",getMostrarProgramaArtesanos)
 }
 function getMostrarProgramaArtesanos(respuesta)
 {
@@ -61,7 +61,7 @@ function getMostrarProgramaArtesanos(respuesta)
 
 function setMostrarProgramaAfilador1()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaAfilador1);
+    servidor("https://empaquessr.com/sistema/php/programa/select.php",getMostrarProgramaAfilador1);
 }
 
 function getMostrarProgramaAfilador1(respuesta)
@@ -86,7 +86,7 @@ function getMostrarProgramaAfilador1(respuesta)
 
 function setMostrarProgramaAfilador2()
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/select.php",getMostrarProgramaAfilador2);
+    servidor("https://empaquessr.com/sistema/php/programa/select.php",getMostrarProgramaAfilador2);
 }
 
 function getMostrarProgramaAfilador2(respuesta)
@@ -122,9 +122,9 @@ function getMostrarProgramaAfilador2(respuesta)
 //funcion para actualizar estado de un producto
 function setActualizarEstado(id,estado)
 {
-    //alert('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/updateEstado.php?id='+id+'&estado='+estado);
+    //alert('https://empaquessr.com/sistema/php/programa/updateEstado.php?id='+id+'&estado='+estado);
 
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/updateEstado.php?id='+id+'&estado='+estado,getActualizarEstado);
+    servidor('https://empaquessr.com/sistema/php/programa/updateEstado.php?id='+id+'&estado='+estado,getActualizarEstado);
 }
 function getActualizarEstado(respuesta)
 {
@@ -138,7 +138,7 @@ function getActualizarEstado(respuesta)
 }
 function setEliminarPrograma(id)
 {
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/delete.php?id='+id,getEliminarPrograma);
+    servidor('https://empaquessr.com/sistema/php/programa/delete.php?id='+id,getEliminarPrograma);
 }
 function getEliminarPrograma(respuesta)
 {
@@ -156,7 +156,7 @@ function setLlenarProcesoPrograma(datos)
     let tipo = datos[1];
     if(tipo == 1) Abrirdialogo('my-dialog-programa','dialogPrograma.html',id);
     else Abrirdialogo('my-dialog-programa1','dialogPrograma1.html',id);
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/selectProcesos.php?id="+id,getLlenarProcesoPrograma);
+    servidor("https://empaquessr.com/sistema/php/programa/selectProcesos.php?id="+id,getLlenarProcesoPrograma);
 }
 function getLlenarProcesoPrograma(respuesta)
 {  
@@ -177,8 +177,8 @@ function setProcesosProgramaEntradaPedido(id,cantidad)
     //id es id de lista de pedidos
     var codigo = id.split("-");
     if(codigo[0].length == 7) 
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/procesosEntradaProgramaPedido.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
-    else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/procesosEntradaProgramaPedidoInserto.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
+    servidor('https://empaquessr.com/sistema/php/programa/procesosEntradaProgramaPedido.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
+    else servidor('https://empaquessr.com/sistema/php/programa/procesosEntradaProgramaPedidoInserto.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
     
 }
 function getProcesosProgramaEntradaPedido(respuesta)
@@ -196,8 +196,8 @@ function setAgregarFaltante(json)
 {
     var codigo = (json.id).split("-");
     if(codigo[0].length == 7) 
-    servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=',getAgregarFaltante);
-    else servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/lista_pedidos_inserto/add.php?id="+json.id+"-F&codigo="+json.codigo+"&resistencia="+json.resistencia+"&cantidad="+json.cantidad+"&observaciones="+json.observaciones,getAgregarFaltante);
+    servidor('https://empaquessr.com/sistema/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=',getAgregarFaltante);
+    else servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/add.php?id="+json.id+"-F&codigo="+json.codigo+"&resistencia="+json.resistencia+"&cantidad="+json.cantidad+"&observaciones="+json.observaciones,getAgregarFaltante);
 }
 function getAgregarFaltante(respuesta)
 {
@@ -227,7 +227,7 @@ function enlistarPrograma(arrayJson,tipo)
             html1 += '<ons-list-header style="background:rgba(255, 255, 255, 0);color:white">'+arrayJson[i].id +'</ons-list-header>';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
-            html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
+            html1 += '        <strong style="font-size:15px;color:#353535;">'+arrayJson[i].codigo+'</strong>';
             html1 += '    </div>';
             html1 += '    <div class="center romperTexto">';
             html1 += '        <span class="list-item__title">'+arrayJson[i].producto+' | <b>'+arrayJson[i].resistencia+'</b></span>'; 
@@ -268,7 +268,7 @@ function enlistarProgramaInserto(arrayJson,tipo)
             html1 += '<ons-list-header style="background:rgba(255, 255, 255, 0); color:white">'+arrayJson[i].id +'</ons-list-header>';
             html1 += '<ons-list-item modifier="nodivider">';
             html1 += '    <div class="left">';
-            html1 += '        <strong style="font-size:15px;color:white;">'+arrayJson[i].codigo+'</strong>';
+            html1 += '        <strong style="font-size:15px;color:#000000;">'+arrayJson[i].codigo+'</strong>';
             html1 += '    </div>';
             html1 += '    <div class="center romperTexto">';
             html1 += '        <span class="list-item__title"><b>'+arrayJson[i].observaciones+' - '+arrayJson[i].resistencia+'</b> | <span style="font-size:11px">'+arrayJson[i].producto+'</span></span>'; 
@@ -300,9 +300,9 @@ function setagregarPrograma(id)
     } 
 
    if(procesos == "") alerta("No haz seleccionado niguna");
-   else servidor('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
+   else servidor('https://empaquessr.com/sistema/php/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
 
-   console.log('https://empaquessyrgdl.000webhostapp.com/empaquesSyR/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
+   //console.log('https://empaquessr.com/sistema/php/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
 } 
 function getAgregarPrograma(respuesta)
 {

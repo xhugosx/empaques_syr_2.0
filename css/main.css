@@ -1,38 +1,16 @@
 @font-face {
     font-family: 'Candara';
-    src: url('../font/JosefinSans-VariableFont_wght.ttf');
+    src: url('../font/Urbanist-VariableFont_wght.ttf');
+}
+
+* {
+    font-family: 'Candara';
 }
 
 body {
-    font-family: 'Candara';
-    font-size: 13px;
+    font-size: 14px;
 }
 
-ons-toolbar>div.center,
-ons-toolbar>div.left {
-    font-family: 'Candara';
-}
-
-p,
-label,
-textarea,
-ons-input,
-input.search-input,
-input.text-input,
-select.select-input,
-div.alert-dialog,
-div.action-sheet,
-div.alert-dialog-button,
-center,
-span,
-font {
-    font-family: 'Candara';
-}
-
-span.notification,
-div {
-    font-family: 'Candara';
-}
 
 .boton-cliente {
     margin: 8px;
@@ -150,9 +128,10 @@ i {
     /*rgba(215,172,118,1);*/
 }
 
-/*ons-fab > span > i{
-    color: rgb(210, 210, 210);
-}*/
+ons-fab>span>i {
+    color: rgb(255, 255, 255);
+}
+
 .botonCerrar {
     position: absolute;
     width: 25px;
@@ -185,6 +164,7 @@ i {
     font: bold;
     margin: 0%;
 
+
 }
 
 #contenedorInput {
@@ -201,17 +181,17 @@ i {
 }
 
 #contenedorPrograma {
-    background: rgba(255, 255, 255, 0);
+    background: rgba(0, 0, 0, 0.192);
     font: bold;
     border: 2px solid #ffffff;
     border-radius: 30px;
 }
 
 #contenedorPrograma>.title {
-    color: rgb(48, 70, 72);
+    color: rgb(255, 255, 255);
     font: bold;
-    font-family: 'Candara';
     font-weight: 450;
+
 }
 
 .botonPrograma:active {
@@ -221,7 +201,6 @@ i {
 .botonPrograma {
     cursor: pointer;
     border-radius: 20px;
-    font-family: 'Candara';
 }
 
 .botonPrograma>b {
@@ -233,7 +212,6 @@ i {
     border: 2px solid #ffffff;
     border-radius: 40px;
     justify-content: center;
-    font-family: 'Candara';
 
 
 }
@@ -241,7 +219,6 @@ i {
 .contenedor2Programa>h4 {
     color: rgb(114, 99, 81);
     margin: auto;
-    font-family: 'Candara';
 }
 
 ons-toolbar>div.center,
@@ -253,7 +230,6 @@ ons-toolbar>div.right {
 
 ons-toolbar.toolbar {
     background-color: #1A9CE8;
-    /*rgb(225, 186, 138);*/
     color: white;
 }
 
@@ -272,6 +248,7 @@ ons-list-header.list-header {
 .list-item__left {
     display: flex;
     justify-content: center;
+    white-space: nowrap;
 }
 
 ons-button.button--large {
@@ -284,7 +261,6 @@ ons-list-header {
 
 .placeholder {
     color: rgb(167, 167, 167);
-    font-family: 'Candara';
 }
 
 span.list-item__subtitle {
@@ -292,7 +268,6 @@ span.list-item__subtitle {
 }
 
 .nombreArchivo {
-    font-family: 'Candara';
     font-size: 15px;
 }
 
@@ -354,8 +329,8 @@ span.list-item__subtitle {
     background-color: #ffffff;
     padding: 5px;
     left: 20px;
-    margin-top: 2px; 
-    margin-bottom: 5px; 
+    margin-top: 2px;
+    margin-bottom: 5px;
     border-radius: 10px;
 
 }
@@ -429,16 +404,33 @@ input[type="text"] {
     font-family: arial;
 }
 
-.flecha {
+.flechaIzquierda {
     margin-left: 20px;
     margin-right: 20px;
     background-color: #1ba0d1b9;
-    border-radius: 30px;
-    width: 50px;
+    border-radius: 25px 0 0 25px;
+    width: 40px;
     height: 30px;
     padding-top: 1.3vh;
     color: #ffffff;
     cursor: pointer;
+}
+
+.flechaDerecha {
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #1ba0d1b9;
+    border-radius: 0 25px 25px 0;
+    width: 40px;
+    height: 30px;
+    padding-top: 1.3vh;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.flechaDerecha:hover,
+.flechaIzquierda:hover {
+    opacity: 60%;
 }
 
 .flecha::before {
@@ -458,15 +450,6 @@ ons-fab {
     color: white;
 }
 
-.fijadoDerecha {
-    width: 75% !important;
-    border-radius: 20px !important;
-    font-size: 15px !important;
-    color: #ffffff !important;
-    background-color: white !important;
-
-}
-
 .fijadoDerecha>span {
     background-color: #2979ff;
     padding: 10px 20% 10px 20%;
@@ -475,14 +458,6 @@ ons-fab {
     width: 100%;
 }
 
-.fijadoCentro {
-    width: 92% !important;
-    border-radius: 20px !important;
-    font-size: 20px !important;
-    background-color: #2979ff !important;
-    color: #1A9CE8 !important;
-
-}
 
 .extraCentrar {
     width: 95% !important;
@@ -500,6 +475,7 @@ ons-fab {
     box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.146);
     font-size: 10px;
     width: 20%;
+    border-radius: 10px;
 }
 
 .ordenesLamina:active {
@@ -520,12 +496,13 @@ ons-fab {
     align-items: center;
     /*con esto alineamos de manera vertical*/
 }
+
 .contenedor-flexboxLados {
     display: flex;
     /*Convertimos al menú en flexbox*/
     justify-content: space-between;
     /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
-    align-items:baseline;
+    align-items: baseline;
     /*con esto alineamos de manera vertical*/
 }
 
@@ -544,10 +521,11 @@ span>.fa-folder-open {
 #page1>.toolbar {
     height: 100px !important;
     border-radius: 0 0 50px 50px;
-    border: 0;-webkit-box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
-    background: linear-gradient(180deg, rgba(26,156,232,1) 0%, rgba(134,203,243,1) 5%, rgba(255,255,255,1) 13%);
+    border: 0;
+    -webkit-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
+    background: linear-gradient(180deg, rgba(26, 156, 232, 1) 0%, rgba(134, 203, 243, 1) 5%, rgba(255, 255, 255, 1) 13%);
 }
 
 .page__background {
@@ -558,15 +536,18 @@ span>.fa-folder-open {
     background: #475ACC;
     background: conic-gradient(from 315deg, #45bef5, #698390);
 }
-ons-list>ons-card:active{
+
+ons-list>ons-card:active {
     background-color: #92c1ddc5 !important;
-    
+
 }
-.usuario{
+
+.usuario {
     color: grey;
     left: 45px;
     position: absolute;
 }
+
 .pdfview {
     /* Centrado */
     margin: auto;
@@ -579,24 +560,116 @@ ons-list>ons-card:active{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-th,td{
+th,
+td {
     padding: 7px 7px 0 0;
 }
-.id_pedido{
+
+.id_pedido {
     margin: 100px !important;
     font-size: large;
     color: white;
 }
-.accionFactura{
+
+.accionFactura {
     padding: 13px;
     margin: 0 5px 0 0;
     /* background-color: grey; */
     border-radius: 50px;
     border: rgb(221, 220, 220) 3px outset;
 }
-.accionFactura:hover{
+
+.accionFactura:hover {
     border: rgb(155, 155, 155) 3px inset;
 }
-.accionFactura:active{
+
+.accionFactura:active {
     opacity: 10%;
 }
+
+
+.year-input {
+    display: flex;
+    align-items: center;
+}
+
+.year-input>input {
+    text-align: center;
+    width: 50px;
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 10px;
+}
+
+.year-input>#prevYear {
+    background-color: #426590;
+    /* Color azul oscuro */
+    color: #fff;
+    /* Texto blanco */
+    border: none;
+    border-radius: 20px 0 0 20px;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 10px 15px;
+    transition: background-color 0.3s;
+}
+
+.year-input>#nextYear {
+    background-color: #426590;
+    /* Color azul oscuro */
+    color: #fff;
+    /* Texto blanco */
+    border: none;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 10px 15px;
+    transition: background-color 0.3s;
+}
+
+.year-input>button:hover {
+    opacity: 80%;
+}
+
+.year-input>#nextYear:hover {
+    background-color: #314366;
+    /* Color azul oscuro más oscuro al pasar el mouse */
+}
+
+.year-input>#prevYear:hover {
+    background-color: #314366;
+    /* Color azul oscuro más oscuro al pasar el mouse */
+}
+
+ons-fab.fab {
+    width: auto !important;
+    border-radius: 50px !important;
+    font-size: 20px !important;
+    padding: 0 15px 0 15px;
+}
+
+ons-fab.fijadoCentro {
+    width: 95% !important;
+    border-radius: 50px !important;
+    font-size: 20px !important;
+    background-color: #54626a !important;
+}
+
+ons-fab.fab:hover {
+    cursor: pointer;
+}
+
+ons-fab.fijadoCentro:hover {
+    cursor: default !important;
+}
+
+.tituloOrden {
+    color: rgb(255, 255, 255);
+    margin: 0px 0px 0px 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+

@@ -1,0 +1,78 @@
+#contenedorCalendario {
+    max-width: 90%;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+#mes {
+    background-color: #4285f4;
+    color: #fff;
+    font-size: 24px;
+    padding: 10px;
+    border-bottom: 2px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mes span {
+    cursor: pointer;
+}
+
+#dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 10px;
+}
+
+.dia {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 70px;
+    border-radius: 5px;
+}
+
+.numero-dia {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-weight: bold;
+}
+
+.codigos {
+    font-size: 10px;
+    /* Tamaño de la letra para los códigos */
+    max-height: 60px;
+    /* Altura máxima para los códigos */
+    overflow-y: auto;
+    /* Barra de desplazamiento si el contenido es grande */
+    margin-top: 5px;
+    /* Espaciado superior */
+    display: flex;
+    flex-wrap: wrap;
+    /* Para que los códigos se envuelvan en dos filas */
+    justify-content: center;
+    /* Para centrar los códigos en el eje principal */
+}
+
+.codigo {
+    margin: 3px;
+    /* Espaciado entre códigos */
+}
+
+.dia:hover {
+    opacity: 70%;
+}
+.selected{
+    background-color: #e47878;
+    color: white;
+}

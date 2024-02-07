@@ -3,11 +3,11 @@
 function setIngresosEgresos()
 {
     let anio = $("#anioG").text();
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/IngresosEgresos/select.php?anio="+anio,getIngresoEgresos);
+    servidor("https://empaquessr.com/sistema/php/IngresosEgresos/select.php?anio="+anio,getIngresoEgresos);
 }
 function getIngresoEgresos(respuesta)
 {
-    console.log(respuesta.responseText);
+    //console.log(respuesta.responseText);
 
     let resultado = respuesta.responseText;
     let arrayJson = resultado.split("@");
@@ -46,7 +46,7 @@ function graficaIngresosEgresos(jsonIngresos,jsonEgresos)
     let egresos = [];
     for(let i = 0; i<jsonIngresos.length;i++) ingresos.push(jsonIngresos[i].suma);
     for(let i = 0; i<jsonEgresos.length;i++) egresos.push(jsonEgresos[i].suma);
-    console.log(ingresos,egresos);
+    //console.log(ingresos,egresos);
     if(chart) 
     {
         chart.data.datasets[0].data = ingresos;

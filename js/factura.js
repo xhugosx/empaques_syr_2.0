@@ -1,7 +1,7 @@
 
 //BUSCAR LAS FACTURAS A MODIFICAR O ELIMINAR
 function setModificarBuscarFacturas(id) {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/facturas/select.php?id=" + id, getModificarBuscarFacturas);
+    servidor("https://empaquessr.com/sistema/php/facturas/select.php?id=" + id, getModificarBuscarFacturas);
     $("#id_pedido").text(id);
 }
 function getModificarBuscarFacturas(respuesta) {
@@ -53,7 +53,7 @@ function setEditarFactura(id, posicion) {
     var factura = $("#inputId" + posicion).val();
     var entregado = $("#inputEntregado" + posicion).val();
     var fecha = $("#inputFecha" + posicion).val();
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/facturas/update.php?id=" + id + "&entregado=" + entregado + "&factura=" + factura + "&fecha=" + fecha, getEditarFactura);
+    servidor("https://empaquessr.com/sistema/php/facturas/update.php?id=" + id + "&entregado=" + entregado + "&factura=" + factura + "&fecha=" + fecha, getEditarFactura);
 }
 function getEditarFactura(respuesta) {
     var resultado = respuesta.responseText;
@@ -68,7 +68,7 @@ function getEditarFactura(respuesta) {
 
 function setEliminarFactura(id)
 {
-    servidor("https://empaquessyrgdl.000webhostapp.com/empaquesSyR/facturas/delete.php?id="+id,getEliminarFactura);
+    servidor("https://empaquessr.com/sistema/php/facturas/delete.php?id="+id,getEliminarFactura);
 }
 function getEliminarFactura(respuesta)
 {

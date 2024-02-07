@@ -4,6 +4,8 @@ function promesa()
   
 }*/
 
+
+
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
 function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   ons.notification.prompt({
@@ -67,7 +69,7 @@ function conversionArrayJson(array) {
 function conversionTextoArray(txt) {
   let arrayJson = [];
   for (let i = 0; i < txt.length; i++) arrayJson.push(JSON.parse(txt[i]));
-  console.log(arrayJson);
+  //console.log(arrayJson);
   return arrayJson;
 }
 
@@ -110,6 +112,9 @@ function servidor(link, miFuncion) {
         miFuncion(this);
 
       }
+      else if(this.status == 500){
+        alerta("Error en el servidor")
+      }
 
     };
 
@@ -130,6 +135,9 @@ function servidorPost(link, miFuncion, data) {
 
         miFuncion(this);
 
+      }
+      else if(this.status == 500){
+        alerta("Error en el servidor")
       }
 
     };
@@ -165,11 +173,11 @@ function crearObjetMensaje(codigo, contador) {
     if (index == 0) {
       let navegador = navigator.userAgent;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
-        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
       } else {
-        window.open('https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+        window.open('https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
       }
-    }  //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+    }  //window.open('https://empaquessr.com/sistema/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
     else if (index == 1) nextPageFunctionData('ActualizarProductos.html', setBuscarProductoActualizar, codigo); //alert("modificara "+codigo);
     else if (index == 2) alertaConfirm('Estas seguro de eliminar este producto? ' + codigo, setEliminarProducto, codigo, contador);
   });
@@ -212,17 +220,17 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
       let navegador = navigator.userAgent;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         //console.log("Estás usando un dispositivo móvil!!");
-        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
       } else {
-        window.open('https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+        window.open('https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
       }
-      //window.open('https://empaquessyrgdl.000webhostapp.com/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      //window.open('https://empaquessr.com/sistema/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
 
     }
     else if (index == 3) alerta("<b>Orden de Compra: </b><br>" + oc + "<br><br><b>Fecha del pedido:</b><br>" + fecha + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br>");
     else if (index == 4) {
-      if (estado != 4 && estado != 5) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id); 
-      else alertComfirm("Qué deseas Modificar?", ["Pedido", "Facturas","<b style=\"color:red\">Cancelar</b>"], modificarPedidoFaturas, id);
+      if (estado != 4 && estado != 5) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
+      else alertComfirm("Qué deseas Modificar?", ["Pedido", "Facturas", "<b style=\"color:red\">Cancelar</b>"], modificarPedidoFaturas, id);
     }
     else if (index == 5) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedido, id);
 
@@ -230,8 +238,8 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
 }
 function modificarPedidoFaturas(index, id) {
   //alerta(index + " " + id);
-  if(index == 0) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
-  else if(index == 1) nextPageFunctionData('facturasModificar.html', setModificarBuscarFacturas, id);
+  if (index == 0) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
+  else if (index == 1) nextPageFunctionData('facturasModificar.html', setModificarBuscarFacturas, id);
 
 }
 
@@ -290,7 +298,7 @@ function crearObjetMensajePedidoInserto(id, codigo, estado, notas) {
       else if (estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?", setLlenarProcesoPrograma, [id, 0]);
       else alerta("Pedido ya se encuentra en inventario");
     }
-    else if (index == 1) nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessyrgdl.000webhostapp.com/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+    else if (index == 1) nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
     else if (index == 2) alerta("<b>Notas: </b><br><br>" + notas);
     else if (index == 3) nextPageFunctionData('pedidosInsertoModificar.html', setModificarBuscarPedidoInserto, id); //alert("modificara "+codigo);
     else if (index == 4) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedidoInserto, id);
@@ -298,13 +306,17 @@ function crearObjetMensajePedidoInserto(id, codigo, estado, notas) {
   });
 }
 function estadoPedidos(estado) {
-  if (estado == 0) return "⚪ Pendiente";
-  else if (estado == 1) return "🟠 En proceso";
-  else if (estado == 2) return "🟢 Producto terminado";
-  else if (estado == 3) return "🟩 Producto terminado (Inventario)";
-  else if (estado == 6) return "⚫ Cancelado";
-  else if (estado == 4) return "🔵 Entregado";
-  else if (estado == 5) return "🟣 E. Parcial";
+  const estados = {
+    0: "⚪ Pendiente",
+    1: "🟠 En proceso",
+    2: "🟢 Producto terminado",
+    3: "🟩 Producto terminado (Inventario)",
+    6: "⚫ Cancelado",
+    4: "🔵 Entregado",
+    5: "🟣 E. Parcial"
+  };
+
+  return estados[estado];
 }
 
 function crearObjetMensajeCliente(id, i) {
@@ -695,11 +707,9 @@ function crearJson(nombres, variables) {
 }
 
 function listaInfinita(agregarHtml, eliminarLoadingHtml, arrayJson, miFuncion) {
-  //alerta(""+arrayJson)
   if (eliminarLoadingHtml != "") $("#" + eliminarLoadingHtml).empty();
   var contador = 1;
-  //var resultado;
-  var html = '<ons-card id="contenedorPrograma"> <center> <h2>Sin resultados...</h2> </center> </ons-card>';
+  var html = '<ons-card id="contenedorPrograma"> <center> <h2 style="color:white">Sin resultados...</h2> </center> </ons-card>';
 
   var infiniteList = document.getElementById(agregarHtml);
 
@@ -707,14 +717,11 @@ function listaInfinita(agregarHtml, eliminarLoadingHtml, arrayJson, miFuncion) {
     createItemContent: function (i) {
 
       if (arrayJson != "") {
-        //alert(arrayJson[i]);
         var tempJson = JSON.parse(arrayJson[i]);
       }
-      //alert(miFuncion(tempJson,i));
       return ons.createElement(arrayJson == "" ? html : miFuncion(tempJson, i));
     },
     countItems: function () {
-      //console.log(arrayJson.length-1);
       return contador = arrayJson == "" ? contador : arrayJson.length - 1;
     }
   };
