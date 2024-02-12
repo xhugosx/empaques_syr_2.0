@@ -57,7 +57,7 @@ function getPedidosCliente(respuesta) {
 function setBusquedaPendiente() {
     //var type = filtro ? 1 : 2;
     var busqueda = $('#searchPedido').val();
-    //console.log("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal);
+    //console.log("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal);
     if (busqueda == "" || busqueda == undefined) servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getBusquedaPendiente);
     else setSearchPedidos(busqueda, 13);
 }

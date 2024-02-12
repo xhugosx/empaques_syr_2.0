@@ -16,10 +16,6 @@
     <!-- Browser Color - iOS Safari -->
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
 
-    <!--here document onsen-->
-    <!--link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script-->
     <script src="./onsen_modules/onsenui/js/onsenui.min.js"></script>
     <link rel="stylesheet" href="./onsen_modules/onsenui/css/onsen-css-components.min.css">
     <link rel="stylesheet" href="./onsen_modules/onsenui/css/onsenui.css">
@@ -63,7 +59,6 @@
 
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/calendario.css">
     <link rel="stylesheet" href="./css/calendarioPedidos.css">
 
     <title>Empaques SyR</title>
@@ -1720,7 +1715,8 @@
             <iframe id="plano" src="" style="width:100%; height:100%;" frameborder="0"></iframe>
 
             <!--object id="plano" class="pdfview" type="application/pdf" data=" "></object-->
-            <ons-fab position="bottom right" id="actualizarPlano" onclick="">
+            <ons-fab position="bottom right" id="actualizarPlano" onclick="" style="bottom: 60px;">
+                Actualizar
                 <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
         </ons-page>
@@ -2863,6 +2859,9 @@
     <!--VISTA 4 DE LOS PEDIDOS EN UN CALENDARIO-->
     <template id="tab4.html">
         <ons-page id="calendarioPedidos">
+            <div id="datosPedidosLoadingCalendario">
+
+            </div>
             <div id="contenedorCalendario">
                 <div id="mes">
                     <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
@@ -2873,6 +2872,9 @@
                 </div>
                 <div id="dias"></div>
             </div>
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
+                <ons-lazy-repeat id="datosPedidosCalendario"></ons-lazy-repeat>
+            </ons-list>
 
             <br><br><br><br><br>
         </ons-page>

@@ -235,6 +235,11 @@ function getDescargarProductosExcel(dato) {
 
 // Función para exportar datos a un archivo de Excel
 function exportarExcel(cliente, datos) {
+    // Truncar el nombre del cliente si excede los 31 caracteres
+    if (cliente.length > 31) {
+        cliente = cliente.substring(0, 31);
+    }
+    
     // Convertir los datos a una hoja de cálculo de Excel
     const hojaDeCalculo = XLSX.utils.json_to_sheet(datos);
 

@@ -479,7 +479,11 @@ ons-fab {
 }
 
 .ordenesLamina:active {
-    opacity: 30%;
+    background-color: #dcdcdc;
+}
+.ordenesLamina:hover{
+    opacity: 95%;
+    cursor: pointer;
 }
 
 .ordenesLamina>i {

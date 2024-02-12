@@ -1,7 +1,5 @@
 function verOrden(orden)
 {
-    //orden = orden.replace(/\s/g,"%20");
-    //console.log(orden);
     $("#loadingOrden").empty();
     $("#ordenArchivo").attr("src","https://docs.google.com/gview?url="+orden+"&embedded=true");
     
@@ -19,7 +17,6 @@ function abrirCarpeta(elemento)
 function asignarAnioOrden()
 {
     const moonLanding = new Date();
-
     $('#yearOrden').text(moonLanding.getFullYear());
 }
 
@@ -70,7 +67,7 @@ function getBuscarAnio(respuesta)
             html += '<span class="ordenesLamina" onclick="abrirCarpeta(this)">';
             html += '    <i class="fa-solid fa-folder fa-3x" id="'+ resultado[j] +'"></i>';
             html += '    <br><br>';
-            html += '    <font> '+ resultado[j] +' </font>';
+            html += '    <font><b> '+ resultado[j] +' </b></font>';
             html += '</span>';
         }
         
@@ -103,7 +100,7 @@ function getBuscarOrden(respuesta)
             html += '<span class="ordenesLamina" onclick="mensajeOrden([\''+tempJson.id+'\',\''+tempJson.carpeta+'\',\''+tempJson.path+'\'])">';
             html += '    <i class="fa-solid fa-file-pdf fa-3x"></i>';
             html += '    <br><br>';
-            html += '    <font> '+tempJson.path+' </font>';
+            html += '    <font><b> '+tempJson.path+'</b></font>';
             html += '</span>';
         }
         
@@ -138,7 +135,6 @@ function accionMensajeOrden(index,datos)
 
     if(index == 0){
         
-
         let navegador = navigator.userAgent;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         //console.log("Estás usando un dispositivo móvil!!");

@@ -112,7 +112,7 @@ function servidor(link, miFuncion) {
         miFuncion(this);
 
       }
-      else if(this.status == 500){
+      else if (this.status == 500) {
         alerta("Error en el servidor")
       }
 
@@ -136,7 +136,7 @@ function servidorPost(link, miFuncion, data) {
         miFuncion(this);
 
       }
-      else if(this.status == 500){
+      else if (this.status == 500) {
         alerta("Error en el servidor")
       }
 
@@ -172,10 +172,14 @@ function crearObjetMensaje(codigo, contador) {
   }).then(function (index) {
     if (index == 0) {
       let navegador = navigator.userAgent;
+      var timestamp = new Date().getTime();
+      var url = 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf?timestamp=' + timestamp;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
-        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+        nextPageFunctionData('verPlano.html', verPlano, url);
       } else {
-        window.open('https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+        window.open(url, '_blank');
+
+        //window.open('https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
       }
     }  //window.open('https://empaquessr.com/sistema/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
     else if (index == 1) nextPageFunctionData('ActualizarProductos.html', setBuscarProductoActualizar, codigo); //alert("modificara "+codigo);

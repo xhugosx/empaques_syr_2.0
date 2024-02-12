@@ -1,11 +1,18 @@
 #contenedorCalendario {
-    max-width: 90%;
+    max-width: 60%;
     margin: auto;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    /* Estilos adicionales para pantallas más pequeñas */
+    #contenedorCalendario {
+        max-width: 90%;
+    }
 }
 
 #mes {
@@ -69,10 +76,20 @@
     /* Espaciado entre códigos */
 }
 
-.dia:hover {
-    opacity: 70%;
+.selected {
+    background-color: #e47878 !important;
+    color: white;
 }
-.selected{
-    background-color: #e47878;
+
+.calendario-day-header {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.dia-hoy{
+    background-color: #78b7e4;
     color: white;
 }
