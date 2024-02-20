@@ -1,18 +1,11 @@
 #contenedorCalendario {
-    max-width: 60%;
+    max-width: 85%;
     margin: auto;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin-top: 15px;
-}
-
-@media (max-width: 768px) {
-    /* Estilos adicionales para pantallas más pequeñas */
-    #contenedorCalendario {
-        max-width: 90%;
-    }
 }
 
 #mes {
