@@ -302,7 +302,7 @@ function setagregarPrograma(id)
    if(procesos == "") alerta("No haz seleccionado niguna");
    else servidor('https://empaquessr.com/sistema/php/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
 
-   //console.log('https://empaquessr.com/sistema/php/programa/add.php?id='+id+'&procesos='+procesos,getAgregarPrograma);
+   //console.log('https://empaquessr.com/sistema/php/programa/add.php?id='+id+'&procesos='+procesos);
 } 
 function getAgregarPrograma(respuesta)
 {
@@ -311,8 +311,9 @@ function getAgregarPrograma(respuesta)
     {
         alerta("Producto se agrego al programa");
         if(respuesta.responseText == 1) cerrarDialogo('my-dialog-programa');
-        else cerrarDialogo('my-dialog-programa1')
+        else cerrarDialogo('my-dialog-programa1');
         buscarDtospedidos();
+        //console.log(respuesta.responseText);
     }
     else alerta('hubo un error al insertar!'+respuesta.responseText);
     //console.log(respuesta.responseText)

@@ -20,14 +20,12 @@ function buscarDtospedidos() {
 
     setPedidosInsertos();
 
-    //$("#searchPedidoCliente").val("");
-    //$("#searchPedido").val("");
-
 }
 function solicitarInfoPedido(codigo, e) {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (codigo.length == 7 || tecla == 13) {
+    if (codigo.length >= 7 || tecla == 13) {
         //funcion para solicitarInventario
+        //alerta(codigo)
         setBuscarInventario(codigo);
         //funcion para solicitar el ultimo registrado
         setBuscarProductoCliente(codigo);
@@ -39,35 +37,35 @@ function solicitarInfoPedido(codigo, e) {
 }
 //BUSQUEDA POR CLIENTE VISTA 1
 function setPedidosCliente() {
-    //var type = filtro ? 1 : 2;
-    servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getPedidosCliente);
-    //alert("https://empaquessr.com/sistema/php/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal);
-}
-function getPedidosCliente(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    let url = "https://empaquessr.com/sistema/php/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+    servidor(url, function (respuesta) {
+        var resultado = respuesta.responseText;//respuesta del servidor
+        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    $('#clientesPedidos').attr("badge", arrayJson.length - 1);
+        $('#clientesPedidos').attr("badge", arrayJson.length - 1);
 
-    listaInfinita('datosPedidosClientes', 'datosPedidosClientesLoading', arrayJson, enlistarPedidosCliente);
+        listaInfinita('datosPedidosClientes', 'datosPedidosClientesLoading', arrayJson, enlistarPedidosCliente);
+    });
 
 }
 
 //BUQUEDA POR TODOS VISTA 2
 function setBusquedaPendiente() {
-    //var type = filtro ? 1 : 2;
+
     var busqueda = $('#searchPedido').val();
-    //console.log("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal);
-    if (busqueda == "" || busqueda == undefined) servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getBusquedaPendiente);
+    if (busqueda == "" || busqueda == undefined) {
+        let url = "https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        servidor(url, function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+            $('#todoPedidos').attr("badge", arrayJson.length - 1);
+
+            listaInfinita('datosPedidos', 'datosPedidosLoading', arrayJson, enlistarPedidos);
+        });
+    }
     else setSearchPedidos(busqueda, 13);
-}
-function getBusquedaPendiente(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    $('#todoPedidos').attr("badge", arrayJson.length - 1);
-
-    listaInfinita('datosPedidos', 'datosPedidosLoading', arrayJson, enlistarPedidos);
 }
 
 //PEDIDOS FILTRADO POR CLIENTE
@@ -75,15 +73,16 @@ function setPedidosClienteFiltrado(codigo) {
     //var type = filtro ? 1 : 2;
     cliente = codigo;
     var busqueda = $('#searchPedidosClientesFiltrados').val();
-    if (busqueda == "" || busqueda == undefined) servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getPedidosClienteFiltrado);
-    else setsearchPedidosClienteFiltrado(busqueda, 13, cliente);
-}
-function getPedidosClienteFiltrado(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    if (busqueda == "" || busqueda == undefined) {
+        let url = "https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        servidor(url, function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    listaInfinita('datosPedidosClienteFiltrado', 'datosPedidosClientesLoadingFiltroLoading', arrayJson, enlistarPedidos);
-    //cliente = "";
+            listaInfinita('datosPedidosClienteFiltrado', 'datosPedidosClientesLoadingFiltroLoading', arrayJson, enlistarPedidos);
+        });
+    }
+    else setsearchPedidosClienteFiltrado(busqueda, 13, cliente);
 }
 
 //funcion para barra de busqueda pedidos
@@ -94,19 +93,19 @@ function setSearchPedidos(search, e) {
         $("#datosPedidosLoading").empty();
         $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         //var type = filtro ? 1 : 2;
+        let url = "https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        servidor(url, function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-        servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getSearchPedidos);
+
+            listaInfinita('datosPedidos', 'datosPedidosLoading', arrayJson, enlistarPedidos);
+        });
+
     }
     else if (search == "") setBusquedaPendiente();
 }
 
-function getSearchPedidos(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //resultado = enlistarPedidos(arrayJson);
-
-    listaInfinita('datosPedidos', 'datosPedidosLoading', arrayJson, enlistarPedidos);
-}
 
 // function para barra de busqueda pedidos por cliente
 
@@ -115,19 +114,17 @@ function setSearchPedidosCliente(search, e) {
     if (tecla == 13) {
         $("#datosPedidosClientesLoading").empty();
         $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        //var type = filtro ? 1 : 2;
-        //console.log("https://empaquessr.com/sistema/php/lista_pedidos/selectCliente.php?type="+type+"&search="+search);
-        servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getSearchPedidosCliente);
+        let url = "https://empaquessr.com/sistema/php/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        servidor(url, function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            listaInfinita('datosPedidosClientes', 'datosPedidosClientesLoading', arrayJson, enlistarPedidosCliente);
+        });
     }
     else if (search == "") setPedidosCliente();
 }
 
-function getSearchPedidosCliente(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosPedidosClientes', 'datosPedidosClientesLoading', arrayJson, enlistarPedidosCliente);
 
-}
 
 // funcion para buscar con cliente filtrado 
 //PEDIDOS FILTRADO POR CLIENTE
@@ -136,10 +133,8 @@ function setsearchPedidosClienteFiltrado(search, e, codigo) {
     if (tecla == 13 || e == 13) {
         $("#datosPedidosClientesLoadingFiltroLoading").empty();
         $("#datosPedidosClientesLoadingFiltroLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        //var type = filtro ? 1 : 2;
         cliente = codigo;
-        //console.log("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?type="+type+"&cliente="+agregarCeros(codigo)+"&search="+search);
-        servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal, getSearchPedidosClienteFiltrado);
+        servidor("https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal, getSearchPedidosClienteFiltrado);
     }
     else if (search == "") setPedidosClienteFiltrado(codigo);
 }
@@ -543,16 +538,14 @@ function resetearFiltroPedidos() {
 
 function llenarAnio() {
     document.getElementById('currentYear').value = anioGlobal;
-   
-   
+
+
 }
-function sumarAnioFiltro()
-{
+function sumarAnioFiltro() {
     anioGlobal++;
     document.getElementById('currentYear').value = anioGlobal; //console.log(anioGlobal);
 }
-function restarAnioFiltro()
-{
+function restarAnioFiltro() {
     anioGlobal--;
     document.getElementById('currentYear').value = anioGlobal; //console.log(anioGlobal);
 }

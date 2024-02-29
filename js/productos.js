@@ -226,8 +226,8 @@ function getDescargarProductosExcel(dato) {
 
     if (dato === null) alerta("Espacio vacio! / Cancelado");
     else {
-
-        if (dato.length !== 3) alerta("Codigo escrito incorrectamente (Asegurate de que sean 3 digitos)");
+        //alert(dato.length);
+        if (dato.length < 3) alerta("Codigo escrito incorrectamente (Asegurate de que sean mas de 3 digitos)");
         else servidor('https://empaquessr.com/sistema/php/productos/selectSheets.php?&search=' + dato, getProductosExcel);
 
     }

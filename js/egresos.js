@@ -213,7 +213,7 @@ function getEliminarEgreso(respuesta)
 function enlitsarEgreso(arrayJson,i)
 {
   let html1 = "";
-  
+  if(arrayJson == 0) return "<div></div>";
   html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="mesIngreso='+(i+1)+'; nextPageFunctionData(\'egresoMensual.html\',setMesEgreso,mesIngreso);"> ';
   html1 += '    <ons-list-item class="" modifier="nodivider chevron">'; 
   html1 += '        <div class="left"> ';

@@ -122,8 +122,8 @@ function setBuscarIngreso(id) {
 }
 function getBuscarIngreso(respuesta) {
   var json = JSON.parse(respuesta.responseText);
-  let arrayCodigos = json.codigos.split(",");
-  let arrayClientes = json.clientes.split(",");
+  let arrayCodigos = json.codigos.split("@");
+  let arrayClientes = json.clientes.split("@");
   for (let i = 0; i < arrayCodigos.length; i++) {
     html = '<option value="' + arrayCodigos[i] + '">' + agregarCeros(arrayCodigos[i]) + ' ' + arrayClientes[i] + '</option>';
 
@@ -173,7 +173,7 @@ function getModificarIngreso(respuesta) {
 
 function enlitsarIngreso(arrayJson, i) {
   let html1 = "";
-
+  if(arrayJson == 0) return "<div></div>";
   html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'ingresosMensual.html\',setMesIngreso,' + (i + 1) + ');mesIngreso=' + (i + 1) + '"> ';
   html1 += '    <ons-list-item class="" modifier="nodivider chevron">';
   html1 += '        <div class="left"> ';

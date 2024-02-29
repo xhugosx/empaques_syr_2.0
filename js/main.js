@@ -173,7 +173,10 @@ function crearObjetMensaje(codigo, contador) {
     if (index == 0) {
       let navegador = navigator.userAgent;
       var timestamp = new Date().getTime();
-      var url = 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf?timestamp=' + timestamp;
+      let codigos = codigo.split("/");
+      let codigo1 = codigos[0];
+      let codigo2 = codigos[1];
+      var url = 'https://empaquessr.com/sistema/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         nextPageFunctionData('verPlano.html', verPlano, url);
       } else {
@@ -222,11 +225,16 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
     }
     else if (index == 2) {
       let navegador = navigator.userAgent;
+      var timestamp = new Date().getTime();
+      let codigos = codigo.split("/");
+      let codigo1 = codigos[0];
+      let codigo2 = codigos[1];
+      var url = 'https://empaquessr.com/sistema/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         //console.log("Estás usando un dispositivo móvil!!");
-        nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
+        nextPageFunctionData('verPlano.html', verPlano, url);
       } else {
-        window.open('https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+        window.open(url, '_blank');
       }
       //window.open('https://empaquessr.com/sistema/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
 
@@ -288,7 +296,6 @@ function crearObjetMensajePedidoInserto(id, codigo, estado, notas) {
     cancelable: true,
     buttons: [
       '<b>Programar<b/>',
-      'Ver Plano',
       'Notas',
       'Modificar',
       {
@@ -302,10 +309,9 @@ function crearObjetMensajePedidoInserto(id, codigo, estado, notas) {
       else if (estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?", setLlenarProcesoPrograma, [id, 0]);
       else alerta("Pedido ya se encuentra en inventario");
     }
-    else if (index == 1) nextPageFunctionData('verPlano.html', verPlano, 'https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf');
-    else if (index == 2) alerta("<b>Notas: </b><br><br>" + notas);
-    else if (index == 3) nextPageFunctionData('pedidosInsertoModificar.html', setModificarBuscarPedidoInserto, id); //alert("modificara "+codigo);
-    else if (index == 4) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedidoInserto, id);
+    else if (index == 1) alerta("<b>Notas: </b><br><br>" + notas);
+    else if (index == 2) nextPageFunctionData('pedidosInsertoModificar.html', setModificarBuscarPedidoInserto, id); //alert("modificara "+codigo);
+    else if (index == 3) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedidoInserto, id);
 
   });
 }

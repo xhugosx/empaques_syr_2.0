@@ -1727,7 +1727,7 @@
 
     <!--PEDIDOS LAMINAS-->
     <template id="pedidosLamina.html">
-        <ons-page>
+        <ons-page id="pedidosLamina">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Laminas</div>
@@ -2454,14 +2454,14 @@
                         onkeyup="buscarEntradaSalidaLamina(this.value,event)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
-            <br>
-            <div class="separacion">PCM</div>
+            <hr>
+            <span class="tituloOrden">PCM</span>
             <hr>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
             </ons-list>
-            <br>
-            <div class="separacion">PACK</div>
+            <hr>
+            <span class="tituloOrden">PACK</span>
             <hr>
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario1"></ons-lazy-repeat>

@@ -1,4 +1,14 @@
 var filtroLamina = false;
+
+document.addEventListener('init', function (event) {
+    var page = event.target;
+
+    if (page.id === 'pedidosLamina') {
+        //sesto para reiniciar el filtro a false
+        filtroLamina = false;
+    }
+});
+
 function asignarFiltroLamina(valor) {
     filtroLamina = valor.checked;
     mostrarTodoPedidosLamina()
