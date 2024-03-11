@@ -79,7 +79,7 @@ function getMostrarInventario(respuesta) {
 //ACTUALIZAR INVENTARIO DE CAJAS
 function setActualizarSalida(salida, cantidad, id) {
     var codigo = id.split("-");
-    if (codigo[0].length == 7)
+    if (codigo[0].length >= 7)
         servidor("https://empaquessr.com/sistema/php/inventario/updateSalida.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
     else servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaInserto.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
     //console.log("entro aqui",codigo,cantidad);

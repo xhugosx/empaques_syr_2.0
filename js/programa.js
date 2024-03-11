@@ -176,7 +176,7 @@ function setProcesosProgramaEntradaPedido(id,cantidad)
 {
     //id es id de lista de pedidos
     var codigo = id.split("-");
-    if(codigo[0].length == 7) 
+    if(codigo[0].length >= 7) 
     servidor('https://empaquessr.com/sistema/php/programa/procesosEntradaProgramaPedido.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
     else servidor('https://empaquessr.com/sistema/php/programa/procesosEntradaProgramaPedidoInserto.php?id='+id+'&cantidad='+cantidad,getProcesosProgramaEntradaPedido);
     
@@ -195,7 +195,7 @@ function getProcesosProgramaEntradaPedido(respuesta)
 function setAgregarFaltante(json)
 {
     var codigo = (json.id).split("-");
-    if(codigo[0].length == 7) 
+    if(codigo[0].length >= 7) 
     servidor('https://empaquessr.com/sistema/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=',getAgregarFaltante);
     else servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/add.php?id="+json.id+"-F&codigo="+json.codigo+"&resistencia="+json.resistencia+"&cantidad="+json.cantidad+"&observaciones="+json.observaciones,getAgregarFaltante);
 }
