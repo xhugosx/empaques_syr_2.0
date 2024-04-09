@@ -56,7 +56,7 @@ function getMostrarInventarioPedidosInserto(respuesta) {
 //BUSQUEDA DE INVENTARIO
 function setMostrarInventarioSearch(search, e) {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13) {
+    if (tecla == 13 || e == 13) {
         $("#cajaInventarioLoading").empty();
         $("#cajaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         servidor("https://empaquessr.com/sistema/php/inventario/select.php?search=" + search, getMostrarInventario);
