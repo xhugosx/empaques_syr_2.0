@@ -251,14 +251,17 @@ function enlistarPedidosLamina(arrayJson) {
       <div class="center romperTexto">
         <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
         ${arrayJson.producto !== "" ? span : ""}
+        ${arrayJson.observaciones !== "" ? " <strong> Observaciones: </strong>&nbsp;" + arrayJson.observaciones : ""}
       </div>
       <div class="right">
         <div class="centrar">
           <span class="notification"><font size="2px">${separator(arrayJson.pzas_ordenadas)} pza(s)</font></span>
         </div>
       </div>
-    </ons-list-item>
-  </ons-card>
+      <div>hola</div>
+      </ons-list-item>
+      </ons-card>
+      
 `;
 
     return html1;
