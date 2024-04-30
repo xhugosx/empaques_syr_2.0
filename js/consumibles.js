@@ -10,7 +10,7 @@ function setMostrarConsumibleSearch(search, e) {
     if (tecla == 13 || e == 13) {
         $("#consumibleLoading").empty();
         $("#consumibleLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/select.php?search=' + search, getConsumibles);
+        servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/select.php?search=' + search, getConsumibles);
     }
     else if (search == "") {
         $("#consumibleLoading").empty();
@@ -27,7 +27,7 @@ function setMostrarConsumible0Search(search, e) {
     if (tecla == 13 || e == 13) {
         $("#consumible0Loading").empty();
         $("#consumible0Loading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/selectSinExistencia.php?search=' + search, getConsumible0);
+        servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/selectSinExistencia.php?search=' + search, getConsumible0);
     }
     else if (search == "") {
         $("#consumible0Loading").empty();
@@ -40,7 +40,7 @@ function setMostrarConsumible0Search(search, e) {
 //funcion para buscar ambos consultas de consumibles
 function setConsumible0() {
     var busqueda = $('#searchConsumible0').val();
-    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/selectSinExistencia.php', getConsumible0);
+    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/selectSinExistencia.php', getConsumible0);
     else setMostrarConsumible0Search(busqueda, 13);
 }
 function getConsumible0(respuesta) {
@@ -55,7 +55,7 @@ function getConsumible0(respuesta) {
 //mostrar inventario consumibles
 function setConsumible() {
     var busqueda = $('#searchConsumible').val();
-    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/select.php', getConsumibles);
+    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/select.php', getConsumibles);
     else setMostrarConsumibleSearch(busqueda, 13);
 }
 function getConsumibles(respuesta) {
@@ -72,7 +72,7 @@ function setAgregarConsumible() {
     let descripcion = ($('#descripcion').val()).toUpperCase();
     let cantidad = $('#cantidad').val();
     if (datoVacio(descripcion) && datoVacio(cantidad)) {
-        servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/add.php?&descripcion=' + descripcion + '&cantidad=' + cantidad, getAgregarConsumible);
+        servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/add.php?&descripcion=' + descripcion + '&cantidad=' + cantidad, getAgregarConsumible);
     }
     else alerta("Espacios vacios!");
 
@@ -89,7 +89,7 @@ function getAgregarConsumible(respuesta) {
 
 //eliminar consumible
 function setEliminarConsumible(id) {
-    servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/delete.php?id=' + id, getEliminarConsumible)
+    servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/delete.php?id=' + id, getEliminarConsumible)
 }
 function getEliminarConsumible(respuesta) {
     if (respuesta.responseText == "1") {
@@ -104,7 +104,7 @@ function getEliminarConsumible(respuesta) {
 
 function setActualizarConsumible(id) {
     let cantidad = $('#salidaConsumible').val();
-    if (cantidad >= 0) servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/update.php?id=' + id + '&cantidad=' + cantidad, getActualizarConsumible);
+    if (cantidad >= 0) servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/update.php?id=' + id + '&cantidad=' + cantidad, getActualizarConsumible);
     else alerta("No puede ser menor a 0");
 }
 function getActualizarConsumible(respuesta) {
@@ -121,7 +121,7 @@ function getActualizarConsumible(respuesta) {
 
 function setActualizarConsumibleDes(id) {
     let descripcion = $('#salidaConsumibleDes').val().toUpperCase();
-    if (vacio(descripcion)) servidor('https://empaquessr.com/sistema/php/cinthya/consumibles/updateDes.php?id=' + id + '&descripcion=' + descripcion, getActualizarConsumibleDes);
+    if (vacio(descripcion)) servidor('https://empaquessr.com/sistema/cinthya/php/consumibles/updateDes.php?id=' + id + '&descripcion=' + descripcion, getActualizarConsumibleDes);
     else alerta("No puede estar vacio");
 }
 function getActualizarConsumibleDes(respuesta) {

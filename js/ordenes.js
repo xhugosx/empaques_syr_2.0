@@ -30,8 +30,8 @@ function setAgregarOrden()
         var michelle = $('#michelle').prop('checked');
 
         var carpeta = michelle ? $('#yearOrden').text() + "-M" : $('#yearOrden').text();
-        //console.log('https://empaquessr.com/sistema/php/cinthya/ordenes/add.php?year='+carpeta,michelle);
-        servidorPost('https://empaquessr.com/sistema/php/cinthya/ordenes/add.php?year='+carpeta,getAgregarOrden,formData);
+        //console.log('https://empaquessr.com/sistema/cinthya/php/ordenes/add.php?year='+carpeta,michelle);
+        servidorPost('https://empaquessr.com/sistema/cinthya/php/ordenes/add.php?year='+carpeta,getAgregarOrden,formData);
     }
     else alerta("Espacios en blanco");
 }
@@ -49,7 +49,7 @@ function getAgregarOrden(respuesta)
 
 function setBuscarAnio()
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/ordenes/selectAnio.php",getBuscarAnio)
+    servidor("https://empaquessr.com/sistema/cinthya/php/ordenes/selectAnio.php",getBuscarAnio)
 }
 function getBuscarAnio(respuesta)
 {
@@ -81,7 +81,7 @@ function getBuscarAnio(respuesta)
 
 function setBuscarOrden(anio)
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/ordenes/select.php?year="+anio,getBuscarOrden)
+    servidor("https://empaquessr.com/sistema/cinthya/php/ordenes/select.php?year="+anio,getBuscarOrden)
 }
 function getBuscarOrden(respuesta)
 {
@@ -112,7 +112,7 @@ function getBuscarOrden(respuesta)
 
 function setEliminarOrden(id)
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/ordenes/delete.php?id="+id,getEliminarOrden)
+    servidor("https://empaquessr.com/sistema/cinthya/php/ordenes/delete.php?id="+id,getEliminarOrden)
 }
 function getEliminarOrden(respuesta)
 {

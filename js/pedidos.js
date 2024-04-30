@@ -37,7 +37,7 @@ function solicitarInfoPedido(codigo, e) {
 }
 //BUSQUEDA POR CLIENTE VISTA 1
 function setPedidosCliente() {
-    let url = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+    let url = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
     servidor(url, function (respuesta) {
         var resultado = respuesta.responseText;//respuesta del servidor
         var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -54,7 +54,7 @@ function setBusquedaPendiente() {
 
     var busqueda = $('#searchPedido').val();
     if (busqueda == "" || busqueda == undefined) {
-        let url = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -74,7 +74,7 @@ function setPedidosClienteFiltrado(codigo) {
     cliente = codigo;
     var busqueda = $('#searchPedidosClientesFiltrados').val();
     if (busqueda == "" || busqueda == undefined) {
-        let url = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -93,7 +93,7 @@ function setSearchPedidos(search, e) {
         $("#datosPedidosLoading").empty();
         $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         //var type = filtro ? 1 : 2;
-        let url = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -114,7 +114,7 @@ function setSearchPedidosCliente(search, e) {
     if (tecla == 13) {
         $("#datosPedidosClientesLoading").empty();
         $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let url = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -134,7 +134,7 @@ function setsearchPedidosClienteFiltrado(search, e, codigo) {
         $("#datosPedidosClientesLoadingFiltroLoading").empty();
         $("#datosPedidosClientesLoadingFiltroLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         cliente = codigo;
-        servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal, getSearchPedidosClienteFiltrado);
+        servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal, getSearchPedidosClienteFiltrado);
     }
     else if (search == "") setPedidosClienteFiltrado(codigo);
 }
@@ -183,11 +183,11 @@ function setAgregarPedido() {
 
                 }
                 setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas);
-                servidor('https://empaquessr.com/sistema/php/cinthya/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
+                servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
             }
             else alerta("Espacios vacios en insertos")
         }
-        else servidor('https://empaquessr.com/sistema/php/cinthya/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
+        else servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
     }
     else alerta('Espacios vacios en producto! <br>(No escribir "CEROS")');
 }
@@ -206,7 +206,7 @@ function setBuscarProductoCliente(codigo) {
     $("#pedidoCliente").val("Buscando...");
     $("#botonAgregarPedido").attr('disabled', true);
 
-    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectProductoCliente.php?search=" + codigo, getBuscarProductoCliente);
+    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectProductoCliente.php?search=" + codigo, getBuscarProductoCliente);
 
 }
 function getBuscarProductoCliente(respuesta) {
@@ -237,7 +237,7 @@ function getBuscarProductoCliente(respuesta) {
 
 }
 function setBuscarInventario(codigo) {
-    servidor('https://empaquessr.com/sistema/php/cinthya/inventario/select.php?search=' + codigo, getBuscarInventario)
+    servidor('https://empaquessr.com/sistema/cinthya/php/inventario/select.php?search=' + codigo, getBuscarInventario)
 }
 function getBuscarInventario(respuesta) {
     if (respuesta.responseText != "") {
@@ -251,7 +251,7 @@ function getBuscarInventario(respuesta) {
 }
 //eliminar pedido
 function setEliminarPedido(id) {
-    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/delete.php?id=" + id, getEliminarpedido);
+    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/delete.php?id=" + id, getEliminarpedido);
 }
 function getEliminarpedido(respuesta) {
     if (respuesta.responseText == 1) {
@@ -264,8 +264,8 @@ function getEliminarpedido(respuesta) {
 //buscar modificar pedido
 function setModificarBuscarPedido(id) {
     //var type = filtro ? 1 : 2;
-    //console.log("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?type="+type+"&search="+id);
-    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAllEditar.php?id=" + id, getModificarBuscarPedido);
+    //console.log("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAll.php?type="+type+"&search="+id);
+    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAllEditar.php?id=" + id, getModificarBuscarPedido);
 
 }
 function getModificarBuscarPedido(respuesta) {
@@ -301,7 +301,7 @@ function setModificarPedido() {
     var observaciones = $("#pedidoModificarObservaciones").val();
 
     if (datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha)) {
-        servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
+        servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
 
@@ -320,7 +320,7 @@ function getModificarPedido(respuesta) {
 function setActualizarEstadoPedido(datos) {
     let id = datos[0];
     let estado = datos[1];
-    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedido);
+    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedido);
 }
 function setActualizarEstadoPedido2(datos) {
     let id = datos[0];
@@ -328,7 +328,7 @@ function setActualizarEstadoPedido2(datos) {
     let factura = datos[2];
     let cantidad = datos[3];
     let fecha = datos[4];
-    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado + "&factura=" + factura + "&cantidad=" + cantidad + "&fecha=" + fecha, getActulizarestadoPedido);
+    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado + "&factura=" + factura + "&cantidad=" + cantidad + "&fecha=" + fecha, getActulizarestadoPedido);
 
 }
 function getActulizarestadoPedido(respuesta) {

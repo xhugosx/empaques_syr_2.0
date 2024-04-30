@@ -5,7 +5,7 @@ function setEditarCantidadEntradaP()
 {
     let cantidad = $("#cantidad").val();
     let id = $("#id").val();
-    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/php/cinthya/entrada/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaP);
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/cinthya/php/entrada/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaP);
     else alerta("Datos vacios"); 
 }
 function getEditarCantidadEntradaP(respuesta)
@@ -26,7 +26,7 @@ function setEditarCantidadEntradaI()
 {
     let cantidad = $("#cantidadI").val();
     let id = $("#idI").val();
-    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/php/cinthya/entrada/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaI);
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/cinthya/php/entrada/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaI);
     else alerta("Datos vacios"); 
     
 }
@@ -56,7 +56,7 @@ function mostrarTodoEntrada()
 //MOSTRAR ENTRADA INSERTO 
 function setMostrarEntradaInserto()
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/entrada/inserto/select.php",getMostrarEntradaInserto)
+    servidor("https://empaquessr.com/sistema/cinthya/php/entrada/inserto/select.php",getMostrarEntradaInserto)
 }
 function getMostrarEntradaInserto(respuesta)
 {
@@ -69,11 +69,11 @@ function getMostrarEntradaInserto(respuesta)
 //MOSTRAR ENTRADA LAMINA
 function setMostrarEntradalaminaSearch(search)
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/entrada/lamina/select.php?search="+search,getMostrarEntradaLamina)
+    servidor("https://empaquessr.com/sistema/cinthya/php/entrada/lamina/select.php?search="+search,getMostrarEntradaLamina)
 }
 function setMostrarEntradaLamina()
 {
-    servidor('https://empaquessr.com/sistema/php/cinthya/entrada/lamina/select.php',getMostrarEntradaLamina)
+    servidor('https://empaquessr.com/sistema/cinthya/php/entrada/lamina/select.php',getMostrarEntradaLamina)
 }
 function getMostrarEntradaLamina(respuesta)
 { 
@@ -87,15 +87,15 @@ function getMostrarEntradaLamina(respuesta)
 }
 function setMostrarEntradaCajasSearch(search)
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/entrada/caja/select.php?search="+search,getMostrarEntradaCajas);
+    servidor("https://empaquessr.com/sistema/cinthya/php/entrada/caja/select.php?search="+search,getMostrarEntradaCajas);
 }
 function setMostrarEntradaInsertoSearch(search)
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/entrada/inserto/select.php?search="+search,getMostrarEntradaInserto);
+    servidor("https://empaquessr.com/sistema/cinthya/php/entrada/inserto/select.php?search="+search,getMostrarEntradaInserto);
 }
 function setMostrarEntradaCajas()
 {
-    servidor("https://empaquessr.com/sistema/php/cinthya/entrada/caja/select.php",getMostrarEntradaCajas)
+    servidor("https://empaquessr.com/sistema/cinthya/php/entrada/caja/select.php",getMostrarEntradaCajas)
 }
 function getMostrarEntradaCajas(respuesta)
 {
@@ -106,7 +106,7 @@ function getMostrarEntradaCajas(respuesta)
 }
 function setEliminarEntrada(id)
 {
-    servidor('https://empaquessr.com/sistema/php/cinthya/entrada/caja/delete.php?id='+id,getEliminarEntrada);
+    servidor('https://empaquessr.com/sistema/cinthya/php/entrada/caja/delete.php?id='+id,getEliminarEntrada);
 }
 function getEliminarEntrada(respuesta)
 {
