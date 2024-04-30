@@ -6,9 +6,9 @@ function setProductos() {
     $('#loadingProductos').empty();
     $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
     var busqueda = $('#busquedaProductos1').val();
-    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/productos/select.php?type=2', getProductos);
+    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/cinthya/productos/select.php?type=2', getProductos);
     else setProductosBarraBusqueda(busqueda, 13);
-    //servidor('https://empaquessr.com/sistema/php/productos/select.php?type=2',getProductos);
+    //servidor('https://empaquessr.com/sistema/php/cinthya/productos/select.php?type=2',getProductos);
 }
 function getProductos(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -25,7 +25,7 @@ function setEliminarProducto(producto, i) {
     agregarClaseProducto(i);
 
     setTimeout(function () {
-        servidor('https://empaquessr.com/sistema/php/productos/delete.php?codigo=' + producto, getEliminarProducto)
+        servidor('https://empaquessr.com/sistema/php/cinthya/productos/delete.php?codigo=' + producto, getEliminarProducto)
     }, 1500);
 
 
@@ -52,7 +52,7 @@ function setAgregarProducto() {
             var form = $('#formProducto')[0];
             var formData = new FormData(form);
 
-            servidorPost('https://empaquessr.com/sistema/php/productos/add.php', getAgregarProducto, formData);
+            servidorPost('https://empaquessr.com/sistema/php/cinthya/productos/add.php', getAgregarProducto, formData);
             //alerta("el archivo si coiciden");
         }
         else alerta("El Archivo no coicide con el codigo del producto");
@@ -87,7 +87,7 @@ function setActualizarProducto() {
         $("#codigoProductoActualizar").prop('disabled', false);
         var form = $('#formProductoActualizar')[0];
         var formData = new FormData(form);
-        servidorPost('https://empaquessr.com/sistema/php/productos/update.php', getActualizarProducto, formData);
+        servidorPost('https://empaquessr.com/sistema/php/cinthya/productos/update.php', getActualizarProducto, formData);
     }
     else alerta("Espacios en blanco");
 
@@ -102,7 +102,7 @@ function getActualizarProducto(respuesta) {
 
 }
 function setBuscarProductoActualizar(codigo) {
-    servidor('https://empaquessr.com/sistema/php/productos/select.php?type=3&search=' + codigo, getBuscarProductoActualizar);
+    servidor('https://empaquessr.com/sistema/php/cinthya/productos/select.php?type=3&search=' + codigo, getBuscarProductoActualizar);
 }
 function getBuscarProductoActualizar(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -134,7 +134,7 @@ function setProductosBarraBusqueda(busqueda, e) {
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla == 13 || e == 13) {
         $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessr.com/sistema/php/productos/select.php?type=3&search=' + busqueda, getProductosBarraBusqueda);
+        servidor('https://empaquessr.com/sistema/php/cinthya/productos/select.php?type=3&search=' + busqueda, getProductosBarraBusqueda);
     }
 
 }
@@ -228,7 +228,7 @@ function getDescargarProductosExcel(dato) {
     else {
         //alert(dato.length);
         if (dato.length < 3) alerta("Codigo escrito incorrectamente (Asegurate de que sean mas de 3 digitos)");
-        else servidor('https://empaquessr.com/sistema/php/productos/selectSheets.php?&search=' + dato, getProductosExcel);
+        else servidor('https://empaquessr.com/sistema/php/cinthya/productos/selectSheets.php?&search=' + dato, getProductosExcel);
 
     }
 }

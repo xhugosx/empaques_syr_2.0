@@ -9,8 +9,8 @@ function setIngresoMensualCliente(datos) {
   $('#loadingIngresoMesCliente').append("<ons-progress-bar indeterminate></ons-progress-bar>");
   let anio = $("#anioG").text();
 
-  //console.log("https://empaquessr.com/sistema/php/ingresos/ingresoMensualCliente.php?anio="+anio+"&mes="+mes+"&cliente="+cliente);
-  servidor("https://empaquessr.com/sistema/php/ingresos/ingresoMensualCliente.php?anio=" + anio + "&mes=" + mes + "&cliente=" + cliente, getIngresoMensualCliente);
+  //console.log("https://empaquessr.com/sistema/php/cinthya/ingresos/ingresoMensualCliente.php?anio="+anio+"&mes="+mes+"&cliente="+cliente);
+  servidor("https://empaquessr.com/sistema/php/cinthya/ingresos/ingresoMensualCliente.php?anio=" + anio + "&mes=" + mes + "&cliente=" + cliente, getIngresoMensualCliente);
 }
 function getIngresoMensualCliente(respuesta) {
   let resultado = respuesta.responseText;
@@ -26,7 +26,7 @@ function setMesIngreso(mes) {
   let anio = $("#anioG").text();
   mes = mes ? mes : mesIngreso;
   //console.log(anio,mes);
-  servidor("https://empaquessr.com/sistema/php/ingresos/ingresoMensual.php?anio=" + anio + "&mes=" + mes, getMesIngreso);
+  servidor("https://empaquessr.com/sistema/php/cinthya/ingresos/ingresoMensual.php?anio=" + anio + "&mes=" + mes, getMesIngreso);
 }
 function getMesIngreso(respuesta) {
   let resultado = respuesta.responseText;
@@ -41,7 +41,7 @@ function setIngresos() {
   $("#loadingIngreso").empty();
   $('#loadingIngreso').append("<ons-progress-bar indeterminate></ons-progress-bar>");
   var anio = $("#anioG").text();
-  servidor('https://empaquessr.com/sistema/php/ingresos/ingresoTotal.php?anio=' + anio, getIngresos);
+  servidor('https://empaquessr.com/sistema/php/cinthya/ingresos/ingresoTotal.php?anio=' + anio, getIngresos);
 }
 function getIngresos(respuesta) {
   let resultado = respuesta.responseText;
@@ -62,7 +62,7 @@ function getIngresos(respuesta) {
 
 //FUNCION PARA LLENAR SELECT DE AGREGAR INGRESO
 function setIngresoClientes() {
-  servidor("https://empaquessr.com/sistema/php/clientes/select.php?type=2", getIngresoClientes)
+  servidor("https://empaquessr.com/sistema/php/cinthya/clientes/select.php?type=2", getIngresoClientes)
 }
 function getIngresoClientes(respuesta) {
   let resultado = respuesta.responseText;
@@ -88,7 +88,7 @@ function setAgregarIngreso() {
   var metodoPago = $('#metodo').val();
 
   if (vacio(cliente, fecha, factura, importe, metodoPago)) {
-    servidorPost("https://empaquessr.com/sistema/php/ingresos/add.php", getAgregarIngreso, formData);
+    servidorPost("https://empaquessr.com/sistema/php/cinthya/ingresos/add.php", getAgregarIngreso, formData);
   }
   else alerta("Espacios vacios!");
 
@@ -106,7 +106,7 @@ function getAgregarIngreso(respuesta) {
 }
 //esta funcion es para eliminar la factura
 function setEliminarIngreso(id) {
-  servidor("https://empaquessr.com/sistema/php/ingresos/delete.php?id=" + id, getEliminarIngreso);
+  servidor("https://empaquessr.com/sistema/php/cinthya/ingresos/delete.php?id=" + id, getEliminarIngreso);
 }
 function getEliminarIngreso(respuesta) {
   if (respuesta.responseText == 1) {
@@ -118,7 +118,7 @@ function getEliminarIngreso(respuesta) {
 }
 //esta funcion es para buscar y rellenar los input
 function setBuscarIngreso(id) {
-  servidor("https://empaquessr.com/sistema/php/ingresos/select.php?id=" + id, getBuscarIngreso);
+  servidor("https://empaquessr.com/sistema/php/cinthya/ingresos/select.php?id=" + id, getBuscarIngreso);
 }
 function getBuscarIngreso(respuesta) {
   var json = JSON.parse(respuesta.responseText);
@@ -154,7 +154,7 @@ function setModificarIngreso() {
   var id = $('#id').val();
 
   if (vacio(cliente, fecha, factura, importe, metodoPago)) {
-    servidorPost("https://empaquessr.com/sistema/php/ingresos/update.php?id=" + id, getModificarIngreso, formData);
+    servidorPost("https://empaquessr.com/sistema/php/cinthya/ingresos/update.php?id=" + id, getModificarIngreso, formData);
   }
   else alerta("Espacios vacios!");
 

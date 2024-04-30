@@ -14,7 +14,7 @@ function setMostrarInventarioInsertoSearch(search, e) {
     if (tecla == 13 || e == 13) {
         $("#insertoInventarioLoading").empty();
         $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor("https://empaquessr.com/sistema/php/inventario/selectInsertoAll.php?search=" + search, getMostrarInventarioInserto);
+        servidor("https://empaquessr.com/sistema/php/cinthya/inventario/selectInsertoAll.php?search=" + search, getMostrarInventarioInserto);
     }
     else if (search == "") setMostrarInventarioInserto();
 }
@@ -24,7 +24,7 @@ function setMostrarInventarioInserto() {
     $("#insertoInventarioLoading").empty();
     $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
     var busqueda = $('#searchInsertoInventario').val();
-    if (busqueda == "" || busqueda == undefined) servidor("https://empaquessr.com/sistema/php/inventario/selectInsertoAll.php", getMostrarInventarioInserto);
+    if (busqueda == "" || busqueda == undefined) servidor("https://empaquessr.com/sistema/php/cinthya/inventario/selectInsertoAll.php", getMostrarInventarioInserto);
     else {
         //alerta("entro");
         setMostrarInventarioInsertoSearch(busqueda, 13);
@@ -44,7 +44,7 @@ function getMostrarInventarioInserto(respuesta) {
 function setMostrarInventarioPedidosInserto(array) {
     codigoCliente = array[0];
     insertoGlobal = array[1];
-    servidor('https://empaquessr.com/sistema/php/inventario/selectCodigoInserto.php?codigo=' + array[0] + '&inserto=' + array[1], getMostrarInventarioPedidosInserto);
+    servidor('https://empaquessr.com/sistema/php/cinthya/inventario/selectCodigoInserto.php?codigo=' + array[0] + '&inserto=' + array[1], getMostrarInventarioPedidosInserto);
 }
 
 function getMostrarInventarioPedidosInserto(respuesta) {
@@ -59,7 +59,7 @@ function setMostrarInventarioSearch(search, e) {
     if (tecla == 13 || e == 13) {
         $("#cajaInventarioLoading").empty();
         $("#cajaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor("https://empaquessr.com/sistema/php/inventario/select.php?search=" + search, getMostrarInventario);
+        servidor("https://empaquessr.com/sistema/php/cinthya/inventario/select.php?search=" + search, getMostrarInventario);
     }
     else if (search == "") setMostrarInventario();
 }
@@ -67,7 +67,7 @@ function setMostrarInventarioSearch(search, e) {
 //MOSTRAR INVENTARIO DE CAJAS
 function setMostrarInventario() {
     var busqueda = $('#searchCajaInventario').val();
-    if (busqueda == "") servidor("https://empaquessr.com/sistema/php/inventario/select.php", getMostrarInventario);
+    if (busqueda == "") servidor("https://empaquessr.com/sistema/php/cinthya/inventario/select.php", getMostrarInventario);
     else setMostrarInventarioSearch(busqueda, 13);
 }
 function getMostrarInventario(respuesta) {
@@ -80,8 +80,8 @@ function getMostrarInventario(respuesta) {
 function setActualizarSalida(salida, cantidad, id) {
     var codigo = id.split("-");
     if (codigo[0].length >= 7)
-        servidor("https://empaquessr.com/sistema/php/inventario/updateSalida.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
-    else servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaInserto.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
+        servidor("https://empaquessr.com/sistema/php/cinthya/inventario/updateSalida.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
+    else servidor("https://empaquessr.com/sistema/php/cinthya/inventario/updateSalidaInserto.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
     //console.log("entro aqui",codigo,cantidad);
 }
 function getActualizarSalida(respuesta) {
@@ -102,7 +102,7 @@ function setSalidaTotal(codigo) {
         message: "Se dará salida a todo el inventario",
         buttonLabels: ['SI', 'NO'],
         callback: function (idx) {
-            if (idx == 0) servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaTodo.php?codigo=" + codigo, getActualizarSalida);;
+            if (idx == 0) servidor("https://empaquessr.com/sistema/php/cinthya/inventario/updateSalidaTodo.php?codigo=" + codigo, getActualizarSalida);;
         }
     });
 
@@ -115,7 +115,7 @@ function setSalidaTotalInserto(codigo, inserto) {
         message: "Se dará salida a todo el inventario",
         buttonLabels: ['SI', 'NO'],
         callback: function (idx) {
-            if (idx == 0) servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaTodoInserto.php?codigo=" + codigo + "&inserto=" + inserto, getActualizarSalida);;
+            if (idx == 0) servidor("https://empaquessr.com/sistema/php/cinthya/inventario/updateSalidaTodoInserto.php?codigo=" + codigo + "&inserto=" + inserto, getActualizarSalida);;
         }
     });
 
@@ -123,7 +123,7 @@ function setSalidaTotalInserto(codigo, inserto) {
 //MOSTRAR INVENTARIO DE PEDIDOS DE CAJAS ESPECIFICOS
 function setMostrarInventarioPedidos(codigo) {
     codigoCliente = codigo;
-    servidor('https://empaquessr.com/sistema/php/inventario/selectCodigo.php?codigo=' + codigo, getMostrarInventarioPedidos);
+    servidor('https://empaquessr.com/sistema/php/cinthya/inventario/selectCodigo.php?codigo=' + codigo, getMostrarInventarioPedidos);
 }
 
 function getMostrarInventarioPedidos(respuesta) {
@@ -139,7 +139,7 @@ function setMostrarInventarioPedidosLaminaSearch(search, e) {
     if (tecla == 13 || e == 13) {
         $("#laminaInventarioLoading").empty();
         $("#laminaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessr.com/sistema/php/inventario/selectLamina.php?search=' + search, getMostrarInventarioPedidosLamina);
+        servidor('https://empaquessr.com/sistema/php/cinthya/inventario/selectLamina.php?search=' + search, getMostrarInventarioPedidosLamina);
     }
     else if (search == "") setMostrarInventarioPedidosLamina();
 }
@@ -148,7 +148,7 @@ function setMostrarInventarioPedidosLaminaSearch(search, e) {
 function setMostrarInventarioPedidosLamina() {
     //codigoCliente = codigo;
     var busqueda = $('#searchLaminaInventario').val();
-    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/inventario/selectLamina.php', getMostrarInventarioPedidosLamina);
+    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/php/cinthya/inventario/selectLamina.php', getMostrarInventarioPedidosLamina);
     else setMostrarInventarioPedidosLaminaSearch(busqueda, 13);
     //console.log(busqueda);
 }
@@ -165,7 +165,7 @@ function getMostrarInventarioPedidosLamina(respuesta) {
 
 //ACTUALIZAR SALIDAS DE LAMINA
 function setActualizarSalidaLamina(json) {
-    servidor("https://empaquessr.com/sistema/php/inventario/updateSalidaLamina.php?id_lp=" + json.codigo + "&cantidad=" + json.inventario + "&salida=" + json.salida, getActualizarSalidaLamina)
+    servidor("https://empaquessr.com/sistema/php/cinthya/inventario/updateSalidaLamina.php?id_lp=" + json.codigo + "&cantidad=" + json.inventario + "&salida=" + json.salida, getActualizarSalidaLamina)
 }
 function getActualizarSalidaLamina(respuesta) {
     if (respuesta.responseText == 1) {

@@ -176,15 +176,15 @@ function crearObjetMensaje(codigo, contador) {
       let codigos = codigo.split("/");
       let codigo1 = codigos[0];
       let codigo2 = codigos[1];
-      var url = 'https://empaquessr.com/sistema/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
+      var url = 'https://empaquessr.com/sistema/cinthya/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         nextPageFunctionData('verPlano.html', verPlano, url);
       } else {
         window.open(url, '_blank');
 
-        //window.open('https://empaquessr.com/sistema/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
+        //window.open('https://empaquessr.com/sistema/cinthya/planos/' + codigo.substring(0, 3) + '/' + codigo.substring(0, 3) + '-' + codigo.substring(4, 7) + '.pdf', '_blank');
       }
-    }  //window.open('https://empaquessr.com/sistema/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+    }  //window.open('https://empaquessr.com/sistema/cinthya/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
     else if (index == 1) nextPageFunctionData('ActualizarProductos.html', setBuscarProductoActualizar, codigo); //alert("modificara "+codigo);
     else if (index == 2) alertaConfirm('Estas seguro de eliminar este producto? ' + codigo, setEliminarProducto, codigo, contador);
   });
@@ -229,14 +229,14 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
       let codigos = codigo.split("/");
       let codigo1 = codigos[0];
       let codigo2 = codigos[1];
-      var url = 'https://empaquessr.com/sistema/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
+      var url = 'https://empaquessr.com/sistema/cinthya/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         //console.log("Estás usando un dispositivo móvil!!");
         nextPageFunctionData('verPlano.html', verPlano, url);
       } else {
         window.open(url, '_blank');
       }
-      //window.open('https://empaquessr.com/sistema/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
+      //window.open('https://empaquessr.com/sistema/cinthya/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
 
     }
     else if (index == 3) alerta("<b>Orden de Compra: </b><br>" + oc + "<br><br><b>Fecha del pedido:</b><br>" + fecha + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br>");

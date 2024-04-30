@@ -8,7 +8,7 @@ function setProveedorBarraBusqueda(busqueda, e) {
     if (tecla == 13) {
         $("#insertoInventarioLoading").empty();
         $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessr.com/sistema/php/proveedores/select.php?search=' + busqueda + '&type=' + tipoFilter, getProveedor);
+        servidor('https://empaquessr.com/sistema/php/cinthya/proveedores/select.php?search=' + busqueda + '&type=' + tipoFilter, getProveedor);
     }
 
 }
@@ -16,7 +16,7 @@ function setProveedorBarraBusqueda(busqueda, e) {
 function setProveedor() {
     $('#loadingProveedor').empty();
     $('#loadingProveedor').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor('https://empaquessr.com/sistema/php/proveedores/select.php?type=' + tipoFilter, getProveedor);
+    servidor('https://empaquessr.com/sistema/php/cinthya/proveedores/select.php?type=' + tipoFilter, getProveedor);
 }
 function getProveedor(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -31,7 +31,7 @@ function setAgregarProveedor() {
     var tipo = $('#selectTipo').val();
     //console.log(vacio(nombre,tipo));
     if (vacio(nombre, tipo)) {
-        servidor("https://empaquessr.com/sistema/php/proveedores/add.php?nombre=" + nombre + "&tipo=" + tipo, getAgregarProveedor);
+        servidor("https://empaquessr.com/sistema/php/cinthya/proveedores/add.php?nombre=" + nombre + "&tipo=" + tipo, getAgregarProveedor);
     }
     else alerta("Espacios vacios");
 }
@@ -43,7 +43,7 @@ function getAgregarProveedor(respuesta) {
     else alerta("No se pudo insertar");
 }
 function setEliminarProveedor(codigo) {
-    servidor('https://empaquessr.com/sistema/php/proveedores/delete.php?codigo=' + codigo, getEliminarProveedor);
+    servidor('https://empaquessr.com/sistema/php/cinthya/proveedores/delete.php?codigo=' + codigo, getEliminarProveedor);
 }
 function getEliminarProveedor(respuesta) {
     //alert(respuesta.responseText);
@@ -55,7 +55,7 @@ function getEliminarProveedor(respuesta) {
     //console.log(respuesta.responseText);
 }
 function setBuscarEditarProveedor(id) {
-    servidor('https://empaquessr.com/sistema/php/proveedores/select.php?search=' + id + '&type=0', getBuscarEditarProveedor);
+    servidor('https://empaquessr.com/sistema/php/cinthya/proveedores/select.php?search=' + id + '&type=0', getBuscarEditarProveedor);
 }
 function getBuscarEditarProveedor(respuesta) {
     var resultado = respuesta.responseText;
@@ -72,10 +72,10 @@ function setEditarProveedor() {
     var id = $('#id').val();
     var nombre = $('#nombre').val();
     var tipo = $('#selectTipo').val();
-    if (vacio(id, nombre, tipo)) servidor("https://empaquessr.com/sistema/php/proveedores/update.php?id=" + id + "&nombre=" + nombre + "&tipo=" + tipo, getEditarProveedor);
+    if (vacio(id, nombre, tipo)) servidor("https://empaquessr.com/sistema/php/cinthya/proveedores/update.php?id=" + id + "&nombre=" + nombre + "&tipo=" + tipo, getEditarProveedor);
     else alerta("Espacios vacios!");
 
-    //servidor("https://empaquessr.com/sistema/php/proveedores/update.php?id="+id+"&nombre="+nombre+"&tipo="+tipo,);
+    //servidor("https://empaquessr.com/sistema/php/cinthya/proveedores/update.php?id="+id+"&nombre="+nombre+"&tipo="+tipo,);
 
 }
 function getEditarProveedor(respuesta) {

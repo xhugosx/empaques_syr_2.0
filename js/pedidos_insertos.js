@@ -78,8 +78,8 @@ function limpiarLocalStorage()
 
 function setAgregarPedidoInserto(...datos)
 {
-    //console.log("https://empaquessr.com/sistema/php/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4]+"&notas="+datos[5]);
-    servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4]+"&notas="+datos[5],getAgregaPedidoInserto);
+    //console.log("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4]+"&notas="+datos[5]);
+    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/add.php?codigo="+datos[0]+"&resistencia="+datos[1]+"&cantidad="+datos[2]+"&observaciones="+datos[3]+"&fecha_oc="+datos[4]+"&notas="+datos[5],getAgregaPedidoInserto);
 }
 function getAgregaPedidoInserto(respuesta)
 {
@@ -92,7 +92,7 @@ function setPedidosInsertos()
 {
     //var type = filtro ? 1 : 2;
     var busqueda = $('#searchPedidoInserto').val();
-    if(busqueda == "" || busqueda == undefined)servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal,getPedidosInsertos);
+    if(busqueda == "" || busqueda == undefined)servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal+"&anio=" + anioGlobal,getPedidosInsertos);
     else setSearchPedidosInsertos(busqueda,13);
 }
 function getPedidosInsertos(respuesta)
@@ -107,7 +107,7 @@ function getPedidosInsertos(respuesta)
 }
 function setEliminarPedidoInserto(id)
 {
-    servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/delete.php?id="+id,getEliminarpedidoInserto);
+    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/delete.php?id="+id,getEliminarpedidoInserto);
 }
 function getEliminarpedidoInserto(respuesta)
 {
@@ -121,7 +121,7 @@ function getEliminarpedidoInserto(respuesta)
 function setModificarBuscarPedidoInserto(id)
 {
     //var type = filtro ? 1 : 2;
-    servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/selectAllEditar.php?id="+id,getModificarBuscarPedidoInserto);
+    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/selectAllEditar.php?id="+id,getModificarBuscarPedidoInserto);
     
 }
 function getModificarBuscarPedidoInserto(respuesta)
@@ -148,7 +148,7 @@ function setModificarPedidoInserto()
 
     if(datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(observaciones))
     {
-        servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&id="+id+"&observaciones="+observaciones+"&notas="+notas,getModificarPedidoInserto)
+        servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/update.php?resistencia="+resistencia+"&cantidad="+cantidad+"&id="+id+"&observaciones="+observaciones+"&notas="+notas,getModificarPedidoInserto)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
     
@@ -170,7 +170,7 @@ function setSearchPedidosInsertos(search,e)
     if (tecla==13 || e==13) 
     {
         //var type = filtro ? 1 : 2;
-        servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/selectAll.php?search="+search+"&filtro=" + filtroGlobal + "&estado=" + estadoGlobal,getSearchPedidosInsertos);
+        servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/selectAll.php?search="+search+"&filtro=" + filtroGlobal + "&estado=" + estadoGlobal,getSearchPedidosInsertos);
     }
     else if(search == "") setPedidosInsertos();
 }
@@ -188,7 +188,7 @@ function getSearchPedidosInsertos(respuesta)
 function setActualizarEstadoPedidoInserto(datos) {
     let id = datos[0];
     let estado = datos[1];
-    servidor("https://empaquessr.com/sistema/php/lista_pedidos_inserto/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedidoInserto);
+    servidor("https://empaquessr.com/sistema/php/cinthya/lista_pedidos_inserto/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedidoInserto);
 }
 function getActulizarestadoPedidoInserto(respuesta)
 {

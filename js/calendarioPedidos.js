@@ -97,7 +97,7 @@ document.addEventListener('init', function (event) {
                     diaElemento.classList.add('selected');
                     diaSeleccionado = diaElemento;
 
-                    let link = "https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&fecha=" + hoy;
+                    let link = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&fecha=" + hoy;
                     servidor(link, function (respuesta) {
                         var resultado = respuesta.responseText;
                         var arrayJson = resultado.split('|');
@@ -129,7 +129,7 @@ document.addEventListener('init', function (event) {
 
         // Función para obtener productos con fecha de entrega correspondiente al día actual
         function obtenerProductosDelDia(fecha, callback) {
-            let link = "https://empaquessr.com/sistema/php/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&anio="+fecha.getFullYear();
+            let link = "https://empaquessr.com/sistema/php/cinthya/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&anio="+fecha.getFullYear();
             servidor(link, function (respuesta) {
                 var resultado = respuesta.response;
                 let subcadenas = resultado.split('|');

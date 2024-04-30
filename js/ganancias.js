@@ -3,7 +3,7 @@
 function setIngresosEgresos()
 {
     let anio = $("#anioG").text();
-    servidor("https://empaquessr.com/sistema/php/IngresosEgresos/select.php?anio="+anio,getIngresoEgresos);
+    servidor("https://empaquessr.com/sistema/php/cinthya/IngresosEgresos/select.php?anio="+anio,getIngresoEgresos);
 }
 function getIngresoEgresos(respuesta)
 {
