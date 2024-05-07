@@ -52,6 +52,7 @@ function setAgregarProducto() {
             var form = $('#formProducto')[0];
             var formData = new FormData(form);
 
+            $("#btn-producto").prop("disabled", true);
             servidorPost('https://empaquessr.com/sistema/cinthya/php/productos/add.php', getAgregarProducto, formData);
             //alerta("el archivo si coiciden");
         }
@@ -67,7 +68,9 @@ function getAgregarProducto(respuesta) {
         resetearPilaFunction(setProductos);
     }
     else alerta('Ya existe un producto con ese codigo!');
-    //alert(respuesta.responseText);
+
+    //habilitar el boton independientemente del resultado del servidor
+    $("#btn-producto").prop("disabled", false);
 }
 
 //fin de agregar productos
