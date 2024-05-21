@@ -1621,7 +1621,8 @@
                     </ons-card>
 
                     <ons-list-item modifier="nodivider">
-                        <ons-button modifier="large" onclick="setAgregarProducto()" id="btn-producto">Agregar</ons-button>
+                        <ons-button modifier="large" onclick="setAgregarProducto()"
+                            id="btn-producto">Agregar</ons-button>
                     </ons-list-item>
 
             </form>
@@ -1740,7 +1741,7 @@
             <ons-tabbar position="top" modifier="autogrow">
                 <ons-tab id="pPCM" page="pPCM.html" label="PCM" icon="fa-truck-moving" active></ons-tab>
                 <ons-tab id="pPACK" page="pPACK.html" label="PACK" icon="fa-truck"></ons-tab>
-                <ons-tab id="calendario" page="calendario.html" label="Entregas" icon="fa-calendar-days"></ons-tab>
+                <ons-tab id="calendario" page="calendario.html" label="Calendario" icon="fa-calendar-days"></ons-tab>
                 <ons-tab page="ordenes.html" label="O. Compra" icon="fa-folder-open"></ons-tab>
             </ons-tabbar>
 
@@ -1833,6 +1834,25 @@
 
             <div id="loadingPedidosLaminaFecha">
             </div>
+
+            <ons-list>
+                <ons-list-item tappable>
+                    <label class="left">
+                        <ons-radio name="laminaRadio" input-id="porEntregar" checked value="1" onclick="filtroLamina(this.value)"></ons-radio>
+                    </label>
+                    <label for="porEntregar" class="center">
+                        Por entregar 🟠
+                    </label>
+                </ons-list-item>
+                <ons-list-item tappable>
+                    <label class="left">
+                        <ons-radio name="laminaRadio" input-id="entregados" value="2" onclick="filtroLamina(this.value)"></ons-radio>
+                    </label>
+                    <label for="entregados" class="center">
+                        Entregados 🟢🟣
+                    </label>
+                </ons-list-item>                
+            </ons-list>
 
             <div id="contenedorCalendario">
                 <div id="mes">
@@ -2394,8 +2414,8 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input placeholder="Buscar: codigo"
-                        onkeyup="buscarEntradaSalidaCajas(this.value,event)"></ons-search-input>
+                    <ons-search-input placeholder="Buscar: codigo" onkeyup="buscarEntradaSalidaCajas(this.value,event)"
+                        id="searchEntradaSalidaCaja"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -2423,7 +2443,8 @@
                 <ons-list-item>
                     <ons-search-input id="searchInsertoEntradaSalida"
                         placeholder="Buscar: inserto / producto / cliente / id"
-                        onkeyup="buscarEntradaSalidaInserto(this.value,event)"></ons-search-input>
+                        onkeyup="buscarEntradaSalidaInserto(this.value,event)"
+                        id="searchEntradaSalidaInserto"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -2451,7 +2472,8 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchLaminaInventario" placeholder="Buscar: Orden de Compra"
-                        onkeyup="buscarEntradaSalidaLamina(this.value,event)"></ons-search-input>
+                        onkeyup="buscarEntradaSalidaLamina(this.value,event)"
+                        id="searchEntradaSalidaLamina"></ons-search-input>
                 </ons-list-item>
             </ons-list>
             <hr>
@@ -2467,6 +2489,13 @@
                 <ons-lazy-repeat id="datosLaminaInventario1"></ons-lazy-repeat>
             </ons-list>
 
+            <br><br>
+
+            <ons-fab onclick="showDialogo('my-dialogEditarEntradaSalidaL','dialogEditarEntradaSalidaL.html')"
+                position="bottom right">
+                <span>Editar</span>
+                <i class="fa-solid fa-pen-to-square"></i>
+            </ons-fab>
         </ons-page>
     </template>
     <!--FIN DE SALIDAS Y ENTRADAS-->
@@ -2862,6 +2891,7 @@
             <div id="datosPedidosLoadingCalendario">
 
             </div>
+
             <div id="contenedorCalendario">
                 <div id="mes">
                     <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
@@ -3044,7 +3074,21 @@
                         </div>
                         <div class="center">
                             <div class="placeholder">Fecha Orden de Compra!</div>
-                            <ons-input style="margin-right: 5px;" type="date" id="pedidoFechaOc"
+                            <ons-input style="margin-right: 5px;" type="date" id="pedidoFechaOc" class="input-100"
+                                onchange="actualizarFechaEntrega(this.value)"></ons-input>
+
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-calendar-days fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <div class="placeholder">Fecha de Entrega!</div>
+                            <ons-input style="margin-right: 5px;" type="date" id="pedidoFechaEntrega"
                                 class="input-100"></ons-input>
 
                         </div>
@@ -3246,6 +3290,19 @@
                         <div class="center">
                             Fecha Orden de Compra!
                             <ons-input style="margin-right: 5px;" type="date" id="pedidoModificarFechaOc"
+                                class="input-100"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-solid fa-calendar-days fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            Fecha de Entrega!
+                            <ons-input style="margin-right: 5px;" type="date" id="pedidoModificarFechaEntrega"
                                 class="input-100"></ons-input>
                         </div>
                     </ons-list-item>
@@ -3929,6 +3986,30 @@
                         placeholder="Cantidad"></ons-input>
                 </p>
                 <ons-button modifier="large--quiet" onclick="validarEntradaSalidaI()">Editar</ons-button>
+            </div>
+        </ons-dialog>
+    </template>
+
+    <!-- DIALOGO PARA EDITAR ENTRADA O SALIDA DE LAMINA-->
+    <template id="dialogEditarEntradaSalidaL.html">
+        <ons-dialog id="my-dialogEditarEntradaSalidaL" cancelable>
+            <div style="text-align: center; padding: 10px;">
+                <div class="botonCerrar" onclick="hideDialogo('my-dialogEditarEntradaSalidaL')"><i
+                        class="fa-solid fa-circle-xmark fa-2x" style="color: rgb(144, 37, 37);"></i></div> <b>Editar</b>
+                <br>
+                <p>
+                    <br>
+                    <ons-input id="idL" type="text" class="input-100" cols="30" rows="2" placeholder="Id"></ons-input>
+                    <br><br>
+                    <ons-input id="cantidadL" type="number" class="input-100" cols="30" rows="2"
+                        placeholder="Cantidad"></ons-input>
+                    <ons-select id="proveedorL">
+                        <option value="1" selected>PCM</option>
+                        <option value="2">PACK</option>
+                    </ons-select>
+
+                </p>
+                <ons-button modifier="large--quiet" onclick="validarEntradaSalidaL()">Editar</ons-button>
             </div>
         </ons-dialog>
     </template>

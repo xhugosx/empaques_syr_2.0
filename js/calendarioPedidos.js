@@ -142,7 +142,7 @@ document.addEventListener('init', function (event) {
                 const diaActual = fecha.getDate();
 
                 const productos = objetosJSON.filter(producto => {
-                    const fechaEntregaProducto = new Date(sumarDiasAFecha(producto.fecha_oc, 22));
+                    const fechaEntregaProducto = new Date(sumarDiasAFecha(producto.fecha_entrega, 2));
                     const añoProducto = fechaEntregaProducto.getFullYear();
                     const mesProducto = fechaEntregaProducto.getMonth();
                     const diaProducto = fechaEntregaProducto.getDate();

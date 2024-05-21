@@ -694,8 +694,38 @@ function fechaHoy() {
   return ano + "-" + mes + "-" + dia;
 }
 
+function fechaHoy2() {
+  var fecha = new Date(); // Fecha actual
+  fecha.setDate(fecha.getDate() + 20); // Suma 20 días a la fecha actual
+  var mes = fecha.getMonth() + 1; // Obteniendo mes
+  var dia = fecha.getDate(); // Obteniendo día
+  var ano = fecha.getFullYear(); // Obteniendo año
+  if (dia < 10) dia = '0' + dia; // Agrega cero si es menor de 10
+  if (mes < 10) mes = '0' + mes; // Agrega cero si es menor de 10
+
+  return ano + "-" + mes + "-" + dia;
+}
+
+console.log(fechaHoy());
+
+
 function llenarFecha() {
   $('#pedidoFechaOc').val(fechaHoy());
+  $('#pedidoFechaEntrega').val(fechaHoy2());
+}
+
+function actualizarFechaEntrega(valor) {
+  // Si el valor no está presente, no hace nada
+  if (!valor) return;
+
+  // Convierte el valor a un objeto Date
+  var fecha = new Date(valor);
+  // Suma 20 días a la fecha
+  fecha.setDate(fecha.getDate() + 20);
+  // Obtiene el año, mes y día con el formato YYYY-MM-DD
+  var nuevoValor = fecha.getFullYear() + '-' + ('0' + (fecha.getMonth() + 1)).slice(-2) + '-' + ('0' + fecha.getDate()).slice(-2);
+  // Establece el nuevo valor en el segundo input
+  $('#pedidoFechaEntrega').val(nuevoValor);
 }
 
 //funcion para llenar input date
@@ -910,4 +940,10 @@ function validarEntradaSalidaP() {
 function validarEntradaSalidaI() {
   if (salida) setEditarCantidadSalidaI();
   else setEditarCantidadEntradaI();
+}
+
+//funcion para validar a que lado se ira el editar la lamina
+function validarEntradaSalidaL() {
+  if (salida) setEditarCantidadSalidaL();
+  else setEditarCantidadEntradaL();
 }

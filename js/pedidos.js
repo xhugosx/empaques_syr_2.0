@@ -151,6 +151,7 @@ function setAgregarPedido() {
     var cantidad = $("#pedidoCantidad").val();
     var oc = $("#pedidoOc").val();
     var fecha_oc = $("#pedidoFechaOc").val();
+    var fecha_entrega = $("#pedidoFechaEntrega").val();
     var observaciones = $("#pedidoObservaciones").val();
     var resistencia = $("#pedidoResistencia").val();
     var papel = $("#pedidoPapel").val();
@@ -183,11 +184,11 @@ function setAgregarPedido() {
 
                 }
                 setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas);
-                servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
+                servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones + '&fecha_entrega=' + fecha_entrega, getAgregarPedido);
             }
             else alerta("Espacios vacios en insertos")
         }
-        else servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones, getAgregarPedido);
+        else servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones + '&fecha_entrega=' + fecha_entrega, getAgregarPedido);
     }
     else alerta('Espacios vacios en producto! <br>(No escribir "CEROS")');
 }
@@ -282,6 +283,7 @@ function getModificarBuscarPedido(respuesta) {
     $("#pedidoModificarCantidad").val(arrayJson[0].cantidad);
     $("#pedidoModificarOc").val(arrayJson[0].oc);
     $("#pedidoModificarFechaOc").val(arrayJson[0].fecha_oc);
+    $("#pedidoModificarFechaEntrega").val(arrayJson[0].fecha_entrega);
     $("#pedidoModificarObservaciones").val(arrayJson[0].observaciones);
     //resultado = enlistarPedidos(arrayJson);
 
@@ -298,10 +300,11 @@ function setModificarPedido() {
     var cantidad = $("#pedidoModificarCantidad").val();
     var oc = $("#pedidoModificarOc").val();
     var fecha = $("#pedidoModificarFechaOc").val();
+    var fecha_entrega = $("#pedidoModificarFechaEntrega").val();
     var observaciones = $("#pedidoModificarObservaciones").val();
 
     if (datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha)) {
-        servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
+        servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&fecha_entrega=" + fecha_entrega + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
 
@@ -396,7 +399,7 @@ function enlistarPedidos(arrayJson, i) {
         entregado = "Entregado: " + sumarDias(arrayJson.fechaSalida, 0);
     }
     else {
-        entregado = 'Entrega: ' + sumarDias(arrayJson.fecha_oc, 20);
+        entregado = 'Entrega: ' + sumarDias(arrayJson.fecha_entrega, 0);
         color = "rgb(61, 121, 75)";
     }
     if (arrayJson.estado == 0) estado = '⚪';
@@ -426,6 +429,7 @@ function enlistarPedidos(arrayJson, i) {
     html1 += '        <span class="list-item__subtitle">';
     html1 += '<span>' + arrayJson.cliente + '</span><br> <b>O. C: ' + arrayJson.oc + '&emsp;Fecha: ' + sumarDias(arrayJson.fecha_oc, 0) + '</b>';
     html1 += enlistarFacturas(arrayJson);
+    html1 += arrayJson.observaciones == "" ? "" : '<br><span><b>OBSERVACIONES: &nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';
@@ -510,7 +514,7 @@ function aplicarFiltro() {
     for (var i = 0; i < ids.length; i++) {
         a += ids[i].value + ",";
     }
-    //console.log(activoFijo,a);
+    //console.log(activoFijo);
     anioGlobal = $('#currentYear').val();
     filtroGlobal = activoFijo;
     estadoGlobal = a;

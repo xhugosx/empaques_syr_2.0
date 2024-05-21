@@ -44,6 +44,30 @@ function getEditarCantidadSalidaI(respuesta)
     else alerta("No se encontraron resultados");
 }
 
+//funcion para editar cantidad inserto
+function setEditarCantidadSalidaL()
+{
+    let cantidad = $("#cantidadL").val();
+    let id = $("#idL").val();
+    let proveedor = $("#proveedorL").val();
+    id = id + "/" + proveedor;
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/cinthya/php/salida/lamina/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaL);
+    else alerta("Datos vacios"); 
+    
+}
+function getEditarCantidadSalidaL(respuesta)
+{
+    if(respuesta.responseText == 1 )
+    {
+        alerta("Registro editado");
+        mostrarTodoSalida();
+        $("#cantidadL").val("");
+        $("#idL").val("");
+        hideDialogo('my-dialogEditarEntradaSalidaL');
+    }
+    else alerta("No se encontraron resultados");
+}
+
 function mostrarTodoSalida()
 {
     localStorage.setItem("bandera",1);

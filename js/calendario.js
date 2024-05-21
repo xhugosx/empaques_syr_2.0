@@ -9,6 +9,7 @@ document.addEventListener('init', function (event) {
         let mes = fechaActual.getMonth();
         let año = fechaActual.getFullYear();
         let diaSeleccionado = null;
+        let filtroLaminaRadio = true;
 
         // Función para obtener el nombre del mes
         function obtenerNombreMes(mes) {
@@ -98,7 +99,7 @@ document.addEventListener('init', function (event) {
                     diaElemento.classList.add('selected');
                     diaSeleccionado = diaElemento;
 
-                    setMostrarPedidosLaminaFecha(hoy);
+                    setMostrarPedidosLaminaFecha(hoy,filtroLaminaRadio);
 
                 });
 
@@ -123,9 +124,17 @@ document.addEventListener('init', function (event) {
             return dato < 10 ? ('0' + dato) : dato;
         }
 
+        window.filtroLamina = function (activoFijo) {
+            filtroLaminaRadio = activoFijo == 2 ? false : true;
+            //console.log(activoFijo);
+            mostrarCalendario();
+        }
+
+
         // Función para obtener productos con fecha de entrega correspondiente al día actual
         function obtenerProductosDelDia(fecha, callback) {
-            let link = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?type=1&proveedor=1";
+            //console.log()
+            let link = filtroLaminaRadio ? "https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?type=1&proveedor=1" : "https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?type=2,3&proveedor=1";
             servidor(link, function (respuesta) {
                 var resultado = respuesta.response;
                 let subcadenas = resultado.split('|');

@@ -42,10 +42,11 @@ function setMostrarBusquedaLaminaPack(search, e) {
     }
     else if (search == "") setMostrarPedidosLaminaPACK();
 }
-function setMostrarPedidosLaminaFecha(fecha) {
+function setMostrarPedidosLaminaFecha(fecha, tipo) {
+    tipo = tipo ? 1 : 2;
     $('#loadingPedidosLaminaFecha').empty("");
     $('#loadingPedidosLaminaFecha').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha, getMostrarPedidosLaminaFecha)
+    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha + "&type=" + tipo, getMostrarPedidosLaminaFecha)
 }
 function getMostrarPedidosLaminaFecha(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor

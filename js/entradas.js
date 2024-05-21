@@ -44,6 +44,32 @@ function getEditarCantidadEntradaI(respuesta)
     //console.log(respuesta.responseText);
 }
 
+//funcion para editar entradas de Laminas
+function setEditarCantidadEntradaL()
+{
+    let cantidad = $("#cantidadL").val();
+    let id = $("#idL").val();
+    let proveedor = $("#proveedorL").val();
+    id = id + "/" + proveedor;
+    if(vacio(cantidad,id)) servidor("https://empaquessr.com/sistema/cinthya/php/entrada/lamina/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadEntradaL);
+    else alerta("Datos vacios"); 
+    
+}
+function getEditarCantidadEntradaL(respuesta)
+{
+    if(respuesta.responseText == 1 )
+    {
+        alerta("Registro editado");
+        mostrarTodoEntrada();
+        $("#cantidadL").val("");
+        $("#idL").val("");
+        $('#miSelect').val("1");
+        hideDialogo('my-dialogEditarEntradaSalidaL');
+    }
+    else alerta("No se pudo Modificar por un error");
+    console.log(respuesta.responseText);
+}
+
 //funcion para refresh
 function mostrarTodoEntrada()
 {
