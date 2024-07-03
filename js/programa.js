@@ -195,7 +195,7 @@ function getProcesosProgramaEntradaPedido(respuesta)
 function setAgregarFaltante(json)
 {
     var codigo = (json.id).split("-");
-    console.log("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=");
+    //console.log("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=");
     if(codigo[0].length >= 7) 
     servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=',getAgregarFaltante);
     else servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_inserto/add.php?id="+json.id+"-F&codigo="+json.codigo+"&resistencia="+json.resistencia+"&cantidad="+json.cantidad+"&observaciones="+json.observaciones,getAgregarFaltante);

@@ -420,10 +420,11 @@
                     </ons-card>
                 </div>
                 <div class="contenedor-flexbox">
-                    <ons-card class="botonPrograma botonInicio" style="text-align: center;" onclick="">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center;"
+                        onclick="nextPageFunction('facturas.html',function(){});">
                         <i class="fa-solid fa-file-invoice-dollar fa-4x" style="margin: 5px; "></i>
                         <br>
-                        <span style=""> Facturas</span>
+                        <span style=""> Facturas - Remisiones</span>
                     </ons-card>
 
                 </div>
@@ -433,6 +434,63 @@
     <!-- fin de control de ingresos -->
 
     <!-- fin pagina pricipal -->
+
+    <!-- FACTURAS INGRESADAS EN PEDIDOS -->
+
+    <template id="facturas.html">
+        <ons-page id="facturas">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center"> Facturas </div>
+            </ons-toolbar>
+
+            <div id="loadingFacturas">
+
+            </div>
+            <ons-card style="padding:0px;" class="botonPrograma">
+                <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
+                    <b> 12 DE JUNIO DEL 2024 </b>
+                </ons-list-header>
+                <ons-list-item modifier="nodivider" expandable>
+                    <div class="left">
+                        <i class="fas fa-file-invoice fa-2x"></i>
+                    </div>
+                    <div class="center romperTexto">
+                        <span class="list-item__title">
+                            A-8586
+                        </span>
+                        <span class="list-item__subtitle">
+                            <span>PROVIDENCIA S.A. DE C.V.</span><br>
+                        </span>
+                    </div>
+                    <div class="expandable-content expandProductos">
+                        <div class="productos">
+                            <div class="codigo"><b>083/001</b></div>
+                            CAJA PARA ZAPATOS TORO
+                            <span class="cantidad">
+                                1,200 pzas
+                            </span>
+                        </div>
+                        <div class="productos">
+                            <div class="codigo"><b>083/001</b></div>
+                            CAJA PARA ZAPATOS TORO
+                            <span class="cantidad">
+                                1,200 pzas
+                            </span>
+                        </div>
+                    </div>
+                </ons-list-item>
+            </ons-card>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
+                <ons-lazy-repeat id="facturaDatos"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br><br><br>
+
+        </ons-page>
+    </template>
+
+    <!-- FIN DE FACTURAS INGRESADAS EN PEDIDOS-->
 
 
     <!-- CONTROL DE GASTOS-->
@@ -1838,7 +1896,8 @@
             <ons-list>
                 <ons-list-item tappable>
                     <label class="left">
-                        <ons-radio name="laminaRadio" input-id="porEntregar" checked value="1" onclick="filtroLamina(this.value)"></ons-radio>
+                        <ons-radio name="laminaRadio" input-id="porEntregar" checked value="1"
+                            onclick="filtroLamina(this.value)"></ons-radio>
                     </label>
                     <label for="porEntregar" class="center">
                         Por entregar 🟠
@@ -1846,12 +1905,13 @@
                 </ons-list-item>
                 <ons-list-item tappable>
                     <label class="left">
-                        <ons-radio name="laminaRadio" input-id="entregados" value="2" onclick="filtroLamina(this.value)"></ons-radio>
+                        <ons-radio name="laminaRadio" input-id="entregados" value="2"
+                            onclick="filtroLamina(this.value)"></ons-radio>
                     </label>
                     <label for="entregados" class="center">
                         Entregados 🟢🟣
                     </label>
-                </ons-list-item>                
+                </ons-list-item>
             </ons-list>
 
             <div id="contenedorCalendario">

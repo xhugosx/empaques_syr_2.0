@@ -676,4 +676,26 @@ ons-fab.fijadoCentro:hover {
     font-weight: bold;
 }
 
-
+/*nuevo*/
+.expandProductos{
+    color: #808fa2; 
+    padding: 0px 20px 10px 20px !important;
+}
+.expandProductos > .productos
+{
+    margin: 10px 0 10px 0;
+}
+.expandProductos > .productos > .cantidad{
+    background-color: rgb(61, 169, 120);
+    color: white;
+    margin-left: 20px;
+    padding: 2px 4px 2px 4px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+.expandProductos >.productos > .codigo
+{
+   font-size: 13px;
+   margin: 0px;
+}
+/* termina lo nuevo */

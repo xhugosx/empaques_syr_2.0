@@ -66,15 +66,12 @@ function getEditarFactura(respuesta) {
     else alerta("Hubo un error al modificar");
 }
 
-function setEliminarFactura(id)
-{
-    servidor("https://empaquessr.com/sistema/cinthya/php/facturas/delete.php?id="+id,getEliminarFactura);
+function setEliminarFactura(id) {
+    servidor("https://empaquessr.com/sistema/cinthya/php/facturas/delete.php?id=" + id, getEliminarFactura);
 }
-function getEliminarFactura(respuesta)
-{
+function getEliminarFactura(respuesta) {
     var resultado = respuesta.responseText;
-    if (resultado==1)
-    {
+    if (resultado == 1) {
         alerta("Factura Eliminada");
         setModificarBuscarFacturas($("#id_pedido").text());
         //buscarDtospedidos(); // esto para actualizar la informacion de los pedidos
@@ -123,3 +120,57 @@ function enlistarFacturasEditar(arrayJson, i) {
 
     return html1;
 }
+
+
+// NUEVO
+
+function mostrarFacturas() {
+
+    servidor('https://www.empaquessr.com/sistema/cinthya/php/facturas/selectVisual.php',function(respuesta){
+        console.log(respuesta);
+    });
+
+}
+
+function enlistarFacturas() {
+    var html = `
+        <ons-card style="padding:0px;" class="botonPrograma">
+            <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
+                <b> 12 DE JUNIO DEL 2024 </b>
+            </ons-list-header>
+            <ons-list-item modifier="nodivider" expandable>
+                <div class="left">
+                    <i class="fas fa-file-invoice fa-2x"></i>
+                </div>
+                <div class="center romperTexto">
+                    <span class="list-item__title">
+                        A-8586
+                    </span>
+                    <span class="list-item__subtitle">
+                        <span>PROVIDENCIA S.A. DE C.V.</span><br>
+                    </span>
+                </div>
+                <div class="expandable-content expandProductos">
+                    <div class="productos">
+                        <b>083/001</b> - CAJA PARA ZAPATOS TORO
+                        <span class="cantidad">
+                            1,200 pzas
+                        </span>
+                    </div>
+                    <div class="productos">
+                        <b>083/001</b> - CAJA PARA ZAPATOS TORO
+                        <span class="cantidad">
+                            3,000 pzas
+                        </span>
+                    </div>
+                </div>
+            </ons-list-item>
+        </ons-card>
+    `;
+
+    return html;
+
+}
+
+//FIN DE NUEVO
+
