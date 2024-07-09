@@ -132,7 +132,7 @@ function mostrarFacturas() {
 
 }
 
-function enlistarFacturas() {
+function enlistarFacturasRemisiones() {
     var html = `
         <ons-card style="padding:0px;" class="botonPrograma">
             <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
