@@ -111,7 +111,7 @@ function getMostrarSalidaCajas(respuesta)
 function buscarEntradaSalidaCajas(search,e)
 {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
+    if (tecla==13 || e == 13) 
     {
         $("#cajaSalidasEntradasLoading").empty();
         $("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");

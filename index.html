@@ -2834,7 +2834,7 @@
 
     <!-- PEDIDOS -->
     <template id="pedidos.html">
-        <ons-page id="prueba">
+        <ons-page id="pedidos">
             <ons-toolbar>
                 <div class="left"><ons-back-button onclick="reiniciarFilter()">Regresar</ons-back-button></div>
                 <div class="center">Pedidos</div>
@@ -3898,8 +3898,8 @@
                 </div>
 
                 <ons-list-item modifier="nodivider">
-                    <ons-button id="botonPrograma"
-                        onclick="setActualizarEstadoPedido([idPedido,3]);cerrarDialogo('my-dialog-programa');"
+                    <ons-button id="botonProgramaSinproceso"
+                        onclick="agregaProgramaSinProceso();"
                         modifier="large" style="padding: 0;">
                         <span style="font-size: 12px;">Terminado sin procesos</span>
                     </ons-button>
