@@ -241,7 +241,8 @@ function enlistarPedidosLamina(arrayJson) {
     const html1 = `
   <ons-card style="padding:0px;" class="botonPrograma" onclick="crearMensajePL('${arrayJson.estado}','${arrayJson.entrada}','${arrayJson.pzas_ordenadas}','${arrayJson.o_c}','${arrayJson.observaciones}')">
     <ons-list-header style="background:${colorEstado(arrayJson.estado)}; color:white;">
-      ${arrayJson.entrada !== '' ? `<div class="contenedorHead" style="color:${colorEstado(arrayJson.estado)};">llego: ${separator(arrayJson.entrada)} pzas</div>` : `<div class="contenedorHeadFecha" style="color:white;">Estimado: ${sumarDias(arrayJson.fecha_entrega, 0)}</div>`}
+      ${arrayJson.entrada !== '' ? `<div class="contenedorHead" style="color:${colorEstado(arrayJson.estado)};">llego: ${separator(arrayJson.entrada)} pzas ${arrayJson.estado == 2 ? ` - faltan: ${separator(arrayJson.pzas_ordenadas - arrayJson.entrada)} pzas` : ""} </div>` : `<div class="contenedorHeadFecha" style="color:white;">Estimado: ${sumarDias(arrayJson.fecha_entrega, 0)}</div>`}
+      
       ${estadoLamina(arrayJson.estado)} |
       ${sumarDias(arrayJson.fecha, 0)}
     </ons-list-header>
