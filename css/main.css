@@ -407,7 +407,6 @@ input[type="text"] {
 .flechaIzquierda {
     margin-left: 20px;
     margin-right: 20px;
-    background-color: #1ba0d1b9;
     border-radius: 25px 0 0 25px;
     width: 40px;
     height: 30px;
@@ -419,7 +418,6 @@ input[type="text"] {
 .flechaDerecha {
     margin-left: 20px;
     margin-right: 20px;
-    background-color: #1ba0d1b9;
     border-radius: 0 25px 25px 0;
     width: 40px;
     height: 30px;
@@ -450,14 +448,6 @@ ons-fab {
     color: white;
 }
 
-.fijadoDerecha>span {
-    background-color: #2979ff;
-    padding: 10px 20% 10px 20%;
-    border-radius: 20px;
-    margin: auto;
-    width: 100%;
-}
-
 
 .extraCentrar {
     width: 95% !important;
@@ -481,16 +471,11 @@ ons-fab {
 .ordenesLamina:active {
     background-color: #dcdcdc;
 }
-.ordenesLamina:hover{
+
+.ordenesLamina:hover {
     opacity: 95%;
     cursor: pointer;
 }
-
-.ordenesLamina>i {
-    color: #1A9CE8;
-}
-
-
 
 .contenedor-flexbox {
     display: flex;
@@ -510,10 +495,6 @@ ons-fab {
     /*con esto alineamos de manera vertical*/
 }
 
-span>.fa-folder-open {
-    color: #0c4b70 !important;
-}
-
 .botonAnio:active {
     opacity: 30%;
 }
@@ -522,28 +503,8 @@ span>.fa-folder-open {
     width: 100% !important;
 }
 
-#page1>.toolbar {
-    height: 100px !important;
-    border-radius: 0 0 50px 50px;
-    border: 0;
-    -webkit-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    background: linear-gradient(180deg, rgba(26, 156, 232, 1) 0%, rgba(134, 203, 243, 1) 5%, rgba(255, 255, 255, 1) 13%);
-}
-
-.page__background {
-    /*
-* Created with https://www.css-gradient.com
-* Gradient link: https://www.css-gradient.com/?c1=475acc&c2=34515f&gt=c&gd=dtl
-*/
-    background: #475ACC;
-    background: conic-gradient(from 315deg, #45bef5, #698390);
-}
-
 ons-list>ons-card:active {
-    background-color: #92c1ddc5 !important;
-
+    opacity: 60%;
 }
 
 .usuario {
@@ -608,7 +569,6 @@ td {
 }
 
 .year-input>#prevYear {
-    background-color: #426590;
     /* Color azul oscuro */
     color: #fff;
     /* Texto blanco */
@@ -621,7 +581,6 @@ td {
 }
 
 .year-input>#nextYear {
-    background-color: #426590;
     /* Color azul oscuro */
     color: #fff;
     /* Texto blanco */
@@ -633,7 +592,7 @@ td {
     transition: background-color 0.3s;
 }
 
-.year-input>button:hover {
+.year .year-input>button:hover {
     opacity: 80%;
 }
 
@@ -677,15 +636,16 @@ ons-fab.fijadoCentro:hover {
 }
 
 /*nuevo*/
-.expandProductos{
-    color: #808fa2; 
+.expandProductos {
+    color: #808fa2;
     padding: 0px 20px 10px 20px !important;
 }
-.expandProductos > .productos
-{
+
+.expandProductos>.productos {
     margin: 10px 0 10px 0;
 }
-.expandProductos > .productos > .cantidad{
+
+.expandProductos>.productos>.cantidad {
     background-color: rgb(61, 169, 120);
     color: white;
     margin-left: 20px;
@@ -693,9 +653,10 @@ ons-fab.fijadoCentro:hover {
     border-radius: 20px;
     font-weight: bold;
 }
-.expandProductos >.productos > .codigo
-{
-   font-size: 13px;
-   margin: 0px;
+
+.expandProductos>.productos>.codigo {
+    font-size: 13px;
+    margin: 0px;
 }
+
 /* termina lo nuevo */

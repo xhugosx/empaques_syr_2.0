@@ -8,7 +8,7 @@ function refreshPrograma() {
 }
 
 function setMostrarProgramaProveedores() {
-    servidor("https://empaquessr.com/sistema/cinthya/php/programa/select.php", getMostrarProgramaProveedores)
+    servidor(myLink+"/php/programa/select.php", getMostrarProgramaProveedores)
 }
 function getMostrarProgramaProveedores(respuesta) {
     var resultado = respuesta.responseText;
@@ -22,7 +22,7 @@ function getMostrarProgramaProveedores(respuesta) {
 }
 
 function setMostrarProgramaArtesanos() {
-    servidor("https://empaquessr.com/sistema/cinthya/php/programa/select.php", getMostrarProgramaArtesanos)
+    servidor(myLink+"/php/programa/select.php", getMostrarProgramaArtesanos)
 }
 function getMostrarProgramaArtesanos(respuesta) {
     var resultado = respuesta.responseText;
@@ -55,7 +55,7 @@ function getMostrarProgramaArtesanos(respuesta) {
 //funcion para mostrar rpograma de afilador 2
 
 function setMostrarProgramaAfilador1() {
-    servidor("https://empaquessr.com/sistema/cinthya/php/programa/select.php", getMostrarProgramaAfilador1);
+    servidor(myLink+"/php/programa/select.php", getMostrarProgramaAfilador1);
 }
 
 function getMostrarProgramaAfilador1(respuesta) {
@@ -78,7 +78,7 @@ function getMostrarProgramaAfilador1(respuesta) {
 }
 
 function setMostrarProgramaAfilador2() {
-    servidor("https://empaquessr.com/sistema/cinthya/php/programa/select.php", getMostrarProgramaAfilador2);
+    servidor(myLink+"/php/programa/select.php", getMostrarProgramaAfilador2);
 }
 
 function getMostrarProgramaAfilador2(respuesta) {
@@ -112,9 +112,9 @@ function getMostrarProgramaAfilador2(respuesta) {
 
 //funcion para actualizar estado de un producto
 function setActualizarEstado(id, estado) {
-    //alert('https://empaquessr.com/sistema/cinthya/php/programa/updateEstado.php?id='+id+'&estado='+estado);
+    //alert(myLink+'/php/programa/updateEstado.php?id='+id+'&estado='+estado);
 
-    servidor('https://empaquessr.com/sistema/cinthya/php/programa/updateEstado.php?id=' + id + '&estado=' + estado, getActualizarEstado);
+    servidor(myLink+'/php/programa/updateEstado.php?id=' + id + '&estado=' + estado, getActualizarEstado);
 }
 function getActualizarEstado(respuesta) {
     if (respuesta.responseText == "1") {
@@ -125,7 +125,7 @@ function getActualizarEstado(respuesta) {
 
 }
 function setEliminarPrograma(id) {
-    servidor('https://empaquessr.com/sistema/cinthya/php/programa/delete.php?id=' + id, getEliminarPrograma);
+    servidor(myLink+'/php/programa/delete.php?id=' + id, getEliminarPrograma);
 }
 function getEliminarPrograma(respuesta) {
     if (respuesta.responseText == "1") {
@@ -140,7 +140,7 @@ function setLlenarProcesoPrograma(datos) {
     let tipo = datos[1];
     if (tipo == 1) Abrirdialogo('my-dialog-programa', 'dialogPrograma.html', id);
     else Abrirdialogo('my-dialog-programa1', 'dialogPrograma1.html', id);
-    servidor("https://empaquessr.com/sistema/cinthya/php/programa/selectProcesos.php?id=" + id, getLlenarProcesoPrograma);
+    servidor(myLink+"/php/programa/selectProcesos.php?id=" + id, getLlenarProcesoPrograma);
 }
 function getLlenarProcesoPrograma(respuesta) {
     var resultado = respuesta.responseText;
@@ -158,8 +158,8 @@ function setProcesosProgramaEntradaPedido(id, cantidad) {
     //id es id de lista de pedidos
     var codigo = id.split("-");
     if (codigo[0].length >= 7)
-        servidor('https://empaquessr.com/sistema/cinthya/php/programa/procesosEntradaProgramaPedido.php?id=' + id + '&cantidad=' + cantidad, getProcesosProgramaEntradaPedido);
-    else servidor('https://empaquessr.com/sistema/cinthya/php/programa/procesosEntradaProgramaPedidoInserto.php?id=' + id + '&cantidad=' + cantidad, getProcesosProgramaEntradaPedido);
+        servidor(myLink+'/php/programa/procesosEntradaProgramaPedido.php?id=' + id + '&cantidad=' + cantidad, getProcesosProgramaEntradaPedido);
+    else servidor(myLink+'/php/programa/procesosEntradaProgramaPedidoInserto.php?id=' + id + '&cantidad=' + cantidad, getProcesosProgramaEntradaPedido);
 
 }
 function getProcesosProgramaEntradaPedido(respuesta) {
@@ -173,10 +173,10 @@ function getProcesosProgramaEntradaPedido(respuesta) {
 // funcion para agregar faltante a lista de pedidos
 function setAgregarFaltante(json) {
     var codigo = (json.id).split("-");
-    //console.log("https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=");
+    //console.log(myLink+"/php/lista_pedidos/add.php?id='+json.id+'-F&codigo='+json.codigo+'&cantidad='+json.cantidad+'&resistencia='+json.resistencia+'&papel='+json.papel+'&observaciones=");
     if (codigo[0].length >= 7)
-        servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos/add.php?id=' + json.id + '-F&codigo=' + json.codigo + '&cantidad=' + json.cantidad + '&resistencia=' + json.resistencia + '&papel=' + json.papel + '&observaciones=', getAgregarFaltante);
-    else servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_inserto/add.php?id=" + json.id + "-F&codigo=" + json.codigo + "&resistencia=" + json.resistencia + "&cantidad=" + json.cantidad + "&observaciones=" + json.observaciones, getAgregarFaltante);
+        servidor(myLink+'/php/lista_pedidos/add.php?id=' + json.id + '-F&codigo=' + json.codigo + '&cantidad=' + json.cantidad + '&resistencia=' + json.resistencia + '&papel=' + json.papel + '&observaciones=', getAgregarFaltante);
+    else servidor(myLink+"/php/lista_pedidos_inserto/add.php?id=" + json.id + "-F&codigo=" + json.codigo + "&resistencia=" + json.resistencia + "&cantidad=" + json.cantidad + "&observaciones=" + json.observaciones, getAgregarFaltante);
 }
 function getAgregarFaltante(respuesta) {
     if (respuesta.responseText == 1) {
@@ -285,9 +285,9 @@ function setagregarPrograma(id) {
     }
 
     if (procesos == "") alerta("No haz seleccionado niguna");
-    else servidor('https://empaquessr.com/sistema/cinthya/php/programa/add.php?id=' + id + '&procesos=' + procesos, getAgregarPrograma);
+    else servidor(myLink+'/php/programa/add.php?id=' + id + '&procesos=' + procesos, getAgregarPrograma);
 
-    //console.log('https://empaquessr.com/sistema/cinthya/php/programa/add.php?id='+id+'&procesos='+procesos);
+    //console.log(myLink+'/php/programa/add.php?id='+id+'&procesos='+procesos);
 }
 function getAgregarPrograma(respuesta) {
 

@@ -6,9 +6,9 @@ function setProductos() {
     $('#loadingProductos').empty();
     $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
     var busqueda = $('#busquedaProductos1').val();
-    if (busqueda == "" || busqueda == undefined) servidor('https://empaquessr.com/sistema/cinthya/php/productos/select.php?type=2', getProductos);
+    if (busqueda == "" || busqueda == undefined) servidor(myLink+'/php/productos/select.php?type=2', getProductos);
     else setProductosBarraBusqueda(busqueda, 13);
-    //servidor('https://empaquessr.com/sistema/cinthya/php/productos/select.php?type=2',getProductos);
+    //servidor(myLink+'/php/productos/select.php?type=2',getProductos);
 }
 function getProductos(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -25,7 +25,7 @@ function setEliminarProducto(producto, i) {
     agregarClaseProducto(i);
 
     setTimeout(function () {
-        servidor('https://empaquessr.com/sistema/cinthya/php/productos/delete.php?codigo=' + producto, getEliminarProducto)
+        servidor(myLink+'/php/productos/delete.php?codigo=' + producto, getEliminarProducto)
     }, 1500);
 
 
@@ -53,7 +53,7 @@ function setAgregarProducto() {
             var formData = new FormData(form);
 
             $("#btn-producto").prop("disabled", true);
-            servidorPost('https://empaquessr.com/sistema/cinthya/php/productos/add.php', getAgregarProducto, formData);
+            servidorPost(myLink+'/php/productos/add.php', getAgregarProducto, formData);
             //alerta("el archivo si coiciden");
         }
         else alerta("El Archivo no coicide con el codigo del producto");
@@ -90,7 +90,7 @@ function setActualizarProducto() {
         $("#codigoProductoActualizar").prop('disabled', false);
         var form = $('#formProductoActualizar')[0];
         var formData = new FormData(form);
-        servidorPost('https://empaquessr.com/sistema/cinthya/php/productos/update.php', getActualizarProducto, formData);
+        servidorPost(myLink+'/php/productos/update.php', getActualizarProducto, formData);
     }
     else alerta("Espacios en blanco");
 
@@ -105,7 +105,7 @@ function getActualizarProducto(respuesta) {
 
 }
 function setBuscarProductoActualizar(codigo) {
-    servidor('https://empaquessr.com/sistema/cinthya/php/productos/select.php?type=3&search=' + codigo, getBuscarProductoActualizar);
+    servidor(myLink+'/php/productos/select.php?type=3&search=' + codigo, getBuscarProductoActualizar);
 }
 function getBuscarProductoActualizar(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -137,7 +137,7 @@ function setProductosBarraBusqueda(busqueda, e) {
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla == 13 || e == 13) {
         $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor('https://empaquessr.com/sistema/cinthya/php/productos/select.php?type=3&search=' + busqueda, getProductosBarraBusqueda);
+        servidor(myLink+'/php/productos/select.php?type=3&search=' + busqueda, getProductosBarraBusqueda);
     }
 
 }
@@ -231,13 +231,13 @@ function getDescargarProductosExcel(dato) {
     else {
         //alert(dato.length);
         if (dato.length < 3) alerta("Codigo escrito incorrectamente (Asegurate de que sean mas de 3 digitos)");
-        else servidor('https://empaquessr.com/sistema/cinthya/php/productos/selectSheets.php?&search=' + dato, getProductosExcel);
+        else servidor(myLink+'/php/productos/selectSheets.php?&search=' + dato, getProductosExcel);
 
     }
 }
 
 // Función para exportar datos a un archivo de Excel
-function exportarExcel(cliente, datos) {
+function exportarExcel(codigo, cliente, datos) {
     // Truncar el nombre del cliente si excede los 31 caracteres
     if (cliente.length > 31) {
         cliente = cliente.substring(0, 31);
@@ -261,7 +261,7 @@ function exportarExcel(cliente, datos) {
     XLSX.utils.book_append_sheet(libroDeExcel, hojaDeCalculo, cliente);
 
     // Generar un nombre de archivo con el cliente, la palabra "productos" y la fecha actual
-    const nombreArchivo = cliente + "_productos_" + obtenerFechaActual() + ".xlsx";
+    const nombreArchivo = codigo + "_" + cliente + "_productos_" + obtenerFechaActual() + ".xlsx";
 
     // Descargar el archivo de Excel
     XLSX.writeFile(libroDeExcel, nombreArchivo);
@@ -278,13 +278,14 @@ function getProductosExcel(respuesta) {
     } else {
         //OBTENER EL NOMBRE DEL CLIENTE
         let cliente = responseArray[0].cliente;
+        let codigo = responseArray[0].codigo.substring(0,3);
 
         // ELIMINAR TODOS LAS VARIABLES DEL JSON LLAMADO CLIENTE
         for (var i = 0; i < responseArray.length; i++) {
             delete responseArray[i].cliente;
         }
 
-        exportarExcel(cliente, responseArray);
+        exportarExcel(codigo, cliente, responseArray);
     }
 
 }

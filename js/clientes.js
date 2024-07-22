@@ -2,7 +2,7 @@
 //mostrar clientes
 function setClientes() {
     if ($('#busquedaCliente').val() != "") setClientesBarraBusqueda($('#busquedaCliente').val(), 13);
-    else servidor('https://empaquessr.com/sistema/cinthya/php/clientes/select.php?type=2', getClientes);
+    else servidor(myLink+'/php/clientes/select.php?type=2', getClientes);
 }
 function getClientes(respuesta) {
 
@@ -23,7 +23,7 @@ function setClientesBarraBusqueda(busqueda, e) {
 
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla == 13 || e == 13) {
-        servidor('https://empaquessr.com/sistema/cinthya/php/clientes/select.php?type=3&search=' + busqueda, getClientesBarraBusqueda);
+        servidor(myLink+'/php/clientes/select.php?type=3&search=' + busqueda, getClientesBarraBusqueda);
     }
 
 }
@@ -42,7 +42,7 @@ function setAgregarCliente() {
     //console.log($('#codigoCliente').val(), $('#nombreCliente').val(), $('#RFCCliente').val(), $('#contrasenaCliente').val(),vacio($('#codigoCliente').val(), $('#nombreCliente').val(), $('#RFCCliente').val(), $('#contrasena').val()),vacio);
     if (vacio($('#codigo').val(), $('#nombre').val(), $('#RFC').val(), $('#contrasena').val())) {
 
-        servidor('https://empaquessr.com/sistema/cinthya/php/clientes/add.php?codigo=' + $('#codigo').val() + '&nombre=' + $('#nombre').val() + '&rfc=' + $('#RFC').val() + '&contrasena=' + $('#contrasena').val(), getAgregarCliente)
+        servidor(myLink+'/php/clientes/add.php?codigo=' + $('#codigo').val() + '&nombre=' + $('#nombre').val() + '&rfc=' + $('#RFC').val() + '&contrasena=' + $('#contrasena').val(), getAgregarCliente)
     }
     else alerta("Espacios en blanco");
     //validar si codigo y nombre tiene datos
@@ -81,7 +81,7 @@ function setEliminarCliente(codigo, i) {
     agregarClase(i);
 
     setTimeout(function () {
-        servidor('https://empaquessr.com/sistema/cinthya/php/clientes/delete.php?codigo=' + codigo, getEliminarCliente);
+        servidor(myLink+'/php/clientes/delete.php?codigo=' + codigo, getEliminarCliente);
     }, 1500);
 
 }
@@ -98,7 +98,7 @@ function getEliminarCliente(respuesta) {
 
 //buscar editar cliente
 function setBuscarEditarCliente(id) {
-    servidor('https://empaquessr.com/sistema/cinthya/php/clientes/select.php?type=3&search=' + id, getBuscarEditarCliente);
+    servidor(myLink+'/php/clientes/select.php?type=3&search=' + id, getBuscarEditarCliente);
 }
 function getBuscarEditarCliente(respuesta) {
     var resultado = respuesta.responseText;
@@ -119,10 +119,10 @@ function setEditarCliente() {
     var nombre = $('#nombre').val();
     var rfc = $('#RFC').val();
     var contrasena = $('#contrasena').val();
-    if (vacio(id, nombre)) servidor("https://empaquessr.com/sistema/cinthya/php/clientes/update.php?id=" + id + "&nombre=" + nombre+ "&rfc=" + rfc + "&contrasena=" + contrasena, getEditarCliente);
+    if (vacio(id, nombre)) servidor(myLink+"/php/clientes/update.php?id=" + id + "&nombre=" + nombre+ "&rfc=" + rfc + "&contrasena=" + contrasena, getEditarCliente);
     else alerta("Espacios vacios!");
 
-    //servidor("https://empaquessr.com/sistema/cinthya/php/proveedores/update.php?id="+id+"&nombre="+nombre+"&tipo="+tipo,);
+    //servidor(myLink+"/php/proveedores/update.php?id="+id+"&nombre="+nombre+"&tipo="+tipo,);
 
 }
 function getEditarCliente(respuesta) {

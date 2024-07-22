@@ -30,8 +30,8 @@ function setAgregarOrden()
         var michelle = $('#michelle').prop('checked');
 
         var carpeta = michelle ? $('#yearOrden').text() + "-M" : $('#yearOrden').text();
-        //console.log('https://empaquessr.com/sistema/cinthya/php/ordenes/add.php?year='+carpeta,michelle);
-        servidorPost('https://empaquessr.com/sistema/cinthya/php/ordenes/add.php?year='+carpeta,getAgregarOrden,formData);
+        //console.log(myLink+'/php/ordenes/add.php?year='+carpeta,michelle);
+        servidorPost(myLink+'/php/ordenes/add.php?year='+carpeta,getAgregarOrden,formData);
     }
     else alerta("Espacios en blanco");
 }
@@ -49,7 +49,7 @@ function getAgregarOrden(respuesta)
 
 function setBuscarAnio()
 {
-    servidor("https://empaquessr.com/sistema/cinthya/php/ordenes/selectAnio.php",getBuscarAnio)
+    servidor(myLink+"/php/ordenes/selectAnio.php",getBuscarAnio)
 }
 function getBuscarAnio(respuesta)
 {
@@ -81,7 +81,7 @@ function getBuscarAnio(respuesta)
 
 function setBuscarOrden(anio)
 {
-    servidor("https://empaquessr.com/sistema/cinthya/php/ordenes/select.php?year="+anio,getBuscarOrden)
+    servidor(myLink+"/php/ordenes/select.php?year="+anio,getBuscarOrden)
 }
 function getBuscarOrden(respuesta)
 {
@@ -112,7 +112,7 @@ function getBuscarOrden(respuesta)
 
 function setEliminarOrden(id)
 {
-    servidor("https://empaquessr.com/sistema/cinthya/php/ordenes/delete.php?id="+id,getEliminarOrden)
+    servidor(myLink+"/php/ordenes/delete.php?id="+id,getEliminarOrden)
 }
 function getEliminarOrden(respuesta)
 {
@@ -138,9 +138,9 @@ function accionMensajeOrden(index,datos)
         let navegador = navigator.userAgent;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         //console.log("Estás usando un dispositivo móvil!!");
-        nextPageFunctionData('verOrden.html',verOrden,'https://empaquessr.com/sistema/cinthya/ordenes/'+anio+'/'+archivo);
+        nextPageFunctionData('verOrden.html',verOrden,myLink+'/ordenes/'+anio+'/'+archivo);
       } else {
-        window.open('https://empaquessr.com/sistema/cinthya/ordenes/'+anio+'/'+archivo, '_blank');
+        window.open(myLink+'/ordenes/'+anio+'/'+archivo, '_blank');
       }
     } 
     else if(index == 1) mensajeConfirmOrden(id); 

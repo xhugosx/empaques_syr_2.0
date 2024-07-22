@@ -129,7 +129,7 @@ document.addEventListener('init', function (event) {
 
         // Función para obtener productos con fecha de entrega correspondiente al día actual
         function obtenerProductosDelDia(fecha, callback) {
-            let link = "https://empaquessr.com/sistema/cinthya/php/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&anio="+fecha.getFullYear();
+            let link = myLink+"/php/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&anio="+fecha.getFullYear();
             servidor(link, function (respuesta) {
                 var resultado = respuesta.response;
                 let subcadenas = resultado.split('|');

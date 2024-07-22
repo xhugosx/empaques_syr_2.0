@@ -60,6 +60,7 @@
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/calendarioPedidos.css">
+    <link rel="stylesheet" href="./css/cinthya.css">
 
     <title>Empaques SyR</title>
 </head>
@@ -176,7 +177,7 @@
                         </ons-button>
                     </ons-list-item>
                     <br><br><ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" modifier="large" style="background-color: #426590; padding: 0;"
+                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
                             onclick="resetearFiltroPedidos();">
                             <ons-icon icon="fa-trash"></ons-icon>
                             Resetear
@@ -248,7 +249,7 @@
                     ADMINISTRACIÓN
                 </div>
                 <div class="contenedor-flexbox">
-                    <ons-card class="botonPrograma botonInicio" style="background-color: #1d4e89; text-align: center; "
+                    <ons-card class="botonPrograma botonInicio btnActivo"
                         onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
                         <i class="fa-solid fa-rectangle-list fa-4x" style="color:white; margin: 5px; "></i>
                         <br>
@@ -297,7 +298,7 @@
                     PRODUCCIÓN
                 </div>
                 <div class="contenedor-flexbox">
-                    <ons-card class="botonPrograma botonInicio" style="background-color: #1d4e89; text-align: center; "
+                    <ons-card class="botonPrograma botonInicio btnActivo"
                         onclick="nextPageFunction('inventario.html',mostrarTodoInventario)">
                         <i class="fa-solid fa-clipboard-list fa-4x" style="margin: 5px; color: white;"></i>
                         <br>
@@ -396,7 +397,7 @@
                     CONTROL DE GASTOS
                 </div>
                 <div class="contenedor-flexbox">
-                    <ons-card class="botonPrograma botonInicio" style="background-color: #1d4e89; text-align: center; "
+                    <ons-card class="botonPrograma botonInicio btnActivo"
                         onclick="asignarAnio(); nextPageFunction('ingresosEgresos.html',setIngresosEgresos);chart=''">
                         <i class="fa-solid fa-chart-line fa-4x" style="color:white; margin: 5px; "></i>
                         <br>

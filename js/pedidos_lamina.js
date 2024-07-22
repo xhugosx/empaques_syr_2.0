@@ -30,7 +30,7 @@ function setMostrarBusquedaLamina(search, e) {
     tecla = (document.all) ? e.keyCode : e.which;
     var tipo = filtroLaminaP ? 2 : 1;
     if (tecla == 13 || e == 13) {
-        servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?proveedor=1&search=' + search + '&type=' + tipo, getMostrarPedidosLamina);
+        servidor(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=1&search=' + search + '&type=' + tipo, getMostrarPedidosLamina);
     }
     else if (search == "") setMostrarPedidosLamina();
 }
@@ -38,7 +38,7 @@ function setMostrarBusquedaLaminaPack(search, e) {
     tecla = (document.all) ? e.keyCode : e.which;
     var tipo = filtroLaminaP ? 2 : 1;
     if (tecla == 13 || e == 13) {
-        servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?proveedor=2&search=' + search + '&type=' + tipo, getMostrarPedidosLaminaPACK);
+        servidor(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=2&search=' + search + '&type=' + tipo, getMostrarPedidosLaminaPACK);
     }
     else if (search == "") setMostrarPedidosLaminaPACK();
 }
@@ -46,7 +46,7 @@ function setMostrarPedidosLaminaFecha(fecha, tipo) {
     tipo = tipo ? 1 : 2;
     $('#loadingPedidosLaminaFecha').empty("");
     $('#loadingPedidosLaminaFecha').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha + "&type=" + tipo, getMostrarPedidosLaminaFecha)
+    servidor(myLink+"/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha + "&type=" + tipo, getMostrarPedidosLaminaFecha)
 }
 function getMostrarPedidosLaminaFecha(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -59,7 +59,7 @@ function getMostrarPedidosLaminaFecha(respuesta) {
 }
 function setMostrarPedidosLamina() {
     var tipo = filtroLaminaP ? 2 : 1;
-    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo, getMostrarPedidosLamina)
+    servidor(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo, getMostrarPedidosLamina)
 }
 function getMostrarPedidosLamina(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -68,7 +68,7 @@ function getMostrarPedidosLamina(respuesta) {
 }
 function setMostrarPedidosLaminaPACK() {
     var tipo = filtroLaminaP ? 2 : 1;
-    servidor("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?proveedor=2&type=" + tipo, getMostrarPedidosLaminaPACK)
+    servidor(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=2&type=" + tipo, getMostrarPedidosLaminaPACK)
 }
 function getMostrarPedidosLaminaPACK(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -93,7 +93,7 @@ function setAgregarPedidoLamina() {
     //var observaciones = $('#observacionesPL').val();
 
     if (datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
-        servidorPost("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/add.php", getAgregarPedidoLamina, formData);
+        servidorPost(myLink+"/php/lista_pedidos_lamina/add.php", getAgregarPedidoLamina, formData);
     else alerta("Existen datos vacios");
 
 }
@@ -106,8 +106,8 @@ function getAgregarPedidoLamina(respuesta) {
     //console.log(respuesta.responseText);
 }
 function setActualizarEstadoPL(estado, o_c, cantidad, entrada) {
-    //alert('https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/updateEntrada.php?id_lp='+o_c+'&cantidad='+cantidad+'&entrada='+entrada+'&estado='+estado);
-    servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/updateEntrada.php?id_lp=' + o_c + '&cantidad=' + cantidad + '&entrada=' + entrada + '&estado=' + estado, getActualizarEstadoPL)
+    //alert(myLink+'/php/lista_pedidos_lamina/updateEntrada.php?id_lp='+o_c+'&cantidad='+cantidad+'&entrada='+entrada+'&estado='+estado);
+    servidor(myLink+'/php/lista_pedidos_lamina/updateEntrada.php?id_lp=' + o_c + '&cantidad=' + cantidad + '&entrada=' + entrada + '&estado=' + estado, getActualizarEstadoPL)
 }
 function getActualizarEstadoPL(respuesta) {
     var resultado = respuesta.responseText;
@@ -121,7 +121,7 @@ function getActualizarEstadoPL(respuesta) {
 
 function setBuscarActualizarPL(search) {
     var tipo = filtroLaminaP ? 2 : 1;
-    servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/select.php?search=' + search + "&type=" + tipo, getBuscarActualizarPL);
+    servidor(myLink+'/php/lista_pedidos_lamina/select.php?search=' + search + "&type=" + tipo, getBuscarActualizarPL);
 }
 function getBuscarActualizarPL(respuesta) {
     //console.log(respuesta.responseText);
@@ -167,7 +167,7 @@ function setActualizarPL() {
     var fecha_entrega = $('#fecha_entrega').val();
 
     if (datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
-        servidorPost("https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/update.php?&o_c=" + o_cTemp, getActualizarPL, formData);
+        servidorPost(myLink+"/php/lista_pedidos_lamina/update.php?&o_c=" + o_cTemp, getActualizarPL, formData);
     else alerta("Existen datos vacios");
 
 }
@@ -186,7 +186,7 @@ function getActualizarPL(respueta) {
 
 }
 function setEliminarPL(o_c) {
-    servidor('https://empaquessr.com/sistema/cinthya/php/lista_pedidos_lamina/delete.php?o_c=' + o_c, getEliminarPL);
+    servidor(myLink+'/php/lista_pedidos_lamina/delete.php?o_c=' + o_c, getEliminarPL);
 }
 function getEliminarPL(respuesta) {
     var resultado = respuesta.responseText;
