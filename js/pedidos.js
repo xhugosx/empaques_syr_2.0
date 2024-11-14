@@ -37,7 +37,7 @@ function solicitarInfoPedido(codigo, e) {
 }
 //BUSQUEDA POR CLIENTE VISTA 1
 function setPedidosCliente() {
-    let url = myLink+"/php/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+    let url = myLink + "/php/lista_pedidos/selectCliente.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
     servidor(url, function (respuesta) {
         var resultado = respuesta.responseText;//respuesta del servidor
         var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -54,7 +54,7 @@ function setBusquedaPendiente() {
 
     var busqueda = $('#searchPedido').val();
     if (busqueda == "" || busqueda == undefined) {
-        let url = myLink+"/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = myLink + "/php/lista_pedidos/selectAll.php?filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -74,7 +74,7 @@ function setPedidosClienteFiltrado(codigo) {
     cliente = codigo;
     var busqueda = $('#searchPedidosClientesFiltrados').val();
     if (busqueda == "" || busqueda == undefined) {
-        let url = myLink+"/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = myLink + "/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -93,7 +93,7 @@ function setSearchPedidos(search, e) {
         $("#datosPedidosLoading").empty();
         $("#datosPedidosLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         //var type = filtro ? 1 : 2;
-        let url = myLink+"/php/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = myLink + "/php/lista_pedidos/selectAll.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -114,7 +114,7 @@ function setSearchPedidosCliente(search, e) {
     if (tecla == 13) {
         $("#datosPedidosClientesLoading").empty();
         $("#datosPedidosClientesLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let url = myLink+"/php/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+        let url = myLink + "/php/lista_pedidos/selectCliente.php?search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -134,7 +134,7 @@ function setsearchPedidosClienteFiltrado(search, e, codigo) {
         $("#datosPedidosClientesLoadingFiltroLoading").empty();
         $("#datosPedidosClientesLoadingFiltroLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
         cliente = codigo;
-        servidor(myLink+"/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal, getSearchPedidosClienteFiltrado);
+        servidor(myLink + "/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&search=" + search + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal, getSearchPedidosClienteFiltrado);
     }
     else if (search == "") setPedidosClienteFiltrado(codigo);
 }
@@ -184,11 +184,11 @@ function setAgregarPedido() {
 
                 }
                 setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas);
-                servidor(myLink+'/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones + '&fecha_entrega=' + fecha_entrega, getAgregarPedido);
+                servidor(myLink + '/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones + '&fecha_entrega=' + fecha_entrega, getAgregarPedido);
             }
             else alerta("Espacios vacios en insertos")
         }
-        else servidor(myLink+'/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones + '&fecha_entrega=' + fecha_entrega, getAgregarPedido);
+        else servidor(myLink + '/php/lista_pedidos/add.php?id=' + id + '&codigo=' + codigo + '&cantidad=' + cantidad + '&resistencia=' + resistencia + '&papel=' + papel + '&oc=' + oc + '&fecha_oc=' + fecha_oc + '&observaciones=' + observaciones + '&fecha_entrega=' + fecha_entrega, getAgregarPedido);
     }
     else alerta('Espacios vacios en producto! <br>(No escribir "CEROS")');
 }
@@ -207,7 +207,7 @@ function setBuscarProductoCliente(codigo) {
     $("#pedidoCliente").val("Buscando...");
     $("#botonAgregarPedido").attr('disabled', true);
 
-    servidor(myLink+"/php/lista_pedidos/selectProductoCliente.php?search=" + codigo, getBuscarProductoCliente);
+    servidor(myLink + "/php/lista_pedidos/selectProductoCliente.php?search=" + codigo, getBuscarProductoCliente);
 
 }
 function getBuscarProductoCliente(respuesta) {
@@ -238,7 +238,7 @@ function getBuscarProductoCliente(respuesta) {
 
 }
 function setBuscarInventario(codigo) {
-    servidor(myLink+'/php/inventario/select.php?search=' + codigo, getBuscarInventario)
+    servidor(myLink + '/php/inventario/select.php?search=' + codigo, getBuscarInventario)
 }
 function getBuscarInventario(respuesta) {
     if (respuesta.responseText != "") {
@@ -252,7 +252,7 @@ function getBuscarInventario(respuesta) {
 }
 //eliminar pedido
 function setEliminarPedido(id) {
-    servidor(myLink+"/php/lista_pedidos/delete.php?id=" + id, getEliminarpedido);
+    servidor(myLink + "/php/lista_pedidos/delete.php?id=" + id, getEliminarpedido);
 }
 function getEliminarpedido(respuesta) {
     if (respuesta.responseText == 1) {
@@ -266,7 +266,7 @@ function getEliminarpedido(respuesta) {
 function setModificarBuscarPedido(id) {
     //var type = filtro ? 1 : 2;
     //console.log(myLink+"/php/lista_pedidos/selectAll.php?type="+type+"&search="+id);
-    servidor(myLink+"/php/lista_pedidos/selectAllEditar.php?id=" + id, getModificarBuscarPedido);
+    servidor(myLink + "/php/lista_pedidos/selectAllEditar.php?id=" + id, getModificarBuscarPedido);
 
 }
 function getModificarBuscarPedido(respuesta) {
@@ -304,7 +304,7 @@ function setModificarPedido() {
     var observaciones = $("#pedidoModificarObservaciones").val();
 
     if (datoVacio(resistencia) && datoVacio(cantidad) && datoVacio(oc) && datoVacio(fecha)) {
-        servidor(myLink+"/php/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&fecha_entrega=" + fecha_entrega + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
+        servidor(myLink + "/php/lista_pedidos/update.php?resistencia=" + resistencia + "&papel=" + papel + "&cantidad=" + cantidad + "&oc=" + oc + "&fecha_oc=" + fecha + "&fecha_entrega=" + fecha_entrega + "&id=" + id + "&observaciones=" + observaciones, getModificarPedido)
     }
     else alerta('Espacios Vacios! <br>(No escribir "CEROS")')
 
@@ -323,7 +323,7 @@ function getModificarPedido(respuesta) {
 function setActualizarEstadoPedido(datos) {
     let id = datos[0];
     let estado = datos[1];
-    servidor(myLink+"/php/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedido);
+    servidor(myLink + "/php/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado, getActulizarestadoPedido);
 }
 function setActualizarEstadoPedido2(datos) {
     let id = datos[0];
@@ -331,7 +331,7 @@ function setActualizarEstadoPedido2(datos) {
     let factura = datos[2];
     let cantidad = datos[3];
     let fecha = datos[4];
-    servidor(myLink+"/php/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado + "&factura=" + factura + "&cantidad=" + cantidad + "&fecha=" + fecha, getActulizarestadoPedido);
+    servidor(myLink + "/php/lista_pedidos/updateEstado.php?id=" + id + "&estado=" + estado + "&factura=" + factura + "&cantidad=" + cantidad + "&fecha=" + fecha, getActulizarestadoPedido);
 
 }
 function getActulizarestadoPedido(respuesta) {
@@ -429,7 +429,7 @@ function enlistarPedidos(arrayJson, i) {
     html1 += '        <span class="list-item__subtitle">';
     html1 += '<span>' + arrayJson.cliente + '</span><br> <b>O. C: ' + arrayJson.oc + '&emsp;Fecha: ' + sumarDias(arrayJson.fecha_oc, 0) + '</b>';
     html1 += enlistarFacturas(arrayJson);
-    html1 += arrayJson.observaciones == "" ? "" : '<br><span><b>OBSERVACIONES: &nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
+    html1 += arrayJson.observaciones == "" ? "" : '<br><span><b><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';
@@ -543,7 +543,6 @@ function resetearFiltroPedidos() {
 function llenarAnio() {
     document.getElementById('currentYear').value = anioGlobal;
 
-
 }
 function sumarAnioFiltro() {
     anioGlobal++;
@@ -552,4 +551,122 @@ function sumarAnioFiltro() {
 function restarAnioFiltro() {
     anioGlobal--;
     document.getElementById('currentYear').value = anioGlobal; //console.log(anioGlobal);
+}
+function menuPedidos() {
+    var html = `<ons-list>
+                    <center>
+                        <h4 style="color: #808fa2; font-weight: bold;">
+                            Filtros
+                        </h4>
+                    </center>
+                    <ons-list>
+                        <ons-list-item>
+                            <label class="left">
+                                <h4 style="color: #808fa2;">
+
+                                    Año
+                                </h4>
+                            </label>
+                            <label class="center">
+                                <div class="year-input">
+
+                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
+                                    <input type="text" id="currentYear" readonly>
+                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
+                                </div>
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="pedidoRadio" input-id="Actuales" checked value="1"></ons-radio>
+                            </label>
+                            <label for="Actuales" class="center">
+                                Actuales
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="pedidoRadio" input-id="Faltantes" value="2"></ons-radio>
+                            </label>
+                            <label for="Faltantes" class="center">
+                                Faltantes
+                            </label>
+                        </ons-list-item>
+                    </ons-list>
+                    <ons-list>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-1" value="0" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-1" class="center">
+                                ⚪ Pendiente
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-2" value="1" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-2" class="center">
+                                🟠 Proceso
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-3" value="2" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-3" class="center">
+                                🟢 Terminado
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-4" value="3" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-4" class="center">
+                                🟩 Terminado sin procesos
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-5" value="4" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-5" class="center">
+                                🔵 Entregado
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-6" value="5" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-6" class="center">
+                                🟣 E. Parcial
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-7" value="6" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-7" class="center">
+                                ⚫ Cancelado
+                            </label>
+                        </ons-list-item>
+                    </ons-list>
+                    <ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
+                            Aplicar
+                        </ons-button>
+                    </ons-list-item>
+                    <br><br><ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
+                            onclick="resetearFiltroPedidos();">
+                            <ons-icon icon="fa-trash"></ons-icon>
+                            Resetear
+                        </ons-button>
+                    </ons-list-item>
+
+
+                </ons-list>
+            `;
+    $("#contenidoMenu").html(html);
+
 }

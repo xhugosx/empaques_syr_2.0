@@ -50,6 +50,8 @@
     <script src="./js/ordenes.js"></script>
     <script src="./js/factura.js"></script>
     <script src="./js/calendarioPedidos.js"></script>
+    <script src="./js/suajes.js"></script>
+    <script src="./js/grabados.js"></script>
 
     <script src="./cordova.js"></script>
 
@@ -72,120 +74,7 @@
     <ons-splitter id="onsplitter">
         <ons-splitter-side id="menu" side="right" width="320px" collapse>
             <ons-page>
-                <ons-list>
-
-                    <center>
-                        <h4 style="color: #808fa2; font-weight: bold;">
-                            Filtros
-                        </h4>
-                    </center>
-                    <ons-list>
-                        <ons-list-item>
-                            <label class="left">
-                                <h4 style="color: #808fa2;">
-
-                                    Año
-                                </h4>
-                            </label>
-                            <label class="center">
-                                <div class="year-input">
-
-                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
-                                    <input type="text" id="currentYear" readonly>
-                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
-                                </div>
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="pedidoRadio" input-id="Actuales" checked value="1"></ons-radio>
-                            </label>
-                            <label for="Actuales" class="center">
-                                Actuales
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="pedidoRadio" input-id="Faltantes" value="2"></ons-radio>
-                            </label>
-                            <label for="Faltantes" class="center">
-                                Faltantes
-                            </label>
-                        </ons-list-item>
-                    </ons-list>
-                    <ons-list>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-1" value="0" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-1" class="center">
-                                ⚪ Pendiente
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-2" value="1" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-2" class="center">
-                                🟠 Proceso
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-3" value="2" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-3" class="center">
-                                🟢 Terminado
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-4" value="3" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-4" class="center">
-                                🟩 Terminado sin procesos
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-5" value="4" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-5" class="center">
-                                🔵 Entregado
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-6" value="5" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-6" class="center">
-                                🟣 E. Parcial
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-7" value="6" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-7" class="center">
-                                ⚫ Cancelado
-                            </label>
-                        </ons-list-item>
-                    </ons-list>
-                    <ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
-                            Aplicar
-                        </ons-button>
-                    </ons-list-item>
-                    <br><br><ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
-                            onclick="resetearFiltroPedidos();">
-                            <ons-icon icon="fa-trash"></ons-icon>
-                            Resetear
-                        </ons-button>
-                    </ons-list-item>
-
-
-                </ons-list>
+                <div id="contenidoMenu"></div>
             </ons-page>
         </ons-splitter-side>
         <ons-splitter-content id="content">
@@ -231,8 +120,9 @@
             </ons-toolbar>
             <ons-tabbar position="bottom" modifier="autogrow">
                 <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
-                <ons-tab page="produccion.html" label="Producción" icon="fa-clipboard"></ons-tab>
                 <ons-tab page="programa.html" label="Programa" icon="fa-gears"></ons-tab>
+                <ons-tab page="almacen.html" label="Almacen" icon="fa-warehouse"></ons-tab>
+                <ons-tab page="consumibles.html" label="Consumibles" icon="fa-clipboard-list"></ons-tab>
                 <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar"></ons-tab>
             </ons-tabbar>
 
@@ -250,7 +140,7 @@
                 </div>
                 <div class="contenedor-flexbox">
                     <ons-card class="botonPrograma botonInicio btnActivo"
-                        onclick="nextPageFunction('pedidos.html',buscarDtospedidos)">
+                        onclick="nextPageFunction('pedidos.html',buscarDtospedidos);menuPedidos();">
                         <i class="fa-solid fa-rectangle-list fa-4x" style="color:white; margin: 5px; "></i>
                         <br>
                         <span style="color:white"> Pedidos pendientes</span>
@@ -290,12 +180,12 @@
     <!-- fin de administracion-->
 
     <!-- produccion -->
-    <template id="produccion.html">
+    <template id="almacen.html">
         <ons-page>
             <br><br><br><br><br><br>
             <ons-card id="contenedorPrograma">
                 <div class="title contenedor-flexbox">
-                    PRODUCCIÓN
+                    ALMACEN
                 </div>
                 <div class="contenedor-flexbox">
                     <ons-card class="botonPrograma botonInicio btnActivo"
@@ -304,13 +194,6 @@
                         <br>
                         <span style="color: white;"> Inventario </span>
                     </ons-card>
-                    <ons-card class="botonPrograma botonInicio" style=" text-align: center; "
-                        onclick="nextPageFunction('consumible.html',refresConsumible)">
-                        <i class="fa-solid fa-toolbox fa-4x" style=" margin: 5px; "></i>
-                        <br>
-                        <span> Consumible </span>
-                    </ons-card>
-
                 </div>
                 <div class="contenedor-flexbox">
                     <ons-card class="botonPrograma botonInicio" style="text-align: center; "
@@ -332,6 +215,45 @@
         </ons-page>
     </template>
     <!-- fin de produccion-->
+
+    <!-- consumibles -->
+    <template id="consumibles.html">
+        <ons-page>
+            <br><br><br><br><br><br>
+            <ons-card id="contenedorPrograma">
+                <div class="title contenedor-flexbox">
+                    CONSUMIBLES
+                </div>
+                <div class="contenedor-flexbox">
+
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center; "
+                        onclick="nextPageFunction('consumible.html',refresConsumible)">
+                        <i class="fa-solid fa-toolbox fa-4x" style=" margin: 5px; "></i>
+                        <br>
+                        <span> Consumible </span>
+                    </ons-card>
+
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPageFunction('suajes.html',mostrarSuajes)">
+                        <i class="fa-solid fa-cut fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Suajes </span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio" style=" text-align: center;"
+                        onclick="nextPageFunction('grabados.html',mostrarGrabados)">
+                        <i class="fa-solid fa-stamp fa-4x" style="margin: 5px; "></i>
+                        <br>
+                        <span> Grabados </span>
+                    </ons-card>
+                </div>
+
+            </ons-card>
+
+        </ons-page>
+    </template>
+    <!-- fin de consumibles-->
 
     <!-- programa -->
     <template id="programa.html">
@@ -422,10 +344,10 @@
                 </div>
                 <div class="contenedor-flexbox">
                     <ons-card class="botonPrograma botonInicio" style="text-align: center;"
-                        onclick="nextPageFunction('facturas.html',function(){});">
+                        onclick="nextPageFunction('facturas.html',mostrarFacturas); menuFacturas();">
                         <i class="fa-solid fa-file-invoice-dollar fa-4x" style="margin: 5px; "></i>
                         <br>
-                        <span style=""> Facturas - Remisiones</span>
+                        <span> Facturas - Remisiones</span>
                     </ons-card>
 
                 </div>
@@ -442,52 +364,31 @@
         <ons-page id="facturas">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
-                <div class="center"> Facturas </div>
+                <div class="center">
+                    Facturas</div>
+                <div class="right">
+                    <ons-toolbar-button onclick="$('#menu')[0].open();" style="color:white; font-size:18px">
+                        Filtro
+                        <i class="fa-solid fa-filter"></i>
+                    </ons-toolbar-button>
+                </div>
             </ons-toolbar>
 
             <div id="loadingFacturas">
-
+                <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
-            <ons-card style="padding:0px;" class="botonPrograma">
-                <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
-                    <b> 12 DE JUNIO DEL 2024 </b>
-                </ons-list-header>
-                <ons-list-item modifier="nodivider" expandable>
-                    <div class="left">
-                        <i class="fas fa-file-invoice fa-2x"></i>
-                    </div>
-                    <div class="center romperTexto">
-                        <span class="list-item__title">
-                            A-8586
-                        </span>
-                        <span class="list-item__subtitle">
-                            <span>PROVIDENCIA S.A. DE C.V.</span><br>
-                        </span>
-                    </div>
-                    <div class="expandable-content expandProductos">
-                        <div class="productos">
-                            <div class="codigo"><b>083/001</b></div>
-                            CAJA PARA ZAPATOS TORO
-                            <span class="cantidad">
-                                1,200 pzas
-                            </span>
-                        </div>
-                        <div class="productos">
-                            <div class="codigo"><b>083/001</b></div>
-                            CAJA PARA ZAPATOS TORO
-                            <span class="cantidad">
-                                1,200 pzas
-                            </span>
-                        </div>
-                    </div>
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchFacturas" onkeyup="actualizarFacturas()"
+                        placeholder="Buscar: Factura / Cliente "></ons-search-input>
                 </ons-list-item>
-            </ons-card>
-
-            <ons-list style="background: rgba(76, 175, 80, 0.0);">
-                <ons-lazy-repeat id="facturaDatos"></ons-lazy-repeat>
             </ons-list>
-            <br><br><br><br><br><br><br>
 
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosFacturasRemision"></ons-lazy-repeat>
+            </ons-list>
+
+            <br><br><br><br><br><br><br>
         </ons-page>
     </template>
 
@@ -2151,7 +2052,6 @@
                                     <option value="" style="color: #ccc;">(RESISTENCIA)</option>
                                     <option value="MICRO">MICRO</option>
                                     <option value="S/G">S/G</option>
-                                    <option value="21 ECT ESP">21 ECT ESP</option>
                                     <option value="21 ECT">21 ECT</option>
                                     <option value="23 ECT">23 ECT</option>
                                     <option value="26 ECT">26 ECT</option>
@@ -2168,6 +2068,9 @@
                                     <option value="61 ECT">61 ECT</option>
                                     <option value="68 ECT">68 ECT</option>
                                     <option value="71 ECT">71 ECT</option>
+                                    <option value="200 LBS">200 LBS</option>
+                                    <option value="250 LBS">250 LBS</option>
+                                    <option value="275 LBS">275 LBS</option>
 
                                 </ons-select>
                             </div>
@@ -2357,6 +2260,9 @@
                                     <option value="61 ECT">61 ECT</option>
                                     <option value="68 ECT">61 ECT</option>
                                     <option value="71 ECT">71 ECT</option>
+                                    <option value="200 LBS">200 LBS</option>
+                                    <option value="250 LBS">250 LBS</option>
+                                    <option value="275 LBS">275 LBS</option>
 
                                 </ons-select>
                             </div>
@@ -2833,6 +2739,340 @@
 
     <!-- FIN SE CONSUMIBLES -->
 
+    <!-- SUAJES -->
+
+    <!-- Vista completa -->
+    <template id="suajes.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Suajes</div>
+            </ons-toolbar>
+
+            <ons-tabbar position="top">
+                <ons-tab id="existencia" page="sujeUso.html" label="Uso" icon="fa-clipboard-check" active>
+                </ons-tab>
+                <ons-tab id="sinExistencia" page="suajeSinUso.html" label="Sin Uso" icon="fa-circle-xmark">
+                </ons-tab>
+            </ons-tabbar>
+
+            <ons-fab onclick="nextPage('agregarSuaje.html')" position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
+        </ons-page>
+    </template>
+
+    <!-- vista suajes en uso -->
+
+    <template id="sujeUso.html">
+        <ons-page>
+
+            <div id="loadingSuajes">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchSuajes" placeholder="Buscar: Codigo / Descripción"
+                        onkeyup="mostrarSuajes()"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosSuajes"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+
+        </ons-page>
+    </template>
+
+    <!-- vista suajes sin uso-->
+    <template id="suajeSinUso.html">
+        <ons-page>
+
+            <div id="loadingSuajes0">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchSuajes0" placeholder="Buscar: Codigo / Descripción"
+                        onkeyup="mostrarSuajes()"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosSuajes0"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+
+        </ons-page>
+    </template>
+    <!-- agregar suajes -->
+    <template id="agregarSuaje.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Suaje</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form onsubmit="return false;" id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="codigo" name="codigo" class="input-100" type="text" step="any"
+                                    placeholder="CODIGO(S)"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="descripcion" name="descripcion" class="input-100" type="text" step="any"
+                                    placeholder="Descripcion" style="text-transform: uppercase;"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            </div>
+                            <div class="center">
+                                <span style="color:grey">SIN USO</span>&nbsp; <ons-switch checked id="switch" name="switch"></ons-switch>&nbsp;
+                                <spanst style="color:grey">USO</span>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="agregarSuajes()">Agregar</ons-button>
+                    </ons-list-item>
+
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
+<!-- aqui se editaran los suajes-->
+    <template id="editarSuaje.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Editar Suaje</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form onsubmit="return false;" id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="id" name="id" class="input-100" type="text" step="any"
+                                    placeholder="Id" disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="codigo" name="codigo" class="input-100" type="text" step="any"
+                                    placeholder="CODIGO(S)"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="descripcion" name="descripcion" class="input-100" type="text" step="any"
+                                    placeholder="Descripcion" style="text-transform: uppercase;"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            </div>
+                            <div class="center">
+                                <span style="color:grey">SIN USO</span>&nbsp; <ons-switch checked id="switch" name="switch"></ons-switch>&nbsp;
+                                <spanst style="color:grey">USO</span>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="editarSuajes()">Editar</ons-button>
+                    </ons-list-item>
+
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
+
+    <!-- FIN SE SUAJES -->
+
+    <!-- FGRABADOS -->
+    <!-- Vista completa -->
+    <template id="grabados.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Grabados</div>
+            </ons-toolbar>
+
+            <div id="loadingGrabados">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchGrabados" placeholder="Buscar: Codigo / Descripción"
+                        onkeyup="mostrarGrabados()"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosGrabados"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br>
+
+            <ons-fab onclick="nextPage('agregarGrabados.html')" position="bottom right">
+                <span>Agregar</span>
+                <i class="fa-solid fa-plus"></i>
+            </ons-fab>
+
+        </ons-page>
+    </template>
+
+    <!-- agregar suajes -->
+    <template id="agregarGrabados.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Grabados</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form onsubmit="return false;" id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="descripcion" name="descripcion" class="input-100" type="text" step="any"
+                                    placeholder="Descripcion" style="text-transform: uppercase;"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-hashtag"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="cantidad" name="cantidad" class="input-100" type="number" step="any"
+                                    placeholder="Cantidad"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="agregarGrabados()">Agregar</ons-button>
+                    </ons-list-item>
+
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
+<!-- aqui se editaran los suajes-->
+    <template id="editarGrabados.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Editar Grabados</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form onsubmit="return false;" id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="id" name="id" class="input-100" type="text" step="any"
+                                    placeholder="Id" disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="descripcion" name="descripcion" class="input-100" type="text" step="any"
+                                    placeholder="Descripcion" style="text-transform: uppercase;"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-hashtag"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="cantidad" name="cantidad" class="input-100" type="number" step="any"
+                                    placeholder="Cantidad"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="editarGrabados()">Editar</ons-button>
+                    </ons-list-item>
+
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
+
+    <!-- FIN SE GRABADOS -->
+
     <!-- PEDIDOS -->
     <template id="pedidos.html">
         <ons-page id="pedidos">
@@ -2952,17 +3192,19 @@
             <div id="datosPedidosLoadingCalendario">
 
             </div>
-
-            <div id="contenedorCalendario">
-                <div id="mes">
-                    <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
-                            style="color: white;"></i></span>
-                    <span id="nombreMes"></span>
-                    <span onclick="cambiarMes('siguiente')"><i class="fas fa-arrow-right"
-                            style="color: white;"></i></span>
+            <center>
+                <div id="contenedorCalendario">
+                    <div id="mes">
+                        <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
+                                style="color: white;"></i></span>
+                        <span id="nombreMes"></span>
+                        <span onclick="cambiarMes('siguiente')"><i class="fas fa-arrow-right"
+                                style="color: white;"></i></span>
+                    </div>
+                    <div id="dias"></div>
                 </div>
-                <div id="dias"></div>
-            </div>
+            </center>
+
             <ons-list style="background: rgba(76, 175, 80, 0.0);">
                 <ons-lazy-repeat id="datosPedidosCalendario"></ons-lazy-repeat>
             </ons-list>
@@ -3083,6 +3325,9 @@
                                 <option value="51 ECT">51 ECT</option>
                                 <option value="61 ECT">61 ECT</option>
                                 <option value="71 ECT">71 ECT</option>
+                                <option value="200 LBS">200 LBS</option>
+                                <option value="250 LBS">250 LBS</option>
+                                <option value="275 LBS">275 LBS</option>
                             </ons-select>
                         </div>
                     </ons-list-item>
@@ -3296,6 +3541,9 @@
                                 <option value="51 ECT">51 ECT</option>
                                 <option value="61 ECT">61 ECT</option>
                                 <option value="71 ECT">71 ECT</option>
+                                <option value="200 LBS">200 LBS</option>
+                                <option value="250 LBS">250 LBS</option>
+                                <option value="275 LBS">275 LBS</option>
 
                             </ons-select>
                         </div>
@@ -3413,7 +3661,7 @@
 
                 <center>
                     <span id="id_pedido" class="id_pedido">
-                        2023019-20
+
                     </span>
                 </center>
 
@@ -3422,7 +3670,7 @@
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosFacturas"></ons-lazy-repeat>
-            </ons-list>>
+            </ons-list>
 
 
 
@@ -3472,6 +3720,9 @@
                                 <option value="51 ECT">51 ECT</option>
                                 <option value="61 ECT">61 ECT</option>
                                 <option value="71 ECT">71 ECT</option>
+                                <option value="200 LBS">200 LBS</option>
+                                <option value="250 LBS">250 LBS</option>
+                                <option value="275 LBS">275 LBS</option>
                             </ons-select><br>
                             <ons-input id="cantidad" type="number" class="input-100" cols="30" rows="1"
                                 placeholder="Cantidad"></ons-input>
@@ -3899,9 +4150,8 @@
                 </div>
 
                 <ons-list-item modifier="nodivider">
-                    <ons-button id="botonProgramaSinproceso"
-                        onclick="agregaProgramaSinProceso();"
-                        modifier="large" style="padding: 0;">
+                    <ons-button id="botonProgramaSinproceso" onclick="agregaProgramaSinProceso();" modifier="large"
+                        style="padding: 0;">
                         <span style="font-size: 12px;">Terminado sin procesos</span>
                     </ons-button>
                 </ons-list-item>

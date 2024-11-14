@@ -722,7 +722,7 @@ function actualizarFechaEntrega(valor) {
   // Convierte el valor a un objeto Date
   var fecha = new Date(valor);
   // Suma 20 días a la fecha
-  fecha.setDate(fecha.getDate() + 20);
+  fecha.setDate(fecha.getDate() + 21);
   // Obtiene el año, mes y día con el formato YYYY-MM-DD
   var nuevoValor = fecha.getFullYear() + '-' + ('0' + (fecha.getMonth() + 1)).slice(-2) + '-' + ('0' + fecha.getDate()).slice(-2);
   // Establece el nuevo valor en el segundo input
@@ -948,3 +948,4 @@ function validarEntradaSalidaL() {
   if (salida) setEditarCantidadSalidaL();
   else setEditarCantidadEntradaL();
 }
+

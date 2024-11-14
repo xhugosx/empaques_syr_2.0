@@ -247,7 +247,7 @@ function enlistarPedidosInsertos(arrayJson,i)
     html1 += '    <div class="center romperTexto">';
     html1 += '        <span class="list-item__title">'+arrayJson.observaciones+' | <b style="color:#404040">'+arrayJson.resistencia+'</b></span>'; 
     html1 += '        <span class="list-item__subtitle">';
-    html1 += '<span><b>'+arrayJson.producto+'</b> <br> '+arrayJson.cliente+'</span>';
+    html1 += '<span><b>'+arrayJson.producto+'</b> <br> '+arrayJson.cliente+' <br><strong>'+(arrayJson.notas != '' ? '<i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i> &nbsp;'+arrayJson.notas : '')+'</strong></span>';
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';

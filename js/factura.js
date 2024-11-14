@@ -1,7 +1,7 @@
 
 //BUSCAR LAS FACTURAS A MODIFICAR O ELIMINAR
 function setModificarBuscarFacturas(id) {
-    servidor(myLink+"/php/facturas/select.php?id=" + id, getModificarBuscarFacturas);
+    servidor(myLink + "/php/facturas/select.php?id=" + id, getModificarBuscarFacturas);
     $("#id_pedido").text(id);
 }
 function getModificarBuscarFacturas(respuesta) {
@@ -53,7 +53,7 @@ function setEditarFactura(id, posicion) {
     var factura = $("#inputId" + posicion).val();
     var entregado = $("#inputEntregado" + posicion).val();
     var fecha = $("#inputFecha" + posicion).val();
-    servidor(myLink+"/php/facturas/update.php?id=" + id + "&entregado=" + entregado + "&factura=" + factura + "&fecha=" + fecha, getEditarFactura);
+    servidor(myLink + "/php/facturas/update.php?id=" + id + "&entregado=" + entregado + "&factura=" + factura + "&fecha=" + fecha, getEditarFactura);
 }
 function getEditarFactura(respuesta) {
     var resultado = respuesta.responseText;
@@ -67,7 +67,7 @@ function getEditarFactura(respuesta) {
 }
 
 function setEliminarFactura(id) {
-    servidor(myLink+"/php/facturas/delete.php?id=" + id, getEliminarFactura);
+    servidor(myLink + "/php/facturas/delete.php?id=" + id, getEliminarFactura);
 }
 function getEliminarFactura(respuesta) {
     var resultado = respuesta.responseText;
@@ -123,54 +123,156 @@ function enlistarFacturasEditar(arrayJson, i) {
 
 
 // NUEVO
+function actualizarFacturas()
+{
+    var anio = $("#currentYear").val(); //tomar anio del filtro
+    var search = $("#searchFacturas").val(); //tomar datos de barra de busqueda
+    var factura = document.querySelector('input[name=facturaRadio]:checked').value;
+
+    //console.log(myLink + "/php/facturas/busqueda.php?year="+anio+"&search="+search+"&factura="+factura,anio,search,factura);
+
+    servidor(myLink + "/php/facturas/busqueda.php?year="+anio+"&search="+search+"&factura="+factura, function (respuesta) {
+
+        var data = respuesta.responseText;
+        //console.log(data);
+        var arrayJson = data.split('|');
+        //console.log(arrayJson);
+        listaInfinita('datosFacturasRemision', 'loadingFacturas', arrayJson, enlistarFacturasRemisiones);
+    });
+}
 
 function mostrarFacturas() {
 
-    servidor('https://www.empaquessr.com/sistema/cinthya/php/facturas/selectVisual.php',function(respuesta){
-        console.log(respuesta);
+    servidor(myLink + "/php/facturas/busqueda.php", function (respuesta) {
+
+        var data = respuesta.responseText;
+        //console.log(data);
+        var arrayJson = data.split('|');
+        //console.log(arrayJson);
+        listaInfinita('datosFacturasRemision', 'loadingFacturas', arrayJson, enlistarFacturasRemisiones);
     });
 
 }
 
-function enlistarFacturasRemisiones() {
+function enlistarFacturasRemisiones(objeto, i) {
     var html = `
-        <ons-card style="padding:0px;" class="botonPrograma">
-            <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
-                <b> 12 DE JUNIO DEL 2024 </b>
-            </ons-list-header>
-            <ons-list-item modifier="nodivider" expandable>
-                <div class="left">
-                    <i class="fas fa-file-invoice fa-2x"></i>
-                </div>
-                <div class="center romperTexto">
-                    <span class="list-item__title">
-                        A-8586
-                    </span>
-                    <span class="list-item__subtitle">
-                        <span>PROVIDENCIA S.A. DE C.V.</span><br>
-                    </span>
-                </div>
-                <div class="expandable-content expandProductos">
-                    <div class="productos">
-                        <b>083/001</b> - CAJA PARA ZAPATOS TORO
-                        <span class="cantidad">
-                            1,200 pzas
+        <ons-card style="padding:0px;" class="botonPrograma" onclick="buscarFacturasEspecificas('${objeto.factura}',${i})">
+                <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
+                    <b> ${sumarDias(objeto.fecha, 0)} </b>
+                </ons-list-header>
+                <ons-list-item modifier="nodivider" expandable>
+                    <div class="left">
+                        <i class="fas fa-file-invoice fa-2x"></i>
+                    </div>
+                    <div class="center romperTexto">
+                        <span class="list-item__title" style="font-size: 18px">
+                            ${objeto.factura}
+                        </span>
+                        <span class="list-item__subtitle">
+                            <span>${objeto.codigo_cliente} ${objeto.cliente}</span><br>
                         </span>
                     </div>
-                    <div class="productos">
-                        <b>083/001</b> - CAJA PARA ZAPATOS TORO
-                        <span class="cantidad">
-                            3,000 pzas
-                        </span>
+                    <div class="expandable-content expandProductos" id="contenidoFacturas${i}">
+                        <center>
+                            <ons-progress-circular indeterminate></ons-progress-circular>
+                        </center>
+                         
                     </div>
-                </div>
-            </ons-list-item>
-        </ons-card>
+                </ons-list-item>
+            </ons-card>
     `;
 
     return html;
 
 }
 
+function buscarFacturasEspecificas(factura, i) {
+    servidor(myLink + "/php/facturas/busquedaEspecifica.php?factura=" + factura, function (respuesta) {
+        var data = respuesta.responseText;
+        //console.log(data);
+        var arrayJson = data.split('|');
+        var html = `<ons-list modifier="inset">`;
+        for (var j = 0; j < arrayJson.length - 1; j++) {
+            var json = JSON.parse(arrayJson[j]);
+            html += `
+                <ons-list-item modifier="longdivider" style="margin:0px">
+                    <div class="left">
+                        <b style="font-size:12px">${json.id_pedido}</b>
+                    </div>
+                    <div class="center">
+                        <b style="color:grey; font-size:13px">(${json.codigo})</b> &nbsp; <span> ${json.producto}</span>
+                    </div>
+                    <div class="right">
+                       <span class="notification">${separator(json.entregado)} pzas.</span>
+                    </div>
+                </ons-list-item>
+            `;
+        }
+        html += `</ons-list>`;
+        $("#contenidoFacturas" + i).html(html);
+    });
+}
+
+function menuFacturas() {
+    var html = `<ons-list>
+                    <center>
+                        <h4 style="color: #808fa2; font-weight: bold;">
+                            Filtros
+                        </h4>
+                    </center>
+                    <ons-list>
+                        <ons-list-item>
+                            <label class="left">
+                                <h4 style="color: #808fa2;">
+                                    Año
+                                </h4>
+                            </label>
+                            <label class="center">
+                                <div class="year-input">
+
+                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
+                                    <input type="text" id="currentYear" readonly>
+                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
+                                </div>
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="facturaRadio" input-id="cinthya" checked value="A-"></ons-radio>
+                            </label>
+                            <label for="cinthya" class="center">
+                                (A) CINTHYA 
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="facturaRadio" input-id="michelle" value="F-"></ons-radio>
+                            </label>
+                            <label for="michelle" class="center">
+                                (F) MICHELLE
+                            </label>
+                        </ons-list-item>
+                         <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="facturaRadio" input-id="remisiones" value="R-"></ons-radio>
+                            </label>
+                            <label for="remisiones" class="center">
+                                (R) REMISIONES
+                            </label>
+                        </ons-list-item>
+                         <ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" onclick="actualizarFacturas();$('#menu')[0].close();" modifier="large">
+                            Aplicar
+                        </ons-button>
+                    </ons-list-item>
+                        
+                    </ons-list>
+
+
+                </ons-list>
+            `;
+    $("#contenidoMenu").html(html);
+    llenarAnio();
+}
 //FIN DE NUEVO
 
