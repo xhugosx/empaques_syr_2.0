@@ -146,7 +146,7 @@
                         <span style="color:white"> Pedidos pendientes</span>
                     </ons-card>
                     <ons-card class="botonPrograma botonInicio" style=" text-align: center;"
-                        onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina)">
+                        onclick="nextPageFunction('pedidosLamina.html',mostrarTodoPedidosLamina);menuPedidosLamina();">
                         <i class="fa-solid fa-layer-group fa-4x" style="margin: 5px; "></i>
                         <br>
                         <span> Pedidos lámina</span>
@@ -1692,9 +1692,17 @@
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Laminas</div>
-                <div class="right">
+                <!--div class="right">
                     Todo<ons-checkbox style="margin: 10px;" onclick="asignarFiltroLamina(this)"></ons-checkbox>
+                </div-->
+                <div class="right">
+                    <ons-toolbar-button onclick="var menu = document.getElementById('menu'); menu.open(); llenarAnio()"
+                        style="color:white; font-size:18px">
+                        Filtro
+                        <i class="fa-solid fa-filter"></i>
+                    </ons-toolbar-button>
                 </div>
+
             </ons-toolbar>
 
 
@@ -2852,7 +2860,8 @@
                                 <i class="fa-solid fa-thumbs-up"></i>
                             </div>
                             <div class="center">
-                                <span style="color:grey">SIN USO</span>&nbsp; <ons-switch checked id="switch" name="switch"></ons-switch>&nbsp;
+                                <span style="color:grey">SIN USO</span>&nbsp; <ons-switch checked id="switch"
+                                    name="switch"></ons-switch>&nbsp;
                                 <spanst style="color:grey">USO</span>
                             </div>
                         </ons-list-item>
@@ -2866,7 +2875,7 @@
             </form>
         </ons-page>
     </template>
-<!-- aqui se editaran los suajes-->
+    <!-- aqui se editaran los suajes-->
     <template id="editarSuaje.html">
         <ons-page>
             <ons-toolbar>
@@ -2884,8 +2893,8 @@
                                 <i class="fa-solid fa-id-badge"></i>
                             </div>
                             <div class="center">
-                                <ons-input id="id" name="id" class="input-100" type="text" step="any"
-                                    placeholder="Id" disabled></ons-input>
+                                <ons-input id="id" name="id" class="input-100" type="text" step="any" placeholder="Id"
+                                    disabled></ons-input>
                             </div>
                         </ons-list-item>
                     </ons-card>
@@ -2920,7 +2929,8 @@
                                 <i class="fa-solid fa-thumbs-up"></i>
                             </div>
                             <div class="center">
-                                <span style="color:grey">SIN USO</span>&nbsp; <ons-switch checked id="switch" name="switch"></ons-switch>&nbsp;
+                                <span style="color:grey">SIN USO</span>&nbsp; <ons-switch checked id="switch"
+                                    name="switch"></ons-switch>&nbsp;
                                 <spanst style="color:grey">USO</span>
                             </div>
                         </ons-list-item>
@@ -3014,7 +3024,7 @@
             </form>
         </ons-page>
     </template>
-<!-- aqui se editaran los suajes-->
+    <!-- aqui se editaran los suajes-->
     <template id="editarGrabados.html">
         <ons-page>
             <ons-toolbar>
@@ -3032,8 +3042,8 @@
                                 <i class="fa-solid fa-id-badge"></i>
                             </div>
                             <div class="center">
-                                <ons-input id="id" name="id" class="input-100" type="text" step="any"
-                                    placeholder="Id" disabled></ons-input>
+                                <ons-input id="id" name="id" class="input-100" type="text" step="any" placeholder="Id"
+                                    disabled></ons-input>
                             </div>
                         </ons-list-item>
                     </ons-card>
@@ -3221,6 +3231,20 @@
                 <div class="center">Pedidos Cliente</div>
             </ons-toolbar>
 
+            <ons-tabbar position="top" modifier="autogrow">
+                <ons-tab id="pedidosFiltroClienteOC" page="pedidosFiltroClienteOc.html" label="Ordenes de compra" icon="fa-folder"
+                    active></ons-tab>
+                <ons-tab id="pedidosFiltroClienteTodo" page="pedidosFiltroClienteTodo.html" label="Todo"
+                    icon="fa-list"></ons-tab>
+                
+            </ons-tabbar>
+
+        </ons-page>
+    </template>
+
+    <template id="pedidosFiltroClienteTodo.html">
+        <ons-page id="prueba">
+
             <div id="datosPedidosClientesLoadingFiltroLoading">
                 <ons-progress-bar indeterminate></ons-progress-bar>
             </div>
@@ -3239,6 +3263,23 @@
 
         </ons-page>
     </template>
+
+    <template id="pedidosFiltroClienteOc.html">
+        <ons-page id="prueba">
+
+            <div id="datosPedidosClientesLoadingFiltroLoadingOC">
+                <ons-progress-bar indeterminate></ons-progress-bar>
+            </div>
+            <br>
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosPedidosClienteFiltradoOC"></ons-lazy-repeat>
+            </ons-list>
+
+
+        </ons-page>
+    </template>
+
+    <!-- SEGMENTAR PAGINAS TEMPLATE-->
 
     <!-- AGREGA PEDIDO -->
     <template id="pedidosAgregar.html">

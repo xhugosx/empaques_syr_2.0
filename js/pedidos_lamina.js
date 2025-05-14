@@ -26,11 +26,14 @@ function mostrarTodoPedidosLamina() {
 
     setBuscarAnio();
 }
+
+//funciones para busquedas!
 function setMostrarBusquedaLamina(search, e) {
     tecla = (document.all) ? e.keyCode : e.which;
     var tipo = filtroLaminaP ? 2 : 1;
     if (tecla == 13 || e == 13) {
         servidor(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=1&search=' + search + '&type=' + tipo, getMostrarPedidosLamina);
+        console.log(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=1&search=' + search + '&type=' + tipo);
     }
     else if (search == "") setMostrarPedidosLamina();
 }
@@ -42,6 +45,7 @@ function setMostrarBusquedaLaminaPack(search, e) {
     }
     else if (search == "") setMostrarPedidosLaminaPACK();
 }
+
 function setMostrarPedidosLaminaFecha(fecha, tipo) {
     tipo = tipo ? 1 : 2;
     $('#loadingPedidosLaminaFecha').empty("");
@@ -57,9 +61,11 @@ function getMostrarPedidosLaminaFecha(respuesta) {
 
     listaInfinita('datospedidosLaminaFecha', 'loadingPedidosLaminaFecha', arrayJson, enlistarPedidosLamina);
 }
+
 function setMostrarPedidosLamina() {
     var tipo = filtroLaminaP ? 2 : 1;
-    servidor(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo, getMostrarPedidosLamina)
+    servidor(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo, getMostrarPedidosLamina);
+    console.log(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo);
 }
 function getMostrarPedidosLamina(respuesta) {
     var resultado = respuesta.responseText;//respuesta del servidor
@@ -297,4 +303,91 @@ function esEntero(numero) {
     //
     numero = parseFloat(numero);
     return Number.isInteger(numero) ? numero + ".0" : numero;
+}
+
+function menuPedidosLamina() {
+    var html = `<ons-list>
+                    <center>
+                        <h4 style="color: #808fa2; font-weight: bold;">
+                            Filtros
+                        </h4>
+                    </center>
+                    <ons-list>
+                        <ons-list-item>
+                            <label class="left">
+                                <h4 style="color: #808fa2;">
+
+                                    Año
+                                </h4>
+                            </label>
+                            <label class="center">
+                                <div class="year-input">
+
+                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
+                                    <input type="text" id="currentYear" readonly>
+                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
+                                </div>
+                            </label>
+                        </ons-list-item>
+                    </ons-list>
+                    <ons-list>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-1" value="0" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-1" class="center">
+                                🟠 BACKORDER
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-2" value="1" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-2" class="center">
+                                🟣 PARCIAL
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-3" value="2" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-3" class="center">
+                                🟢 COMPLETO
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-4" value="3" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-4" class="center">
+                                ⚫ CANCELADO
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-5" value="4" name="estado"></ons-checkbox>
+                            </label>
+                            <label for="check-5" class="center">
+                                🔴 PROXIMO A ENTREGAR
+                            </label>
+                        </ons-list-item>
+                    </ons-list>
+                    <ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
+                            Aplicar
+                        </ons-button>
+                    </ons-list-item>
+                    <br><br><ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
+                            onclick="resetearFiltroPedidos();">
+                            <ons-icon icon="fa-trash"></ons-icon>
+                            Resetear
+                        </ons-button>
+                    </ons-list-item>
+
+
+                </ons-list>
+            `;
+    $("#contenidoMenu").html(html);
+
 }

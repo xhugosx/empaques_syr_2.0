@@ -49,7 +49,7 @@ function setPedidosCliente() {
 
 }
 
-//BUQUEDA POR TODOS VISTA 2
+//BUSQUEDA POR TODOS VISTA 2
 function setBusquedaPendiente() {
 
     var busqueda = $('#searchPedido').val();
@@ -68,13 +68,23 @@ function setBusquedaPendiente() {
 
 }
 
-//PEDIDOS FILTRADO POR CLIENTE
+//PEDIDOS FILTRADO POR CLIENTE 
+// (PRINCIPAL)
 function setPedidosClienteFiltrado(codigo) {
+    setPedidosClienteFiltradoTodo(codigo);
+    setPedidosClienteFiltradoOC(codigo);
+}
+//TODO
+function setPedidosClienteFiltradoTodo(codigo) {
     //var type = filtro ? 1 : 2;
     cliente = codigo;
     var busqueda = $('#searchPedidosClientesFiltrados').val();
     if (busqueda == "" || busqueda == undefined) {
+
         let url = myLink + "/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+
+        //console.log(url);
+
         servidor(url, function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -83,6 +93,51 @@ function setPedidosClienteFiltrado(codigo) {
         });
     }
     else setsearchPedidosClienteFiltrado(busqueda, 13, cliente);
+}
+// POR ORDEN DE COMPRA
+function setPedidosClienteFiltradoOC(codigo) {
+    //var type = filtro ? 1 : 2;
+    cliente = codigo;
+    //var busqueda = $('#searchPedidosClientesFiltradosOC').val();
+    //if (busqueda == "" || busqueda == undefined) {
+
+    let url = myLink + "/php/lista_pedidos/selectOC.php?codigo=" + agregarCeros(codigo) + "&filtro=" + filtroGlobal + "&estado=" + estadoGlobal + "&anio=" + anioGlobal;
+
+    //console.log(url);
+
+    servidor(url, function (respuesta) {
+        var resultado = respuesta.responseText;//respuesta del servidor
+        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+        listaInfinita('datosPedidosClienteFiltradoOC', 'datosPedidosClientesLoadingFiltroLoadingOC', arrayJson, enlistarpedidosOC);
+    });
+
+    //}
+    //else setsearchPedidosClienteFiltrado(busqueda, 13, cliente);
+}
+
+
+//funcion para buscar por orden de compra especifico
+function setBuscarPedidosOc(fecha,orden, j) {
+
+    $(".ocBoton"+j).toggleClass("ocBotonSinColor");
+
+    let url = myLink + "/php/lista_pedidos/selectAll.php?cliente=" + agregarCeros(cliente) + "&estado=" + estadoGlobal + "&anio=" + anioGlobal + "&oc=" + orden +"&fecha_oc="+fecha;
+    //console.log(url);
+    servidor(url, function (respuesta) {
+        var resultado = respuesta.responseText;//respuesta del servidor
+        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+        var html = "";
+        //se llenara atraves de un for ya que no seran muchos datos
+        for(var i=0; i<arrayJson.length-1;i++)
+        {
+            var json = JSON.parse(arrayJson[i]);
+            html+=enlistarPedidos(json);
+        }
+        $("#contenidoPedidos"+j).html(html);
+        
+    });
 }
 
 //funcion para barra de busqueda pedidos
@@ -357,6 +412,38 @@ function validarFacturaPedido(id, estado) {
 
 }
 
+//ENLISTAR PEDIDO POR ORDEN DE COMPRA
+function enlistarpedidosOC(arrayJson, i) {
+    let html = `
+        <ons-card style="padding:0px;" class="botonPrograma ocBoton${i}">
+            <ons-list-header style="background:rgba(0,0,0,0); margin:0">
+                <b>${sumarDias(arrayJson.agrupado_por_fecha, 0)}</b>  
+            </ons-list-header>
+            <ons-list-item modifier="nodivider" expandable onclick="setBuscarPedidosOc('${arrayJson.agrupado_por_fecha}','${arrayJson.orden_compra}',${i})">
+                <div class="left">
+                    <i class="fas fa-lg fa-folder-open"></i>
+                </div>
+                
+                <div class="center" style="display: flex; justify-content: space-between;">  
+                    <span style="font-size:17px">
+                       <b>O.C.:</b> ${arrayJson.orden_compra}
+                    </span>
+                    <span class="notification">
+                        ${arrayJson.contador} pedido(s) 
+                    </span>
+                </div>
+                <div class="expandable-content expandProductos" id="contenidoPedidos${i}">
+                    <center>
+                        <ons-progress-circular indeterminate></ons-progress-circular>
+                    </center>
+                </div>
+
+                
+            </ons-list-item>
+        </ons-card>
+    `;
+    return html;
+}
 
 
 //ENLISTAR DATOS CLIENTES
@@ -411,8 +498,9 @@ function enlistarPedidos(arrayJson, i) {
     else if (arrayJson.estado == 5) estado = '🟣';
 
     var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
+    var inventario = arrayJson.estado != 2 ? '' : '<hr><span style="color:#48AC33;font-size:15px">' + separator(arrayJson.inventario) + ' pza(s) hechas</span>';
 
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 0) + '\')">'
+    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="event.stopPropagation(); crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 0) + '\')">'
     html1 += '<ons-list-header style="background-color: rgba(255, 255, 255, 0)">' + estado + '&emsp;';
     html1 += arrayJson.id;
     html1 += '    &emsp;';
@@ -429,6 +517,7 @@ function enlistarPedidos(arrayJson, i) {
     html1 += '        <span class="list-item__subtitle">';
     html1 += '<span>' + arrayJson.cliente + '</span><br> <b>O. C: ' + arrayJson.oc + '&emsp;Fecha: ' + sumarDias(arrayJson.fecha_oc, 0) + '</b>';
     html1 += enlistarFacturas(arrayJson);
+    html1 += inventario;
     html1 += arrayJson.observaciones == "" ? "" : '<br><span><b><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
     html1 += '        </span>';
     html1 += '    </div>';
@@ -452,7 +541,7 @@ function enlistarFacturas(registro) {
         var fechas = (registro.fecha_factura).split(",");
         var suma = 0;
 
-        html += "<span><table>";
+        html += '<hr style="margin:0"><span><table>';
         html += '<tr>';
         html += '    <th>Factura</th>';
         html += '    <th>Entregado</th>';

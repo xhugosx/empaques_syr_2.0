@@ -658,5 +658,7 @@ ons-fab.fijadoCentro:hover {
     font-size: 13px;
     margin: 0px;
 }
-
+.ocBotonSinColor{
+    background-color: rgba(255, 255, 255, 0.15);
+}
 /* termina lo nuevo */

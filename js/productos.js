@@ -160,7 +160,7 @@ function enlistarProductos(arrayJson, i) {
     html1 += '  </div>';
     html1 += '  <div class="center">';
     html1 += '    <span class="list-item__title romperTexto"><b>' + arrayJson.codigo + '</b> </span>';
-    html1 += '    <span class="list-item__subtitle">' + arrayJson.producto + '</span>';
+    html1 += '    <span class="list-item__subtitle" style="font-size:14px">' + arrayJson.producto + '</span>';
     html1 += '  </div>"';
     html1 += '  <div class="right">' + ExistePlano(arrayJson.file) + '$' + arrayJson.precio + '</div>';
     html1 += '</ons-list-item>';

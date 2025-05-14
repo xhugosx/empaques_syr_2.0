@@ -76,7 +76,6 @@ function eliminarGrabados(id) {
 
 
 function mostrarGrabados() {
-
     let search = $("#searchGrabados").val() == undefined || $("#searchGrabados").val() == "" ? "" : $("#searchGrabados").val();
     //para llenar datos en uso
     //console.log(myLink + "/php/grabados/select.php?search="+search)
@@ -92,18 +91,18 @@ function mostrarGrabados() {
 function enlistarGrabados(objeto) {
     var html = `
         <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesGrabados('${objeto.id}')">
-                <ons-list-item modifier="nodivider">
-                    <div class="left">
-                        <i class="fas fa-stamp fa-2x"></i>
-                    </div>
-                    <div class="center">
-                        <span class="list-item__subtitle">
-                            <span style="font-size: 13pt;"> ${objeto.descripcion} </span>
-                        </span>
-                    </div>
-                    <div class="right"> <span class="notification"> ${objeto.cantidad} pza(s)</span> </div>
-                </ons-list-item>
-            </ons-card>
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <i class="fas fa-stamp fa-2x"></i>
+                </div>
+                <div class="center">
+                    <span class="list-item__subtitle">
+                        <span style="font-size: 13pt;"> ${objeto.descripcion} </span>
+                    </span>
+                </div>
+                <div class="right"> <span class="notification"> ${objeto.cantidad} pza(s)</span> </div>
+            </ons-list-item>
+        </ons-card>
     `;
 
     return html;
