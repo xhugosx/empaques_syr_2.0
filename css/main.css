@@ -1,10 +1,16 @@
 @font-face {
     font-family: 'Candara';
-    src: url('../font/Urbanist-VariableFont_wght.ttf');
+    src: url('../font/Nexa\ Light.otf');
 }
 
 * {
     font-family: 'Candara';
+}
+
+input,
+ons-toolbar,
+div {
+    font-family: 'Candara' !important;
 }
 
 body {
@@ -201,6 +207,7 @@ ons-fab>span>i {
 .botonPrograma {
     cursor: pointer;
     border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85)
 }
 
 .botonPrograma>b {
@@ -507,6 +514,15 @@ ons-list>ons-card:active {
     opacity: 60%;
 }
 
+.opacity50:active {
+    opacity: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.opacity100:active {
+    opacity: 100% !important;
+}
+
 .usuario {
     color: grey;
     left: 45px;
@@ -658,7 +674,91 @@ ons-fab.fijadoCentro:hover {
     font-size: 13px;
     margin: 0px;
 }
-.ocBotonSinColor{
+
+.ocBotonSinColor {
     background-color: rgba(255, 255, 255, 0.15);
 }
+
 /* termina lo nuevo */
+.gris {
+    background-color: #e1e1e1e0;
+}
+
+@keyframes girar {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.girar {
+    animation: girar 2s linear infinite;
+}
+
+#pantallaCarga {
+    background-color: #ffffff30;
+}
+
+#textoModal {
+    text-shadow: 2px 2px 5px rgba(57, 57, 57, 0.727);
+    color: #3c3c3c;
+    font-weight: bold;
+}
+
+.proceso {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.proceso-pendiente {
+    background-color: #bdbdbd;
+    color: #fff;
+}
+
+.proceso-proceso {
+    background-color: #fbc02d;
+    color: #fff;
+}
+
+.proceso-terminado {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.estado-1 {
+    background-color: #4caf50;
+    color: #fff;
+}
+.estado-0 {
+    background-color: #af4c4c;
+    color: #fff;
+}
+
+ons-button.button--large:hover {
+    cursor: pointer;
+    opacity: 90%;
+}
+
+.bordeIcon {
+
+    position: absolute;
+    bottom: 0;
+    right: -1px;
+    font-size: 24px;
+}
+
+.iconoBorde, .bordeIcon{
+    text-shadow:
+        -1.5px -1.5px 0 rgba(255, 255, 255, 0.9),
+        1.5px -1.5px 0 rgba(255, 255, 255, 0.9),
+        -1.5px 1.5px 0 rgba(255, 255, 255, 0.9),
+        1.5px 1.5px 0 rgba(255, 255, 255, 0.9);
+}

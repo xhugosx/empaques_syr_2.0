@@ -1,339 +1,572 @@
 var codigoCliente = "";
-var insertoGlobal = "";
-function mostrarTodoInventario() {
 
-    setMostrarInventario();
-    setMostrarInventarioPedidosLamina();
-    setMostrarInventarioInserto();
-    //aqui iran las otras dos funciones mostrar insertos y lamina
-}
-
-//BUSQUEDA INVENTARIO INSERTO
-function setMostrarInventarioInsertoSearch(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13 || e == 13) {
-        $("#insertoInventarioLoading").empty();
-        $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor(myLink+"/php/inventario/selectInsertoAll.php?search=" + search, getMostrarInventarioInserto);
+//INICIALIZAR LOS PAGES
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    if (page.id === 'clientecajaInventario') {
+        setMostrarInventarioClienteCajas();
+        tabsCargadosP = {
+            'insertoClienteInventario.html': false,
+            'laminaInventario.html': false,
+        };
+        //VARIABLE tabsCargadosP DECLARADA EN pedidos.js
     }
-    else if (search == "") setMostrarInventarioInserto();
-}
+});
 
-//MOSTRAR INVENTARIO DE INSERTOS GRUPO
-function setMostrarInventarioInserto() {
-    $("#insertoInventarioLoading").empty();
-    $("#insertoInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    var busqueda = $('#searchInsertoInventario').val();
-    if (busqueda == "" || busqueda == undefined) servidor(myLink+"/php/inventario/selectInsertoAll.php", getMostrarInventarioInserto);
-    else {
-        //alerta("entro");
-        setMostrarInventarioInsertoSearch(busqueda, 13);
+//FUNCION PARA VERIFICAR QUE SOLO SE DIO UN CLICK AL TAB DEL PAGE
+document.addEventListener('postchange', function (event) {
+    const pageName = event.tabItem.getAttribute('page');
+    // Solo ejecuta la función si es la primera vez que se activa este tab
+    switch (pageName) {
+
+        case 'insertoClienteInventario.html':
+            if (!tabsCargadosP['insertoClienteInventario.html']) {
+                setMostrarInventarioClienteInserto();
+                tabsCargadosP['insertoClienteInventario.html'] = true;
+            }
+            break;
+        case 'laminaInventario.html':
+            if (!tabsCargadosP['laminaInventario.html']) {
+                setMostrarInventarioLamina();
+                tabsCargadosP['laminaInventario.html'] = true;
+            }
+            break;
     }
+});
 
-    //console.log(busqueda);
-}
-function getMostrarInventarioInserto(respuesta) {
-    //console.log(respuesta.responseText);
-    var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosInsertoInventario', 'insertoInventarioLoading', arrayJson, enlistarInventarioInserto);
 
-}
+//// INICIO SECCION INVENTARIO CAJAS
 
-//MOSTRAR INVENTARIO DE INSERTOS INDIVIDUALES
-function setMostrarInventarioPedidosInserto(array) {
-    codigoCliente = array[0];
-    insertoGlobal = array[1];
-    servidor(myLink+'/php/inventario/selectCodigoInserto.php?codigo=' + array[0] + '&inserto=' + array[1], getMostrarInventarioPedidosInserto);
-}
-
-function getMostrarInventarioPedidosInserto(respuesta) {
-    var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosInventarioPedidosInserto', 'InventarioPedidosInsertoLoading', arrayJson, enlistarInventarioCodigoInserto);
-}
-
-//BUSQUEDA DE INVENTARIO
-function setMostrarInventarioSearch(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13 || e == 13) {
-        $("#cajaInventarioLoading").empty();
-        $("#cajaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor(myLink+"/php/inventario/select.php?search=" + search, getMostrarInventario);
-    }
-    else if (search == "") setMostrarInventario();
-}
-
-//MOSTRAR INVENTARIO DE CAJAS
-function setMostrarInventario() {
-    var busqueda = $('#searchCajaInventario').val();
-    if (busqueda == "") servidor(myLink+"/php/inventario/select.php", getMostrarInventario);
-    else setMostrarInventarioSearch(busqueda, 13);
-}
-function getMostrarInventario(respuesta) {
-    var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosCajaInventario', 'cajaInventarioLoading', arrayJson, enlistarInventario);
-}
-
-//ACTUALIZAR INVENTARIO DE CAJAS
-function setActualizarSalida(salida, cantidad, id) {
-    var codigo = id.split("-");
-    if (codigo[0].length >= 7)
-        servidor(myLink+"/php/inventario/updateSalida.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
-    else servidor(myLink+"/php/inventario/updateSalidaInserto.php?cantidad=" + cantidad + "&id_lp=" + id + "&salida=" + salida, getActualizarSalida);
-    //console.log("entro aqui",codigo,cantidad);
-}
-function getActualizarSalida(respuesta) {
-    //alert(respuesta.responseText)
-    if (respuesta.responseText == 1) {
-        alerta("Salida Generada");
-        resetearPilaFunction(mostrarTodoInventario);
-    }
-    else alerta("no se pudo actualizar");
-    //console.log(respuesta.responseText);
-
-}
-
-//DAR SALIDA DE TOTAL DE CAJAS
-function setSalidaTotal(codigo) {
-    ons.notification.confirm({
-        title: '',
-        message: "Se dará salida a todo el inventario",
-        buttonLabels: ['SI', 'NO'],
-        callback: function (idx) {
-            if (idx == 0) servidor(myLink+"/php/inventario/updateSalidaTodo.php?codigo=" + codigo, getActualizarSalida);;
+function setMostrarInventarioClienteCajas() {
+    let busqueda = $('#searchClienteCajaInventario').val();
+    let link = myLink + '/php/inventario/caja/selectGrupoClienteCaja.php?search=' + busqueda;
+    oCarga("Cargando datos...");
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            //console.log(arrayJson);
+            listaInfinita('datosClienteCajaInventario', '', arrayJson, enlistarInventarioClienteCajas);
+            cCarga();
         }
-    });
+    );
 
 }
 
-// DAR SALIDA TOTAL DE INSERTOS
-function setSalidaTotalInserto(codigo, inserto) {
-    ons.notification.confirm({
-        title: '',
-        message: "Se dará salida a todo el inventario",
-        buttonLabels: ['SI', 'NO'],
-        callback: function (idx) {
-            if (idx == 0) servidor(myLink+"/php/inventario/updateSalidaTodoInserto.php?codigo=" + codigo + "&inserto=" + inserto, getActualizarSalida);;
+function enlistarInventarioClienteCajas(arrayJson) {
+    let html = `
+        <ons-card style="padding:0px;" class="botonPrograma"
+            onclick="nextPageFunction('cajaInventario.html', function() {
+            setMostrarInventarioCajas('${arrayJson.codigo}')
+            })">
+            <ons-list-item modifier="chevron nodivider">
+            <div class="left">
+                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+            </div>
+            <div class="center">
+                ${arrayJson.cliente}
+            </div>
+            <div class="right">
+                <span class="notification">${arrayJson.cantidad_productos}</span>
+            </div>
+            </ons-list-item>
+        </ons-card>
+    `;
+    return html;
+}
+
+function setMostrarInventarioCajas(cliente) {
+    oCarga("Cargando datos...");
+    let busqueda = $('#searchCajaInventario').val();
+    let link = myLink + '/php/inventario/caja/selectGrupoCaja.php?cliente=' + cliente + '&search=' + busqueda;
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            //console.log(arrayJson);
+            listaInfinita('datosCajaInventario', '', arrayJson, enlistarInventarioCajas);
+            cCarga();
         }
-    });
-
-}
-//MOSTRAR INVENTARIO DE PEDIDOS DE CAJAS ESPECIFICOS
-function setMostrarInventarioPedidos(codigo) {
-    codigoCliente = codigo;
-    servidor(myLink+'/php/inventario/selectCodigo.php?codigo=' + codigo, getMostrarInventarioPedidos);
+    );
+    codigoCliente = cliente; // Guardamos el codigo del cliente para usarlo en otras funciones
 }
 
-function getMostrarInventarioPedidos(respuesta) {
-    var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+function enlistarInventarioCajas(arrayJson, i) {
 
-    listaInfinita('datosInventarioPedidos', 'InventarioPedidosLoading', arrayJson, enlistarInventarioCodigo);
+    let html = `<ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
+    <ons-list-item modifier="nodivider" expandable onclick="setMostrarInventarioCajasIndividuales('${arrayJson.codigo}',${i})">
+        <div class="left">
+            <i class="fa-solid fa-box fa-2x"></i>
+        </div>
+        <div class="center romperTexto">
+            <span class="list-item__title">
+                ${arrayJson.codigo}
+            </span>
+            <span class="list-item__subtitle">
+                <span>
+                    ${arrayJson.nombre}
+                </span>
+            </span>
+        </div>
+        <div class="right">
+            <font size="5px"><b>
+                ${separator(arrayJson.inventario)} <font size="2px">pza(s)</font>
+            </b>
+            </font>
+            <i class="fa-solid fa-chevron-down" style="color:#c7c7cc;"></i>
+        </div>
+        <div class="expandable-content" style="padding: 0px; margin: 0px;">
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="contenidoInventarioCajas${i}">
+                    <center>
+                        <ons-progress-circular id="circularInventario${i}" indeterminate></ons-progress-circular>
+                    </center>
+                </ons-lazy-repeat>
+                <ons-button modifier="large" style="width:98%" onclick="mensajeAlertaInventarioCajaTodo('${arrayJson.codigo}')">
+                    <i class="fa-solid fa-truck-moving" style="color:white"></i>
+                    &nbsp;Entregado
+                </ons-button>
+            </ons-list>    
+        </div>
+        
+        
+        
+    </ons-list-item>
+    </ons-card>
+    `;
+
+    return html;
 }
 
-//MOSTRAR PEDIDOS DE LAMINAS POR BUSQUEDA
-function setMostrarInventarioPedidosLaminaSearch(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13 || e == 13) {
-        $("#laminaInventarioLoading").empty();
-        $("#laminaInventarioLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor(myLink+'/php/inventario/selectLamina.php?search=' + search, getMostrarInventarioPedidosLamina);
-    }
-    else if (search == "") setMostrarInventarioPedidosLamina();
-}
-
-//MOSTRAR PEDIDOS DE LAMINAS TODO
-function setMostrarInventarioPedidosLamina() {
-    //codigoCliente = codigo;
-    var busqueda = $('#searchLaminaInventario').val();
-    if (busqueda == "" || busqueda == undefined) servidor(myLink+'/php/inventario/selectLamina.php', getMostrarInventarioPedidosLamina);
-    else setMostrarInventarioPedidosLaminaSearch(busqueda, 13);
-    //console.log(busqueda);
-}
-
-function getMostrarInventarioPedidosLamina(respuesta) {
-    var resultado = respuesta.responseText;
-    var proveedores = resultado.split('*');
-    var proveedor1 = proveedores[0].split('|');
-    var proveedor2 = proveedores[1].split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //localStorage.setItem("separador",false);
-    listaInfinita('datosLaminaInventario1', 'laminaInventarioLoading', proveedor1, enlistarInventarioLamina);
-    listaInfinita('datosLaminaInventario2', 'laminaInventarioLoading', proveedor2, enlistarInventarioLamina);
-}
-
-//ACTUALIZAR SALIDAS DE LAMINA
-function setActualizarSalidaLamina(json) {
-    servidor(myLink+"/php/inventario/updateSalidaLamina.php?id_lp=" + json.codigo + "&cantidad=" + json.inventario + "&salida=" + json.salida, getActualizarSalidaLamina)
-}
-function getActualizarSalidaLamina(respuesta) {
-    if (respuesta.responseText == 1) {
-        alerta("Salida Generada");
-        setMostrarInventarioPedidosLamina();
-    }
-    else alerta("Hubo un error al generar la salida");
-    //alerta(responseText);
-}
-
-//ENLISTADOS DE GRUPO DE CAJAS
-function enlistarInventario(arrayJson) {
-    let html1 = "";
-    //console.log(arrayJson);
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'InventarioPedidos.html\',setMostrarInventarioPedidos,\'' + arrayJson.codigo + '\')">';
-    html1 += '<ons-list-item modifier="nodivider chevron">';
-    html1 += '        <div class="left">';
-    html1 += '<i class="fa-solid fa-box fa-2x"></i>';
-    html1 += '        </div>';
-    html1 += '        <div class="center">';
-    html1 += '            <span class="list-item__title"><b>' + arrayJson.codigo + '</b>&nbsp;' + arrayJson.producto + '</span>';
-    html1 += '            <span class="list-item__subtitle">' + arrayJson.cliente + '</span>';
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span class="notification" style="background: rgb(8, 136, 205);">' + separator(arrayJson.inventario) + ' <font size="2px">pza(s)</font> </span>';
-    html1 += '        </div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-
-    return html1;
+function setMostrarInventarioCajasIndividuales(caja, i) {
+    if ($('#circularInventario' + i).length === 0) return; // Si el circulo de carga no existe, no hacer nada
+    let link = myLink + '/php/inventario/caja/selectCaja.php?producto=' + caja;
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            listaInfinita('contenidoInventarioCajas' + i, '', arrayJson, enlistarInventarioCajasIndividuales);
+        }
+    );
 }
 
 //ENLISTADOS DE CAJAS
-function enlistarInventarioCodigo(arrayJson) {
-    let html = "";
-    //console.log(arrayJson);
-    var inventario = arrayJson.entrada - arrayJson.salida
-    html += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="alertPromptInventario(\'' + arrayJson.id_lp + '\',\'' + arrayJson.salida + '\',\'' + inventario + '\')">';
-    html += '    <ons-list-header style="background: white">' + arrayJson.id_lp + '&ensp; &ensp;<b style="color:green">FECHA: ' + sumarDias(arrayJson.fecha,0) + '</b></ons-list-header>';
-    html += '    <ons-list-item modifier="nodivider"> ';
-    html += '        <div class="left">';
-    html += '            <i class="fa-solid fa-box fa-2x"></i>';
-    html += '        </div>';
-    html += '        <div class="center">';
-    html += '            <span class="list-item__title"><b>' + arrayJson.codigo + '</b>&nbsp;' + arrayJson.producto + '</span>';
-    html += '            <span class="list-item__subtitle">' + arrayJson.cliente + '</span>';
-    html += '        </div>';
-    html += '        <div class="right">';
-    html += '            <span class="notification" style="background: rgb(61, 174, 80);">' + separator(arrayJson.entrada) + ' </span>';
-    html += '            <i class="fa-solid fa-minus"></i>';
-    html += '            <span class="notification">' + separator(arrayJson.salida) + ' </span>';
-    html += '            <i class="fa-solid fa-equals"></i>';
-    html += '            <span class="notification" style="background: rgb(8, 136, 205);">  ' + separator(inventario) + ' <font size="2px">pza(s)</font> </span>';
-    html += '        </div>';
-    html += '    </ons-list-item>';
-    html += '</ons-card>';
+function enlistarInventarioCajasIndividuales(arrayJson) {
+    let html = `<ons-card class="botonPrograma" 
+    style="padding:0; margin-bottom: 5px; border: 1px solid black;" onclick="mensajeAlertaInventarioCaja(${arrayJson.inventario}, '${arrayJson.id}')">
+        <ons-list-item modifier="nodivider">
+            <div class="center">
+                <b>${arrayJson.id}</b>
+            </div>
+            <div class="right" style="padding: 0px 12px 0px 0px;">
+            <span class="notification" style="background: rgb(61, 174, 80)" >
+                ${separator(arrayJson.entrada)}
+            </span>
+            <i class="fa-solid fa-minus"></i>
+            <span class="notification">
+                ${separator(arrayJson.salida)}
+            </span>
+            <i class="fa-solid fa-equals"></i>
+            <span class="notification" style="background: rgb(8, 136, 205);">
+                ${separator(arrayJson.inventario)} <font size="2px">pza(s)</font>
+            </span>
+            </div>
+        </ons-list-item>
+        </ons-card>
+    `;
     return html;
 }
 
-//ENLISTADOS DE PEDIDOS DE LAMINAS
+function mensajeAlertaInventarioCaja(inventario, id) {
+    alertComfirmDato("Generar salida: ", "number", ["Cancelar", "Aceptar"],
+        function (salida) {
+            if (salida && salida <= inventario && salida > 0) {
+                alertConfirm('Se generará la siguiente salida: <hr><b style="font-size:20pt">' + salida + ' Pzas.</b><hr> Estas seguro?', ["Cancelar", "Aceptar"],
+                    function (i) {
+                        if (i) {
+                            //console.log("Salida generada para la caja: " + id + " con cantidad: " + idx);
+                            alertComfirm("Deseas agregar alguna <b>NOTA</b> adicional?", ["No", "Si"],
+                                function (j) {
+                                    if (j) {
+                                        alertComfirmDato("Observaciones: ", "text", ["Cancelar", "Enviar"],
+                                            function (observaciones) {
+                                                if (observaciones != null)
+                                                    setAgregarSalidaCaja(id, salida, observaciones); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                                            }
+                                        );
+                                    }
+                                    else
+                                        setAgregarSalidaCaja(id, salida, ""); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                                }
+                            );
+                        }
+                        else alerta("Salida cancelada");
+                    }
+                );
+            }
+            else if (salida) alerta("Porfavor verifica cantidad, no puede ser menor a 0 o mayor al inventario: " + inventario + " pza(s)");
+        }
+    )
+}
+
+function mensajeAlertaInventarioCajaTodo(caja) {
+    alertComfirm('<font size="3pt">Se generará la SALIDA DE TODO el inventario de la caja!</font> <br> Estas seguro?', ["Cancelar", "Aceptar"],
+        function (idx) {
+            if (idx) {
+                // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                alertComfirm("Deseas agregar alguna <b>NOTA</b> adicional?", ["No", "Si"],
+                    function (j) {
+                        if (j) {
+                            alertComfirmDato("Observaciones: ", "text", ["Cancelar", "Enviar"],
+                                function (observaciones) {
+                                    if (observaciones != null)
+                                        setGeneraraSalidaCajaTodo(caja, observaciones); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                                }
+                            );
+                        }
+                        else
+                            setGeneraraSalidaCajaTodo(caja, ""); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+
+                    }
+                );
+            }
+        }
+    );
+}
+
+function exportarInventarioCajas(cliente) {
+
+    alertComfirm('¿Deseas exportar el inventario de cajas del cliente <b>' + cliente + '</b>?', ['No', 'Si'],
+        function (idx) {
+            if (idx) {
+                let busqueda = $('#searchCajaInventario').val();
+                let link = myLink + '/php/inventario/caja/selectGrupoCaja.php?cliente=' + cliente + '&search=' + busqueda;
+                oCarga("Creando archivo Excel...");
+                servidor(link,
+                    function (respuesta) {
+                        var resultado = respuesta.responseText;
+                        //separamos los json en un arreglo, su delimitador siendo un '|', y eliminamos entradas vacías
+                        const arrayJson = convertJson(resultado); // FUNCION EJECUTADA EN MAIN.JS
+
+                        let nombreArchivo = cliente + "_Inventario_" + obtenerFechaActual();
+                        crearExcel(nombreArchivo, arrayJson); // FUNCION EJECUTADA EN EL ARCHIVO MAIN.JS
+                        //let responseArray = JSON.parse(arrayJson);
+                        cCarga();
+                    }
+                );
+            }
+
+        }
+    );
+}
+
+//// FIN SECCION INVENTARIO CAJAS
+
+
+
+//// INICIO SECCION INVENTARIO INSERTOS
+
+function setMostrarInventarioClienteInserto() {
+    let busqueda = $('#searchClienteInsertoInventario').val();
+    let link = myLink + '/php/inventario/inserto/selectGrupoClienteInserto.php?search=' + busqueda;
+    oCarga("Cargando datos...");
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            //console.log(arrayJson);
+            listaInfinita('datosClienteInsertoInventario', '', arrayJson, enlistarInventarioClienteInserto);
+            cCarga();
+        }
+    );
+
+}
+
+function enlistarInventarioClienteInserto(arrayJson) {
+    let html = `
+        <ons-card style="padding:0px;" class="botonPrograma"
+            onclick="nextPageFunction('insertoInventario.html', 
+            function() {setMostrarInventarioInserto('${arrayJson.codigo}')})">
+            <ons-list-item modifier="chevron nodivider">
+            <div class="left">
+                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+            </div>
+            <div class="center">
+                ${arrayJson.cliente}
+            </div>
+            <div class="right">
+                <span class="notification">${arrayJson.cantidad_productos}</span>
+            </div>
+            </ons-list-item>
+        </ons-card>
+    `;
+    return html;
+}
+
+function setMostrarInventarioInserto(cliente) {
+    oCarga("Cargando datos...");
+    let busqueda = $('#searchInsertoInventario').val();
+    let link = myLink + '/php/inventario/inserto/selectGrupoInserto.php?cliente=' + cliente + '&search=' + busqueda;
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            //console.log(arrayJson);
+            listaInfinita('datosInsertoInventario', '', arrayJson, enlistarInventarioInserto);
+            cCarga();
+        }
+    );
+    codigoCliente = cliente; // Guardamos el codigo del cliente para usarlo en otras funciones
+}
+function enlistarInventarioInserto(arrayJson, i) {
+    let html = `
+        <ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
+            <ons-list-item modifier="nodivider" onclick="//setMostrarInventarioCajasIndividuales('${arrayJson.codigo}',${i})">
+                <div class="left">
+                    <i class="fa-solid fa-box fa-2x"></i>
+                </div>
+                <div class="center romperTexto">
+                    <span class="list-item__title">
+                        ${arrayJson.codigo}
+                    </span>
+                    <span class="list-item__subtitle">
+                        <span>
+                            ${arrayJson.nombre}
+                        </span>
+                    </span>
+                </div>  
+            </ons-list-item>
+            <hr>
+    `;
+
+    arrayJson.insertos.forEach(inserto => {
+        let id = arrayJson.codigo.replace(/\//g, "") + inserto.tipo_inserto.replace(/[ .]/g, '');
+        html += `
+            <ons-card class="botonPrograma" onclick=""
+                style="padding:0; margin-bottom: 2px; border: 1px solid black;">
+                <ons-list-item modifier="nodivider" expandable onclick="setMostrarInventarioInsertoIndividuales('${id}', '${arrayJson.codigo}','${inserto.tipo_inserto}')">
+                    <div class="left">
+                        <i class="fa-solid fa-box-open fa-1x"></i>
+                    </div>
+                    <div class="center">
+                        <b>${inserto.tipo_inserto}</b> &nbsp;|&nbsp; <span style="font-size:9pt">${inserto.resistencia}</span>   
+                    </div>
+                    <div class="right" style="white-space: nowrap;">
+                        <font size="5px">
+                            <b>
+                                ${separator(inserto.inventario)} <font size="2px">pza(s)</font>
+                            </b>
+                        </font>
+                        <i class="fa-solid fa-chevron-down" style="color:#c7c7cc; margin-left: 8px;"></i>
+                    </div>
+                    <div class="expandable-content">
+                         <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                            <ons-lazy-repeat id="contenidoInventarioInsertos${id}">
+                                <center>
+                                    <ons-progress-circular id="circularInventario${id}" indeterminate></ons-progress-circular>
+                                </center>
+                            </ons-lazy-repeat>
+                            <ons-button modifier="large" style="width:98%" onclick="mensajeAlertaInventarioInsertoTodo('${inserto.tipo_inserto}','${arrayJson.codigo}')">
+                                <i class="fa-solid fa-truck-moving" style="color:white"></i>
+                                &nbsp;Entregado
+                            </ons-button>
+                        </ons-list>    
+                    </div>
+                </ons-list-item>
+            </ons-card>
+        `;
+    });
+
+    html += `        
+        </ons-card>
+    `;
+    return html;
+
+}
+
+function setMostrarInventarioInsertoIndividuales(id, codigo, inserto) {
+    //console.log($('#circularInventario' + id),$('#circularInventario' + id).length);
+    if ($('#circularInventario' + id).length === 0) return; // Si el circulo de carga no existe, no hacer nada
+    let link = myLink + '/php/inventario/inserto/selectInserto.php?producto=' + codigo + '&inserto=' + inserto;
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            listaInfinita('contenidoInventarioInsertos' + id, '', arrayJson, enlistarInventarioInsertosIndividuales);
+        }
+    );
+}
+
+function enlistarInventarioInsertosIndividuales(arrayJson) {
+    let html = `
+        <ons-card class="botonPrograma" 
+        style="padding:0; margin-bottom: 5px; border: 1px solid black;" onclick="mensajeAlertaInventarioInserto(${arrayJson.inventario}, '${arrayJson.id}')">
+            <ons-list-item modifier="nodivider">
+                <div class="center">
+                    <b>${arrayJson.id}</b>
+                </div>
+                <div class="right" style="padding: 0px 12px 0px 0px;">
+                    <span class="notification" style="background: rgb(61, 174, 80)" >
+                        ${separator(arrayJson.entrada)}
+                    </span>
+                    <i class="fa-solid fa-minus"></i>
+                    <span class="notification">
+                        ${separator(arrayJson.salida)}
+                    </span>
+                    <i class="fa-solid fa-equals"></i>
+                    <span class="notification" style="background: rgb(8, 136, 205);">
+                        ${separator(arrayJson.inventario)} <font size="2px">pza(s)</font>
+                    </span>
+                </div>
+            </ons-list-item>
+        </ons-card>
+    `;
+    return html;
+}
+
+function mensajeAlertaInventarioInserto(inventario, id) {
+    alertComfirmDato("Generar salida: ", "number", ["Cancelar", "Aceptar"],
+        function (salida) {
+            if (salida && salida <= inventario && salida > 0) {
+                alertConfirm('Se generará la siguiente salida: <hr><b style="font-size:20pt">' + salida + ' Pzas.</b><hr> Estas seguro?', ["Cancelar", "Aceptar"],
+                    function (i) {
+                        if (i) {
+                            //console.log("Salida generada para la caja: " + id + " con cantidad: " + idx);
+                            alertComfirm("Deseas agregar alguna <b>NOTA</b> adicional?", ["No", "Si"],
+                                function (j) {
+                                    if (j) {
+                                        alertComfirmDato("Observaciones: ", "text", ["Cancelar", "Enviar"],
+                                            function (observaciones) {
+                                                if (observaciones != null)
+                                                    setAgregarSalidaInserto(id, salida, observaciones); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                                            }
+                                        );
+                                    }
+                                    else
+                                        setAgregarSalidaInserto(id, salida, ""); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+
+                                }
+                            );
+                        }
+                    }
+                );
+            }
+            else if (salida) alerta("Porfavor verifica cantidad, no puede ser menor a 0 o mayor al inventario: " + inventario + " pza(s)");
+        }
+    )
+}
+
+function mensajeAlertaInventarioInsertoTodo(inserto, caja) {
+    alertComfirm('<font size="3pt">Se generará la SALIDA DE TODO el inventario del Inserto!</font> <br> Estas seguro?', ["Cancelar", "Aceptar"],
+        function (i) {
+            if (i) {
+                // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                alertComfirm("Deseas agregar alguna <b>NOTA</b> adicional?", ["No", "Si"],
+                    function (j) {
+                        if (j) {
+                            alertComfirmDato("Observaciones: ", "text", ["Cancelar", "Enviar"],
+                                function (observaciones) {
+                                    if (observaciones != null)
+                                        setGeneraraSalidaInsertoTodo(inserto, caja, observaciones); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                                }
+                            );
+                        }
+                        else
+                            setGeneraraSalidaInsertoTodo(inserto, caja, ""); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+
+                    }
+                );
+
+            }
+        }
+    );
+}
+
+
+//// FIN SECCION INVENTARIO INSERTOS
+
+
+
+
+//// INICIO SECCION INVENTARIO LAMINAS
+
+
+function setMostrarInventarioLamina() {
+    let busqueda = $('#searchLaminaInventario').val();
+    let link = myLink + '/php/inventario/lamina/select.php?search=' + busqueda;
+    oCarga("Cargando datos...");
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|');
+            //console.log(resultado);
+            listaInfinita('datosLaminaInventario', '', arrayJson, enlistarInventarioLamina);
+            cCarga();
+        }
+    );
+}
+
 function enlistarInventarioLamina(arrayJson) {
-    let html1 = '';
-    var o_c = arrayJson.codigo;
-    o_c = o_c.slice(0, -2);
-
-    var span = "";
-    var cajas = (arrayJson.caja).split("@");
-    var productos = (arrayJson.producto).split("@");
-    var clientes = (arrayJson.cliente).split("@");
-    for (var i = 0; i < cajas.length - 1 && cajas[i] != ""; i++) span += '<span class="list-item__subtitle">' + cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b></span>';
-
-    //console.log(arrayJson);
-    //console.log(arrayJson);
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="mensajeAlertaDato([\'codigo\',\'' + arrayJson.codigo + '\',\'inventario\',\'' + arrayJson.inventario + '\',\'salida\',\'' + arrayJson.salida + '\'])">'
-    html1 += ' <ons-list-header style="background:white">' + o_c + '</ons-list-header>';
-    html1 += '<ons-list-item modifier="nodivider">';
-    html1 += '        <div class="left">';
-    html1 += '<i class="fa-solid fa-stop fa-2x"></i>';
-    html1 += '        </div>';
-    html1 += '        <div class="center romperTexto">';
-    html1 += '        <span class="list-item__title">' + esEntero(arrayJson.ancho) + ' X ' + esEntero(arrayJson.largo) + ' - <b>' + arrayJson.resistencia + '</b></span>';
-    html1 += span;
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span class="notification" style="background: rgb(8, 136, 205);">' + separator(arrayJson.inventario) + ' <font size="2px">pza(s)</font></span>';
-    //html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
-    html1 += '        </div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-
-    return html1;
-}
-//ENLISTAR GRUPOS DE INSERTOS
-function enlistarInventarioInserto(arrayJson) {
-    let html1 = "";
-    //console.log(arrayJson);
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'inventarioPedidosInsertos.html\',setMostrarInventarioPedidosInserto,[\'' + arrayJson.codigo + '\',\'' + arrayJson.inserto + '\'])">';
-    html1 += '<ons-list-item modifier="nodivider chevron">';
-    html1 += '        <div class="left">';
-    html1 += '<i class="fa-solid fa-box-open fa-2x"></i>';
-    html1 += '        </div>';
-    html1 += '        <div class="center">';
-    html1 += '            <span class="list-item__title"><b>' + arrayJson.inserto + '</b> - ' + arrayJson.resistencia + '</span>';
-    html1 += '            <span class="list-item__subtitle"><b>' + arrayJson.codigo + '</b> - ' + arrayJson.producto + '<br>' + arrayJson.cliente + '</span>';
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span class="notification" style="background: rgb(8, 136, 205);">' + separator(arrayJson.inventario) + ' <font size="2px">pza(s)</font> </span>';
-    html1 += '        </div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-
-    return html1;
+    let cajas = "";
+    arrayJson.cajas.forEach(caja => {
+        cajas += caja.codigo + ' ' + caja.producto + "<br>";
+    });
+    let html = `
+        <ons-card style="padding:0px;" class="botonPrograma" onclick="">
+            <ons-list-item modifier="nodivider" onclick="mensajeAlertaInventarioLamina('${arrayJson.id}', ${arrayJson.inventario})">
+                <div class="left">
+                    <strong>${arrayJson.id}</strong>
+                </div>
+                <div class="center romperTexto">
+                    <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
+                    <span class="list-item__subtitle">
+                    ${cajas}
+                    </span>
+                </div>
+                <div class="right">
+                    <div class="centrar">
+                    <span class="notification"><font size="2px">${separator(arrayJson.inventario)} pza(s)</font></span>
+                    </div>
+                </div>
+                <div>hola</div>
+            </ons-list-item>
+        </ons-card>
+    `;
+    return html
 }
 
+function mensajeAlertaInventarioLamina(id, inventario) {
+    alertComfirmDato("Generar salida: ", "number", ["Cancelar", "Aceptar"],
+        function (salida) {
+            if (salida && salida <= inventario && salida > 0) {
+                alertConfirm('Se generará la siguiente salida: <hr><b style="font-size:20pt">' + salida + ' Pzas.</b><hr> Estas seguro?', ["Cancelar", "Aceptar"],
+                    function (i) {
+                        if (i) {
+                            //console.log("Salida generada para la caja: " + id + " con cantidad: " + idx);
+                            alertComfirm("Deseas agregar alguna <b>NOTA</b> adicional?", ["No", "Si"],
+                                function (j) {
+                                    if (j) {
+                                        alertComfirmDato("Observaciones: ", "text", ["Cancelar", "Enviar"],
+                                            function (observaciones) {
+                                                if (observaciones != null)
+                                                    setAgregarSalidaLamina(id, salida, observaciones); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
+                                            }
+                                        );
+                                    }
+                                    else
+                                        setAgregarSalidaLamina(id, salida, ""); // FUNCION EJECUTADA EN EL ARCHIVO SALIDAS.JS
 
-//ENLISTADOS DE INSERTOS
-function enlistarInventarioCodigoInserto(arrayJson) {
-    let html = "";
-    //console.log(arrayJson);
-    var inventario = arrayJson.entrada - arrayJson.salida
-    html += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="alertPromptInventario(\'' + arrayJson.id_lp + '\',\'' + arrayJson.salida + '\',\'' + inventario + '\')">';
-    html += '    <ons-list-header style="background: white">' + arrayJson.id_lp + '</ons-list-header>';
-    html += '    <ons-list-item modifier="nodivider"> ';
-    html += '        <div class="left">';
-    html += '            <i class="fa-solid fa-box-open fa-2x"></i>';
-    html += '        </div>';
-    html += '        <div class="center">';
-    html += '            <span class="list-item__title"><b>' + arrayJson.inserto + '</b> - ' + arrayJson.resistencia + '</span>';
-    html += '            <span class="list-item__subtitle"><b>' + arrayJson.codigo + '</b>&nbsp;' + arrayJson.producto + '<br>' + arrayJson.cliente + '</span>';
-    html += '        </div>';
-    html += '        <div class="right">';
-    html += '            <span class="notification" style="background: rgb(61, 174, 80);">' + separator(arrayJson.entrada) + ' </span>';
-    html += '            <i class="fa-solid fa-minus"></i>';
-    html += '            <span class="notification">' + separator(arrayJson.salida) + ' </span>';
-    html += '            <i class="fa-solid fa-equals"></i>';
-    html += '            <span class="notification" style="background: rgb(8, 136, 205);">  ' + separator(inventario) + ' <font size="2px">pza(s)</font> </span>';
-    html += '        </div>';
-    html += '    </ons-list-item>';
-    html += '</ons-card>';
-    return html;
-}
-
-//EXTRAS
-function mensajeAlertaDato(array) {
-    var json = conversionArrayJson(array);
-    alertComfirmDato("Agrega salida menor o igual a: " + json.inventario + " pza(s)", "number", ["Cancelar", "Enviar"], validacionInventarioLP, json);
-}
-function validacionInventarioLP(input, json) {
-
-    if (input == null || input <= 0) return 0;
-    else {
-        //alert(json.inventario);
-        if (input <= parseInt(json.inventario)) {
-            var salida = parseInt(input) + parseInt(json.salida == "" ? "0" : json.salida);
-            json.inventario = salida.toString();
-            alertComfirm('Se generá la siguiente salida:<br><br> <font size="8px">' + input + ' pza(s)</font>', ["Aceptar", "Cancelar"], function (idx, json) {
-                if (idx == 0) setActualizarSalidaLamina(json);
-            }, json)
+                                }
+                            );
+                        }
+                    }
+                );
+            }
+            else if (salida) alerta("Porfavor verifica cantidad, no puede ser menor a 0 o mayor al inventario: " + inventario + " pza(s)");
         }
-        else {
-            alerta("No puedes generar salidas mayores al las del inventario!");
-        }
+    )
 
-    }
 }
 
-/*function validarConfirm(idx,json)
-{
-    if(idx == 0) setActualizarSalidaLamina(json);
-}*/
 
+//// FIN SECCION INVENTARIO LAMINAS

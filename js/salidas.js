@@ -1,347 +1,547 @@
-var salida;
+//var Salida;
 
-//funcion para editar cantidad producto
-function setEditarCantidadSalidaP()
-{
-    let cantidad = $("#cantidad").val();
-    let id = $("#id").val();
-    if(vacio(cantidad,id)) servidor(myLink+"/php/salida/caja/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaP);
-    else alerta("Datos vacios"); 
-    
-}
-function getEditarCantidadSalidaP(respuesta)
-{
-    if(respuesta.responseText == 1 )
-    {
-        alerta("Registro editado");
-        mostrarTodoSalida();
-        $("#cantidad").val("");
-        $("#id").val("");
-        hideDialogo('my-dialogEditarEntradaSalidaP');
-    }
-    else alerta("No se encontraron resultados");
-}
+//funcion para editar cantidad de Salidas y salidas productos
 
-//funcion para editar cantidad inserto
-function setEditarCantidadSalidaI()
-{
-    let cantidad = $("#cantidadI").val();
-    let id = $("#idI").val();
-    if(vacio(cantidad,id)) servidor(myLink+"/php/salida/inserto/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaI);
-    else alerta("Datos vacios"); 
-    
-}
-function getEditarCantidadSalidaI(respuesta)
-{
-    if(respuesta.responseText == 1 )
-    {
-        alerta("Registro editado");
-        mostrarTodoSalida();
-        $("#cantidadI").val("");
-        $("#idI").val("");
-        hideDialogo('my-dialogEditarEntradaSalidaI');
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    if (page.id === 'cajaSalidas') {
+        setMostrarSalidaCajas();
+        tabsCargadosP = {
+            'insertoSalidas.html': false,
+            'laminaSalidas.html': false,
+        };
+        //VARIABLE tabsCargadosP DECLARADA EN pedidos.js
     }
-    else alerta("No se encontraron resultados");
-}
+});
 
-//funcion para editar cantidad inserto
-function setEditarCantidadSalidaL()
-{
-    let cantidad = $("#cantidadL").val();
-    let id = $("#idL").val();
-    let proveedor = $("#proveedorL").val();
-    id = id + "/" + proveedor;
-    if(vacio(cantidad,id)) servidor(myLink+"/php/salida/lamina/update.php?cantidad="+cantidad+"&id="+id,getEditarCantidadSalidaL);
-    else alerta("Datos vacios"); 
-    
-}
-function getEditarCantidadSalidaL(respuesta)
-{
-    if(respuesta.responseText == 1 )
-    {
-        alerta("Registro editado");
-        mostrarTodoSalida();
-        $("#cantidadL").val("");
-        $("#idL").val("");
-        hideDialogo('my-dialogEditarEntradaSalidaL');
+//FUNCION PARA VERIFICAR QUE SOLO SE DIO UN CLICK AL TAB DEL PAGE
+document.addEventListener('postchange', function (event) {
+    const pageName = event.tabItem.getAttribute('page');
+    // Solo ejecuta la función si es la primera vez que se activa este tab
+    switch (pageName) {
+
+        case 'insertoSalidas.html':
+            if (!tabsCargadosP['insertoSalidas.html']) {
+                setMostrarSalidasInserto()
+                tabsCargadosP['insertoSalidas.html'] = true;
+            }
+            break;
+        case 'laminaSalidas.html':
+            if (!tabsCargadosP['laminaSalidas.html']) {
+                setMostrarSalidaLaminas();
+                tabsCargadosP['laminaSalidas.html'] = true;
+            }
+            break;
     }
-    else alerta("No se encontraron resultados");
+});
+
+/// NUEVAS FUNCIONES PARA SalidaS 
+
+function setMostrarSalidaCajas() {
+    oCarga("Cargando datos...");
+    let busqueda = $("#searchSalidaCaja").val();
+    let fecha = $("#fechaSalidaCaja").val();
+    let link = myLink + "/php/salida/caja/select.php?search=" + busqueda + "&fecha=" + fecha;
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+            listaInfinita('datosCajaSalida', '', arrayJson, enlistarSalidasCajas);
+            cCarga();
+        }
+    );
 }
 
-function mostrarTodoSalida()
-{
-    localStorage.setItem("bandera",1);
-    setMostrarSalidaCajas();
-    setMostrarSalidaLamina();
-    setMostrarSalidaInserto();
-    //aqui iran las otras dos funciones
-}
-//MOSTRAR SALIDAS INSERTO
-function setMostrarSalidaInserto()
-{
-    servidor(myLink+"/php/salida/inserto/select.php",getMostrarSalidaInserto);
-}
-function getMostrarSalidaInserto(respuesta)
-{
-    var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //alerta(resultado);
-    listaInfinita('datosInsertoInventario','insertoSalidasEntradasLoading',arrayJson,enlistarSalidasInserto);
-}
-
-function setMostrarSalidaCajasSearch(search)
-{
-    servidor(myLink+"/php/salida/caja/select.php?search="+search,getMostrarSalidaCajas);
-}
-function setMostrarSalidaInsertoSearch(search)
-{
-    servidor(myLink+"/php/salida/inserto/select.php?search="+search,getMostrarSalidaInserto);
-}
-function setMostrarSalidaCajas()
-{
-    servidor(myLink+"/php/salida/caja/select.php",getMostrarSalidaCajas);
-}
-function getMostrarSalidaCajas(respuesta)
-{
-    var resultado = respuesta.responseText;
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //alerta(resultado);
-    listaInfinita('datosCajaEntradaSalida','cajaSalidasEntradasLoading',arrayJson,enlistarSalidas);
-}
-function buscarEntradaSalidaCajas(search,e)
-{
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13 || e == 13) 
-    {
-        $("#cajaSalidasEntradasLoading").empty();
-        $("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let bandera = localStorage.getItem("bandera");
-        if(bandera == 1) setMostrarSalidaCajasSearch(search);
-        else setMostrarEntradaCajasSearch(search);
-        //console.log(bandera);
-    }
-    else if(search == "") 
-    {
-        //validar si es entrada o salida
-        $("#cajaSalidasEntradasLoading").empty();
-        $("#cajaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let bandera = localStorage.getItem("bandera");
-        if(bandera == 1) setMostrarSalidaCajas();
-        else setMostrarEntradaCajas();
-        //setMostrarEntradaCajas();
-        //setMostrarSalidaCajas();
-    }
-}
-function buscarEntradaSalidaInserto(search,e)
-{
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
-    {
-        $("#insertoSalidasEntradasLoading").empty();
-        $("#insertoSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let bandera = localStorage.getItem("bandera");
-        if(bandera == 1) setMostrarSalidaInsertoSearch(search);
-        else setMostrarEntradaInsertoSearch(search);
+function enlistarSalidasCajas(arrayJson) {
+    var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    let html = `
+        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSalidasCajas(${arrayJson.id})">
+            <ons-list-header style="background: white">
+                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
+            </ons-list-header>
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <i class="fa-solid fa-box fa-2x"></i>
+                </div>
+                <div class="center">
+                    <span class="list-item__title"><b>${arrayJson.codigo}</b>&nbsp;${arrayJson.producto}</span>
+                    <span class="list-item__subtitle">
+                    ${arrayJson.nombre}
+                    ${observaciones}
+                    </span>
         
-        //console.log(bandera);
+                </div>
+                <div class="right">
+                    <span class="notification" >
+                        ${separator(arrayJson.cantidad)} <font size="2px">pza(s)</font>
+                    </span>
+                </div>
+            </ons-list-item>
+        </ons-card>
+    `;
+
+    return html;
+}
+
+function setMostrarEditarSalidaCajas(id) {
+    oCarga("Cargando datos...");
+    servidor(myLink + "/php/salida/caja/select.php?id=" + id,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = convertJson(resultado); //separamos los json en un arreglo, su delimitador siendo un '|'
+            arrayJson = arrayJson[0];
+            //const arrayJson = resultado.split('|').filter(c => c.trim() !== '').map(c => JSON.parse(c.trim()));
+            $("#id").val(arrayJson.id);
+            $("#codigo").val(arrayJson.id_lp);
+            $("#caja").val(arrayJson.codigo + " " + arrayJson.producto);
+            $("#observaciones").val(arrayJson.observaciones);
+            $("#cantidad").val(arrayJson.cantidad);
+
+            cCarga();
+            alerta("Antes de editar una Salida asegurate de que la SALIDA no sea mayor a la ENTRADA", "IMPORTANTE");
+        });
+}
+
+function setEditarCajaSalida() {
+    let id = $("#id").val();
+    let obs = $("#observaciones").val().toUpperCase();
+    let cantidad = $("#cantidad").val();
+    if (cantidad > 0) {
+        let link = myLink + "/php/salida/caja/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
+        servidor(link,
+            function (respuesta) {
+                respuesta = respuesta.responseText;
+                if (respuesta) {
+                    alerta("Salida Editada, Correctamente!");
+                    resetearPilaFunction(setMostrarSalidaCajas);
+                }
+                else alerta("Hubo un error al editar");
+            }
+        );
     }
-    else if(search == "") 
-    {
-        //validar si es entrada o salida
-        $("#insertoSalidasEntradasLoading").empty();
-        $("#insertoSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let bandera = localStorage.getItem("bandera");
-        if(bandera == 1) setMostrarSalidaInserto();
-        else setMostrarEntradaInserto();
-        //setMostrarEntradaCajas();
-        //setMostrarSalidaCajas();
-    }
-}
-function setMostrarSalidalaminaSearch(search)
-{
-    servidor(myLink+"/php/salida/lamina/select.php?search="+search,getMostrarSalidaLamina)
-}
-function setMostrarSalidaLamina()
-{
-    servidor(myLink+"/php/salida/lamina/select.php",getMostrarSalidaLamina);
-}
-function getMostrarSalidaLamina(respuesta)
-{
-    var resultado = respuesta.responseText;
-    var proveedores = resultado.split('*');
-    var proveedor1 = proveedores[0].split('|');
-    var proveedor2 = proveedores[1].split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datosLaminaInventario','laminaSalidasEntradasLoading',proveedor1,enlistarSalidasLamina);
-    listaInfinita('datosLaminaInventario1','laminaSalidasEntradasLoading',proveedor2,enlistarSalidasLamina);
-}
-function buscarEntradaSalidaLamina(search,e)
-{
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13) 
-    {
-        $("#laminaSalidasEntradasLoading").empty();
-        $("#laminaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let bandera = localStorage.getItem("bandera");
-        if(bandera == 1) setMostrarSalidalaminaSearch(search);
-        else setMostrarEntradalaminaSearch(search);
-        //console.log(bandera);
-    }
-    else if(search == "") 
-    {
-        //validar si es entrada o salida
-        $("#laminaSalidasEntradasLoading").empty();
-        $("#laminaSalidasEntradasLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        let bandera = localStorage.getItem("bandera");
-        if(bandera == 1) setMostrarSalidaLamina();
-        else setMostrarEntradaLamina();
-        //setMostrarEntradaCajas();
-        //setMostrarSalidaCajas();
-    }
-}
-function asignarTextSalidaEntrada(observaciones)
-{
-    
-    $("#datoDialog").empty();
-    $("#datoDialog").append('<textarea id="observacionesSalidasEntradas" cols="40" rows="5" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>');
-
-    setTimeout(() => {
-        $("#observacionesSalidasEntradas").val(observaciones == "" ? "" : observaciones);
-    }, 1);
-    $('#aceptar').empty();
-    $('#aceptar').append('<i style="color:green" class="fa-solid fa-check fa-2x" onclick="setActualizaObservaciones()"></i>')
-    
-    
-   // $("#observacionesSalidasEntradas").val(id);
-}
-function setActualizaObservaciones()
-{
-    observacionesSalidasEntradas = $("#observacionesSalidasEntradas").val();
-    var observaciones = $("#observacionesSalidasEntradas").val() == "" ? "(Sin comentarios)" : $("#observacionesSalidasEntradas").val();
-    $('#aceptar').empty();
-    $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntrada(observacionesSalidasEntradas)"></i>');
-
-    $("#datoDialog").empty();
-    $('#datoDialog').text(observaciones);
-    
-    var codigo = idSalidasEntradas.split("-");
-    if(codigo[0].length == 7)
-    servidor(myLink+"/php/inventario/updateObservaciones.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
-    else servidor(myLink+"/php/inventario/updateObservacionesInserto.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservaciones);
-}
-function getActualizarObservaciones(respuesta)
-{
-    if(respuesta.responseText == 1) mostrarTodoSalida();
-    else if(respuesta.responseText == 2) mostrarTodoEntrada();
-    else alerta("no se actualizo "+respuesta.responseText);
-}
-// observaciones Lamina
-function asignarTextSalidaEntradaLamina(observaciones)
-{
-    
-    $("#datoDialog").empty();
-    $("#datoDialog").append('<textarea id="observacionesSalidasEntradas" cols="40" rows="5" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>');
-
-    setTimeout(() => {
-        $("#observacionesSalidasEntradas").val(observaciones == "" ? "" : observaciones);
-    }, 1);
-    $('#aceptar').empty();
-    $('#aceptar').append('<i style="color:green" class="fa-solid fa-check fa-2x" onclick="setActualizaObservacionesLamina()"></i>')
-    
-    
-   // $("#observacionesSalidasEntradas").val(id);
-}
-function setActualizaObservacionesLamina()
-{
-    observacionesSalidasEntradas = $("#observacionesSalidasEntradas").val();
-    var observaciones = $("#observacionesSalidasEntradas").val() == "" ? "(Sin comentarios)" : $("#observacionesSalidasEntradas").val();
-    $('#aceptar').empty();
-    $('#aceptar').append('<i style="color: orange;" class="fa-solid fa-pen-to-square fa-2x" onclick="asignarTextSalidaEntradaLamina(observacionesSalidasEntradas)"></i>');
-
-    $("#datoDialog").empty();
-    $('#datoDialog').text(observaciones);
-    
-    //console.log(myLink+"/php/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type);
-    servidor(myLink+"/php/inventario/updateObservacionesLamina.php?observaciones="+observacionesSalidasEntradas+"&id="+idSalidasEntradas+"&type="+type,getActualizarObservacionesLamina);
-}
-function getActualizarObservacionesLamina(respuesta)
-{
-    //console.log(respuesta.responseText);
-    if(respuesta.responseText == 1) mostrarTodoSalida();
-    else if(respuesta.responseText == 2) mostrarTodoEntrada();
-    else alerta("no se actualizo "+respuesta.responseText);
+    else alerta("La cantidad tiene que ser mayor a 0");
+    //console.log(id, obs, cantidad);
 }
 
-function enlistarSalidas(arrayJson)
-{
-    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    let html1 = "";
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">';
-    html1 += '    <ons-list-header style="background:white">'+arrayJson.id_lp+' <b style="color: rgb(211, 64, 64);">Entregado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
-    html1 += '    <ons-list-item modifier="nodivider">';
-    html1 += '        <div class="left">';
-    html1 +=              '<i class="fa-solid fa-box fa-2x"></i>';
-    html1 += '        </div>';
-    html1 += '        <div class="center">';
-    html1 += '            <span class="list-item__title"><b>'+arrayJson.codigo+'</b>&nbsp;'+ arrayJson.producto +'</span>';
-    html1 += '            <span class="list-item__subtitle">'+ arrayJson.nombre +'</span>';
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span class="notification">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
-    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
-    html1 += '        </div>';
-    html1 += '    </ons-list-item>';
-    html1 += '</ons-card>';
-
-    return html1;
+function setEliminarSalidaCaja(id) {
+    oCarga("Eliminando...");
+    servidor(myLink + "/php/salida/caja/delete.php?id=" + id,
+        function (respuesta) {
+            cCarga();
+            respuesta = respuesta.responseText;
+            if (respuesta) {
+                alerta("Salida Eliminada, Correctamente!");
+                setMostrarSalidaCajas();
+            }
+            else alerta("Hubo un error al eliminar");
+        }
+    );
 }
-function enlistarSalidasLamina(arrayJson)
-{
-    let html1 = '';
-    var o_c = arrayJson.id_lp;
-    o_c = o_c.slice(0,-2);
+
+function opcionesSalidasCajas(id) {
+
+    mensajeArriba("Opciones",
+        [
+            '<i class="fas fa-pen-to-square"></i>&nbsp;Editar',
+            {
+                label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
+                modifier: 'destructive'
+            }
+        ],
+        function (opc) {
+            if (opc == 0)
+                nextPageFunction("cajaEditarSalidas.html",
+                    function () {
+                        setMostrarEditarSalidaCajas(id);
+                    }
+                );
+                else if(opc == 1) setEliminarSalidaCaja(id);
+        }
+    );
+}
 
 
-    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialogLamina(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">'
-    html1 += ' <ons-list-header style="background:white">'+ o_c +' <b style="color: rgb(211, 64, 64);">Tomado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
-    html1 += '<ons-list-item modifier="nodivider">'; 
-    html1 += '        <div class="left">';
-    html1 +=              '<i class="fa-solid fa-stop fa-2x"></i>';
-    html1 += '        </div>';
-    html1 += '        <div class="center">';
-    html1 += '        <span class="list-item__title">'+esEntero(arrayJson.ancho)+' X '+esEntero(arrayJson.largo)+' - <b>'+arrayJson.resistencia+'</b></span>'; 
-    html1 += arrayJson.producto != "" ? '<span class="list-item__subtitle">'+arrayJson.caja+' '+arrayJson.producto+' - <b>'+arrayJson.nombre+'</b></span>' : "";
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span class="notification">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
-    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
-    html1 += '        </div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
+//// INICIO DE FUNCIONES PARA SalidaS INSERTOS
+
+function setMostrarSalidasInserto() {
+    oCarga("Cargando datos...");
+    let busqueda = $("#searchSalidaInserto").val();
+    let fecha = $("#fechaSalidaInserto").val();
+    let link = myLink + "/php/salida/inserto/select.php?search=" + busqueda + "&fecha=" + fecha;
+    servidor(link,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+            listaInfinita('datosInsertoSalida', '', arrayJson, enlistarSalidasInserto);
+            cCarga();
+        }
+    );
+}
+
+function enlistarSalidasInserto(arrayJson) {
+    var observaciones = arrayJson.observaciones == "" ? "" : '<i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    let html1 = `
+        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSalidasInserto(${arrayJson.id})">
+            <ons-list-header style="background: white">
+                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
+            </ons-list-header>
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <i class="fa-solid fa-box-open fa-2x"></i>
+                </div>
+                <div class="center">
+                    
+                    <span class="list-item__subtitle">
+                        <b>${arrayJson.codigo}</b>&nbsp;${arrayJson.producto} - ${arrayJson.nombre}
+                        <br>
+                        ${observaciones}
+                    </span>
+                    <span class="list-item__title">
+                        <b>${arrayJson.inserto}</b> | ${arrayJson.resistencia}
+                    </span>
+                </div>
+                <div class="right">
+                    <span class="notification" >
+                        ${separator(arrayJson.cantidad)} <font size="2px">pza(s)</font>
+                    </span>
+                </div>
+            </ons-list-item>
+        </ons-card>
+    `;
+
 
     return html1;
 }
 
-function enlistarSalidasInserto(arrayJson)
-{
-    var color = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    let html1 = "";
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="abrirDialog(\''+arrayJson.observaciones+'\',\''+arrayJson.id_lp+'\',\''+1+'\')">';
-    html1 += '    <ons-list-header style="background:white">'+arrayJson.id_lp+' <b style="color: rgb(211, 64, 64);">Entregado: '+ sumarDias(arrayJson.fecha,0) +'</b></ons-list-header>';
-    html1 += '    <ons-list-item modifier="nodivider">';
-    html1 += '        <div class="left">';
-    html1 +=              '<i class="fa-solid fa-box fa-2x"></i>';
-    html1 += '        </div>';
-    html1 += '        <div class="center">';
-    html1 += '            <span class="list-item__title"><b>'+arrayJson.inserto+'</b> - '+ arrayJson.resistencia +'</span>';
-    html1 += '            <span class="list-item__subtitle"><b>'+arrayJson.codigo+'</b>&nbsp;'+ arrayJson.producto +'<br>'+ arrayJson.nombre +'</span>';
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span class="notification">'+ separator(arrayJson.cantidad) +' <font size="2px">pza(s)</font></span>';
-    html1 += '            <div style="position: absolute;bottom:60px; right: 10px;" ><i style="color: '+color+';filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3))" class="fa-solid fa-comment-dots fa-2x"></i></div>';
-    html1 += '        </div>';
-    html1 += '    </ons-list-item>';
-    html1 += '</ons-card>';
+function setMostrarEditarSalidaInserto(id) {
+    oCarga("Cargando datos...");
+    servidor(myLink + "/php/salida/inserto/select.php?id=" + id,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = convertJson(resultado); //separamos los json en un arreglo, su delimitador siendo un '|'
+            arrayJson = arrayJson[0];
+            //const arrayJson = resultado.split('|').filter(c => c.trim() !== '').map(c => JSON.parse(c.trim()));
+            $("#id").val(arrayJson.id);
+            $("#codigo").val(arrayJson.id_lp);
+            $("#caja").val(arrayJson.codigo + " " + arrayJson.producto);
+            $("#observaciones").val(arrayJson.observaciones);
+            $("#cantidad").val(arrayJson.cantidad);
 
-    return html1;
+            cCarga();
+            alerta("Antes de editar una Salida asegurate de que la SALIDA no sea mayor a la ENTRADA", "IMPORTANTE");
+        });
 }
+
+function setEditarInsertoSalida() {
+    let id = $("#id").val();
+    let obs = $("#observaciones").val().toUpperCase();
+    let cantidad = $("#cantidad").val();
+    if (cantidad > 0) {
+        let link = myLink + "/php/salida/caja/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
+        servidor(link,
+            function (respuesta) {
+                respuesta = respuesta.responseText;
+                if (respuesta) {
+                    alerta("Salida Editada, Correctamente!");
+                    resetearPilaFunction(setMostrarSalidasInserto);
+                }
+                else alerta("Hubo un error al editar");
+            }
+        );
+    }
+    else alerta("La cantidad tiene que ser mayor a 0");
+    //console.log(id, obs, cantidad);
+}
+
+function setEditarInsertoSalida() {
+    let id = $("#id").val();
+    let obs = $("#observaciones").val().toUpperCase();
+    let cantidad = $("#cantidad").val();
+    if (cantidad > 0) {
+        let link = myLink + "/php/salida/inserto/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
+        servidor(link,
+            function (respuesta) {
+                respuesta = respuesta.responseText;
+                if (respuesta) {
+                    alerta("Salida Editada, Correctamente!");
+                    resetearPilaFunction(setMostrarSalidaInserto);
+                }
+                else alerta("Hubo un error al editar");
+            }
+        );
+    }
+    else alerta("La cantidad tiene que ser mayor a 0");
+    //console.log(id, obs, cantidad);
+}
+
+function setEliminarSalidaInserto(id) {
+    oCarga("Eliminando...");
+    servidor(myLink + "/php/salida/inserto/delete.php?id=" + id,
+        function (respuesta) {
+            cCarga();
+            respuesta = respuesta.responseText;
+            if (respuesta) {
+                alerta("Salida Eliminada, Correctamente!");
+                setMostrarSalidasInserto();
+            }
+            else alerta("Hubo un error al eliminar");
+        }
+    );
+}
+
+function opcionesSalidasInserto(id) {
+
+    mensajeArriba("Opciones",
+        [
+            '<i class="fas fa-pen-to-square"></i>&nbsp;Editar',
+            {
+                label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
+                modifier: 'destructive'
+            }
+        ],
+        function (opc) {
+            if (opc == 0)
+                nextPageFunction("insertoEditarSalidas.html",
+                    function () {
+                        setMostrarEditarSalidaInserto(id);
+                    }
+                );
+            else if (opc == 1) setEliminarSalidaInserto(id);
+        }
+    );
+}
+
+////  INICIO PARA SalidaS DE LAMINA
+
+function setMostrarSalidaLaminas() {
+    oCarga("Cargando datos...");
+    let busqueda = $("#searchLaminaInventario").val();
+    servidor(myLink + "/php/salida/lamina/select.php?search=" + busqueda,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+            listaInfinita('datosLaminaInventario', '', arrayJson, enlistarSalidasLamina);
+            cCarga();
+        }
+    );
+}
+
+function enlistarSalidasLamina(arrayJson) {
+    let cajas = "";
+    arrayJson.cajas.forEach(caja => {
+        cajas += caja.codigo + ' ' + caja.producto + "<br>";
+    });
+    var observaciones = arrayJson.observaciones == "" ? "" : '<div><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font></div>";
+    let html = `
+        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSalidasLamina(${arrayJson.id})">
+            <ons-list-header style="background: white">
+                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Recibido: ${sumarDias(arrayJson.fecha, 0)}</b>
+            </ons-list-header>
+            <ons-list-item modifier="nodivider" onclick="">
+                <div class="left">
+                    <i class="fas fa-sheet-plastic fa-2x"></i>
+                </div>
+                <div class="center romperTexto">
+                    <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
+                    <span class="list-item__subtitle">
+                    ${cajas}
+                    ${observaciones}
+                    </span>
+                </div>
+                <div class="right">
+                    <div class="centrar">
+                    <span class="notification" ><font size="2px">${separator(arrayJson.cantidad)} pza(s)</font></span>
+                    </div>
+                </div>
+                <div>hola</div>
+            </ons-list-item>
+        </ons-card>
+    `;
+    return html
+}
+
+function setMostrarEditarSalidaLamina(id) {
+    oCarga("Cargando datos...");
+    servidor(myLink + "/php/salida/lamina/select.php?id=" + id,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            var arrayJson = convertJson(resultado); //separamos los json en un arreglo, su delimitador siendo un '|'
+            arrayJson = arrayJson[0];
+            //const arrayJson = resultado.split('|').filter(c => c.trim() !== '').map(c => JSON.parse(c.trim()));
+            $("#id").val(arrayJson.id);
+            $("#codigo").val(arrayJson.id_lp);
+            $("#observaciones").val(arrayJson.observaciones);
+            $("#medidas").val(esEntero(arrayJson.largo) + " X " + esEntero(arrayJson.ancho));
+            $("#cantidad").val(arrayJson.cantidad);
+
+            cCarga();
+            alerta("Antes de editar una Salida asegurate de que la SALIDA no sea mayor a la ENTRADA", "IMPORTANTE");
+        });
+}
+
+function setEditarLaminaSalida() {
+    let id = $("#id").val();
+    let obs = $("#observaciones").val().toUpperCase();
+    let cantidad = $("#cantidad").val();
+    if (cantidad > 0) {
+        let link = myLink + "/php/salida/lamina/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
+        servidor(link,
+            function (respuesta) {
+                respuesta = respuesta.responseText;
+                if (respuesta) {
+                    alerta("Salida Editada, Correctamente!");
+                    resetearPilaFunction(setMostrarSalidaLaminas);
+                }
+                else alerta("Hubo un error al editar");
+            }
+        );
+    }
+    else alerta("La cantidad tiene que ser mayor a 0");
+    //console.log(id, obs, cantidad);
+}
+
+function setEliminarSalidaLamina(id) {
+    oCarga("Eliminando...");
+    servidor(myLink + "/php/salida/lamina/delete.php?id=" + id,
+        function (respuesta) {
+            cCarga();
+            respuesta = respuesta.responseText;
+            if (respuesta) {
+                alerta("Salida Eliminada, Correctamente!");
+                setMostrarSalidaLaminas();
+            }
+            else alerta("Hubo un error al eliminar");
+        }
+    );
+}
+
+function opcionesSalidasLamina(id) {
+
+    mensajeArriba("Opciones",
+        [
+            '<i class="fas fa-pen-to-square"></i>&nbsp;Editar',
+            {
+                label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
+                modifier: 'destructive'
+            }
+        ],
+        function (opc) {
+            if (opc == 0)
+                nextPageFunction("laminaEditarSalidas.html",
+                    function () {
+                        setMostrarEditarSalidaLamina(id);
+                    }
+                );
+            else if (opc == 1) setEliminarSalidaLamina(id);
+        }
+    );
+}
+
+/// FIN FUNCIONES NUEVAS Salida
+
+
+
+
+//// INICIO SECCIONES DE FUNCIONES NUEVAS ACTUALIZADAS
+
+//// INICIO SECCION DE FUNCIONES PARA SALIDAS DE CAJA
+
+function setAgregarSalidaCaja(id, cantidad, observaciones) {
+    oCarga("Generando salida de inventario");
+    observaciones = observaciones.toUpperCase();
+
+    let link = myLink + "/php/salida/caja/add.php?id=" + id + "&cantidad=" + cantidad + "&observaciones=" + observaciones;
+    servidor(link,
+        function (respuesta) {
+            if (respuesta.responseText == 1) {
+                alerta("Salida generada correctamente");
+                setMostrarInventarioCajas(codigoCliente); // FUNCION EJECUTADA EN EL ARCHIVO inventario.j
+            }
+            else alerta("No se pudo generar la salida, Hubo un error");
+            cCarga();
+        }
+    );
+}
+
+function setGeneraraSalidaCajaTodo(caja, observaciones) {
+    oCarga("Generando salida...");
+    observaciones = observaciones.toUpperCase();
+    let link = myLink + '/php/salida/caja/addAll.php?producto=' + caja + '&observaciones=' + observaciones;
+    servidor(link,
+        function (respuesta) {
+            if (respuesta.responseText == 1) {
+                alerta("Salida generada correctamente");
+                setMostrarInventarioCajas(codigoCliente);
+            }
+            else alerta("No se pudo generar la salida");
+            cCarga();
+        }
+    );
+}
+
+//// FIN SECCION DE FUNCIONES PARA SALIDAS DE CAJA
+
+
+//// INICIO SECCION DE FUNCIONES PARA SALIDAS DE INSERTO
+
+function setAgregarSalidaInserto(id, cantidad, observaciones) {
+    oCarga("Generando salida de inventario...");
+    observaciones = observaciones.toUpperCase();
+
+    let link = myLink + "/php/salida/inserto/add.php?id=" + id + "&cantidad=" + cantidad + "&observaciones=" + observaciones;
+    servidor(link,
+        function (respuesta) {
+            if (respuesta.responseText == 1) {
+                alerta("Salida generada correctamente");
+                setMostrarInventarioInserto(codigoCliente); // FUNCION EJECUTADA EN EL ARCHIVO inventario.j
+            }
+            else alerta("No se pudo generar la salida, Hubo un error: ");
+            cCarga();
+        }
+    );
+}
+
+function setGeneraraSalidaInsertoTodo(inserto, caja, observaciones) {
+    oCarga("Generando salida de inventario...");
+    observaciones = observaciones.toUpperCase();
+    let link = myLink + '/php/salida/inserto/addAll.php?producto=' + caja + '&inserto=' + inserto + '&observaciones=' + observaciones;
+    servidor(link,
+        function (respuesta) {
+            if (respuesta.responseText == 1) {
+                alerta("Salida generada correctamente");
+                setMostrarInventarioInserto(codigoCliente);
+            }
+            else alerta("No se pudo generar la salida");
+            cCarga();
+        }
+    );
+}
+
+//// FIN SECCION DE FUNCIONES PARA SALIDAS DE INSERTO
+
+//// INICIO SECCION DE FUNCIONES PARA SALIDAS DE LAMINA
+
+function setAgregarSalidaLamina(id, cantidad, observaciones) {
+    oCarga("Generando salida de inventario...");
+    observaciones = observaciones.toUpperCase();
+    let link = myLink + "/php/salida/lamina/add.php?id=" + id + "&cantidad=" + cantidad + "&observaciones=" + observaciones
+    servidor(link,
+        function (respuesta) {
+            if (respuesta.responseText == 1) {
+                alerta("Salida generada correctamente");
+                setMostrarInventarioLamina(); // FUNCION EJECUTADA EN EL ARCHIVO inventario.js
+            }
+            else alerta("No se pudo generar la salida, Hubo un error: ");
+            cCarga();
+        }
+    );
+}
+
+//// FIN SECCION DE FUNCIONES PARA SALIDAS DE LAMINA
+
+
+
+//// FIN SECCIONES DE FUNCIONES NUEVAS ACTUALIZADAS

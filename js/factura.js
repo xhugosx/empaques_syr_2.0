@@ -1,17 +1,4 @@
-
-//BUSCAR LAS FACTURAS A MODIFICAR O ELIMINAR
-function setModificarBuscarFacturas(id) {
-    servidor(myLink + "/php/facturas/select.php?id=" + id, getModificarBuscarFacturas);
-    $("#id_pedido").text(id);
-}
-function getModificarBuscarFacturas(respuesta) {
-    var resultado = respuesta.responseText;
-    //console.log(resultado);
-    var arrayJson = resultado.split('|');
-    listaInfinita('datosFacturas', 'progressBarFacturas', arrayJson, enlistarFacturasEditar);
-
-}
-
+var cantidadFacturas;
 var banderaFactura = [];
 
 document.addEventListener('init', function (event) {
@@ -21,6 +8,23 @@ document.addEventListener('init', function (event) {
         banderaFactura = [];
     }
 });
+
+//BUSCAR LAS FACTURAS A MODIFICAR O ELIMINAR
+function setModificarBuscarFacturas(id) {
+    oCarga("Buscando Facturas...")
+    servidor(myLink + "/php/facturas/select.php?id=" + id,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            //console.log(resultado);
+            var arrayJson = resultado.split('|');
+            cantidadFacturas = arrayJson.length - 1;
+            //console.log(cantidadFacturas);
+            listaInfinita('datosFacturas', 'progressBarFacturas', arrayJson, enlistarFacturasEditar);
+            cCarga();
+        }
+    );
+    $("#id_pedido").text(id);
+}
 
 function editarFactura(id, posicion) {
     //console.log(banderaFactura[posicion]);
@@ -35,54 +39,76 @@ function editarFactura(id, posicion) {
         $("#factura" + posicion).html('<ons-input id="inputId' + posicion + '" type="text" value="' + factura + '">');
         $("#entregado" + posicion).html('<ons-input id="inputEntregado' + posicion + '" type="number" value="' + entregado + '">');
         $("#fecha" + posicion).html('<ons-input id="inputFecha' + posicion + '" type="date" value="' + fecha + '">');
-        $("#editar" + posicion).html('<i class="fa-solid fa-check"></i> Listo');
+        $("#editar" + posicion).html('<i class="fa-solid fa-check"></i>');
 
         banderaFactura[posicion] = true;
     }
     else {
         //alerta("Modificará");
-        $("#editar" + posicion).html('<i class="fa-solid fa-pen"></i>');
-        banderaFactura[posicion] = false;
-        setEditarFactura(id, posicion)
+        var factura = $("#inputId" + posicion).val();
+        var entregado = $("#inputEntregado" + posicion).val();
+        var fecha = $("#inputFecha" + posicion).val();
+        if (vacio(factura, entregado, fecha)) {
+            oCarga("Editando Factura");
+            servidor(myLink + "/php/facturas/update.php?id=" + id + "&entregado=" + entregado + "&factura=" + factura + "&fecha=" + fecha,
+                function (respuesta) {
+                    cCarga();
+                    var resultado = respuesta.responseText;
+                    if (resultado == 1) {
+
+                        alerta("Factura modificada");
+                        setModificarBuscarFacturas($("#id_pedido").text());
+                    }
+                    else alerta("Hubo un error al modificar");
+                    $("#editar" + posicion).html('<i class="fa-solid fa-pen"></i>');
+                    banderaFactura[posicion] = false;
+                }
+            );
+        }
+        else {
+            alerta("Datos vacios!");
+        }
     }
 
 }
 
 
 function setEditarFactura(id, posicion) {
-    var factura = $("#inputId" + posicion).val();
-    var entregado = $("#inputEntregado" + posicion).val();
-    var fecha = $("#inputFecha" + posicion).val();
-    servidor(myLink + "/php/facturas/update.php?id=" + id + "&entregado=" + entregado + "&factura=" + factura + "&fecha=" + fecha, getEditarFactura);
-}
-function getEditarFactura(respuesta) {
-    var resultado = respuesta.responseText;
-    if (resultado == 1) {
 
-        alerta("Factura modificada");
-        setModificarBuscarFacturas($("#id_pedido").text());
-        //buscarDtospedidos(); // esto para actualizar los pedidos completos
-    }
-    else alerta("Hubo un error al modificar");
+
 }
 
+function confirmarEliminar(id) {
+    alertConfirm("Estas seguro de eliminar esta Factura?", ["SI", "NO"],
+        function (index) {
+            //alerta(index);
+            if (index == 0) {
+                if (cantidadFacturas > 1) setEliminarFactura(id);
+                else alerta("No puedes eliminar la ultima factura");
+            }
+        });
+}
 function setEliminarFactura(id) {
-    servidor(myLink + "/php/facturas/delete.php?id=" + id, getEliminarFactura);
+    oCarga("Eliminando Factura...");
+    servidor(myLink + "/php/facturas/delete.php?id=" + id,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            if (resultado == 1) {
+                alerta("Factura Eliminada");
+                setModificarBuscarFacturas($("#id_pedido").text());
+                //buscarDtospedidos(); // esto para actualizar la informacion de los pedidos
+            }
+            else alerta("Hubo un error al eliminar");
+            cCarga();
+        }
+    );
 }
-function getEliminarFactura(respuesta) {
-    var resultado = respuesta.responseText;
-    if (resultado == 1) {
-        alerta("Factura Eliminada");
-        setModificarBuscarFacturas($("#id_pedido").text());
-        //buscarDtospedidos(); // esto para actualizar la informacion de los pedidos
-    }
-    else alerta("Hubo un error al eliminar");
-}
+
 //ENLISTAR DATOS CLIENTES
 function enlistarFacturasEditar(arrayJson, i) {
     // { "id": "418", "id_pedido": "2023019-20", "entregado": "600", "factura": "A-7935", "fecha": "2023-06-26" }
     let html1 = "";
-    html1 += '<ons-card style="padding:0px;" class="botonPrograma">';
+    html1 += '<ons-card style="padding:0px;" class="botonPrograma opacity100"> ';
 
     html1 += '    <ons-list-item modifier="nodivider">';
     html1 += '        <div class="left">';
@@ -112,7 +138,7 @@ function enlistarFacturasEditar(arrayJson, i) {
     html1 += '        <div class="right">';
     html1 += '            <span id="editar' + i + '" class="accionFactura" onclick="editarFactura(' + arrayJson.id + ',' + i + ')"><i';
     html1 += '                class="fa-solid fa-pen"></i></span>';
-    html1 += '            <span class="accionFactura" onclick="setEliminarFactura(' + arrayJson.id + ')"><i class="fa-solid fa-trash"></i></span>';
+    html1 += '            <span class="accionFactura" onclick="confirmarEliminar(' + arrayJson.id + ')"><i class="fa-solid fa-trash"></i></span>';
     html1 += '        </div>';
 
     html1 += '    </ons-list-item>';
@@ -123,15 +149,14 @@ function enlistarFacturasEditar(arrayJson, i) {
 
 
 // NUEVO
-function actualizarFacturas()
-{
+function actualizarFacturas() {
     var anio = $("#currentYear").val(); //tomar anio del filtro
     var search = $("#searchFacturas").val(); //tomar datos de barra de busqueda
     var factura = document.querySelector('input[name=facturaRadio]:checked').value;
 
     //console.log(myLink + "/php/facturas/busqueda.php?year="+anio+"&search="+search+"&factura="+factura,anio,search,factura);
 
-    servidor(myLink + "/php/facturas/busqueda.php?year="+anio+"&search="+search+"&factura="+factura, function (respuesta) {
+    servidor(myLink + "/php/facturas/busqueda.php?year=" + anio + "&search=" + search + "&factura=" + factura, function (respuesta) {
 
         var data = respuesta.responseText;
         //console.log(data);

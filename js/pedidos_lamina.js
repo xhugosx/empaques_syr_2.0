@@ -1,169 +1,191 @@
-var filtroLaminaP = false;
+var tipoLamina;
 
+//VARIABLES GLOBALES PARA VERIFICAR SI ESTA ACTIVO EL PAGE DE LA FUNCION
+var tabsCargadosPL;
+
+//CARGAR LA FUNCION DEL PAGE ACTUAL
 document.addEventListener('init', function (event) {
     var page = event.target;
 
-    if (page.id === 'pedidosLamina') {
-        //sesto para reiniciar el filtro a false
-        filtroLaminaP = false;
+    if (page.id === 'pedidosLaminaMain') {
+        menuPedidosLamina(); // PARA RELLENAR EL MENU DE LA PAGINA PRINCIPAL DE PEDIDOS DE LAMINA
+        tipoLamina = [1, 2, 3, 4, 5]; // RENICIAR EL FILTRO PARA MOSTRAR TODOS LOS PEDIDOS DE LAMINA
+        tabsCargadosPL = {
+            'calendarioLamina.html': false,
+            'ordenes.html': false
+        };
+    }
+    if (page.id === 'pedidosLamina') setMostrarPedidosLamina(); //EJECUTAR LA PRIMERA FUNCION PARA REELENAR LOS PEDIDOS DE LAMINA
+
+
+});
+
+// PARA EJECUTAR LAS FUCNIONES DE CADA SECCION Y NO TODOS LOS TAB
+document.addEventListener('postchange', function (event) {
+    const pageName = event.tabItem.getAttribute('page');
+
+    // Solo ejecuta la función si es la primera vez que se activa este tab
+    switch (pageName) {
+        case 'calendarioLamina.html':
+            if (!tabsCargadosPL['calendarioLamina.html']) {
+                cargarCalendarioLamina();
+                tabsCargadosPL['calendarioLamina.html'] = true;
+            }
+            break;
+
+        case 'ordenes.html':
+            if (!tabsCargadosPL['ordenes.html']) {
+                setBuscarAnio();
+                tabsCargadosPL['ordenes.html'] = true;
+            }
+            break;
     }
 });
 
-function asignarFiltroLamina(valor) {
-    filtroLaminaP = valor.checked;
-    mostrarTodoPedidosLamina()
-
-}
-function mostrarTodoPedidosLamina() {
-    $('#loadingPedidosLamina').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    $('#loadingPedidosLaminaPACK').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-
-    //console.log($('#searchPCM').val());
-    if ($('#searchPCM').val() === "" || $('#searchPCM').val() === undefined) setMostrarPedidosLamina();
-    else setMostrarBusquedaLamina($('#searchPCM').val(), 13);
-    if ($('#searchPACK').val() === "" || $('#searchPACK').val() === undefined) setMostrarPedidosLaminaPACK();
-    else setMostrarBusquedaLaminaPack($('#searchPACK').val(), 13);
-
-    setBuscarAnio();
-}
-
-//funciones para busquedas!
-function setMostrarBusquedaLamina(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    var tipo = filtroLaminaP ? 2 : 1;
-    if (tecla == 13 || e == 13) {
-        servidor(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=1&search=' + search + '&type=' + tipo, getMostrarPedidosLamina);
-        console.log(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=1&search=' + search + '&type=' + tipo);
-    }
-    else if (search == "") setMostrarPedidosLamina();
-}
-function setMostrarBusquedaLaminaPack(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    var tipo = filtroLaminaP ? 2 : 1;
-    if (tecla == 13 || e == 13) {
-        servidor(myLink+'/php/lista_pedidos_lamina/select.php?proveedor=2&search=' + search + '&type=' + tipo, getMostrarPedidosLaminaPACK);
-    }
-    else if (search == "") setMostrarPedidosLaminaPACK();
-}
 
 function setMostrarPedidosLaminaFecha(fecha, tipo) {
     tipo = tipo ? 1 : 2;
-    $('#loadingPedidosLaminaFecha').empty("");
-    $('#loadingPedidosLaminaFecha').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    servidor(myLink+"/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha + "&type=" + tipo, getMostrarPedidosLaminaFecha)
+    $('#loadingPedidosLaminaFecha').empty().append("<ons-progress-bar indeterminate></ons-progress-bar>");
+    oCarga("Buscando Pedidos...")
+    servidor(myLink + "/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha + "&type=" + tipo,
+        function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+
+            var cantidadTotal = arrayJson[arrayJson.length - 1];
+            $('#cantidadLaminas').text(new Intl.NumberFormat().format(cantidadTotal) + " Lám.");
+
+            listaInfinita('datospedidosLaminaFecha', 'loadingPedidosLaminaFecha', arrayJson, enlistarPedidosLamina);
+            cCarga();
+        }
+    )
 }
-function getMostrarPedidosLaminaFecha(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-    var cantidadTotal = arrayJson[arrayJson.length - 1];
-    $('#cantidadLaminas').text(new Intl.NumberFormat().format(cantidadTotal) + " Lám.");
 
-    listaInfinita('datospedidosLaminaFecha', 'loadingPedidosLaminaFecha', arrayJson, enlistarPedidosLamina);
-}
-
+//FUNCION PARA REFRESCAR EL CONTENIDO DE LOS PEDIDOS DE LAMINA
 function setMostrarPedidosLamina() {
-    var tipo = filtroLaminaP ? 2 : 1;
-    servidor(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo, getMostrarPedidosLamina);
-    console.log(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=1&type=" + tipo);
+    oCarga("Cargando Datos...")
+    $('#loadingPedidosLamina').html("<ons-progress-bar indeterminate></ons-progress-bar>"); //cargar barra de busqueda
+    var search = $("#searchPCM").val();
+    servidor(myLink + "/php/lista_pedidos_lamina/select.php?&search=" + search + "&type=" + tipoLamina + "&anio=" + anioGlobal,
+        function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            listaInfinita('datospedidosLamina', 'loadingPedidosLamina', arrayJson, enlistarPedidosLamina);
+            cCarga();
+        }
+    );
+
 }
-function getMostrarPedidosLamina(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datospedidosLamina', 'loadingPedidosLamina', arrayJson, enlistarPedidosLamina);
-}
-function setMostrarPedidosLaminaPACK() {
-    var tipo = filtroLaminaP ? 2 : 1;
-    servidor(myLink+"/php/lista_pedidos_lamina/select.php?proveedor=2&type=" + tipo, getMostrarPedidosLaminaPACK)
-}
-function getMostrarPedidosLaminaPACK(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    listaInfinita('datospedidosLaminaPACK', 'loadingPedidosLaminaPACK', arrayJson, enlistarPedidosLamina);
-}
+
+
+//FUNCION PARA AGREGAR PEDIDOS DE LAMINA
 function setAgregarPedidoLamina() {
+
+    //funcion para bloquear el boton al tratar de registrar un pedido
+    $('#btn_PL').prop('disabled', true);
+
     var form = $('#formPedidoLamina')[0];
     var formData = new FormData(form);
 
-    //console.log(form.children[0]);
-    var o_c = $('#O_CLP').val();
-    var proveedor = $('#proveedorPL').val();
+    var o_c = $('#O_CLP').val().toUpperCase();
+    //var proveedor = $('#proveedorPL').val();
     var ancho = $('#anchoPL').val();
     var largo = $('#largoPL').val();
     var p_o = $('#pzas_ordenadasPL').val();
     var resistencia = $('#resistenciaPL').val();
     var papel = $('#papelPL').val();
-    //if($('#checkCaja')[0].checked) var caja = $('#cajaLP').val(); //check para tomar el valor de caja
     var fecha = $('#fechaLP').val();
     var fecha_entrega = $('#fechaLPE').val();
-    //var observaciones = $('#observacionesPL').val();
 
-    if (datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
-        servidorPost(myLink+"/php/lista_pedidos_lamina/add.php", getAgregarPedidoLamina, formData);
-    else alerta("Existen datos vacios");
-
-}
-function getAgregarPedidoLamina(respuesta) {
-    if (respuesta.responseText == 1) {
-        alerta("Lamina agregada");
-        resetearPilaFunction(mostrarTodoPedidosLamina);
+    if (vacio(o_c, ancho, largo, p_o, resistencia, fecha, papel, fecha_entrega))
+    //if (datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
+    {
+        oCarga("Agregando Pedido...")
+        servidorPost(myLink + "/php/lista_pedidos_lamina/add.php",
+            function (respuesta) {
+                if (respuesta.responseText == 1) {
+                    alerta("Lamina agregada");
+                    resetearPilaFunction(setMostrarPedidosLamina);
+                }
+                else alerta("Hubo un error al insertar - codigo ya registrado!");
+                $('#btn_PL').prop('disabled', false);
+                cCarga();
+            }, formData);
     }
-    else alerta("Inserta otra Orden de Compra");
-    //console.log(respuesta.responseText);
+
+    else {
+        alerta("Existen datos vacios");
+        $('#btn_PL').prop('disabled', false);
+    }
+
 }
+
+//FUNCION PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 function setActualizarEstadoPL(estado, o_c, cantidad, entrada) {
-    //alert(myLink+'/php/lista_pedidos_lamina/updateEntrada.php?id_lp='+o_c+'&cantidad='+cantidad+'&entrada='+entrada+'&estado='+estado);
-    servidor(myLink+'/php/lista_pedidos_lamina/updateEntrada.php?id_lp=' + o_c + '&cantidad=' + cantidad + '&entrada=' + entrada + '&estado=' + estado, getActualizarEstadoPL)
-}
-function getActualizarEstadoPL(respuesta) {
-    var resultado = respuesta.responseText;
-    if (resultado == 11 || resultado == 1) {
-        alertToast("Estado Actualizado", 500)
-        mostrarTodoPedidosLamina();
-    }
+    oCarga("Actualizando Estado...");
+    servidor(myLink + '/php/lista_pedidos_lamina/updateEntrada.php?id_lp=' + o_c + '&cantidad=' + cantidad + '&entrada=' + entrada + '&estado=' + estado,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            cCarga();
+            if (resultado == 11 || resultado == 1) {
+                alertToast("Estado Actualizado", 1000)
+                setMostrarPedidosLamina();
+            }
+            else alerta("no se pudo actualizar" + resultado);
 
-    else alerta("no se pudo actualizar" + resultado);
+        }
+    )
 }
 
+//PARA BUSCAR EL PEDIDO QUE SE VA A EDITAR
 function setBuscarActualizarPL(search) {
-    var tipo = filtroLaminaP ? 2 : 1;
-    servidor(myLink+'/php/lista_pedidos_lamina/select.php?search=' + search + "&type=" + tipo, getBuscarActualizarPL);
+    oCarga("Buscando Pedido...");
+    servidor(myLink + '/php/lista_pedidos_lamina/select.php?search=' + search,
+        function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|');
+            arrayJson = JSON.parse(arrayJson[0]);
+            //variable para acceder desde otra funcion
+            localStorage.setItem('o_c', arrayJson.o_c);
+
+            $('#o_c').val(arrayJson.o_c);
+            //$('#proveedor').val(arrayJson.proveedor);
+            $('#ancho').val(arrayJson.ancho);
+            $('#largo').val(arrayJson.largo);
+            $('#pzas_ordenadas').val(arrayJson.pzas_ordenadas);
+            $('#resistencia').val(arrayJson.resistencia);
+            $('#papel').val(arrayJson.papel);
+            $('#fecha').val(arrayJson.fecha);
+            $('#fecha_entrega').val(arrayJson.fecha_entrega);
+            $('#observaciones').val(arrayJson.observaciones);
+            if (arrayJson.caja != "") {
+                $('#checkCaja')[0].checked = true;
+                asignarInputCaja($('#checkCaja')[0]);
+                $('#cajaLP').val(arrayJson.caja);
+            }
+
+            $('#btn_PL').prop('disabled', false);  //activar boton parapoder actualizar
+            cCarga();
+        }
+    );
 }
-function getBuscarActualizarPL(respuesta) {
-    //console.log(respuesta.responseText);
 
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|');
-    arrayJson = JSON.parse(arrayJson[0]);
-    //variable para acceder desde otra funcion
-    localStorage.setItem('o_c', arrayJson.o_c);
-
-    $('#o_c').val(arrayJson.o_c.slice(0, -2));
-    $('#proveedor').val(arrayJson.proveedor);
-    $('#ancho').val(arrayJson.ancho);
-    $('#largo').val(arrayJson.largo);
-    $('#pzas_ordenadas').val(arrayJson.pzas_ordenadas);
-    $('#resistencia').val(arrayJson.resistencia);
-    $('#papel').val(arrayJson.papel);
-    $('#fecha').val(arrayJson.fecha);
-    $('#fecha_entrega').val(arrayJson.fecha_entrega);
-    $('#observaciones').val(arrayJson.observaciones);
-    if (arrayJson.caja != "") {
-        $('#checkCaja')[0].checked = true;
-        asignarInputCaja($('#checkCaja')[0]);
-        $('#cajaLP').val(arrayJson.caja);
-    }
-
-}
+//PARA EDIATR LOS DATOS ACTUALES MODIFICADOS
 function setActualizarPL() {
+
+    //bloqueamos el boton para que no se ejecute dos veces, hasta que se ejecute termine de ejcutar servidor
+    $('#btn_PL').prop('disabled', true);
+
+
     var form = $('#formPedidoLamina')[0];
     var formData = new FormData(form);
 
+    //se obtiene la memoria del codigo anterio en caso de modificar el la o_c
     var o_cTemp = localStorage.getItem('o_c');
-    //console.log(form.children[0]);
 
     var o_c = $('#o_c').val();
-    var proveedor = $('#proveedor').val();
+    //var proveedor = $('#proveedor').val();
     var ancho = $('#ancho').val();
     var largo = $('#largo').val();
     var p_o = $('#pzas_ordenadas').val();
@@ -172,38 +194,46 @@ function setActualizarPL() {
     var fecha = $('#fecha').val();
     var fecha_entrega = $('#fecha_entrega').val();
 
-    if (datoVacio(o_c) && datoVacio(ancho) && datoVacio(largo) && datoVacio(p_o) && datoVacio(resistencia) && datoVacio(fecha) && datoVacio(proveedor) && datoVacio(papel) && datoVacio(fecha_entrega))
-        servidorPost(myLink+"/php/lista_pedidos_lamina/update.php?&o_c=" + o_cTemp, getActualizarPL, formData);
-    else alerta("Existen datos vacios");
-
-}
-function getActualizarPL(respueta) {
-    //console.log(respueta.responseText);
-    var resultado = respueta.responseText;
-    if (resultado == 1) {
-        // en caso de que si se actualice se limpia la memoria
-        localStorage.removeItem('o_c');
-        alerta("Pedido Actulizado");
-        resetearPilaFunction(mostrarTodoPedidosLamina);
+    if (vacio(o_c, ancho, largo, p_o, resistencia, fecha, papel, fecha_entrega)) {
+        oCarga("Editando Pedido...")
+        servidorPost(myLink + "/php/lista_pedidos_lamina/update.php?&o_c=" + o_cTemp,
+            function (respuesta) {
+                cCarga();
+                var resultado = respuesta.responseText;
+                if (resultado == 1) {
+                    // en caso de que si se actualice se limpia la memoria
+                    localStorage.removeItem('o_c');
+                    alerta("Pedido Actulizado");
+                    resetearPilaFunction(setMostrarPedidosLamina);
+                }
+                else alerta("No se pudo actualizar debido a un error");
+                $('#btn_PL').prop('disabled', false);
+            }, formData);
     }
-    else alerta("No se pudo actualizar debido a un error");
 
-
+    else {
+        alerta("Existen datos vacios");
+        $('#btn_PL').prop('disabled', false);
+    }
 
 }
+
+//ELIMINA EL PEDIDO Y REFRESCA LA INFORMACION
 function setEliminarPL(o_c) {
-    servidor(myLink+'/php/lista_pedidos_lamina/delete.php?o_c=' + o_c, getEliminarPL);
+    oCarga("Eliminando Pedido...")
+    servidor(myLink + '/php/lista_pedidos_lamina/delete.php?o_c=' + o_c,
+        function (respuesta) {
+            var resultado = respuesta.responseText;
+            if (resultado == 1) {
+                alerta("Pedido Eliminado");
+                setMostrarPedidosLamina();
+            }
+            else alerta("No se pudo Eliminar debido a un error");
+        }
+    );
 }
-function getEliminarPL(respuesta) {
-    var resultado = respuesta.responseText;
-    if (resultado == 1) {
-        alerta("Pedido Eliminado");
-        mostrarTodoPedidosLamina();
-    }
-    else alerta("No se pudo Eliminar debido a un error");
 
-}
-
+//FUNCION PARA AGREGAR UN INPUT SI ESTA RELACIONADA A CAJAS
 function asignarInputCaja(value) {
     const llenarInputCaja = $('#llenarInputCaja');
 
@@ -230,7 +260,7 @@ function asignarInputCaja(value) {
 }
 
 
-
+//FUNCION PARA LA LISTA INFINITA
 function enlistarPedidosLamina(arrayJson) {
     var span = "";
     if (arrayJson.producto != "") {
@@ -238,11 +268,11 @@ function enlistarPedidosLamina(arrayJson) {
         var productos = (arrayJson.producto).split(",");
         var clientes = (arrayJson.cliente).split(",");
         for (var i = 0; i < cajas.length; i++) {
-            span += '<span class="list-item__subtitle">' + cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b></span>';
+            span += cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b>';
         }
     }
 
-    const o_c = arrayJson.o_c.slice(0, -2);
+    const o_c = arrayJson.o_c;
 
     const html1 = `
   <ons-card style="padding:0px;" class="botonPrograma" onclick="crearMensajePL('${arrayJson.estado}','${arrayJson.entrada}','${arrayJson.pzas_ordenadas}','${arrayJson.o_c}','${arrayJson.observaciones}')">
@@ -258,8 +288,10 @@ function enlistarPedidosLamina(arrayJson) {
       </div>
       <div class="center romperTexto">
         <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
-        ${arrayJson.producto !== "" ? span : ""}
-        ${arrayJson.observaciones !== "" ? " <strong> Observaciones: </strong>&nbsp;" + arrayJson.observaciones : ""}
+        <span class="list-item__subtitle">
+            ${arrayJson.producto !== "" ? span : ""}
+            ${arrayJson.observaciones !== "" ? '<div style="font-size:14px"><strong> Observaciones: </strong>&nbsp;' + arrayJson.observaciones + '</div>' : ''}
+        </span>
       </div>
       <div class="right">
         <div class="centrar">
@@ -281,7 +313,7 @@ function estadoLamina(d) {
         2: "PARCIAL",
         3: "COMPLETO",
         4: "CANCELADA",
-        5: "PROGRAMADO"
+        5: "POR ENTREGAR"
     };
 
     return estadoMap[d] || "Desconocido";
@@ -293,18 +325,18 @@ function colorEstado(d) {
         2: "#CE84DA",
         3: "#00A514",
         4: "#000000",
-        5: "#E1D000"
+        5: "#E41926"
     };
 
     return colorMap[d] || "#FFFFFF"; // Color por defecto si el valor no está mapeado
 }
 
 function esEntero(numero) {
-    //
     numero = parseFloat(numero);
     return Number.isInteger(numero) ? numero + ".0" : numero;
 }
 
+//LLENAR MENU DEL FILTRO PEDIDOS LAMINA
 function menuPedidosLamina() {
     var html = `<ons-list>
                     <center>
@@ -333,7 +365,7 @@ function menuPedidosLamina() {
                     <ons-list>
                         <ons-list-item tappable>
                             <label class="left">
-                                <ons-checkbox input-id="check-1" value="0" name="estado"></ons-checkbox>
+                                <ons-checkbox input-id="check-1" value="1" name="estadoLamina"></ons-checkbox>
                             </label>
                             <label for="check-1" class="center">
                                 🟠 BACKORDER
@@ -341,7 +373,7 @@ function menuPedidosLamina() {
                         </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">
-                                <ons-checkbox input-id="check-2" value="1" name="estado"></ons-checkbox>
+                                <ons-checkbox input-id="check-2" value="2" name="estadoLamina"></ons-checkbox>
                             </label>
                             <label for="check-2" class="center">
                                 🟣 PARCIAL
@@ -349,7 +381,7 @@ function menuPedidosLamina() {
                         </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">
-                                <ons-checkbox input-id="check-3" value="2" name="estado"></ons-checkbox>
+                                <ons-checkbox input-id="check-3" value="3" name="estadoLamina"></ons-checkbox>
                             </label>
                             <label for="check-3" class="center">
                                 🟢 COMPLETO
@@ -357,7 +389,7 @@ function menuPedidosLamina() {
                         </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">
-                                <ons-checkbox input-id="check-4" value="3" name="estado"></ons-checkbox>
+                                <ons-checkbox input-id="check-4" value="4" name="estadoLamina"></ons-checkbox>
                             </label>
                             <label for="check-4" class="center">
                                 ⚫ CANCELADO
@@ -365,21 +397,21 @@ function menuPedidosLamina() {
                         </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">
-                                <ons-checkbox input-id="check-5" value="4" name="estado"></ons-checkbox>
+                                <ons-checkbox input-id="check-5" value="5" name="estadoLamina"></ons-checkbox>
                             </label>
                             <label for="check-5" class="center">
-                                🔴 PROXIMO A ENTREGAR
+                                🔴 POR ENTREGAR
                             </label>
                         </ons-list-item>
                     </ons-list>
                     <ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
+                        <ons-button id="botonPrograma" onclick="aplicarFiltroLamina()" modifier="large">
                             Aplicar
                         </ons-button>
                     </ons-list-item>
                     <br><br><ons-list-item modifier="nodivider">
                         <ons-button id="botonPrograma" class="btnResetear" modifier="large"
-                            onclick="resetearFiltroPedidos();">
+                            onclick="resetearFiltroPedidosLamina();">
                             <ons-icon icon="fa-trash"></ons-icon>
                             Resetear
                         </ons-button>
@@ -390,4 +422,28 @@ function menuPedidosLamina() {
             `;
     $("#contenidoMenu").html(html);
 
+}
+
+//APLICAR FILTRO DEL MENU
+function aplicarFiltroLamina() {
+    var ids = document.querySelectorAll("input[name='estadoLamina']:checked");
+    var a = [];
+    for (var i = 0; i < ids.length; i++) {
+        a += ids[i].value + ",";
+    }
+    tipoLamina = a.slice(0, -1);// para eliminar la ultima coma
+    setMostrarPedidosLamina();
+    menu.close();
+}
+
+//RESETEAR FILTRO DEL MENU
+function resetearFiltroPedidosLamina() {
+
+    $('input[type=checkbox]').prop('checked', false); //REINICIAR EL CHECKBOX EN FALSE
+    anioGlobal = fechaActual.getFullYear(); // ASIGNAR A LA MEMORIA GLOBAL EL AÑO ACTUAL
+    $('#currentYear').val(anioGlobal); // ASIGNAR AL INPUT EL AÑO ACTUAL
+    tipoLamina = [1, 2, 3, 4, 5]; //REINICIAR VALORES PARA QUE BUSQUE EN TODOS
+    setMostrarPedidosLamina(); //ACTUALIZAR DATOS RESETEADOS DEL FILTRO
+
+    menu.close(); // CERRAR EL MENU LATERAL
 }

@@ -1,4 +1,4 @@
-#contenedorCalendario {
+/*#contenedorCalendario {
     max-width: 85%;
     margin: auto;
     background-color: #fff;
@@ -50,23 +50,15 @@
 
 .codigos {
     font-size: 10px;
-    /* Tamaño de la letra para los códigos */
     max-height: 60px;
-    /* Altura máxima para los códigos */
     overflow-y: auto;
-    /* Barra de desplazamiento si el contenido es grande */
     margin-top: 5px;
-    /* Espaciado superior */
     display: flex;
     flex-wrap: wrap;
-    /* Para que los códigos se envuelvan en dos filas */
     justify-content: center;
-    /* Para centrar los códigos en el eje principal */
 }
-
 .codigo {
     margin: 3px;
-    /* Espaciado entre códigos */
 }
 
 .selected {
@@ -85,4 +77,90 @@
 .dia-hoy{
     background-color: #78b7e4;
     color: white;
+}*/
+#contenedorCalendario {
+    max-width: 50vh;
+    margin: 20px 5px 20px 5px;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    
+}
+
+#mes {
+    background-color: #4285f4;
+    color: #fff;
+    font-size: 24px;
+    padding: 10px;
+    border-bottom: 2px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mes span {
+    cursor: pointer;
+}
+
+#dias, #dias1 {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 5px;
+}
+
+.dia {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.numero-dia {
+    position: static;
+}
+
+.dia.con-pedido {
+    border: 2px solid black;
+}
+
+.dia.selected {
+    background-color: #e47878 !important;
+    color: white;
+}
+
+.dia-hoy {
+    background-color: #78b7e4 !important;
+    color: white;
+}
+
+.calendario-day-header {
+    text-align: center;
+    padding: 7px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.empty {
+    visibility: hidden;
+}
+
+/* Eliminar el recuadro de códigos */
+.codigos {
+    display: none !important;
+}
+
+
+.contiene{
+    border: 1px solid black;
 }

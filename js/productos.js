@@ -3,57 +3,78 @@
 //productos
 //ver productos
 function setProductos() {
-    $('#loadingProductos').empty();
-    $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
+
+    $('#loadingProductos').html("<ons-progress-bar indeterminate></ons-progress-bar>");
+    oCarga("Cargando Datos...");
     var busqueda = $('#busquedaProductos1').val();
-    if (busqueda == "" || busqueda == undefined) servidor(myLink+'/php/productos/select.php?type=2', getProductos);
-    else setProductosBarraBusqueda(busqueda, 13);
-    //servidor(myLink+'/php/productos/select.php?type=2',getProductos);
-}
-function getProductos(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    //alert("entro");
+    servidor(myLink + '/php/productos/select.php?search=' + busqueda,
+        function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+            //alert("entro");
 
-    listaInfinita('datosProductos', 'loadingProductos', arrayJson, enlistarProductos);
-
+            listaInfinita('datosProductos', 'loadingProductos', arrayJson, enlistarProductos);
+            cCarga();
+        }
+    );
 }
 //fin de ver productos
+
 
 //eliminar productos
 function setEliminarProducto(producto, i) {
     agregarClaseProducto(i);
-
+    oCarga("Eliminando Producto...");
     setTimeout(function () {
-        servidor(myLink+'/php/productos/delete.php?codigo=' + producto, getEliminarProducto)
+        servidor(myLink + '/php/productos/delete.php?codigo=' + producto,
+            function (respuesta) {
+                cCarga();
+                if (respuesta.responseText == "1") {
+                    alerta("Registro eliminado");
+                    setProductos();
+                }
+                else alerta("No se pudo eliminar");
+            }
+        )
     }, 1500);
 
 
 }
-function getEliminarProducto(respuesta) {
-    if (respuesta.responseText == "1") {
-        alerta("Registro eliminado");
-        setProductos();
-    }
-    else alerta("No se pudo eliminar");
-    //alert(respuesta.responseText);
-}
 //fin de eliminar productos
+
 
 //agregar productos
 function setAgregarProducto() {
 
-    if (datoVacio($('#codigoProducto1').val()) && datoVacio($('#nombreProducto').val()) && datoVacio($('#precioProducto').val()) && datoVacio($('input[type=file]').val())) {
-        var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
-        var codigo = filename.split(".");
-        codigo = codigo[0].replace("-", "/");
+    let codigo = $('#codigoProducto1').val();
+    let nombre = $('#nombreProducto').val();
+    let precio = $('#precioProducto').val();
+    let archivo = $('input[type=file]').val();
 
-        if (codigo == $('#codigoProducto1').val()) {
+    if (vacio(codigo, nombre, precio, archivo)) {
+        let filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+        let codigoF = filename.split(".");
+        codigoF = codigoF[0].replace("-", "/");
+
+        if (codigoF === codigo) {
             var form = $('#formProducto')[0];
-            var formData = new FormData(form);
+            var formData = new FormData(form); 0
 
             $("#btn-producto").prop("disabled", true);
-            servidorPost(myLink+'/php/productos/add.php', getAgregarProducto, formData);
+            oCarga("Agregando Producto...");
+            servidorPost(myLink + '/php/productos/add.php',
+                function (respuesta) {
+                    cCarga();
+                    if (respuesta.responseText == "1") {
+                        alerta("Registro insertado");
+                        resetearPilaFunction(setProductos);
+                    }
+                    else alerta('Ya existe un producto con ese codigo!');
+
+                    //habilitar el boton independientemente del resultado del servidor
+                    $("#btn-producto").prop("disabled", false);
+                }
+                , formData);
             //alerta("el archivo si coiciden");
         }
         else alerta("El Archivo no coicide con el codigo del producto");
@@ -61,93 +82,65 @@ function setAgregarProducto() {
     }
     else alerta("Espacios en blanco");
 }
-function getAgregarProducto(respuesta) {
-    //respuesta del servidor
-    if (respuesta.responseText == "1") {
-        alerta("Registro insertado");
-        resetearPilaFunction(setProductos);
-    }
-    else alerta('Ya existe un producto con ese codigo!');
-
-    //habilitar el boton independientemente del resultado del servidor
-    $("#btn-producto").prop("disabled", false);
-}
 
 //fin de agregar productos
 
 //actualizar producto
 function setActualizarProducto() {
-    if (datoVacio($('#codigoProductoActualizar').val()) && datoVacio($('#nombreProductoActualizar').val())) {
+    let codigo = $('#codigoProductoActualizar').val();
+    let producto = $('#nombreProductoActualizar').val();
+    if (vacio(codigo, producto)) {
+        $("#btnActualizarProducto").prop('disabled', true); // bloquear boton
+        oCarga("Agregando Producto...");
         if ($('input[type=file]').val()) {
             var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
-            var codigo = filename.split(".");
-            codigo = codigo[0].replace("-", "/");
-            if (codigo != $('#codigoProductoActualizar').val()) {
+            var codigoF = filename.split(".");
+            codigoF = codigoF[0].replace("-", "/");
+            if (codigoF != codigo) {
                 alerta("El Archivo no coicide con el codigo del producto");
+                $("#btnActualizarProducto").prop('disabled', false);
+                cCarga();
                 return 0;
             }
         }
         $("#codigoProductoActualizar").prop('disabled', false);
         var form = $('#formProductoActualizar')[0];
         var formData = new FormData(form);
-        servidorPost(myLink+'/php/productos/update.php', getActualizarProducto, formData);
+        servidorPost(myLink + '/php/productos/update.php',
+            function (respuesta) {
+                cCarga();
+                if (respuesta.responseText == "1") {
+                    alerta("Registro actualizado");
+                    resetearPilaFunction(setProductos);
+                }
+                else alerta("No se pudo actualizar");
+                $("#btnActualizarProducto").prop('disabled', false);
+
+            }, formData);
     }
     else alerta("Espacios en blanco");
 
 }
-function getActualizarProducto(respuesta) {
-    //alert(respuesta.responseText);
-    if (respuesta.responseText == "1") {
-        alerta("Registro actualizado");
-        resetearPilaFunction(setProductos);
-    }
-    else alerta("No se pudo actualizar");
 
-}
 function setBuscarProductoActualizar(codigo) {
-    servidor(myLink+'/php/productos/select.php?type=3&search=' + codigo, getBuscarProductoActualizar);
-}
-function getBuscarProductoActualizar(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+    oCarga("Buscando Producto...");
+    servidor(myLink + '/php/productos/select.php?search=' + codigo,
+        function (respuesta) {
+            var resultado = respuesta.responseText;//respuesta del servidor
+            var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
 
-
-    arrayJson[0] = JSON.parse(arrayJson[0]);
-    var producto = (arrayJson[0].codigo).split("/"); // funcion para dividir codigo y poner nombre del archivo...
-    $('#codigoProductoActualizar').val(arrayJson[0].codigo);
-    $('#nombreProductoActualizar').val(arrayJson[0].producto);
-    $('#precioProductoActualizar').val(arrayJson[0].precio);
-    $('#pdfNombreProductoActualizar').text(arrayJson[0].file == 1 ? producto[0] + "-" + producto[1] + ".pdf" : "No tiene Plano");
-    //alert(arrayJson[0].file);
-
+            arrayJson[0] = JSON.parse(arrayJson[0]);
+            var producto = (arrayJson[0].codigo).split("/"); // funcion para dividir codigo y poner nombre del archivo...
+            $('#codigoProductoActualizar').val(arrayJson[0].codigo);
+            $('#nombreProductoActualizar').val(arrayJson[0].producto);
+            $('#precioProductoActualizar').val(arrayJson[0].precio);
+            $('#pdfNombreProductoActualizar').text(arrayJson[0].file == 1 ? producto[0] + "-" + producto[1] + ".pdf" : "No tiene Plano");
+            $('#btnActualizarProducto').prop('disabled', false);
+            cCarga();
+        }
+    );
 }
 //fin de actualizar cliente
-
-
-//fin de productos
-
-
-//busqueda por barra de busqueda
-
-function setProductosBarraBusqueda(busqueda, e) {
-    //asignar el progress bar 
-
-    if (busqueda == "") setProductos();
-
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13 || e == 13) {
-        $('#loadingProductos').append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor(myLink+'/php/productos/select.php?type=3&search=' + busqueda, getProductosBarraBusqueda);
-    }
-
-}
-function getProductosBarraBusqueda(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-
-    listaInfinita('datosProductos', 'loadingProductos', arrayJson, enlistarProductos);
-}
-
 
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson, i) {
@@ -162,7 +155,7 @@ function enlistarProductos(arrayJson, i) {
     html1 += '    <span class="list-item__title romperTexto"><b>' + arrayJson.codigo + '</b> </span>';
     html1 += '    <span class="list-item__subtitle" style="font-size:14px">' + arrayJson.producto + '</span>';
     html1 += '  </div>"';
-    html1 += '  <div class="right">' + ExistePlano(arrayJson.file) + '$' + arrayJson.precio + '</div>';
+    html1 += '  <div class="right">' + ExistePlano(arrayJson.file) + '$' + separator(arrayJson.precio) + '</div>';
     html1 += '</ons-list-item>';
     html1 += '</ons-card>';
 
@@ -218,22 +211,40 @@ function ExistePlano(file) {
 
 function setDescargarProductosExcel() {
     let botones = ["Cancelar", "Aceptar"];
-    //let busqueda = $("#busquedaProductos1").val() == undefined || $("#busquedaProductos1").val() == "" ? "" : $("#busquedaProductos1").val();
     let mensaje = "Escribe el codigo del cliente que deseas descargar";
-    //console.log(mensaje,botones,$("#busquedaProductos1").val());
-    //alertComfirm(mensaje, botones, getDescargarProductosExcel, busqueda); 
+    alertComfirmDato(mensaje, "text", botones,
+        function (index) {
+            if (index == "") alerta("Espacios Vacios!");
+            else if (index !== null) {
+                if (index.length < 3) alerta("Codigo escrito incorrectamente (Asegurate de que sean mas de 3 digitos)");
+                else {
+                    oCarga("Creando Tabla de productos de (" + index + ")...")
+                    servidor(myLink + '/php/productos/selectSheets.php?&search=' + index,
+                        function (respuesta) {
+                            let responseArray = JSON.parse(respuesta.response);
 
-    alertComfirmDato(mensaje, "text", botones, getDescargarProductosExcel, '');
-}
-function getDescargarProductosExcel(dato) {
+                            if (responseArray.mensaje !== undefined) {
+                                // La clave 'mensaje' está presente en la respuesta JSON
+                                alerta(responseArray.mensaje + " con el codigo escrito!");
+                            } else {
+                                //OBTENER EL NOMBRE DEL CLIENTE
+                                let cliente = responseArray[0].cliente;
+                                let codigo = responseArray[0].codigo.substring(0, 3);
 
-    if (dato === null) alerta("Espacio vacio! / Cancelado");
-    else {
-        //alert(dato.length);
-        if (dato.length < 3) alerta("Codigo escrito incorrectamente (Asegurate de que sean mas de 3 digitos)");
-        else servidor(myLink+'/php/productos/selectSheets.php?&search=' + dato, getProductosExcel);
+                                // ELIMINAR TODOS LAS VARIABLES DEL JSON LLAMADO CLIENTE
+                                for (var i = 0; i < responseArray.length; i++) {
+                                    delete responseArray[i].cliente;
+                                }
 
-    }
+                                exportarExcel(codigo, cliente, responseArray);
+                                cCarga();
+                            }
+                        }
+                    );
+                }
+
+            }
+        });
 }
 
 // Función para exportar datos a un archivo de Excel
@@ -242,7 +253,7 @@ function exportarExcel(codigo, cliente, datos) {
     if (cliente.length > 31) {
         cliente = cliente.substring(0, 31);
     }
-    
+
     // Convertir los datos a una hoja de cálculo de Excel
     const hojaDeCalculo = XLSX.utils.json_to_sheet(datos);
 
@@ -268,34 +279,3 @@ function exportarExcel(codigo, cliente, datos) {
 }
 
 
-function getProductosExcel(respuesta) {
-
-    let responseArray = JSON.parse(respuesta.response);
-
-    if (responseArray.mensaje !== undefined) {
-        // La clave 'mensaje' está presente en la respuesta JSON
-        alerta(responseArray.mensaje + " con el codigo escrito!");
-    } else {
-        //OBTENER EL NOMBRE DEL CLIENTE
-        let cliente = responseArray[0].cliente;
-        let codigo = responseArray[0].codigo.substring(0,3);
-
-        // ELIMINAR TODOS LAS VARIABLES DEL JSON LLAMADO CLIENTE
-        for (var i = 0; i < responseArray.length; i++) {
-            delete responseArray[i].cliente;
-        }
-
-        exportarExcel(codigo, cliente, responseArray);
-    }
-
-}
-
-//OBTENER FECHA PARA ASIGNARSELO AL NOMBRE DEL ARCHIVO DESCARGADO
-function obtenerFechaActual() {
-    const fecha = new Date();
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // El mes es de 0 a 11, por eso se suma 1
-    const año = fecha.getFullYear();
-
-    return `${dia}-${mes}-${año}`;
-}

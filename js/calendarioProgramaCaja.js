@@ -1,7 +1,7 @@
 document.addEventListener('init', function (event) {
     var page = event.target;
 
-    if (page.id === 'calendarioPedidos') {
+    if (page.id === 'historialProgramaCajas') {
         const mesElemento = document.getElementById('nombreMes');
         const diasElemento = document.getElementById('dias');
 
@@ -91,11 +91,11 @@ document.addEventListener('init', function (event) {
                     diaElemento.classList.add('selected');
                     diaSeleccionado = diaElemento;
 
-                    let link = myLink + "/php/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&fecha=" + hoy;
+                    let link = myLink + "/php/programa/historial/caja.php?fecha=" + hoy;
                     servidor(link, function (respuesta) {
                         var resultado = respuesta.responseText;
                         var arrayJson = resultado.split('|');
-                        listaInfinita('datosPedidosCalendario', 'datosPedidosLoadingCalendario', arrayJson, enlistarPedidos);
+                        listaInfinita('datoshistorialProgramaCajas', '', arrayJson, enlistarProgramaHistorialCaja);
                     });
 
                 });
@@ -124,7 +124,7 @@ document.addEventListener('init', function (event) {
 
         // Función para obtener productos con fecha de entrega correspondiente al día actual
         function obtenerProductosDelDia(fecha, callback) {
-            let link = myLink + "/php/lista_pedidos/selectAll.php?filtro=1&estado=0,1,2,3,&anio=" + fecha.getFullYear();
+            let link = myLink + "/php/programa/historial/caja.php?anio=" + fecha.getFullYear();
             servidor(link, function (respuesta) {
                 var resultado = respuesta.response;
                 let subcadenas = resultado.split('|');
@@ -138,13 +138,15 @@ document.addEventListener('init', function (event) {
                 const diaActual = fecha.getDate();
 
                 const productos = objetosJSON.filter(producto => {
-                    const fechaEntregaProducto = new Date(sumarDiasAFecha(producto.fecha_entrega, 2));
-                    const añoProducto = fechaEntregaProducto.getFullYear();
-                    const mesProducto = fechaEntregaProducto.getMonth();
-                    const diaProducto = fechaEntregaProducto.getDate();
-                    return añoProducto === añoActual && mesProducto === mesActual && diaProducto === diaActual;
+                    return producto.programa.some(programa => {
+                        const fechaEntregaPrograma = new Date(sumarDiasAFecha(programa.fecha, 2));
+                        const añoPrograma = fechaEntregaPrograma.getFullYear();
+                        const mesPrograma = fechaEntregaPrograma.getMonth();
+                        const diaPrograma = fechaEntregaPrograma.getDate();
+                        return añoPrograma === añoActual && mesPrograma === mesActual && diaPrograma === diaActual;
+                    });
                 });
-                console.log(productos);
+                //console.log(productos);
                 callback(productos);
             });
         }

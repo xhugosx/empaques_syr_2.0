@@ -1,13 +1,27 @@
-/*/FUNCION PARA CREAR UNA PROMESA Y DEVOLVER ALGO
-function promesa()
-{
-  
-}*/
 
+// INICIALIZAMOS LA PANTALLA DE CARGA, SE MANDARA A LLAMAR CUANDO SE NECESITE
+function oCarga(texto) {
+  var modal = $("#pantallaCarga");
+  $("#textoModal").text(texto);
+  modal.show();
+}
+function cCarga() {
+  var modal = $("#pantallaCarga");
+  modal.hide();
+}
 
+let timerBuscarCliente;
 
+function debounceBuscare(miFuncion) {
+  clearTimeout(timerBuscarCliente);
+  timerBuscarCliente = setTimeout(() => {
+
+    miFuncion(); // Esta función SÍ llama a servidor()
+
+  }, 400);
+}
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
-var myLink = "https://empaquessr.com/sistema/cinthya";
+var myLink = "https://empaquessr.com/sistema/empaquessr";
 function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   ons.notification.prompt({
     title: '',
@@ -95,38 +109,55 @@ function nextPageFunctionData(miPage, miFuncion, dato) {
   });
 }
 //FUMCION PRA MOSTRAR UN MENSAJE
-function alerta(mensaje, tittle) {
+function alerta(mensaje, titulo) {
+  let myTitulo = titulo ? "<b>" + titulo + "</b>" : "";
   ons.notification.alert({
-    title: ' ',
+    title: myTitulo,
     message: mensaje,
     buttonLabels: 'Aceptar'
   });
 }
+var conexionActiva = null;
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link, miFuncion) {
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-
-        miFuncion(this);
-
+      if (this.readyState === 4) {
+        if (this.status === 200) {
+          miFuncion(this);
+        } else {
+          alerta(`Error al conectar con el servidor (Código: ${this.status})`);
+          cCarga();
+        }
       }
-      else if (this.status == 500) {
-        alerta("Error en el servidor")
-      }
-
     };
 
-    xhttp.open("GET", link, true);
-    xhttp.send();
-  }
-  else {
+    xhttp.onerror = function () {
+      // Esto sí captura errores como ERR_CONNECTION_CLOSED
+      alerta("Error de red: no se pudo conectar con el servidor.");
+    };
+
+    xhttp.ontimeout = function () {
+      alerta("Tiempo de espera agotado al conectar con el servidor.");
+    };
+
+    try {
+      xhttp.open("GET", link, true);
+      xhttp.timeout = 10000; // 10 segundos (opcional)
+      xhttp.send();
+    } catch (error) {
+      alerta("Error inesperado al intentar conectar.");
+    }
+
+  } else {
     alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');
   }
-
+  
 }
+
+
 function servidorPost(link, miFuncion, data) {
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
@@ -138,7 +169,7 @@ function servidorPost(link, miFuncion, data) {
 
       }
       else if (this.status == 500) {
-        alerta("Error en el servidor")
+        alerta("Ejecucion fallida!");
       }
 
     };
@@ -163,16 +194,15 @@ function crearObjetMensaje(codigo, contador) {
     title: 'OPCIONES',
     cancelable: true,
     buttons: [
-      'Ver Plano',
-      'Modificar',
+      '<i class="fas fa-drafting-compass"></i>&nbsp;Ver Plano',
+      '<i class="fas fa-pen-to-square"></i>&nbsp;Editar',
       {
-        label: 'Eliminar',
+        label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
         modifier: 'destructive'
       }
     ]
   }).then(function (index) {
     if (index == 0) {
-      let navegador = navigator.userAgent;
       var timestamp = new Date().getTime();
       let codigos = codigo.split("/");
       let codigo1 = codigos[0];
@@ -190,42 +220,42 @@ function crearObjetMensaje(codigo, contador) {
     else if (index == 2) alertaConfirm('Estas seguro de eliminar este producto? ' + codigo, setEliminarProducto, codigo, contador);
   });
 }
-function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
+function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha, producto, cliente, fechaE) {
+  //console.log(estado);
   observaciones = observaciones == "" ? "Sin observaciones" : observaciones;
   let titulo = estadoPedidos(estado);
-  let botonEstado = estado == 0 || estado == 1 || estado == 6 ? "Cancelar" : "Estado";
-  //if (estado == 1) titulo = "🟠 En proceso"; else if(estado == 2) titulo = "🟢 Producto terminado"; else titulo = " ⚪Pendiente"; 
+  let botonEstado = estado == 0 || estado == 1 || estado == 6 ? '<i class="fas fa-times"></i>&nbsp;Cancelar' : '<i class="fas fa-file-invoice-dollar"></i>&nbsp;Agregar Factura';
+  let botonModificar = estado == 5 || estado == 4 ? ": Pedido o facturas" : "";
   ons.openActionSheet({
-    title: titulo + " " + id,
+    title: titulo + " - " + codigo + " " + producto,
     cancelable: true,
     buttons: [
-      '<b>Programar<b/>',
+      '<i class="fas fa-calendar-check"></i>&nbsp;<b>Programar<b/>',
       botonEstado,
-      'Ver Plano',
-      'Detalles',
-      'Modificar',
+      '<i class="fas fa-drafting-compass"></i>&nbsp;Ver Plano',
+      '<i class="fas fa-info-circle"></i>&nbsp;Detalles',
+      '<i class="fas fa-pen-to-square"></i>&nbsp;Editar ' + botonModificar,
       {
-        label: 'Eliminar',
+        label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
         modifier: 'destructive'
       }
     ]
   }).then(function (index) {
     if (index == 0) {
-      if (estado == 0) Abrirdialogo('my-dialog-programa', 'dialogPrograma.html', id);
+      if (estado == 0) Abrirdialogo('my-dialog-programa', 'dialogPrograma.html', id, function () { $("#botonProgramaSinproceso").prop("disabled", false); });
       else if (estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?", setLlenarProcesoPrograma, [id, 1]);
       else if (estado == 6) alerta("Pedido Cancelado");
       else alerta("Pedido ya se encuentra en Terminado");
     }
-    else if (index == 1 && botonEstado == "Cancelar") {
+    else if (index == 1 && (estado == 0 || estado == 1 || estado == 6)) {
       if (estado == 1) alerta("Primero elimina el pedido del programa");
       else if (estado == 6) alerta("Ya se encuentra cancelado");
       else alertaConfirm('Estas seguro de Cancelar el pedido? ' + id, setActualizarEstadoPedido, [id, 6]); //aqui se cancela el pedido
     }
-    else if (index == 1 && botonEstado == "Estado") {
+    else if (index == 1 && !(estado == 0 || estado == 1 || estado == 6)) {
       crearObjetMensajePedidoEstado(id); // aqui se cambiara el estado
     }
     else if (index == 2) {
-      let navegador = navigator.userAgent;
       var timestamp = new Date().getTime();
       let codigos = codigo.split("/");
       let codigo1 = codigos[0];
@@ -240,47 +270,54 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha) {
       //window.open(myLink+'/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
 
     }
-    else if (index == 3) alerta("<b>Orden de Compra: </b><br>" + oc + "<br><br><b>Fecha del pedido:</b><br>" + fecha + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br>");
+    else if (index == 3) alerta("<b>Producto: </b><br>" + codigo + " " + producto + "<br><br><b>Cliente: </b><br>" + cliente + "<br><br><b>Fecha de Entrega: </b><br>" + fechaE + "<br><br><b>Orden de Compra: </b><br>" + oc + "<br><br><b>Fecha del pedido:</b><br>" + fecha + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br>");
     else if (index == 4) {
       if (estado != 4 && estado != 5) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
-      else alertComfirm("Qué deseas Modificar?", ["Pedido", "Facturas", "<b style=\"color:red\">Cancelar</b>"], modificarPedidoFaturas, id);
+      else {
+        mensajeArriba("Qué deseas Modificar?", ['<i class="fas fa-box"></i>&nbsp;Pedido', '<i class="fas fa-file-invoice"></i>&nbsp;Facturas', { label: '<i class="fas fa-times" style="color:red"></i>&nbsp;Cancelar', modifier: "destructive" }],
+          function (index) {
+            if (index == 0) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
+            else if (index == 1) nextPageFunctionData('facturasModificar.html', setModificarBuscarFacturas, id);
+          }
+        );
+      }
     }
     else if (index == 5) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedido, id);
 
   });
 }
-function modificarPedidoFaturas(index, id) {
-  //alerta(index + " " + id);
-  if (index == 0) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
-  else if (index == 1) nextPageFunctionData('facturasModificar.html', setModificarBuscarFacturas, id);
 
-}
+
+
+
 
 function crearObjetMensajePedidoEstado(id) {
   ons.openActionSheet({
-    title: "<b>Estado</b>",
+    title: "<b>Agregar Factura</b>",
     cancelable: true,
     buttons: [
       estadoPedidos(4),
       estadoPedidos(5),
+      {
+        label: 'Cancelar',
+        modifier: 'destructive'
+      }
     ]
   }).then(function (index) {
 
     if (index == 0) {
       idPedido = id;
       estadoPedido = 4;
-    } //setActualizarEstadoPedido([id,4]);
+    }
     else if (index == 1) {
       idPedido = id;
       estadoPedido = 5;
-    }//setActualizarEstadoPedido([id,5]);
+    }
 
     if (index == 0 || index == 1) {
 
       Abrirdialogo('my-dialogAgregarFactura', 'dialogAgregarFactura.html', id, fechaFactura);
-      setTimeout(() => {
 
-      }, 500);
     }
 
   });
@@ -290,32 +327,32 @@ function fechaFactura() {
 }
 var estadoPedido;
 
-function crearObjetMensajePedidoInserto(id, codigo, estado, notas) {
-  let titulo = estadoPedidos(estado);
+function crearObjetMensajePedidoInserto(id, estado) {
+  let titulo = estadoPedidos(estado) + " - " + id;
   ons.openActionSheet({
     title: titulo,
     cancelable: true,
     buttons: [
-      '<b>Programar<b/>',
-      'Notas',
-      'Modificar',
+      '<i class="fas fa-calendar-check"></i>&nbsp;<b>Programar<b/>',
+      '<i class="fas fa-pen-to-square"></i>&nbsp;Modificar',
       {
-        label: 'Eliminar',
+        label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
         modifier: 'destructive'
       }
     ]
   }).then(function (index) {
     if (index == 0) {
-      if (estado == 0) Abrirdialogo('my-dialog-programa1', 'dialogPrograma1.html', id);
+      if (estado == 0) Abrirdialogo('my-dialog-programa1', 'dialogPrograma1.html', id, function () { $("#botonProgramaSinproceso1").prop("disabled", false); });
       else if (estado == 1) alertaConfirPrograma("Ya fue programado deseas actualizarlo?", setLlenarProcesoPrograma, [id, 0]);
       else alerta("Pedido ya se encuentra en inventario");
     }
-    else if (index == 1) alerta("<b>Notas: </b><br><br>" + notas);
-    else if (index == 2) nextPageFunctionData('pedidosInsertoModificar.html', setModificarBuscarPedidoInserto, id); //alert("modificara "+codigo);
-    else if (index == 3) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedidoInserto, id);
+    //else if (index == 1) alerta("<b>Notas: </b><br><br>" + notas);
+    else if (index == 1) nextPageFunctionData('pedidosInsertoModificar.html', setModificarBuscarPedidoInserto, id); //alert("modificara "+codigo);
+    else if (index == 2) alertaConfirm('Estas seguro de eliminar este pedido? ' + id, setEliminarPedidoInserto, id);
 
   });
 }
+
 function estadoPedidos(estado) {
   const estados = {
     0: "⚪ Pendiente",
@@ -323,44 +360,53 @@ function estadoPedidos(estado) {
     2: "🟢 Producto terminado",
     3: "🟩 Producto terminado (Inventario)",
     6: "⚫ Cancelado",
-    4: "🔵 Entregado",
-    5: "🟣 E. Parcial"
+    4: "🔵 Entregado Completo",
+    5: "🟣 Entregado Parcial"
   };
 
   return estados[estado];
 }
 
-function crearObjetMensajeCliente(id, i) {
-  ons.openActionSheet({
-    title: 'OPCIONES / ' + agregarCeros(id),
-    cancelable: true,
-    buttons: [
-      'Copiar RFC',
-      'Copiar Contraseña',
-      'Editar',
-      {
-        label: 'Eliminar',
-        modifier: 'destructive'
-      }
-    ]
-  }).then(function (index) {
-    if (index == 0) { copyToClipboard('#rfc' + i); alertToast("Copiado al portapapeles!", 2000); }
-    else if (index == 1) { copyToClipboard('#contrasena' + i); alertToast("Copiado al portapapeles!", 2000); }
-    else if (index == 2) nextPageFunctionData('editarClientes.html', setBuscarEditarCliente, id);
-    else if (index == 3) alertaConfirm('Estas seguro de eliminar este cliente ' + agregarCeros(id) + '?<br><font color="red">(Recuerda que esto eliminara todos lo enlazado Archivos, Pedidos, Inventario)</font>', setEliminarCliente, id, i);
-  });
-}
 
 //funcion para copiar rfc o contraseña del usuario
 function copyToClipboard(elemento) {
-  var $temp = $("<input>")
-  $("body").append($temp);
-  $temp.val($(elemento).text()).select();
-  document.execCommand("copy");
-  $temp.remove();
+  const texto = $(elemento).text().trim();
+
+  if (navigator.clipboard && window.isSecureContext) {
+    // Usar API moderna si está disponible
+    navigator.clipboard.writeText(texto)
+      .then(() => {
+        console.log("Texto copiado al portapapeles correctamente.");
+      })
+      .catch(err => {
+        console.error("Error al copiar: ", err);
+        fallbackCopyText(texto);
+      });
+  } else {
+    // Fallback para navegadores no compatibles
+    const tempInput = document.createElement("textarea");
+    tempInput.value = texto;
+    tempInput.style.position = "fixed"; // Evita que la página se desplace
+    tempInput.style.opacity = 0;
+    document.body.appendChild(tempInput);
+    tempInput.focus();
+    tempInput.select();
+
+    try {
+      document.execCommand("copy");
+      console.log("Texto copiado con método de respaldo.");
+    } catch (err) {
+      console.error("No se pudo copiar el texto: ", err);
+    }
+
+    document.body.removeChild(tempInput);
+  }
 }
 
-function crearObjetMensajeProcesoPrograma(idP, id, cantidad, codigo, resistencia, observaciones, papel) {
+
+
+
+/*function crearObjetMensajeProcesoPrograma(idP, id, cantidad, codigo, resistencia, observaciones, papel) {
 
   ons.openActionSheet({
     title: 'ASIGNAR PROCESO - ' + codigo,
@@ -382,6 +428,17 @@ function crearObjetMensajeProcesoPrograma(idP, id, cantidad, codigo, resistencia
     else if (index == 3) alertPrompt(id, cantidad, codigo, resistencia, observaciones, papel);
     else if (index == 4) alertaConfirPrograma("Estas seguro de eliminar este pedido del programa?", setEliminarPrograma, id);//eliminar
 
+  });
+}*/
+
+function alertConfirm(mensaje, botones, mifuncion, titulo) {
+  ons.notification.confirm({
+    title: titulo,
+    message: mensaje,
+    buttonLabels: botones,
+    callback: function (index) {
+      mifuncion(index);
+    }
   });
 }
 //FUNCION DE MENSAJE DE CONFIRMACION
@@ -417,7 +474,7 @@ function alertaConfirPrograma(mensaje, funcionSi, id) {
 }
 
 //funcion para alert confirm global
-function alertConfirmReporteFaltante(mensaje, json, input) {
+/*function alertConfirmReporteFaltante(mensaje, json, input) {
   //setAgregarFaltante(id,codigo,cantidad,resistencia,oc,fecha_oc)
   ons.notification.confirm({
     title: "",
@@ -431,8 +488,9 @@ function alertConfirmReporteFaltante(mensaje, json, input) {
       else setProcesosProgramaEntradaPedido(json.id, input);
     }
   });
-}
-function alertPrompt(id, cantidad, codigo, resistencia, observaciones, papel) {
+}*/
+
+/*function alertPrompt(id, cantidad, codigo, resistencia, observaciones, papel) {
   //el id es el id de la lista del pedido
   //json = JSON.parse(json);
   ons.notification.prompt({
@@ -485,7 +543,7 @@ function alertPrompt(id, cantidad, codigo, resistencia, observaciones, papel) {
     else if (input == 0) alerta("*ERROR* <br>Debe se mayor de <b>0</b>");
     else alerta("No se envio nada");
   });
-}
+}*/
 //alert prompt para inventario
 function alertPromptInventario(id_lp, salida, inventario) {
   ons.notification.prompt({
@@ -634,6 +692,7 @@ function Abrirdialogo(id, template, idProducto, funcion) {
 
   if (dialog) {
     dialog.show();
+    if (funcion) funcion();
   } else {
     ons.createElement(template, { append: true }).then(function (dialog) {
       dialog.show();
@@ -706,9 +765,6 @@ function fechaHoy2() {
 
   return ano + "-" + mes + "-" + dia;
 }
-
-console.log(fechaHoy());
-
 
 function llenarFecha() {
   $('#pedidoFechaOc').val(fechaHoy());
@@ -800,11 +856,11 @@ function crearMensajePL(estado, entrada, pzas_ordenadas, o_c, observaciones) {
       '<i class="fa-solid fa-circle" style="color: #CE84DA"></i> PARCIAL ',
       '<i class="fa-solid fa-circle" style="color: #00A514"></i> COMPLETO',
       '<i class="fa-solid fa-circle" style="color: #000000"></i> CANCELADA',
-      '<i class="fa-solid fa-circle" style="color: #E1D000"></i> PROGRAMADO',
-      'Observaciones',
-      'Modificar',
+      '<i class="fa-solid fa-circle" style="color:rgb(225, 0, 0)"></i> POR ENTREGAR',
+      '<i class="fas fa-eye"></i>&nbsp;Observaciones',
+      '<i class="fas fa-edit"></i>&nbsp;Editar',
       {
-        label: 'Eliminar',
+        label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Elminar',
         modifier: 'destructive'
       }
     ]
@@ -813,7 +869,7 @@ function crearMensajePL(estado, entrada, pzas_ordenadas, o_c, observaciones) {
     var faltante = pzas_ordenadas - entrada;
     entrada = entrada == "" ? 0 : entrada;
     if (index == 5) alerta("<b>Observaciones:</b><br><br>" + observaciones);
-    else if (index == 6) nextPageFunctionData('actualizarPedidosLamina.html', setBuscarActualizarPL, o_c); //actualiza pedido
+    else if (index == 6) { nextPageFunctionData('actualizarPedidosLamina.html', setBuscarActualizarPL, o_c); return; } //actualiza pedido
     else if (index == 7) alertaConfirPrograma("Estas seguro de eliminar este Pedido de Lamina?", setEliminarPL, o_c); //elimina pedido
 
     if (index == -1) return 0;
@@ -878,7 +934,7 @@ function arrayVacio(array) {
 }
 
 function vacio(...datos) {
-  for (let i = 0; i < datos.length; i++) if (datos[i] == "") return false;
+  for (let i = 0; i < datos.length; i++) if (datos[i] == "" || datos[i] == 0) return false;
   return true;
 }
 
@@ -919,20 +975,6 @@ function tipoEgreso(dato) {
   return egreso[dato];
 }
 
-function filtrarRadio() {
-  tipoFilter = $('input[name=tipo]:checked')[0].id;
-  setProveedor();
-  cerrarDialogo('my-dialog-FiltroProveedor');
-}
-function borrarRadioProveedor() {
-  //console.log($('input[name=tipo]:checked').val())
-  if (tipoFilter > 0) $('input[name=tipo]:checked')[0].checked = false;
-
-  tipoFilter = 0;
-  setProveedor();
-  cerrarDialogo('my-dialog-FiltroProveedor');
-}
-
 function validarEntradaSalidaP() {
   if (salida) setEditarCantidadSalidaP();
   else setEditarCantidadEntradaP();
@@ -949,3 +991,52 @@ function validarEntradaSalidaL() {
   else setEditarCantidadEntradaL();
 }
 
+
+function crearExcel(nombreArchivoBase, datos) {
+
+  if (!Array.isArray(datos) || datos.length === 0) {
+    console.error("Los datos están vacíos o no son válidos.");
+    return;
+  }
+
+  // Crear hoja desde JSON
+  const hoja = XLSX.utils.json_to_sheet(datos);
+
+  // Convertir encabezados (primera fila) a mayúsculas
+  const rango = XLSX.utils.decode_range(hoja['!ref']);
+  for (let col = rango.s.c; col <= rango.e.c; col++) {
+    const celdaRef = XLSX.utils.encode_cell({ c: col, r: 0 }); // A1, B1, etc.
+    const celda = hoja[celdaRef];
+    if (celda && typeof celda.v === 'string') {
+      celda.v = celda.v.toUpperCase();
+      celda.t = 's'; // Tipo texto
+    }
+  }
+
+  // Crear el libro
+  const libro = XLSX.utils.book_new();
+  const nombreHoja = nombreArchivoBase.length > 31
+    ? nombreArchivoBase.substring(0, 31)
+    : nombreArchivoBase;
+
+  XLSX.utils.book_append_sheet(libro, hoja, nombreHoja);
+
+  const nombreArchivoFinal = `${nombreArchivoBase}.xlsx`;
+
+  // Descargar el archivo
+  XLSX.writeFile(libro, nombreArchivoFinal);
+
+}
+//OBTENER FECHA PARA ASIGNARSELO AL NOMBRE DEL ARCHIVO DESCARGADO
+function obtenerFechaActual() {
+  const fecha = new Date();
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // El mes es de 0 a 11, por eso se suma 1
+  const año = fecha.getFullYear();
+
+  return `${dia}-${mes}-${año}`;
+}
+
+function convertJson(json) {
+  return json.split('|').filter(c => c.trim() !== '').map(c => JSON.parse(c.trim()));
+}
