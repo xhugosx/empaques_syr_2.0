@@ -207,53 +207,54 @@ function setAgregarPedido() {
 
     if (!vacio(id, codigo, cantidad, oc, fecha_oc, resistencia, papel)) {
         alerta('Espacios vacíos en producto! <br>(No escribir "CEROS")');
-        console.log(id, codigo, cantidad, oc, fecha_oc, resistencia, papel);
+        //console.log(id, codigo, cantidad, oc, fecha_oc, resistencia, papel);
         return;
     }
 
-    const insertarPedido = () => {
-        $("#botonAgregarPedido").prop("disabled", true);
-        oCarga("Insertando Productos...");
-        const url = `${myLink}/php/lista_pedidos/add.php?id=${id}&codigo=${codigo}&cantidad=${cantidad}&resistencia=${resistencia}&papel=${papel}&oc=${oc}&fecha_oc=${fecha_oc}&observaciones=${observaciones}&fecha_entrega=${fecha_entrega}`;
-        servidor(url,
-            function (respuesta) {
-                if (respuesta.responseText == "1")
-                    alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?", limpiarRegistrosPedidos, resetearPilaFunction, setBusquedaPendiente);
-                else
-                    alerta('hubo un error al insertar!' + respuesta.responseText);
+    const insertaInsertos = () => {
+        const totalInsertos = parseInt(localStorage.getItem('insertos') || 0);
 
-                $("#botonAgregarPedido").prop("disabled", false);
-                cCarga();
+        if (totalInsertos > 0) {
+            let insertos = [], resistencias = [], cantidades = [], notas = [];
+            for (let i = 1; i <= totalInsertos; i++) {
+                const inserto = $(`#inserto${i}`).val();
+                const res = $(`#resistencia${i}`).val();
+                const cant = $(`#cantidad${i}`).val();
+                const nota = $(`#notas${i}`).val().toUpperCase();
+
+                if (!inserto || !res || !cant) {
+                    alerta("Espacios vacíos en insertos");
+                    $("#botonAgregarPedido").prop("disabled", false);
+                    return;
+                }
+
+                insertos.push(inserto);
+                resistencias.push(res);
+                cantidades.push(cant);
+                notas.push(nota);
             }
-
-        );
-    };
-
-    const totalInsertos = parseInt(localStorage.getItem('insertos') || 0);
-
-    if (totalInsertos > 0) {
-        let insertos = [], resistencias = [], cantidades = [], notas = [];
-        for (let i = 1; i <= totalInsertos; i++) {
-            const inserto = $(`#inserto${i}`).val();
-            const res = $(`#resistencia${i}`).val();
-            const cant = $(`#cantidad${i}`).val();
-            const nota = $(`#notas${i}`).val().toUpperCase();
-
-            if (!inserto || !res || !cant) {
-                alerta("Espacios vacíos en insertos");
-                $("#botonAgregarPedido").prop("disabled", false);
-                return;
-            }
-
-            insertos.push(inserto);
-            resistencias.push(res);
-            cantidades.push(cant);
-            notas.push(nota);
+            setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas, id);
         }
-        setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas, id);
     }
 
-    insertarPedido();
+
+    $("#botonAgregarPedido").prop("disabled", true);
+    oCarga("Insertando Productos...");
+    const url = `${myLink}/php/lista_pedidos/add.php?id=${id}&codigo=${codigo}&cantidad=${cantidad}&resistencia=${resistencia}&papel=${papel}&oc=${oc}&fecha_oc=${fecha_oc}&observaciones=${observaciones}&fecha_entrega=${fecha_entrega}`;
+    servidor(url,
+        function (respuesta) {
+            if (respuesta.responseText == "1")
+                alertaConfirmSiNo("Registro Insertado, Deseas insertar otro?", limpiarRegistrosPedidos, resetearPilaFunction, setBusquedaPendiente);
+            else
+                alerta('hubo un error al insertar!' + respuesta.responseText);
+
+            $("#botonAgregarPedido").prop("disabled", false);
+            insertaInsertos(); // insertar despues de insertar el pedido de caja
+            cCarga();
+        }
+
+    );
+
 }
 
 function setBuscarProductoCliente(codigo) {
