@@ -431,7 +431,8 @@ function aplicarFiltroLamina() {
     for (var i = 0; i < ids.length; i++) {
         a += ids[i].value + ",";
     }
-    tipoLamina = a.slice(0, -1);// para eliminar la ultima coma
+    tipoLamina = a.slice(0, -1); // para eliminar la ultima coma
+    tipoLamina = tipoLamina.length == 0 ? [1,2,3,4,5] : tipoLamina;
     setMostrarPedidosLamina();
     menu.close();
 }
