@@ -75,7 +75,7 @@ function cargarCalendarioLamina() {
             numeroDia.className = 'numero-dia';
             numeroDia.textContent = i + 1;
             diaElemento.appendChild(numeroDia);
-            
+
             diaElemento.addEventListener('click', function () {
                 //console.log(event);
                 if (diaSeleccionado) {
@@ -118,9 +118,11 @@ function cargarCalendarioLamina() {
 
     // Función para obtener productos con fecha de entrega correspondiente al día actual
     function obtenerProductosDelDia(fecha, callback) {
-        $('#loadingPedidosLaminaFecha').empty().append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        oCarga("Cargando Datos...");
-        let link = filtroLaminaRadio ? myLink + "/php/lista_pedidos_lamina/select.php?type=1" : myLink + "/php/lista_pedidos_lamina/select.php?type=2,3";
+        //$('#loadingPedidosLaminaFecha').empty().append("<ons-progress-bar indeterminate></ons-progress-bar>");
+        //oCarga("Cargando Datos...");
+        let tipo = filtroLaminaRadio ? "1" : "2,3";
+
+        let link = myLink + "/php/lista_pedidos_lamina/select.php?type=" + tipo + "&anio=" + fecha.getFullYear();
         servidor(link, function (respuesta) {
             var resultado = respuesta.response;
             let subcadenas = resultado.split('|');
@@ -139,9 +141,10 @@ function cargarCalendarioLamina() {
                 const diaProducto = fechaEntregaProducto.getDate();
                 return añoProducto === añoActual && mesProducto === mesActual && diaProducto === diaActual;
             });
+            console.log(link);
             callback(productos);
-            $('#loadingPedidosLaminaFecha').empty();
-            cCarga();
+            //$('#loadingPedidosLaminaFecha').empty();
+            //cCarga();
         });
     }
 

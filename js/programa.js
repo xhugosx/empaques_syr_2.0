@@ -484,7 +484,7 @@ function estadoProgramaIcon(dato) {
 
 function enlistarProgramaHistorialCaja(arrayJson) {
     let procesos = "";
-    console.log(arrayJson);
+    //console.log(arrayJson);
     arrayJson.programa.forEach(programa => {
         procesos += `
             <span class="proceso estado-${programa.hoy}">

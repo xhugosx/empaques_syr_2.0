@@ -144,7 +144,7 @@ document.addEventListener('init', function (event) {
                     const diaProducto = fechaEntregaProducto.getDate();
                     return añoProducto === añoActual && mesProducto === mesActual && diaProducto === diaActual;
                 });
-                console.log(productos);
+                //console.log(productos);
                 callback(productos);
             });
         }

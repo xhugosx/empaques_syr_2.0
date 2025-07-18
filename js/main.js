@@ -21,7 +21,7 @@ function debounceBuscare(miFuncion) {
   }, 400);
 }
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
-var myLink = "https://empaquessr.com/sistema/empaquessr";
+var myLink = "https://empaquessr.com/sistema/empaquessr_2";
 function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   ons.notification.prompt({
     title: '',
@@ -145,7 +145,7 @@ function servidor(link, miFuncion) {
 
     try {
       xhttp.open("GET", link, true);
-      xhttp.timeout = 10000; // 10 segundos (opcional)
+      xhttp.timeout = 20000; // 15 segundos (opcional)
       xhttp.send();
     } catch (error) {
       alerta("Error inesperado al intentar conectar.");
