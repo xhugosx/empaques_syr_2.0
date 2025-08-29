@@ -268,7 +268,7 @@ function enlistarPedidosLamina(arrayJson) {
         var productos = (arrayJson.producto).split(",");
         var clientes = (arrayJson.cliente).split(",");
         for (var i = 0; i < cajas.length; i++) {
-            span += cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b>';
+            span += cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b> <br>';
         }
     }
 
@@ -286,7 +286,7 @@ function enlistarPedidosLamina(arrayJson) {
       <div class="left">
         <strong>${o_c}</strong>
       </div>
-      <div class="center romperTexto">
+      <div class="center">
         <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
         <span class="list-item__subtitle">
             ${arrayJson.producto !== "" ? span : ""}
