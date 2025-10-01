@@ -73,11 +73,6 @@ function editarFactura(id, posicion) {
 }
 
 
-function setEditarFactura(id, posicion) {
-
-
-}
-
 function confirmarEliminar(id) {
     alertConfirm("Estas seguro de eliminar esta Factura?", ["SI", "NO"],
         function (index) {
@@ -109,7 +104,6 @@ function enlistarFacturasEditar(arrayJson, i) {
     // { "id": "418", "id_pedido": "2023019-20", "entregado": "600", "factura": "A-7935", "fecha": "2023-06-26" }
     let html1 = "";
     html1 += '<ons-card style="padding:0px;" class="botonPrograma opacity100"> ';
-
     html1 += '    <ons-list-item modifier="nodivider">';
     html1 += '        <div class="left">';
     html1 += '            <strong>ID:&nbsp; </strong>' + arrayJson.id;
@@ -131,16 +125,13 @@ function enlistarFacturasEditar(arrayJson, i) {
     html1 += '                <tr>';
     html1 += '                    <td id="button' + i + '"></td>';
     html1 += '                </tr>';
-
     html1 += '            </table>';
-
     html1 += '        </div>';
     html1 += '        <div class="right">';
     html1 += '            <span id="editar' + i + '" class="accionFactura" onclick="editarFactura(' + arrayJson.id + ',' + i + ')"><i';
     html1 += '                class="fa-solid fa-pen"></i></span>';
     html1 += '            <span class="accionFactura" onclick="confirmarEliminar(' + arrayJson.id + ')"><i class="fa-solid fa-trash"></i></span>';
     html1 += '        </div>';
-
     html1 += '    </ons-list-item>';
     html1 += '</ons-card>';
 
@@ -155,7 +146,7 @@ function actualizarFacturas() {
     var factura = document.querySelector('input[name=facturaRadio]:checked').value;
 
     //console.log(myLink + "/php/facturas/busqueda.php?year="+anio+"&search="+search+"&factura="+factura,anio,search,factura);
-
+    oCarga("Buscando Facturas...");
     servidor(myLink + "/php/facturas/busqueda.php?year=" + anio + "&search=" + search + "&factura=" + factura, function (respuesta) {
 
         var data = respuesta.responseText;
@@ -163,18 +154,19 @@ function actualizarFacturas() {
         var arrayJson = data.split('|');
         //console.log(arrayJson);
         listaInfinita('datosFacturasRemision', 'loadingFacturas', arrayJson, enlistarFacturasRemisiones);
+        cCarga();
     });
 }
 
 function mostrarFacturas() {
-
+    oCarga("Cargando Facturas...");
     servidor(myLink + "/php/facturas/busqueda.php", function (respuesta) {
-
         var data = respuesta.responseText;
         //console.log(data);
         var arrayJson = data.split('|');
         //console.log(arrayJson);
         listaInfinita('datosFacturasRemision', 'loadingFacturas', arrayJson, enlistarFacturasRemisiones);
+        cCarga();
     });
 
 }
@@ -263,10 +255,26 @@ function menuFacturas() {
                         </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">
-                                <ons-radio name="facturaRadio" input-id="cinthya" checked value="A-"></ons-radio>
+                                <ons-radio name="facturaRadio" input-id="todo" checked value=""></ons-radio>
+                            </label>
+                            <label for="todo" class="center">
+                                TODO
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="facturaRadio" input-id="cinthya" value="A-"></ons-radio>
                             </label>
                             <label for="cinthya" class="center">
                                 (A) CINTHYA 
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="facturaRadio" input-id="cinthya2" value="B-"></ons-radio>
+                            </label>
+                            <label for="cinthya2" class="center">
+                                (B) CINTHYA 
                             </label>
                         </ons-list-item>
                         <ons-list-item tappable>

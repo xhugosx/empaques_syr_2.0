@@ -1,9 +1,10 @@
-.btnResetear{
-    background-color: #426690 !important; 
+.btnResetear {
+    background-color: #426690 !important;
     padding: 0;
 }
-.btnActivo{
-    background-color: #305cb5; 
+
+.btnActivo {
+    background-color: #305cb5;
     text-align: center;
 }
 
@@ -11,10 +12,15 @@
 .flechaIzquierda {
 
     background-color: #1ba0d1b9;
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.4);
+    border: #5f8ea4 0.1px solid;
+
 }
+
 span>.fa-folder-open {
     color: #0c4b70 !important;
 }
+
 #page1>.toolbar {
     height: 100px !important;
     border-radius: 0 0 50px 50px;
@@ -24,18 +30,22 @@ span>.fa-folder-open {
     box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
     background: linear-gradient(180deg, rgba(26, 156, 232, 1) 0%, rgba(134, 203, 243, 1) 5%, rgba(255, 255, 255, 1) 13%);
 }
+
 .page__background {
     background: #475ACC;
     background: conic-gradient(from 315deg, #00415f, #698390);
 }
+
 .year-input>#nextYear,
 .year-input>#prevYear {
 
     background-color: #426590;
 }
+
 :checked+.switch__toggle {
     box-shadow: inset 0 0 0 2px #1ba0d1b9 !important;
     /* box-shadow: inset 0 0 0 2px var(--switch-checked-background-color); */
     background-color: #1ba0d1b9 !important;
     /* background-color: var(--switch-checked-background-color); */
 }
+

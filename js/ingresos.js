@@ -2,78 +2,79 @@ var chart;
 var mesIngreso;
 //FUNCION PARA MOSTRAR LOS INGRESOS POR CLIENTE
 function setIngresoMensualCliente(datos) {
+  oCarga("Cargando Ingresos...");
   let mes = datos[0];
   let cliente = datos[1];
-
-  $("#loadingIngresoMesCliente").empty();
-  $('#loadingIngresoMesCliente').append("<ons-progress-bar indeterminate></ons-progress-bar>");
   let anio = $("#anioG").text();
+  servidor(myLink + "/php/ingresos/ingresoMensualCliente.php?anio=" + anio + "&mes=" + mes + "&cliente=" + cliente,
+    function (respuesta) {
+      let resultado = respuesta.responseText;
+      let arrayJson = resultado.split("|");
+      //console.log(arrayJson);
+      listaInfinita('mesesIngresosCliente', 'loadingIngresoMesCliente', arrayJson, enlitsarMesIngresoCliente);
+      cCarga();
+    }
+  );
+}
 
-  //console.log(myLink+"/php/ingresos/ingresoMensualCliente.php?anio="+anio+"&mes="+mes+"&cliente="+cliente);
-  servidor(myLink+"/php/ingresos/ingresoMensualCliente.php?anio=" + anio + "&mes=" + mes + "&cliente=" + cliente, getIngresoMensualCliente);
-}
-function getIngresoMensualCliente(respuesta) {
-  let resultado = respuesta.responseText;
-  let arrayJson = resultado.split("|");
-  //console.log(arrayJson);
-  listaInfinita('mesesIngresosCliente', 'loadingIngresoMesCliente', arrayJson, enlitsarMesIngresoCliente);
-  //console.log(arrayJson);
-}
 //FUNCION PARA MOSTRAR INGRESOS POR MES
 function setMesIngreso(mes) {
-  $("#loadingIngresoMes").empty();
-  $('#loadingIngresoMes').append("<ons-progress-bar indeterminate></ons-progress-bar>");
+  oCarga("Cargando Ingresos...");
   let anio = $("#anioG").text();
   mes = mes ? mes : mesIngreso;
   //console.log(anio,mes);
-  servidor(myLink+"/php/ingresos/ingresoMensual.php?anio=" + anio + "&mes=" + mes, getMesIngreso);
-}
-function getMesIngreso(respuesta) {
-  let resultado = respuesta.responseText;
-  let arrayJson = resultado.split("|");
+  servidor(myLink + "/php/ingresos/ingresoMensual.php?anio=" + anio + "&mes=" + mes,
+    function (respuesta) {
+      let resultado = respuesta.responseText;
+      let arrayJson = resultado.split("|");
+      listaInfinita('mesesIngresos', 'loadingIngresoMes', arrayJson, enlitsarMesIngreso);
 
-  listaInfinita('mesesIngresos', 'loadingIngresoMes', arrayJson, enlitsarMesIngreso);
-
-  graficaIngresoCliente(arrayJson);
+      graficaIngresoCliente(arrayJson);
+      cCarga();
+    }
+  );
 }
+
 //FUNCION PARA MOSTRAR INGRESOS TOTALES POR AÑO
 function setIngresos() {
-  $("#loadingIngreso").empty();
-  $('#loadingIngreso').append("<ons-progress-bar indeterminate></ons-progress-bar>");
+  oCarga("Cargando Ingresos...");
   var anio = $("#anioG").text();
-  servidor(myLink+'/php/ingresos/ingresoTotal.php?anio=' + anio, getIngresos);
-}
-function getIngresos(respuesta) {
-  let resultado = respuesta.responseText;
-  let importes = resultado.split("|");
+  servidor(myLink + '/php/ingresos/ingresoTotal.php?anio=' + anio,
+    function (respuesta) {
+      let resultado = respuesta.responseText;
+      let importes = resultado.split("|");
 
-  if (importes.length > 1) listaInfinita('Ingresos', 'loadingIngreso', importes, enlitsarIngreso);
-  else {
-    importes.pop();
-    listaInfinita('Ingresos', 'loadingIngreso', importes, enlitsarIngreso);
-    importes.push("");
-  }
+      if (importes.length > 1) listaInfinita('Ingresos', 'loadingIngreso', importes, enlitsarIngreso);
+      else {
+        importes.pop();
+        listaInfinita('Ingresos', 'loadingIngreso', importes, enlitsarIngreso);
+        importes.push("");
+      }
 
-  importes.pop();
+      importes.pop();
 
-  graficaIngreso(importes)
-
+      graficaIngreso(importes);
+      cCarga();
+    }
+  );
 }
 
 //FUNCION PARA LLENAR SELECT DE AGREGAR INGRESO
 function setIngresoClientes() {
-  servidor(myLink+"/php/clientes/select.php?type=2", getIngresoClientes)
-}
-function getIngresoClientes(respuesta) {
-  let resultado = respuesta.responseText;
-  let arrayJson = resultado.split("|");
+  oCarga("Cargando Clientes...");
+  servidor(myLink + "/php/clientes/select.php?type=2",
+    function (respuesta) {
+      let resultado = respuesta.responseText;
+      let arrayJson = resultado.split("|");
 
-  for (let i = 0; i < arrayJson.length - 1; i++) {
-    arrayJson[i] = JSON.parse(arrayJson[i]);
-    $("#cliente:first-child").find('select').append("<option value='" + arrayJson[i].codigo + "'>" + agregarCeros(arrayJson[i].codigo) + " " + arrayJson[i].nombre + "</option>");
+      for (let i = 0; i < arrayJson.length - 1; i++) {
+        arrayJson[i] = JSON.parse(arrayJson[i]);
+        $("#cliente:first-child").find('select').append("<option value='" + arrayJson[i].codigo + "'>" + agregarCeros(arrayJson[i].codigo) + " " + arrayJson[i].nombre + "</option>");
 
-  }
-  dateHoy("fecha");
+      }
+      dateHoy("fecha");
+      cCarga();
+    });
 }
 
 
@@ -88,58 +89,61 @@ function setAgregarIngreso() {
   var metodoPago = $('#metodo').val();
 
   if (vacio(cliente, fecha, factura, importe, metodoPago)) {
-    servidorPost(myLink+"/php/ingresos/add.php", getAgregarIngreso, formData);
+    oCarga("Agregando Ingreso...");
+    servidorPost(myLink + "/php/ingresos/add.php",
+      function (respuesta) {
+        //console.log();
+        if (respuesta.responseText == 1) {
+          alerta("Ingreso Agregado");
+          resetearPilaFunction(setIngresos);
+          cCarga();
+        }
+        else alerta("No se pudo Agregar!");
+
+      }, formData);
   }
   else alerta("Espacios vacios!");
 
-  //servidorPost(link,miFuncion,data)
 }
 
-function getAgregarIngreso(respuesta) {
-  //console.log();
-  if (respuesta.responseText == 1) {
-    alerta("Ingreso Agregado");
-    resetearPilaFunction(setIngresos);
-  }
-  else alerta("No se pudo Agregar!");
-
-}
 //esta funcion es para eliminar la factura
 function setEliminarIngreso(id) {
-  servidor(myLink+"/php/ingresos/delete.php?id=" + id, getEliminarIngreso);
+  oCarga("Eliminando Ingreso...");
+  servidor(myLink + "/php/ingresos/delete.php?id=" + id,
+    function (respuesta) {
+      if (respuesta.responseText == 1) {
+        alerta("La factura fue eliminada");
+        resetearPilaFunction(setMesIngreso);
+        cCarga();
+      }
+      else alerta("No se pudo eliminar");
+    }
+  );
 }
-function getEliminarIngreso(respuesta) {
-  if (respuesta.responseText == 1) {
-    alerta("La factura fue eliminada");
-    resetearPilaFunction(setMesIngreso);
-  }
-  else alerta("No se pudo eliminar");
 
-}
 //esta funcion es para buscar y rellenar los input
 function setBuscarIngreso(id) {
-  servidor(myLink+"/php/ingresos/select.php?id=" + id, getBuscarIngreso);
-}
-function getBuscarIngreso(respuesta) {
-  var json = JSON.parse(respuesta.responseText);
-  let arrayCodigos = json.codigos.split("@");
-  let arrayClientes = json.clientes.split("@");
-  for (let i = 0; i < arrayCodigos.length; i++) {
-    html = '<option value="' + arrayCodigos[i] + '">' + agregarCeros(arrayCodigos[i]) + ' ' + arrayClientes[i] + '</option>';
+  servidor(myLink + "/php/ingresos/select.php?id=" + id,
+    function (respuesta) {
+      var json = JSON.parse(respuesta.responseText);
+      let arrayCodigos = json.codigos.split("@");
+      let arrayClientes = json.clientes.split("@");
+      for (let i = 0; i < arrayCodigos.length; i++) {
+        html = '<option value="' + arrayCodigos[i] + '">' + agregarCeros(arrayCodigos[i]) + ' ' + arrayClientes[i] + '</option>';
 
-    $("#cliente:first-child").find('select').append(html);
+        $("#cliente:first-child").find('select').append(html);
 
-  }
+      }
 
-  $('#id').val(json.id);
-  $('#cliente').val(json.ingreso_cliente);
-  $('#fecha').val(json.fecha);
-  $('#factura').val(json.factura);
-  $('#importe').val(json.importe);
-  $('#metodo').val(json.metodo);
-  $('#observaciones').val(json.observaciones);
-
-  //console.log(arrayClientes,arrayCodigos);
+      $('#id').val(json.id);
+      $('#cliente').val(json.ingreso_cliente);
+      $('#fecha').val(json.fecha);
+      $('#factura').val(json.factura);
+      $('#importe').val(json.importe);
+      $('#metodo').val(json.metodo);
+      $('#observaciones').val(json.observaciones);
+    }
+  );
 }
 
 //funcion para modificar
@@ -154,26 +158,28 @@ function setModificarIngreso() {
   var id = $('#id').val();
 
   if (vacio(cliente, fecha, factura, importe, metodoPago)) {
-    servidorPost(myLink+"/php/ingresos/update.php?id=" + id, getModificarIngreso, formData);
+    oCarga("Modificando Ingreso...");
+    servidorPost(myLink + "/php/ingresos/update.php?id=" + id,
+      function (respuesta) {
+        //console.log();
+        if (respuesta.responseText == 1) {
+          alerta("Ingreso Modificado");
+          resetearPilaFunction(resetearPilaFunction, setMesIngreso);
+          cCarga();
+        }
+        else alerta("No se pudo Modificar!");
+        //console.log(respuesta.responseText);
+      }, formData);
   }
   else alerta("Espacios vacios!");
 
   //servidorPost(link,miFuncion,data)
 }
 
-function getModificarIngreso(respuesta) {
-  //console.log();
-  if (respuesta.responseText == 1) {
-    alerta("Ingreso Modificado");
-    resetearPilaFunction(resetearPilaFunction, setMesIngreso);
-  }
-  else alerta("No se pudo Modificar!");
-  //console.log(respuesta.responseText);
-}
 
 function enlitsarIngreso(arrayJson, i) {
   let html1 = "";
-  if(arrayJson == 0) return "<div></div>";
+  if (arrayJson == 0) return "<div></div>";
   html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'ingresosMensual.html\',setMesIngreso,' + (i + 1) + ');mesIngreso=' + (i + 1) + '"> ';
   html1 += '    <ons-list-item class="" modifier="nodivider chevron">';
   html1 += '        <div class="left"> ';
@@ -334,23 +340,17 @@ function enlitsarMesIngresoCliente(arrayJson) {
 }
 
 function setArribaIngreso(id) {
-  mensajeArriba("Opciones", ["Modificar", { label: 'Eliminar', modifier: 'destructive' }], getArribaIngreso, id)
+  mensajeArriba("Opciones", ['<i class="fas fa-pen-to-square"></i>&nbsp;Modificar', { label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar', modifier: 'destructive' }],
+    function (index) {
+      if (index == 0) nextPageFunctionData("modificarIngresos.html", setBuscarIngreso, id)
+      else if (index == 1) alertComfirm("Estas seguro de eliminar esta factura?", ["Aceptar", "Cancelar"],
+        function (index) {
+          if (index == 0) setEliminarIngreso(id);
+        }
+      );
+    }
+  );
 }
-function getArribaIngreso(index, id) {
-  //console.log(index,id);
-  if (index == 0) nextPageFunctionData("modificarIngresos.html", setBuscarIngreso, id)
-  else if (index == 1) setConfirmEliminarIngreso(id)
-}
-
-function setConfirmEliminarIngreso(id) {
-  //console.log(id);
-  alertComfirm("Estas seguro de eliminar esta factura?", ["Aceptar", "Cancelar"], getConfirmEliminarIngreso, id)
-}
-function getConfirmEliminarIngreso(index, id) {
-  //console.log(index,id);
-  if (index == 0) setEliminarIngreso(id);
-}
-
 
 function asignarAnio() {
   setTimeout(() => {

@@ -45,8 +45,7 @@ document.addEventListener('postchange', function (event) {
 
 function setMostrarPedidosLaminaFecha(fecha, tipo) {
     tipo = tipo ? 1 : 2;
-    $('#loadingPedidosLaminaFecha').empty().append("<ons-progress-bar indeterminate></ons-progress-bar>");
-    oCarga("Buscando Pedidos...")
+    oCarga("Buscando Pedidos...");
     servidor(myLink + "/php/lista_pedidos_lamina/selectDate.php?fecha=" + fecha + "&type=" + tipo,
         function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
@@ -64,8 +63,7 @@ function setMostrarPedidosLaminaFecha(fecha, tipo) {
 
 //FUNCION PARA REFRESCAR EL CONTENIDO DE LOS PEDIDOS DE LAMINA
 function setMostrarPedidosLamina() {
-    oCarga("Cargando Datos...")
-    $('#loadingPedidosLamina').html("<ons-progress-bar indeterminate></ons-progress-bar>"); //cargar barra de busqueda
+    oCarga("Cargando Datos...");
     var search = $("#searchPCM").val();
     servidor(myLink + "/php/lista_pedidos_lamina/select.php?&search=" + search + "&type=" + tipoLamina + "&anio=" + anioGlobal,
         function (respuesta) {
@@ -268,7 +266,7 @@ function enlistarPedidosLamina(arrayJson) {
         var productos = (arrayJson.producto).split(",");
         var clientes = (arrayJson.cliente).split(",");
         for (var i = 0; i < cajas.length; i++) {
-            span += cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b> <br>';
+            span += "<hr>" + cajas[i] + ' ' + productos[i] + ' - <b>' + clientes[i] + '</b> <br>';
         }
     }
 
@@ -290,7 +288,7 @@ function enlistarPedidosLamina(arrayJson) {
         <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
         <span class="list-item__subtitle">
             ${arrayJson.producto !== "" ? span : ""}
-            ${arrayJson.observaciones !== "" ? '<div style="font-size:14px"><strong> Observaciones: </strong>&nbsp;' + arrayJson.observaciones + '</div>' : ''}
+            ${arrayJson.observaciones !== "" ? '<hr><div style="font-size:14px"><strong> Observaciones: </strong>&nbsp;' + arrayJson.observaciones + '</div>' : ''}
         </span>
       </div>
       <div class="right">

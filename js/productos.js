@@ -49,9 +49,10 @@ function setAgregarProducto() {
     let codigo = $('#codigoProducto1').val();
     let nombre = $('#nombreProducto').val();
     let precio = $('#precioProducto').val();
+    let m2 = $('#m2Producto').val();
     let archivo = $('input[type=file]').val();
 
-    if (vacio(codigo, nombre, precio, archivo)) {
+    if (vacio(codigo, nombre, precio, archivo, m2)) {
         let filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
         let codigoF = filename.split(".");
         codigoF = codigoF[0].replace("-", "/");
@@ -89,7 +90,8 @@ function setAgregarProducto() {
 function setActualizarProducto() {
     let codigo = $('#codigoProductoActualizar').val();
     let producto = $('#nombreProductoActualizar').val();
-    if (vacio(codigo, producto)) {
+    let m2 = $('#m2ProductoActualizar').val();
+    if (vacio(codigo, producto, m2)) {
         $("#btnActualizarProducto").prop('disabled', true); // bloquear boton
         oCarga("Agregando Producto...");
         if ($('input[type=file]').val()) {
@@ -134,6 +136,7 @@ function setBuscarProductoActualizar(codigo) {
             $('#codigoProductoActualizar').val(arrayJson[0].codigo);
             $('#nombreProductoActualizar').val(arrayJson[0].producto);
             $('#precioProductoActualizar').val(arrayJson[0].precio);
+            $('#m2ProductoActualizar').val(arrayJson[0].m2);
             $('#pdfNombreProductoActualizar').text(arrayJson[0].file == 1 ? producto[0] + "-" + producto[1] + ".pdf" : "No tiene Plano");
             $('#btnActualizarProducto').prop('disabled', false);
             cCarga();
@@ -144,23 +147,35 @@ function setBuscarProductoActualizar(codigo) {
 
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson, i) {
-    //console.log(arrayJson);
-    let html1 = "";
-    html1 += '<ons-card style="padding:0px;" class="botonPrograma" id="list-cliente' + i + '" onclick="crearObjetMensaje(\'' + arrayJson.codigo + '\',' + i + ')">';
-    html1 += '<ons-list-item class="" modifier="nodivider">';
-    html1 += '  <div class="left">';
-    html1 += '      <i class="fa-solid fa-box fa-2x"></i>';
-    html1 += '  </div>';
-    html1 += '  <div class="center">';
-    html1 += '    <span class="list-item__title romperTexto"><b>' + arrayJson.codigo + '</b> </span>';
-    html1 += '    <span class="list-item__subtitle" style="font-size:14px">' + arrayJson.producto + '</span>';
-    html1 += '  </div>"';
-    html1 += '  <div class="right">' + ExistePlano(arrayJson.file) + '$' + separator(arrayJson.precio) + '</div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-
-    return html1;
+    const html = `
+    <ons-card style="padding:0px;" class="botonPrograma" id="list-cliente${i}" 
+              onclick="crearObjetMensaje('${arrayJson.codigo}', ${i})">
+        <ons-list-item modifier="nodivider">
+            
+            <div class="left">
+               <span style="position: relative; display: inline-block;">
+                    <i class="fas fa-box fa-2x"></i>
+                    ${ExistePlano(arrayJson.file)}
+                </span>
+            </div>
+            
+            <div class="center">
+                <span class="list-item__title"><b>${arrayJson.codigo}</b></span>
+                <span class="list-item__subtitle" style="font-size:14px">${arrayJson.producto}</span>
+            </div>
+            
+            <div class="right" style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span class="list-item__title"><b><b>M²: ${arrayJson.m2}</b></b></span>
+                <span class="list-item__subtitle" style="font-size:14px"><b>$ ${separator(arrayJson.precio)}</b></span>  
+            </div>
+            
+        </ons-list-item>
+    </ons-card>
+    `;
+    return html;
 }
+
+
 
 function agregarClaseProducto(i) {
 
@@ -206,7 +221,7 @@ function verPlano(plano) {
 }
 
 function ExistePlano(file) {
-    return file == 1 ? '<i class="fa-solid fa-file-circle-check fa-lg" style="color:#00bb2d"></i>' : '<i class="fa-solid fa-file-circle-xmark fa-lg" style="color:#ff6961"></i>';
+    return file == 1 ? '<i class="fa-solid fa-file-circle-check fa-lg bordeIcon" style="color:#00bb2d; right:-10px; font-size:15px"></i>' : '<i class="fa-solid fa-file-circle-xmark fa-lg bordeIcon" style="color:#ff6961; right:-10px; font-size:15px"></i>';
 }
 
 function setDescargarProductosExcel() {

@@ -11,13 +11,15 @@ function cCarga() {
 }
 
 let timerBuscarCliente;
+let alertaActiva = false;
 
-function debounceBuscare(miFuncion) {
+function debounceBuscare(e, miFuncion) {
+  if (e.key.length !== 1 && e.key !== "Backspace" && e.key !== "Delete" && e.key !== " ") {
+    return;
+  }
   clearTimeout(timerBuscarCliente);
   timerBuscarCliente = setTimeout(() => {
-
     miFuncion(); // Esta función SÍ llama a servidor()
-
   }, 400);
 }
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
@@ -110,14 +112,20 @@ function nextPageFunctionData(miPage, miFuncion, dato) {
 }
 //FUMCION PRA MOSTRAR UN MENSAJE
 function alerta(mensaje, titulo) {
-  let myTitulo = titulo ? "<b>" + titulo + "</b>" : "";
-  ons.notification.alert({
-    title: myTitulo,
-    message: mensaje,
-    buttonLabels: 'Aceptar'
-  });
+  if (!alertaActiva) {
+    alertaActiva = true;
+    let myTitulo = titulo ? "<b>" + titulo + "</b>" : "";
+    ons.notification.alert({
+      title: myTitulo,
+      message: mensaje,
+      buttonLabels: 'Aceptar'
+    }).then(function () {
+      alertaActiva = false;
+    });
+  }
+
 }
-var conexionActiva = null;
+//var conexionActiva = null;
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link, miFuncion) {
   if (window.navigator.onLine) {
@@ -137,24 +145,28 @@ function servidor(link, miFuncion) {
     xhttp.onerror = function () {
       // Esto sí captura errores como ERR_CONNECTION_CLOSED
       alerta("Error de red: no se pudo conectar con el servidor.");
+      cCarga();
     };
 
     xhttp.ontimeout = function () {
       alerta("Tiempo de espera agotado al conectar con el servidor.");
+      cCarga();
     };
 
     try {
       xhttp.open("GET", link, true);
-      xhttp.timeout = 20000; // 15 segundos (opcional)
+      xhttp.timeout = 60000; 
       xhttp.send();
     } catch (error) {
       alerta("Error inesperado al intentar conectar.");
+      cCarga();
     }
 
   } else {
     alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');
+    cCarga();
   }
-  
+
 }
 
 
@@ -170,6 +182,7 @@ function servidorPost(link, miFuncion, data) {
       }
       else if (this.status == 500) {
         alerta("Ejecucion fallida!");
+        cCarga();
       }
 
     };

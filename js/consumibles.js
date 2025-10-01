@@ -4,99 +4,65 @@ function refresConsumible() {
     setConsumible();
 }
 
-//mostrar consumible search
-function setMostrarConsumibleSearch(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13 || e == 13) {
-        $("#consumibleLoading").empty();
-        $("#consumibleLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor(myLink+'/php/consumibles/select.php?search=' + search, getConsumibles);
-    }
-    else if (search == "") {
-        $("#consumibleLoading").empty();
-        $("#consumibleLoading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        setConsumible();
-    }
-
-}
-//fin de mostrar consumible search
-//funcion para hacer busquedad search con 0
-//mostrar consumible search
-function setMostrarConsumible0Search(search, e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13 || e == 13) {
-        $("#consumible0Loading").empty();
-        $("#consumible0Loading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        servidor(myLink+'/php/consumibles/selectSinExistencia.php?search=' + search, getConsumible0);
-    }
-    else if (search == "") {
-        $("#consumible0Loading").empty();
-        $("#consumible0Loading").append("<ons-progress-bar indeterminate></ons-progress-bar>");
-        setConsumible0();
-    }
-
-}
-
 //funcion para buscar ambos consultas de consumibles
 function setConsumible0() {
+    oCarga("Cargando Datos...");
     var busqueda = $('#searchConsumible0').val();
-    if (busqueda == "" || busqueda == undefined) servidor(myLink+'/php/consumibles/selectSinExistencia.php', getConsumible0);
-    else setMostrarConsumible0Search(busqueda, 13);
-}
-function getConsumible0(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    $('#sinExistencia').attr("badge", arrayJson.length - 1);
-    listaInfinita('datosConsumible0', 'consumible0Loading', arrayJson, enlistarConsumible);
-
-
+    servidor(myLink + '/php/consumibles/selectSinExistencia.php?search=' + busqueda, function (respuesta) {
+        var resultado = respuesta.responseText;//respuesta del servidor
+        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+        $('#sinExistencia').attr("badge", arrayJson.length - 1);
+        listaInfinita('datosConsumible0', 'consumible0Loading', arrayJson, enlistarConsumible);
+        cCarga();
+    });
 }
 
 //mostrar inventario consumibles
-function setConsumible() {
-    var busqueda = $('#searchConsumible').val();
-    if (busqueda == "" || busqueda == undefined) servidor(myLink+'/php/consumibles/select.php', getConsumibles);
-    else setMostrarConsumibleSearch(busqueda, 13);
-}
-function getConsumibles(respuesta) {
-    var resultado = respuesta.responseText;//respuesta del servidor
-    var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-    $('#existencia').attr("badge", arrayJson.length - 1);
-    listaInfinita('datosConsumible', 'consumibleLoading', arrayJson, enlistarConsumible);
 
+function setConsumible() {
+    oCarga("Cargando Datos...");
+    var busqueda = $('#searchConsumible').val();
+    servidor(myLink + '/php/consumibles/select.php?search=' + busqueda, function (respuesta) {
+        var resultado = respuesta.responseText;//respuesta del servidor
+        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
+        $('#existencia').attr("badge", arrayJson.length - 1);
+        listaInfinita('datosConsumible', 'consumibleLoading', arrayJson, enlistarConsumible);
+        cCarga();
+    });
 }
 //fin de mostrar inventario consumibles
 
 //agregar consumible
 function setAgregarConsumible() {
+
     let descripcion = ($('#descripcion').val()).toUpperCase();
     let cantidad = $('#cantidad').val();
     if (datoVacio(descripcion) && datoVacio(cantidad)) {
-        servidor(myLink+'/php/consumibles/add.php?&descripcion=' + descripcion + '&cantidad=' + cantidad, getAgregarConsumible);
+        oCarga("Agregando Consumible...");
+        servidor(myLink + '/php/consumibles/add.php?&descripcion=' + descripcion + '&cantidad=' + cantidad,
+            function (respuesta) {
+                if (respuesta.responseText == "1") {
+                    alerta("Consumible agregado");
+                    resetearPilaFunction(refresConsumible);
+                }
+                else alerta("No se pudo Agregar");
+                cCarga();
+            }
+        );
     }
     else alerta("Espacios vacios!");
-
-
-}
-function getAgregarConsumible(respuesta) {
-    if (respuesta.responseText == "1") {
-        alerta("Consumible agregado");
-        resetearPilaFunction(refresConsumible);
-    }
-    else alerta("No se pudo Agregar");
 }
 //fin de agregar consumible
 
 //eliminar consumible
 function setEliminarConsumible(id) {
-    servidor(myLink+'/php/consumibles/delete.php?id=' + id, getEliminarConsumible)
-}
-function getEliminarConsumible(respuesta) {
-    if (respuesta.responseText == "1") {
-        alerta("Consumible Eliminado");
-        refresConsumible();
-    }
-    else alerta("No se pudo Eliminar");
+    servidor(myLink + '/php/consumibles/delete.php?id=' + id, function (respuesta) {
+        if (respuesta.responseText == "1") {
+            alerta("Consumible Eliminado");
+            refresConsumible();
+        }
+        else alerta("No se pudo Eliminar");
+    });
 }
 //fin de eliminar consumible
 
@@ -104,7 +70,7 @@ function getEliminarConsumible(respuesta) {
 
 function setActualizarConsumible(id) {
     let cantidad = $('#salidaConsumible').val();
-    if (cantidad >= 0) servidor(myLink+'/php/consumibles/update.php?id=' + id + '&cantidad=' + cantidad, getActualizarConsumible);
+    if (cantidad >= 0) servidor(myLink + '/php/consumibles/update.php?id=' + id + '&cantidad=' + cantidad, getActualizarConsumible);
     else alerta("No puede ser menor a 0");
 }
 function getActualizarConsumible(respuesta) {
@@ -121,7 +87,7 @@ function getActualizarConsumible(respuesta) {
 
 function setActualizarConsumibleDes(id) {
     let descripcion = $('#salidaConsumibleDes').val().toUpperCase();
-    if (vacio(descripcion)) servidor(myLink+'/php/consumibles/updateDes.php?id=' + id + '&descripcion=' + descripcion, getActualizarConsumibleDes);
+    if (vacio(descripcion)) servidor(myLink + '/php/consumibles/updateDes.php?id=' + id + '&descripcion=' + descripcion, getActualizarConsumibleDes);
     else alerta("No puede estar vacio");
 }
 function getActualizarConsumibleDes(respuesta) {
@@ -135,21 +101,24 @@ function getActualizarConsumibleDes(respuesta) {
 //fin de actualizar de consumible descripcion
 
 function enlistarConsumible(json) {
-    let html1 = "";
-    html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="alertaConsumible(\'' + conversionJsonArray(json) + '\')">';
-    html1 += '<ons-list-item class="" modifier="nodivider">';
-    html1 += '  <div class="left">';
-    html1 += '      <i class="fa-solid fa-toolbox fa-2x"></i>';
-    html1 += '  </div>';
-    html1 += '  <div class="center">';
-    html1 += '    <span class="list-item__title"><b>' + json.descripcion + '</b></span>';
-    html1 += '    <span class="list-item__subtitle"><b>' + sumarDias(json.fecha, 0) + ' </b></span>';
-    html1 += '  </div>"';
-    html1 += '  <div class="right"><span class="notification">' + json.cantidad + ' pza(s)</span></div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-    return html1
+    return `
+    <ons-card style="padding:0px;" class="botonPrograma" onclick="alertaConsumible('${conversionJsonArray(json)}')">
+        <ons-list-item class="" modifier="nodivider">
+            <div class="left">
+                <i class="fa-solid fa-toolbox fa-2x"></i>
+            </div>
+            <div class="center">
+                <span class="list-item__title"><b>${json.descripcion}</b></span>
+                <span class="list-item__subtitle"><b>${sumarDias(json.fecha, 0)}</b></span>
+            </div>
+            <div class="right">
+                <span class="notification">${json.cantidad} pza(s)</span>
+            </div>
+        </ons-list-item>
+    </ons-card>
+    `;
 }
+
 var idConsumible = "";
 function alertaConsumible(array) {
     array = array.split(",");
@@ -172,12 +141,13 @@ function mensajeAccion(index, json) {
         }, 1);
 
     }
-    else if (index == 2) alertComfirm("Estas seguro de eliminar este consumible?", ["Aceptar", "Cancelar"], alertaEliminar, json)
+    else if (index == 2) alertComfirm("Estas seguro de eliminar este consumible?", ["Aceptar", "Cancelar"],
+        function () {
+            if (index == 0) setEliminarConsumible(json.id);
+        });
 }
 
-function alertaEliminar(index, json) {
-    if (index == 0) setEliminarConsumible(json.id);
-}
+
 function incrementar() {
     let cantidad = $('#salidaConsumible').val();
     $('#salidaConsumible').val(parseInt(cantidad) + 1);

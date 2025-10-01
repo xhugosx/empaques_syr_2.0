@@ -54,12 +54,14 @@
     <script src="./js/grabados.js"></script>
     <script src="./js/calendarioProgramaCaja.js"></script>
     <script src="./js/calendarioProgramaInserto.js"></script>
+    <script src="./js/m2.js"></script>
 
     <script src="./cordova.js"></script>
 
 
     <!-- script de graficas -->
     <script src="./js/graficas/Chart.js"></script>
+    
 
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
@@ -221,18 +223,6 @@
                         <br>
                         <span style="color: white;"> WIP </span>
                     </ons-card>
-                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
-                        onclick="nextPage('mainHistorialPrograma.html')">
-                        <!--i class="fa-solid fa-gears fa-4x" style=" margin: 5px; "></i-->
-                        <span style="position: relative; display: inline-block;">
-                            <i class="fas fa-box fa-4x"></i>
-                            <i class="fas fa-calendar-days bordeIcon" style="position: absolute; 
-                                bottom: 0; right: -15px; 
-                                font-size: 30px;"></i>
-                        </span>
-                        <br>
-                        <span> Historial de Programa </span>
-                    </ons-card>
                 </div>
             </ons-card>
             <ons-card id="contenedorPrograma">
@@ -271,6 +261,34 @@
                     </ons-card>
                 </div>
 
+            </ons-card>
+            <ons-card id="contenedorPrograma">
+                <div class="title contenedor-flexbox">
+                    HISTORIAL
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPage('mainHistorialPrograma.html')">
+                        <!--i class="fa-solid fa-gears fa-4x" style=" margin: 5px; "></i-->
+                        <span style="position: relative; display: inline-block;">
+                            <i class="fas fa-box fa-4x"></i>
+                            <i class="fas fa-calendar-days bordeIcon" style="position: absolute; 
+                                bottom: 0; right: -15px; 
+                                font-size: 30px;"></i>
+                        </span>
+                        <br>
+                        <span> Historial de Programa </span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio btnActivo" onclick="nextPageFunction('estadisticas.html',setEstadisticas)">
+                        <!--i class="fa-solid fa-clipboard-list fa-4x" style="margin: 5px; color: white;"></i-->
+                        <span style="position: relative; display: inline-block;">
+                            <i class="fas fa-boxes-packing fa-4x" style="color:white"></i>
+                            <i class="fas fa-chart-pie bordeIcon"></i>
+                        </span>
+                        <br>
+                        <span style="color: white;"> Estadisticas </span>
+                    </ons-card>
+                </div>
             </ons-card>
 
         </ons-page>
@@ -339,7 +357,8 @@
                         onclick="asignarAnio(); nextPageFunction('ingresos.html',setIngresos);chart=''; ">
                         <span style="position: relative; display: inline-block;">
                             <i class="fas fa-money-check-dollar fa-4x"></i>
-                            <i class="fas fa-arrow-trend-down bordeIcon" style="color: rgb(193, 69, 69);"></i>
+                            <i class="fas fa-arrow-trend-up bordeIcon" style="color: rgb(80, 149, 80);"></i>
+
                         </span>
                         <br>
                         <span> Ingresos</span>
@@ -348,7 +367,7 @@
                         onclick="asignarAnio();nextPageFunction('egresos.html',setEgresos);chart='';">
                         <span style="position: relative; display: inline-block;">
                             <i class="fas fa-money-check-dollar fa-4x"></i>
-                            <i class="fas fa-arrow-trend-up bordeIcon" style="color: rgb(80, 149, 80);"></i>
+                            <i class="fas fa-arrow-trend-down bordeIcon" style="color: rgb(193, 69, 69);"></i>
                         </span>
                         <br>
                         <span> Egresos </span>
@@ -392,7 +411,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchProgramaCaja" onkeyup="debounceBuscare(setMostrarProgramaCaja)"
+                    <ons-search-input id="searchProgramaCaja" onkeyup="debounceBuscare(event,setMostrarProgramaCaja)"
                         placeholder="Buscar: Id / Codigo / Producto / Cliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -415,7 +434,8 @@
         <ons-page id="programaInsertos">
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchProgramaInserto" onkeyup="debounceBuscare(setMostrarProgramaInserto)"
+                    <ons-search-input id="searchProgramaInserto"
+                        onkeyup="debounceBuscare(event,setMostrarProgramaInserto)"
                         placeholder="Buscar: Id / Codigo / Producto / Cliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -501,6 +521,63 @@
     </template>
 
     <!-- FIN DE HISTORIAL DE PROGRAMA -->
+
+    <!-- INICIO DE ESTADISTICAS DE METROS CUADRADOS -->
+    <template id="estadisticas.html">
+        <ons-page id="estadisticas">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Estadisticas</div>
+            </ons-toolbar>
+            <div id="loadingIngreso">
+
+            </div>
+            <!--ons-progress-bar id="loadingClientes"  indeterminate ></ons-progress-bar-->
+
+            <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255)">
+                <div class="tittle">Total M²: </div>
+
+                <center>
+                    <span id="cantidadTotal">0.0</span>
+                    <br>
+
+                    <canvas id="grafica" width="100vh" height="50px"></canvas>
+
+                </center>
+                
+
+                <ons-card id="contenedorPrograma" style="background-color: #efefef;">
+                    <center>
+                        <div>
+                            <div class="anio" style="font-size: 14px;">
+                                <span style="display: inline-block;  margin-top: 5px;"><b>Mes:</b>
+                                    <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="accionMesE(-1)"></i>
+                                    <span id="mesE"> <!--Aqui va el mes--> ENERO </span>
+                                    <i class="fa-solid fa-arrow-right flechaDerecha" onclick="accionMesE(1)"></i>
+                                </span>
+                                <span style="display: inline-block;  margin-top: 5px;"><b>Año: </b>
+                                    <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="accionAnioE(-1)"></i>
+                                    <span id="anioE"> <!--Aqui va el anio--> 2025</span>
+                                    <i class="fa-solid fa-arrow-right flechaDerecha" onclick="accionAnioE(1)"></i>
+                                </span>
+                            </div>
+                    </center>
+                </ons-card>
+            </ons-card>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
+                <ons-lazy-repeat id="Ingresos"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br><br><br>
+
+            <ons-fab onclick="" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
+            </ons-fab>
+
+        </ons-page>
+    </template>
+    <!-- FIN DE ESTADISTICAS DE METROS CUADRADOS -->
 
 
 
@@ -596,18 +673,19 @@
                 <div class="tittle">Cantidad Total: </div>
 
 
-                <center><span id="cantidadTotal"></span>
-                    <br>
+                <center>
+                    <span id="cantidadTotal"></span>
+                    
 
                     <canvas id="grafica" width="100vh" height="50px"></canvas>
 
                 </center>
-
-                <div class="tittle" style="font-size: 20px;">Año</div>
+                
 
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
+                            <b>Año:</b><br>
                             <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="prevI()"></i>
                             <span id="anioG"> <!--Aqui va el anio--> </span>
                             <i class="fa-solid fa-arrow-right flechaDerecha" onclick="nextI()"></i>
@@ -932,10 +1010,10 @@
                     <canvas id="grafica" width="100vh" height="50px"></canvas>
 
                 </center>
-                <div class="tittle" style="font-size: 20px;">Año</div>
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
+                             <b>Año:</b><br>
                             <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="prevE()"></i>
                             <span id="anioG"> <!-- aqui ira el anio --></span>
 
@@ -1285,7 +1363,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchProveedor" onkeyup="debounceBuscare(setProveedor)"
+                    <ons-search-input id="searchProveedor" onkeyup="debounceBuscare(event,setProveedor)"
                         placeholder="Buscar: Codigo / Nombre  "></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -1452,7 +1530,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input onkeyup="debounceBuscare(setClientes)" placeholder="Buscar: codigo / nombre"
+                    <ons-search-input onkeyup="debounceBuscare(event,setClientes)" placeholder="Buscar: codigo / nombre"
                         id="busquedaCliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -1630,7 +1708,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="busquedaProductos1" onkeyup="debounceBuscare(setProductos)"
+                    <ons-search-input id="busquedaProductos1" onkeyup="debounceBuscare(event,setProductos)"
                         placeholder="Buscar: codigo / nombre"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -1714,6 +1792,18 @@
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
                             <div class="left">
+                                <i class="fa-solid fa-ruler-combined fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input name="m2" type="number" id="m2Producto" class="input-100" cols="30" rows="1"
+                                    placeholder="Metros cuadrados"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
                                 <i class="fa-solid fa-file-pdf fa-lg"></i>
                             </div>
                             <div class="center">
@@ -1777,6 +1867,19 @@
                             </div>
                             <div class="center">
                                 <ons-input name="precio" type="number" id="precioProductoActualizar"
+                                    class="input-100"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-ruler-combined fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input name="m2" type="number" id="m2ProductoActualizar"
                                     class="input-100"></ons-input>
                             </div>
                         </ons-list-item>
@@ -1874,7 +1977,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchPCM" onkeyup="setMostrarPedidosLamina()"
+                    <ons-search-input id="searchPCM" onkeyup="debounceBuscare(event,event,setMostrarPedidosLamina)"
                         placeholder="Buscar: Od. Comp. / Estado / Resistencia / Medidas "></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -2464,7 +2567,7 @@
                 <ons-list-item>
                     <div class="center">
                         <ons-search-input placeholder="Buscar: Codigo / Cliente / Id / Fecha"
-                            onkeyup="debounceBuscare(setMostrarEntradaCajas)" id="searchEntradaCaja">
+                            onkeyup="debounceBuscare(event,setMostrarEntradaCajas)" id="searchEntradaCaja">
                         </ons-search-input>
                     </div>
                     <div class="right">
@@ -2572,7 +2675,7 @@
                 <ons-list-item>
                     <div class="center">
                         <ons-search-input placeholder="Buscar: Inserto / Producto / Cliente / Id"
-                            onkeyup="debounceBuscare(setMostrarEntradasInserto)" id="searchEntradaInserto">
+                            onkeyup="debounceBuscare(event,setMostrarEntradasInserto)" id="searchEntradaInserto">
                         </ons-search-input>
                     </div>
                     <div class="right">
@@ -2680,7 +2783,8 @@
                 <ons-list-item>
                     <ons-search-input id="searchLaminaInventario"
                         placeholder="Buscar: Orden de Compra / Medidas / codigo caja"
-                        onkeyup="debounceBuscare(setMostrarEntradaLaminas)" id="searchEntradLamina"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setMostrarEntradaLaminas)"
+                        id="searchEntradLamina"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -2807,7 +2911,7 @@
                 <ons-list-item>
                     <div class="center">
                         <ons-search-input placeholder="Buscar: Codigo / Cliente / Id / Fecha"
-                            onkeyup="debounceBuscare(setMostrarSalidaCajas)" id="searchSalidaCaja">
+                            onkeyup="debounceBuscare(event,setMostrarSalidaCajas)" id="searchSalidaCaja">
                         </ons-search-input>
                     </div>
                     <div class="right">
@@ -2915,7 +3019,7 @@
                 <ons-list-item>
                     <div class="center">
                         <ons-search-input placeholder="Buscar: Inserto / Producto / Cliente / Id"
-                            onkeyup="debounceBuscare(setMostrarSalidasInserto)" id="searchSalidaInserto">
+                            onkeyup="debounceBuscare(event,setMostrarSalidasInserto)" id="searchSalidaInserto">
                         </ons-search-input>
                     </div>
                     <div class="right">
@@ -3023,7 +3127,8 @@
                 <ons-list-item>
                     <ons-search-input id="searchLaminaInventario"
                         placeholder="Buscar: Orden de Compra / Medidas / codigo caja"
-                        onkeyup="debounceBuscare(setMostrarSalidaLaminas)" id="searchEntradLamina"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setMostrarSalidaLaminas)"
+                        id="searchEntradLamina"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -3159,13 +3264,15 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchClienteCajaInventario" placeholder="Buscar: Codigo / Cliente"
-                        onkeyup="debounceBuscare(setMostrarInventarioClienteCajas);"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setMostrarInventarioClienteCajas);"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosClienteCajaInventario"></ons-lazy-repeat>
             </ons-list>
+
+            <br><br><br><br><br>
 
             <ons-fab onclick="setMostrarInventarioClienteCajas()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
@@ -3186,13 +3293,15 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchCajaInventario" placeholder="Buscar: Codigo / Producto / Cliente"
-                        onkeyup="debounceBuscare(function(){setMostrarInventarioCajas(codigoCliente)});"></ons-search-input>
+                        onkeyup="debounceBuscare(event,function(){setMostrarInventarioCajas(codigoCliente)});"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosCajaInventario"></ons-lazy-repeat>
             </ons-list>
+
+            <br><br><br><br><br>
 
             <ons-fab onclick="setMostrarInventarioCajas(codigoCliente)" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
@@ -3215,13 +3324,15 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchClienteInsertoInventario" placeholder="Buscar: Codigo / Cliente"
-                        onkeyup="debounceBuscare(setMostrarInventarioClienteInserto);"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setMostrarInventarioClienteInserto);"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosClienteInsertoInventario"></ons-lazy-repeat>
             </ons-list>
+
+            <br><br><br><br><br>
 
             <ons-fab onclick="setMostrarInventarioClienteInserto()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
@@ -3243,13 +3354,15 @@
                 <ons-list-item>
                     <ons-search-input id="searchInsertoInventario"
                         placeholder="Buscar: codigo / producto / cliente / inserto"
-                        onkeyup="debounceBuscare(function(){setMostrarInventarioInserto(codigoCliente)});"></ons-search-input>
+                        onkeyup="debounceBuscare(event,function(){setMostrarInventarioInserto(codigoCliente)});"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosInsertoInventario"></ons-lazy-repeat>
             </ons-list>
+
+            <br><br><br><br><br>
 
             <ons-fab onclick="setMostrarInventarioInserto(codigoCliente)" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
@@ -3267,13 +3380,15 @@
                 <ons-list-item>
                     <ons-search-input id="searchLaminaInventario"
                         placeholder="Buscar: Orden de Compra / Resistencia / Largo / Ancho / Codigo Producto / Producto"
-                        onkeyup="debounceBuscare(setMostrarInventarioLamina)"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setMostrarInventarioLamina)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosLaminaInventario"></ons-lazy-repeat>
             </ons-list>
+
+            <br><br><br><br><br>
 
             <ons-fab onclick="setMostrarInventarioLamina()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
@@ -3322,7 +3437,7 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchConsumible" placeholder="Buscar: descripcion / cantidad"
-                        onkeyup="setMostrarConsumibleSearch(this.value,event)"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setConsumible)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -3345,7 +3460,7 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchConsumible0" placeholder="Buscar: descripcion / cantidad"
-                        onkeyup="setMostrarConsumible0Search(this.value,event)"></ons-search-input>
+                        onkeyup="debounceBuscare(event,setConsumible0)"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -3783,7 +3898,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchPedidoCliente" onkeyup="debounceBuscare(setPedidosCliente)"
+                    <ons-search-input id="searchPedidoCliente" onkeyup="debounceBuscare(event,setPedidosCliente)"
                         placeholder="Buscar: codigo / cliente"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -3808,7 +3923,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchPedido" onkeyup="debounceBuscare(setBusquedaPendiente)"
+                    <ons-search-input id="searchPedido" onkeyup="debounceBuscare(event,setBusquedaPendiente)"
                         placeholder="Buscar: id / codigo / producto / Orden de compra"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -3835,7 +3950,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchPedidoInserto" onkeyup="debounceBuscare(setPedidosInsertos)"
+                    <ons-search-input id="searchPedidoInserto" onkeyup="debounceBuscare(event,setPedidosInsertos)"
                         placeholder="Buscar: id / codigo / producto"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -3910,7 +4025,7 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchPedidosClientesFiltrados"
-                        onkeyup="debounceBuscare(function(){setPedidosClienteFiltradoTodo(cliente)})"
+                        onkeyup="debounceBuscare(event,function(){setPedidosClienteFiltradoTodo(cliente)})"
                         placeholder="Buscar"></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -3918,6 +4033,8 @@
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosPedidosClienteFiltrado"></ons-lazy-repeat>
             </ons-list>
+
+            <br><br><br><br><br>
 
         </ons-page>
     </template>

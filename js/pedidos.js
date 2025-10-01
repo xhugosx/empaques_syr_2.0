@@ -493,7 +493,7 @@ function enlistarPedidosCliente(arrayJson) {
 //ENLISTAR PEDIDOS
 var estadoTemp = "";
 function enlistarPedidos(arrayJson, i) {
-    //alerta(""+arrayJson)
+    //console.log(arrayJson);
     let html1 = "";
     var color = "";
     var entregado = "";
@@ -512,7 +512,7 @@ function enlistarPedidos(arrayJson, i) {
 
 
     var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    var inventario = arrayJson.estado != 2 ? '' : '<hr><span style="color:#48AC33;font-size:15px">' + separator(arrayJson.inventario) + ' pza(s) hechas</span>';
+    var inventario = arrayJson.estado != 2 ? '' : '<hr><span style="color:#48AC33;font-size:15px">' + separator(arrayJson.inventario) + ' pza(s) hechas - ' + sumarDias(arrayJson.fecha_entrada, 0) + '</span>';
 
     html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="event.stopPropagation(); crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 0) + '\',\'' + arrayJson.producto + '\',\'' + arrayJson.cliente + '\',\'' + sumarDias(arrayJson.fecha_entrega, 0) + '\')">'
     html1 += '<ons-list-header style="background-color: rgba(255, 255, 255, 0)">' + estadosColor(arrayJson.estado) + '&emsp;';
@@ -526,13 +526,13 @@ function enlistarPedidos(arrayJson, i) {
     html1 += '    <div class="left">';
     html1 += '        <strong>' + arrayJson.codigo + '</strong>';
     html1 += '    </div>';
-    html1 += '    <div class="center romperTexto">';
+    html1 += '    <div class="center">';
     html1 += '        <span class="list-item__title">' + arrayJson.producto + '&nbsp;|&nbsp;<b style="color:#404040">' + arrayJson.resistencia + ' ' + arrayJson.papel + '</b></span>';
     html1 += '        <span class="list-item__subtitle">';
     html1 += '<span>' + arrayJson.cliente + '</span><br> <b>O. C: ' + arrayJson.oc + '&emsp;Fecha: ' + sumarDias(arrayJson.fecha_oc, 0) + '</b>';
     html1 += enlistarFacturas(arrayJson);
     html1 += inventario;
-    html1 += arrayJson.observaciones == "" ? "" : '<br><span><b><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
+    html1 += arrayJson.observaciones == "" ? "" : '<hr><span><b><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
     html1 += '        </span>';
     html1 += '    </div>';
     html1 += '    <div class="right">';
