@@ -59,7 +59,7 @@ function setAgregarProducto() {
 
         if (codigoF === codigo) {
             var form = $('#formProducto')[0];
-            var formData = new FormData(form); 0
+            var formData = new FormData(form); 
 
             $("#btn-producto").prop("disabled", true);
             oCarga("Agregando Producto...");
@@ -164,7 +164,7 @@ function enlistarProductos(arrayJson, i) {
                 <span class="list-item__subtitle" style="font-size:14px">${arrayJson.producto}</span>
             </div>
             
-            <div class="right" style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+            <div class="right" style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; white-space: nowrap;">
                 <span class="list-item__title"><b><b>M²: ${arrayJson.m2}</b></b></span>
                 <span class="list-item__subtitle" style="font-size:14px"><b>$ ${separator(arrayJson.precio)}</b></span>  
             </div>

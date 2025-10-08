@@ -55,13 +55,14 @@
     <script src="./js/calendarioProgramaCaja.js"></script>
     <script src="./js/calendarioProgramaInserto.js"></script>
     <script src="./js/m2.js"></script>
+    <script src="./js/usuarios.js"></script>
 
     <script src="./cordova.js"></script>
 
 
     <!-- script de graficas -->
     <script src="./js/graficas/Chart.js"></script>
-    
+
 
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
@@ -71,9 +72,7 @@
     <title>Empaques SyR</title>
 </head>
 
-<body>
-
-
+<body onload="primero()">
 
     <ons-splitter id="onsplitter">
         <ons-splitter-side id="menu" side="right" width="320px" collapse>
@@ -82,7 +81,7 @@
             </ons-page>
         </ons-splitter-side>
         <ons-splitter-content id="content">
-            <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
+            <ons-navigator swipeable id="myNavigator" page="inicio.html"></ons-navigator>
         </ons-splitter-content>
     </ons-splitter>
 
@@ -106,10 +105,10 @@
             <div id="loadingIngreso">
 
             </div>
-            <ons-card class="botonPrograma ">
+            <ons-card class="">
                 <ons-list-item onclick="" tappable modifier="nodivider">
                     <div class="center">
-                        <ons-input type="date"></ons-input>
+                        <ons-input type=""></ons-input>
                     </div>
                 </ons-list-item>
 
@@ -119,6 +118,44 @@
         </ons-page>
     </template>
     <!-- FIN DE PAGINAS PARA MENUS -->
+
+    <!-- INICIO PAGINA PARA INICIO DE SESION -->
+    <template id="inicio.html">
+        <ons-page>
+            <br><br><br><br><br><br><br>
+            <center
+                style="background-image: url('/media/Logo_oficial_opacity30.svg'); background-size: contain; background-position: center; background-repeat: no-repeat;">
+                <div
+                    style="border: #efefef 10px solid; border-radius: 50%; padding: 30px 20px 30px 20px; width: 100px;">
+                    <i class="fa fa-user fa-5x" style="color: white;"></i>
+                </div>
+                <h1 style="color: white;">Inicio sesion</h1>
+                <form onsubmit="return false;" id="formSesion">
+                    <ons-card class="botonPrograma" style="border-radius: 30px; width: 80%;">
+                        <span>Usuario:</span>
+                        <ons-list-item modifier="nodivider">
+                            <ons-input id="usuario" name="usuario" type="text" class="input-100"
+                                placeholder="Ejemplo: Empques123"></ons-input>
+                        </ons-list-item>
+                    </ons-card>
+                    <ons-card class="botonPrograma" style="border-radius: 30px; width: 80%;">
+                        <span>Contraseña:</span>
+                        <ons-list-item modifier="nodivider">
+                            <ons-input id="contrasena" name="contrasena" type="password" class="input-100"
+                                placeholder="Ejemplo: *******"></ons-input>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider" style="width: 80%;">
+                        <ons-button modifier="large" onclick="setInicio()">Iniciar Sesión</ons-button>
+                    </ons-list-item>
+                </form>
+
+
+            </center>
+        </ons-page>
+    </template>
+    <!-- FIN DE PAGINA PARA INICIO DE SESION -->
 
     <!-- PAGINA PRINCIPAL -->
     <template id="home.html">
@@ -136,6 +173,10 @@
                 <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar"></ons-tab>
             </ons-tabbar>
 
+            <ons-fab onclick="cerrarSesion()" position="bottom right" style="background-color: rgb(218, 84, 84); bottom: 60px">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Cerrar Sesión</span>
+            </ons-fab>
         </ons-page>
     </template>
 
@@ -195,6 +236,15 @@
                         <i class="fas fa-boxes-stacked fa-4x iconoBorde"></i>
                         <br>
                         <span style="color:white"> Productos</span>
+                    </ons-card>
+                </div>
+                <div class="contenedor-flexbox">
+                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                        onclick="nextPageFunction('usuarios.html',setUsuarios)">
+                        <!--i class="fa-solid fa-boxes fa-4x" style="margin: 5px; "></i-->
+                        <i class="fa-solid fa-users-gear fa-4x"></i>
+                        <br>
+                        <span> Usuarios </span>
                     </ons-card>
                 </div>
             </ons-card>
@@ -279,7 +329,8 @@
                         <br>
                         <span> Historial de Programa </span>
                     </ons-card>
-                    <ons-card class="botonPrograma botonInicio btnActivo" onclick="nextPageFunction('estadisticas.html',setEstadisticas)">
+                    <ons-card class="botonPrograma botonInicio btnActivo"
+                        onclick="nextPageFunction('estadisticas.html',setEstadisticas)">
                         <!--i class="fa-solid fa-clipboard-list fa-4x" style="margin: 5px; color: white;"></i-->
                         <span style="position: relative; display: inline-block;">
                             <i class="fas fa-boxes-packing fa-4x" style="color:white"></i>
@@ -290,7 +341,7 @@
                     </ons-card>
                 </div>
             </ons-card>
-
+            <br><br><br><br>
         </ons-page>
     </template>
     <!-- fin de produccion-->
@@ -386,6 +437,181 @@
         </ons-page>
     </template>
     <!-- fin de control de ingresos -->
+
+    <!-- INICIO SECCION DE USUARIOS -->
+
+    <template id="usuarios.html">
+        <ons-page id="usuarios">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Usuarios</div>
+            </ons-toolbar>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchUsuarios" onkeyup="debounceBuscare(event,setUsuarios)"
+                        placeholder="Buscar: Id / Nombre"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosUsuarios"></ons-lazy-repeat>
+            </ons-list>
+
+            <ons-fab onclick="setUsuarios()" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
+            </ons-fab>
+
+            <ons-fab onclick="nextPage('agregarUsuario.html')" position="bottom right">
+                <i class="fa-solid fa-plus"></i>
+                <span>Agregar</span>
+            </ons-fab>
+
+            <br><br><br><br><br><br><br>
+
+        </ons-page>
+    </template>
+
+    <!--Agregar usuario-->
+    <template id="agregarUsuario.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Agregar Usuario</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+
+            <ons-card id="contenedorInput">
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-user-large fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="nombre" class="input-100" cols="30" rows="2"
+                                placeholder="Usuario"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="contrasenaUsuario" type="password" class="input-100" cols="30" rows="2"
+                                placeholder="Contraseña"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-key fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="contrasenaUsuario1" type="password" class="input-100" cols="30" rows="2"
+                                placeholder="Repite tu Contraseña"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-users fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-select class="input-100" name="usuario" id="perfil">
+                                <option value="" style="color: #ccc;">(PERFIL)</option>
+                                <option value="1">📈 Finanzas</option>
+                                <option value="2">⚙️ Produccion</option>
+                                <option value="3">👨‍💼 Administrador</option>
+                                <option value="4">🔑 Root</option>
+                            </ons-select>
+
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-list-item modifier="nodivider">
+                    <ons-button modifier="large" id="agregarProveedor"
+                        onclick="setAgregarUsuario()">Agregar</ons-button>
+                </ons-list-item>
+            </ons-card>
+
+        </ons-page>
+    </template>
+    <!-- fin de agregar usuario-->
+
+    <!-- inicio de editar usuario-->
+    <template id="editarUsuario.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Editar Usuario</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+
+            <ons-card id="contenedorInput">
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-user-large fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="id" class="input-100" cols="30" rows="2" placeholder="Id"
+                                disabled></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-user-large fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="nombre" class="input-100" cols="30" rows="2"
+                                placeholder="Usuario"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-users fa-lg"></i>
+                        </div>
+                        <div class="center">
+                            <ons-select class="input-100" name="usuario" id="perfil">
+                                <option value="" style="color: #ccc;">(PERFIL)</option>
+                                <option value="1">📈 Finanzas</option>
+                                <option value="2">⚙️ Produccion</option>
+                                <option value="3">👨‍💼 Administrador</option>
+                                <option value="4">🔑 Root</option>
+                            </ons-select>
+
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-list-item modifier="nodivider">
+                    <ons-button modifier="large" onclick="setEditarUsuario()">Editar</ons-button>
+                </ons-list-item>
+            </ons-card>
+
+        </ons-page>
+    </template>
+    <!-- fin de editar usuario-->
+
+    <!-- FIN DE SECCION DE USUARIOS-->
 
     <!--PROGRAMA NUEVO ACTUALIZAR -->
     <template id="mainPrograma.html">
@@ -523,6 +749,29 @@
     <!-- FIN DE HISTORIAL DE PROGRAMA -->
 
     <!-- INICIO DE ESTADISTICAS DE METROS CUADRADOS -->
+    <template id="estadisticasCajas.html">
+        <ons-page id="estadisticasCajas">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Estadisticas Cajas</div>
+            </ons-toolbar>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input id="searchEstadisticasCajas"
+                        onkeyup="debounceBuscare(event,function(){ setEstadisticasCajas(codigocliente) })"
+                        placeholder="Buscar: Id / Codigo / Producto"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0);">
+                <ons-lazy-repeat id="datosEstadisticasCajas"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br><br><br>
+
+        </ons-page>
+    </template>
+
     <template id="estadisticas.html">
         <ons-page id="estadisticas">
             <ons-toolbar>
@@ -536,43 +785,61 @@
 
             <ons-card id="contenedorPrograma" style="background-color: rgb(255, 255, 255)">
                 <div class="tittle">Total M²: </div>
+                <center><span id="cantidadTotal">0.0</span></center>
+                <ons-list-item modifier="nodivider" expandable id="graficaClientes"
+                    style="background-color: #efefefa1; border-radius: 20px; cursor: pointer;">
+                    <div class="left"><i class="fa fa-chart-pie fa-2x"></i></div>
+                    <div class="center"><b>CLIENTES</b></div>
+                    <div class="expandable-content">
+                        <center>
+                            <canvas id="grafica1" width="100vh" height="50px"></canvas>
+                        </center>
+                    </div>
+                </ons-list-item>
+                <br>
+                <ons-list-item modifier="nodivider" expandable
+                    style="background-color: #efefefa1; border-radius: 20px; cursor: pointer;">
+                    <div class="left"><i class="fa fa-chart-pie fa-2x"></i></div>
+                    <div class="center"><b>PROCESOS</b></div>
+                    <div class="expandable-content">
 
+                        <center>
+                            <canvas id="grafica" width="100vh" height="50px"></canvas>
+                        </center>
+
+                    </div>
+                </ons-list-item>
+                <br>
                 <center>
-                    <span id="cantidadTotal">0.0</span>
-                    <br>
-
-                    <canvas id="grafica" width="100vh" height="50px"></canvas>
-
+                    <div>
+                        <div class="anio" style="font-size: 14px;">
+                            <span style="display: inline-block;  margin-top: 5px;"><b>Mes:</b>
+                                <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="accionMesE(-1)"></i>
+                                <span id="mesE"> <!--Aqui va el mes--> ENERO </span>
+                                <i class="fa-solid fa-arrow-right flechaDerecha" onclick="accionMesE(1)"></i>
+                            </span>
+                            <span style="display: inline-block;  margin-top: 5px;"><b>Año: </b>
+                                <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="accionAnioE(-1)"></i>
+                                <span id="anioE"> <!--Aqui va el anio--> 2025</span>
+                                <i class="fa-solid fa-arrow-right flechaDerecha" onclick="accionAnioE(1)"></i>
+                            </span>
+                        </div>
                 </center>
-                
-
-                <ons-card id="contenedorPrograma" style="background-color: #efefef;">
-                    <center>
-                        <div>
-                            <div class="anio" style="font-size: 14px;">
-                                <span style="display: inline-block;  margin-top: 5px;"><b>Mes:</b>
-                                    <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="accionMesE(-1)"></i>
-                                    <span id="mesE"> <!--Aqui va el mes--> ENERO </span>
-                                    <i class="fa-solid fa-arrow-right flechaDerecha" onclick="accionMesE(1)"></i>
-                                </span>
-                                <span style="display: inline-block;  margin-top: 5px;"><b>Año: </b>
-                                    <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="accionAnioE(-1)"></i>
-                                    <span id="anioE"> <!--Aqui va el anio--> 2025</span>
-                                    <i class="fa-solid fa-arrow-right flechaDerecha" onclick="accionAnioE(1)"></i>
-                                </span>
-                            </div>
-                    </center>
-                </ons-card>
             </ons-card>
 
             <ons-list style="background: rgba(76, 175, 80, 0.0);">
-                <ons-lazy-repeat id="Ingresos"></ons-lazy-repeat>
+                <ons-lazy-repeat id="datosEstadisticas"></ons-lazy-repeat>
             </ons-list>
             <br><br><br><br><br><br><br>
 
-            <ons-fab onclick="" position="bottom left">
+            <ons-fab onclick="setEstadisticas()" position="bottom left">
                 <i class="fa-solid fa-arrows-rotate"></i>
                 <span>Actualizar</span>
+            </ons-fab>
+
+            <ons-fab onclick="setDescargarEstadisticasExcel()" position="bottom right">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <span>Descargar</span>
             </ons-fab>
 
         </ons-page>
@@ -675,12 +942,12 @@
 
                 <center>
                     <span id="cantidadTotal"></span>
-                    
+
 
                     <canvas id="grafica" width="100vh" height="50px"></canvas>
 
                 </center>
-                
+
 
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
@@ -1013,7 +1280,7 @@
                 <ons-card id="contenedorPrograma" style="background-color: #efefef;">
                     <center>
                         <div class="anio">
-                             <b>Año:</b><br>
+                            <b>Año:</b><br>
                             <i class="fa-solid fa-arrow-left flechaIzquierda" onclick="prevE()"></i>
                             <span id="anioG"> <!-- aqui ira el anio --></span>
 

@@ -770,3 +770,6 @@ ons-button.button--large:hover {
     color: #606060;
     margin: 85px;
 }
+.estadistica>i{
+    color: white !important;
+}

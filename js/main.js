@@ -1,3 +1,13 @@
+//FUNCION PARA VERIFICAR SI YA HABIA INICIADO SESION
+function primero() {
+  if (localStorage.getItem("usuario")){
+    nextPage("home.html");
+    let nombre = localStorage.getItem("usuario");
+    let perfil = localStorage.getItem("perfil");
+    alerta('Bienvenido: <hr><h4>' + tipoPerfil(perfil) + '</h4><h3>' + nombre + '</h3>');
+  } 
+  iniciarContadorInactividad();
+}
 
 // INICIALIZAMOS LA PANTALLA DE CARGA, SE MANDARA A LLAMAR CUANDO SE NECESITE
 function oCarga(texto) {
@@ -23,7 +33,7 @@ function debounceBuscare(e, miFuncion) {
   }, 400);
 }
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
-var myLink = "https://empaquessr.com/sistema/empaquessr_2";
+var myLink = "https://empaquessr.com/sistema/pruebas";
 function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   ons.notification.prompt({
     title: '',
@@ -35,7 +45,7 @@ function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   });
 }
 //FUNCION PARA GENERAR MENSAJE DE CONFIRMACION
-function alertComfirm(mensaje, botones, miFuncion, json) {
+function alertComfirm(mensaje, botones, miFuncion, json,) {
   ons.notification.confirm({
     title: "",
     message: mensaje,
@@ -125,6 +135,21 @@ function alerta(mensaje, titulo) {
   }
 
 }
+
+function alertaFunction(mensaje, titulo, funcion) {
+  if (!alertaActiva) {
+    alertaActiva = true;
+    let myTitulo = titulo ? "<b>" + titulo + "</b>" : "";
+    ons.notification.alert({
+      title: myTitulo,
+      message: mensaje,
+      buttonLabels: 'Aceptar'
+    }).then(function () {
+      funcion();
+    });
+  }
+
+}
 //var conexionActiva = null;
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link, miFuncion) {
@@ -155,7 +180,7 @@ function servidor(link, miFuncion) {
 
     try {
       xhttp.open("GET", link, true);
-      xhttp.timeout = 60000; 
+      xhttp.timeout = 60000;
       xhttp.send();
     } catch (error) {
       alerta("Error inesperado al intentar conectar.");
@@ -181,7 +206,7 @@ function servidorPost(link, miFuncion, data) {
 
       }
       else if (this.status == 500) {
-        alerta("Ejecucion fallida!");
+        alerta("Ejecucion fallida!:");
         cCarga();
       }
 
@@ -604,6 +629,15 @@ function resetearPilaFunction(miFuncion, data) {
     miFuncion(data);
   });
 }
+function resetearPila() {
+  document.querySelector('ons-navigator').popPage();
+}
+function resetarInicio() {
+  const nav = document.querySelector('ons-navigator');
+  if (nav) {
+    nav.resetToPage('inicio.html', { animation: 'fade' }); // puedes cambiar la animación
+  }
+}
 
 //funcion para poner coma y puntos en un numro
 function separator(numb) {
@@ -1009,6 +1043,7 @@ function crearExcel(nombreArchivoBase, datos) {
 
   if (!Array.isArray(datos) || datos.length === 0) {
     console.error("Los datos están vacíos o no son válidos.");
+    alerta("No hay datos para exportar.");
     return;
   }
 
