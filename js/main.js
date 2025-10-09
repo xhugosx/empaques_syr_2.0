@@ -145,6 +145,7 @@ function alertaFunction(mensaje, titulo, funcion) {
       message: mensaje,
       buttonLabels: 'Aceptar'
     }).then(function () {
+      alertaActiva = false;
       funcion();
     });
   }
