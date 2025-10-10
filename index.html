@@ -165,15 +165,30 @@
                     <img src="media/Logo_oficial.svg" height="80px" style="margin: 10px;" style="position: relative;">
                 </div>
             </ons-toolbar>
-            <ons-tabbar position="bottom" modifier="autogrow">
+
+            <ons-tabbar class="administrador" position="bottom" modifier="autogrow">
                 <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
-                <!--ons-tab page="programa.html" label="Programa" icon="fa-gears"></ons-tab-->
+                <ons-tab page="almacen.html" label="Produccion" icon="fa-warehouse"></ons-tab>
+                <ons-tab page="consumibles.html" label="Consumibles" icon="fa-clipboard-list"></ons-tab>
+            </ons-tabbar>
+            <ons-tabbar class="produccion" position="bottom" modifier="autogrow">
+                <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
+                <ons-tab page="almacen.html" label="Produccion" icon="fa-warehouse"></ons-tab>
+                <ons-tab page="consumibles.html" label="Consumibles" icon="fa-clipboard-list"></ons-tab>
+            </ons-tabbar>
+            <ons-tabbar class="finanzas" position="bottom" modifier="autogrow">
+                <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar" active></ons-tab>
+            </ons-tabbar>
+            <ons-tabbar class="root" position="bottom" modifier="autogrow">
+                <ons-tab page="administracion.html" label="Administración" icon="fa-list-check" active></ons-tab>
                 <ons-tab page="almacen.html" label="Produccion" icon="fa-warehouse"></ons-tab>
                 <ons-tab page="consumibles.html" label="Consumibles" icon="fa-clipboard-list"></ons-tab>
                 <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar"></ons-tab>
             </ons-tabbar>
 
-            <ons-fab onclick="cerrarSesion()" position="bottom right" style="background-color: rgb(218, 84, 84); bottom: 60px">
+
+            <ons-fab onclick="cerrarSesion()" position="bottom right"
+                style="background-color: rgb(218, 84, 84); bottom: 60px">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Cerrar Sesión</span>
             </ons-fab>
@@ -182,7 +197,7 @@
 
     <!-- administracion-->
     <template id="administracion.html">
-        <ons-page>
+        <ons-page id="administracion">
 
             <br><br><br><br>
             <ons-card id="contenedorPrograma" style="position: relative;">
@@ -209,7 +224,7 @@
                         <span> Pedidos lámina</span>
                     </ons-card>
                 </div>
-                <div class="contenedor-flexbox">
+                <div class="contenedor-flexbox administrador root">
                     <ons-card class="botonPrograma botonInicio" style="text-align: center; "
                         onclick="nextPageFunction('proveedor.html',setProveedor);tipoFilter = 0">
                         <span style="position: relative; display: inline-block;">
@@ -239,7 +254,7 @@
                     </ons-card>
                 </div>
                 <div class="contenedor-flexbox">
-                    <ons-card class="botonPrograma botonInicio" style="text-align: center; "
+                    <ons-card class="botonPrograma botonInicio root" style="text-align: center; "
                         onclick="nextPageFunction('usuarios.html',setUsuarios)">
                         <!--i class="fa-solid fa-boxes fa-4x" style="margin: 5px; "></i-->
                         <i class="fa-solid fa-users-gear fa-4x"></i>
@@ -254,7 +269,7 @@
 
     <!-- produccion -->
     <template id="almacen.html">
-        <ons-page>
+        <ons-page id="almacen">
             <br><br><br><br>
             <ons-card id="contenedorPrograma">
                 <div class="title contenedor-flexbox">
@@ -312,7 +327,7 @@
                 </div>
 
             </ons-card>
-            <ons-card id="contenedorPrograma">
+            <ons-card id="contenedorPrograma" class="administrador root">
                 <div class="title contenedor-flexbox">
                     HISTORIAL
                 </div>

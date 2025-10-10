@@ -1,3 +1,37 @@
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    const pagesPermitidas = ['almacen'];
+
+    if (pagesPermitidas.includes(page.id)) {
+        remover();
+    }
+});
+
+function remover() {
+    let perfil = localStorage.getItem("perfil");
+    if (perfil) {
+        let perfiles = ["finanzas", "produccion", "administrador", "root"];
+        let perfilActual = perfiles[perfil - 1];
+
+        // Recorre todos los elementos que tengan alguna clase de perfil
+        perfiles.forEach(p => {
+            $("." + p).each(function () {
+                const clases = $(this).attr("class").split(/\s+/);
+
+                // Si NO tiene la clase del perfil actual, se elimina
+                console.log(this,clases,clases.includes(perfilActual),perfilActual);
+                //console.log("vuelta...");
+                if (!clases.includes(perfilActual)) {
+                    $(this).remove();
+                }
+            });
+        });
+    } else {
+        alerta("⚠️ Perfil no válido o no encontrado en localStorage.");
+    }
+}
+
+
 function setUsuarios() {
     oCarga("Cargando usuarios...");
     let search = $('#searchUsuarios').val();
@@ -43,6 +77,7 @@ function setAgregarUsuario() {
             }
         );
     }
+    else alerta("Campos Vacios");
 
 }
 function setEditarUsuario() {
@@ -71,6 +106,20 @@ function setEditarUsuario() {
         );
     }
 
+}
+
+function setEliminarUsuario(id) {
+    let link = myLink + "/php/usuarios/delete.php?id=" + id;
+    servidor(link,
+        function (respuesta) {
+            let resultado = respuesta.responseText;
+            if (resultado) {
+                alerta("Usuario eliminado");
+                setUsuarios();
+            }
+            else alerta("Hubo un error al tratar de eliminar el usuario");
+        }
+    );
 }
 
 // Tiempo máximo de inactividad en milisegundos (ej: 15 min)
@@ -125,8 +174,8 @@ function preguntarSiActivo() {
     // Esperar respuesta del usuario con timeout
     alertaTimer = setTimeout(() => {
         // Si no responde a tiempo, cerrar sesión automáticamente
-        localStorage.clear();
-        resetarInicio();
+        localStorage.clear(); // borramos el local storage
+        resetarInicio(); // mandamos al primer page
         $('ons-alert-dialog').remove(); // forzamos eliminar el alert
         alertaActiva = false; //reiniciamos la variable para que muestre mas alert
 
@@ -161,6 +210,7 @@ function setInicio() {
             function (respuesta) {
                 let resultado = respuesta.responseText;
                 let json = JSON.parse(resultado);
+                //console.log(json);
                 if (json.estatus == 1) {
                     nextPage("home.html");
                     alerta('Bienvenido: <hr><h4>' + tipoPerfil(json.perfil) + '</h4><h3>' + json.nombre + '</h3>');
@@ -169,6 +219,7 @@ function setInicio() {
                     localStorage.setItem("perfil", json.perfil);
                     //localStorage.setItem("perfil", json.perfil);
                 }
+                else if (json.error) alerta(json.error);
                 else alerta("Usuario bloqueado, solicite al encargado Desbloquear...", '<i class="fa-solid fa-triangle-exclamation"></i>');
                 cCarga();
             }
@@ -328,6 +379,15 @@ function opcionesUsuaio(id, nombre) {
                         )
                     }
                 );
+            }
+            else if (index == 2) {
+                let b = ['<i class="fas fa-times"></i>&nbsp;Cancelar', 'Aceptar&nbsp;<i class="fa fa-trash"></i>'];
+                alertComfirm("Estas seguro de eliminar el usuario?", b,
+                    function () {
+                        setEliminarUsuario(id);
+                    }
+                );
+
             }
         }
     );

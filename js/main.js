@@ -5,7 +5,9 @@ function primero() {
     let nombre = localStorage.getItem("usuario");
     let perfil = localStorage.getItem("perfil");
     alerta('Bienvenido: <hr><h4>' + tipoPerfil(perfil) + '</h4><h3>' + nombre + '</h3>');
-  } 
+    
+  }
+  else resetarInicio();
   iniciarContadorInactividad();
 }
 
@@ -103,21 +105,23 @@ function conversionTextoArray(txt) {
 //ESTA FUNCION ES PARA EJECUTAR UNA FUNCION AL PAR LA SIGUIENTE PAGINA
 function nextPageFunction(miPage, miFuncion) {
   myNavigator.pushPage(miPage, { data: { title: '' } }).then(function () {
-
+    if(!localStorage.getItem("usuario")) resetarInicio();
     miFuncion();
 
   });
 }
 //ESTA FUNCION SOLO TE PASA A LA SIGUIENTE PAGINA
 function nextPage(miPage) {
-  myNavigator.pushPage(miPage, { data: { title: '' } });
+  myNavigator.pushPage(miPage, { data: { title: '' } }).then(function(){
+    if(!localStorage.getItem("usuario")) resetarInicio();
+  });
 }
 // esta funcion solo pasa a la siguiente pagina con un una variable como parametro
 function nextPageFunctionData(miPage, miFuncion, dato) {
   myNavigator.pushPage(miPage, { data: { title: '' } }).then(function () {
 
     miFuncion(dato);
-
+    if(!localStorage.getItem("usuario")) resetarInicio();
   });
 }
 //FUMCION PRA MOSTRAR UN MENSAJE
