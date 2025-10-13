@@ -1978,7 +1978,7 @@
     <!-- PRODUCTOS -->
     <!-- vista de productos -->
     <template id="productos1.html">
-        <ons-page id="prueba">
+        <ons-page id="productos">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Productos</div>
@@ -2007,7 +2007,7 @@
 
             <br><br><br><br><br><br><br><br><br><br>
 
-            <ons-fab onclick="nextPage('agregaProductos.html')" position="bottom right">
+            <ons-fab class="root administrador" onclick="nextPage('agregaProductos.html')" position="bottom right">
                 <span>Agregar producto</span>
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
@@ -2016,7 +2016,7 @@
                 <i class="fa-solid fa-arrows-rotate"></i>
                 <span>Actualizar</span>
             </ons-fab>
-            <ons-fab onclick="setDescargarProductosExcel()" position="bottom left" style="bottom:85px;">
+            <ons-fab class="root administrador"  onclick="setDescargarProductosExcel()" position="bottom left" style="bottom:85px;">
                 <i class="fa-solid fa-file-arrow-down"></i>
                 <span>Descargar</span>
             </ons-fab>
@@ -3077,7 +3077,7 @@
 
             <br><br><br><br><br>
 
-            <ons-fab position="bottom left" onclick="setMostrarEntradaLaminas()">
+            <ons-fab class="root administrador" position="bottom left" onclick="setMostrarEntradaLaminas()">
                 <i class="fa-solid fa-arrows-rotate"></i>
                 Actualizar
             </ons-fab>
@@ -4164,7 +4164,7 @@
                     icon="fa-calendar-days"></ons-tab>
             </ons-tabbar>
 
-            <ons-fab onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
+            <ons-fab class="root administrador"  onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
                 position="bottom right">
                 <span>Agregar</span>
                 <i class="fa-regular fa-plus"></i>

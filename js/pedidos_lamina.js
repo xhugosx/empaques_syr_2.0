@@ -14,6 +14,7 @@ document.addEventListener('init', function (event) {
             'calendarioLamina.html': false,
             'ordenes.html': false
         };
+        remover();
     }
     if (page.id === 'pedidosLamina') setMostrarPedidosLamina(); //EJECUTAR LA PRIMERA FUNCION PARA REELENAR LOS PEDIDOS DE LAMINA
 

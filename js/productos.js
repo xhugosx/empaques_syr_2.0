@@ -1,4 +1,11 @@
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    //const pagesPermitidas = ['almacen'];
 
+    if (page.id == "productos") {
+        remover();
+    }
+});
 
 //productos
 //ver productos
@@ -59,7 +66,7 @@ function setAgregarProducto() {
 
         if (codigoF === codigo) {
             var form = $('#formProducto')[0];
-            var formData = new FormData(form); 
+            var formData = new FormData(form);
 
             $("#btn-producto").prop("disabled", true);
             oCarga("Agregando Producto...");
@@ -147,9 +154,16 @@ function setBuscarProductoActualizar(codigo) {
 
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson, i) {
+    let perfil = validarPerfil();
+    let accion, precio = "";
+    if (perfil == "produccion") accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
+    else{
+        accion = `crearObjetMensaje('${arrayJson.codigo}', ${i})`;
+        precio = `<span class="list-item__subtitle" style="font-size:14px"><b>$ ${separator(arrayJson.precio)}</b></span>`  
+    } 
     const html = `
     <ons-card style="padding:0px;" class="botonPrograma" id="list-cliente${i}" 
-              onclick="crearObjetMensaje('${arrayJson.codigo}', ${i})">
+              onclick="${accion}">
         <ons-list-item modifier="nodivider">
             
             <div class="left">
@@ -166,7 +180,7 @@ function enlistarProductos(arrayJson, i) {
             
             <div class="right" style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; white-space: nowrap;">
                 <span class="list-item__title"><b><b>M²: ${arrayJson.m2}</b></b></span>
-                <span class="list-item__subtitle" style="font-size:14px"><b>$ ${separator(arrayJson.precio)}</b></span>  
+                ${precio}
             </div>
             
         </ons-list-item>

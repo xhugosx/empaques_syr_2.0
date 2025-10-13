@@ -1,34 +1,40 @@
 document.addEventListener('init', function (event) {
     var page = event.target;
-    const pagesPermitidas = ['almacen'];
+    //const pagesPermitidas = ['almacen'];
 
-    if (pagesPermitidas.includes(page.id)) {
-        remover();
+    if (page.id == "administracion") {
+        oCarga("Validando Perfil...");
+        setTimeout(() => {
+            remover();
+            cCarga();
+        }, 1000);
     }
 });
 
 function remover() {
-    let perfil = localStorage.getItem("perfil");
+    let perfil = validarPerfil();
     if (perfil) {
         let perfiles = ["finanzas", "produccion", "administrador", "root"];
-        let perfilActual = perfiles[perfil - 1];
-
         // Recorre todos los elementos que tengan alguna clase de perfil
         perfiles.forEach(p => {
             $("." + p).each(function () {
                 const clases = $(this).attr("class").split(/\s+/);
 
                 // Si NO tiene la clase del perfil actual, se elimina
-                console.log(this,clases,clases.includes(perfilActual),perfilActual);
-                //console.log("vuelta...");
-                if (!clases.includes(perfilActual)) {
+                if (!clases.includes(perfil)) {
                     $(this).remove();
                 }
             });
         });
     } else {
-        alerta("⚠️ Perfil no válido o no encontrado en localStorage.");
+        alerta("Perfil no válido o no encontrado.");
     }
+}
+function validarPerfil() {
+    let perfil = localStorage.getItem("perfil");
+    if (!perfil) return false; 
+    let perfiles = ["finanzas", "produccion", "administrador", "root"];
+    return perfiles[perfil - 1];
 }
 
 

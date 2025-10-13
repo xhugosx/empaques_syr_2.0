@@ -21,6 +21,7 @@ document.addEventListener('init', function (event) {
         };
         filtroGlobal = 1; //REINICIAR FILTRO GLOBAL
         estadoGlobal = ""; // REINICIAR ESTADO GLOBAL
+        remover();
     }
     else if (page.id === 'pedidos') setBusquedaPendiente(); //EJECUTAR LA PRIMERA FUNCION PARA REELENAR LOS PEDIDOS DE LAMINA
 
@@ -493,59 +494,93 @@ function enlistarPedidosCliente(arrayJson) {
 //ENLISTAR PEDIDOS
 var estadoTemp = "";
 function enlistarPedidos(arrayJson, i) {
-    //console.log(arrayJson);
-    let html1 = "";
-    var color = "";
-    var entregado = "";
+    let color = "";
+    let entregado = "";
+
     if (arrayJson.oc == "FALTANTE") {
         color = "#a01a1a";
         entregado = "Faltante";
-    }
-    else if (arrayJson.fechaSalida != "") {
+    } else if (arrayJson.fechaSalida != "") {
         color = "rgb(8, 136, 205)";
-        entregado = "Entregado: " + sumarDias(arrayJson.fechaSalida, 0);
-    }
-    else {
-        entregado = 'Entrega: ' + sumarDias(arrayJson.fecha_entrega, 0);
+        entregado = `Entregado: ${sumarDias(arrayJson.fechaSalida, 0)}`;
+    } else {
         color = "rgb(61, 121, 75)";
+        entregado = `Entrega: ${sumarDias(arrayJson.fecha_entrega, 0)}`;
     }
 
+    const color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
+    const inventario = arrayJson.estado != 2
+        ? ""
+        : `<hr><span style="color:#48AC33;font-size:15px">
+            ${separator(arrayJson.inventario)} pza(s) hechas - ${sumarDias(arrayJson.fecha_entrada, 0)}
+           </span>`;
 
-    var color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    var inventario = arrayJson.estado != 2 ? '' : '<hr><span style="color:#48AC33;font-size:15px">' + separator(arrayJson.inventario) + ' pza(s) hechas - ' + sumarDias(arrayJson.fecha_entrada, 0) + '</span>';
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil == "produccion") accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
+    else accion = `
+            crearObjetMensajePedido(
+                    '${arrayJson.oc}',
+                    '${arrayJson.id}',
+                    '${arrayJson.codigo}',
+                    '${arrayJson.estado}',
+                    '${arrayJson.observaciones}',
+                    '${sumarDias(arrayJson.fecha_oc, 0)}',
+                    '${arrayJson.producto}',
+                    '${arrayJson.cliente}',
+                    '${sumarDias(arrayJson.fecha_entrega, 0)}'
+                 )
+        `;
 
-    html1 += '<ons-card  style="padding:0px;" class="botonPrograma" onclick="event.stopPropagation(); crearObjetMensajePedido(\'' + arrayJson.oc + '\',\'' + arrayJson.id + '\',\'' + arrayJson.codigo + '\',\'' + arrayJson.estado + '\',\'' + arrayJson.observaciones + '\',\'' + sumarDias(arrayJson.fecha_oc, 0) + '\',\'' + arrayJson.producto + '\',\'' + arrayJson.cliente + '\',\'' + sumarDias(arrayJson.fecha_entrega, 0) + '\')">'
-    html1 += '<ons-list-header style="background-color: rgba(255, 255, 255, 0)">' + estadosColor(arrayJson.estado) + '&emsp;';
-    html1 += arrayJson.id;
-    html1 += '    &emsp;';
-    html1 += '    <b style="color: ' + color + ';">';
-    html1 += entregado; //aqui ira una fecha 
-    html1 += '    </b>';
-    html1 += '</ons-list-header>';
-    html1 += '<ons-list-item modifier="nodivider">';
-    html1 += '    <div class="left">';
-    html1 += '        <strong>' + arrayJson.codigo + '</strong>';
-    html1 += '    </div>';
-    html1 += '    <div class="center">';
-    html1 += '        <span class="list-item__title">' + arrayJson.producto + '&nbsp;|&nbsp;<b style="color:#404040">' + arrayJson.resistencia + ' ' + arrayJson.papel + '</b></span>';
-    html1 += '        <span class="list-item__subtitle">';
-    html1 += '<span>' + arrayJson.cliente + '</span><br> <b>O. C: ' + arrayJson.oc + '&emsp;Fecha: ' + sumarDias(arrayJson.fecha_oc, 0) + '</b>';
-    html1 += enlistarFacturas(arrayJson);
-    html1 += inventario;
-    html1 += arrayJson.observaciones == "" ? "" : '<hr><span><b><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>' + arrayJson.observaciones + '</span>';
-    html1 += '        </span>';
-    html1 += '    </div>';
-    html1 += '    <div class="right">';
-    html1 += '         <div class="centrar">';
-    html1 += '               <b style="font-size:16px; white-space: nowrap;">' + separator(arrayJson.cantidad) + ' <span style="font-size:14px">pzas</span></b>';
-    html1 += '         </div>';
-    html1 += '            <div style="position: absolute;bottom:85%; right: 10px;" ><i style="color: ' + color1 + '" class="fa-solid fa-comment-dots fa-2x"></i></div>';
-    html1 += '    </div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-    //console.log(arrayJson);
-    return html1;
+    const html = `
+    <ons-card style="padding:0px;" class="botonPrograma"
+        onclick="event.stopPropagation(); ${accion}">
+
+        <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
+            ${estadosColor(arrayJson.estado)}&emsp;${arrayJson.id}&emsp;
+            <b style="color:${color};">${entregado}</b>
+        </ons-list-header>
+
+        <ons-list-item modifier="nodivider">
+            <div class="left">
+                <strong>${arrayJson.codigo}</strong>
+            </div>
+
+            <div class="center">
+                <span class="list-item__title">
+                    ${arrayJson.producto}&nbsp;|&nbsp;
+                    <b style="color:#404040">${arrayJson.resistencia} ${arrayJson.papel}</b>
+                </span>
+
+                <span class="list-item__subtitle">
+                    <span>${arrayJson.cliente}</span><br>
+                    <b>O. C: ${arrayJson.oc}&emsp;Fecha: ${sumarDias(arrayJson.fecha_oc, 0)}</b>
+                    ${enlistarFacturas(arrayJson)}
+                    ${inventario}
+                    ${arrayJson.observaciones == ""
+            ? ""
+            : `<hr><span><b><i style="color: rgb(115, 168, 115)" 
+                           class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>${arrayJson.observaciones}</span>`}
+                </span>
+            </div>
+
+            <div class="right">
+                <div class="centrar">
+                    <b style="font-size:16px; white-space: nowrap;">
+                        ${separator(arrayJson.cantidad)} <span style="font-size:14px">pzas</span>
+                    </b>
+                </div>
+                <div style="position: absolute; bottom:85%; right: 10px;">
+                    <i style="color:${color1}" class="fa-solid fa-comment-dots fa-2x"></i>
+                </div>
+            </div>
+        </ons-list-item>
+    </ons-card>
+    `;
+
+    return html;
 }
+
 function enlistarFacturas(registro) {
     var html = "";
     if (registro.estado != 4 && registro.estado != 5) return "";
@@ -788,4 +823,30 @@ function estadosColor(estado) {
         6: '⚫'
     };
     return colores[estado];
+}
+
+function crearObjetMensajePedido1(codigo) {
+    mensajeArriba("OPCIONES",
+        ['<i class="fas fa-drafting-compass"></i>&nbsp;Ver Plano',
+            {
+                label: '<i class="fas fa-times" style="color:red"></i>&nbsp;Cancelar',
+                modifier: 'destructive'
+            }
+        ],
+        function (index) {
+            if (index == 0) {
+                var timestamp = new Date().getTime();
+                let codigos = codigo.split("/");
+                let codigo1 = codigos[0];
+                let codigo2 = codigos[1];
+                var url = myLink + '/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
+                if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+                    //console.log("Estás usando un dispositivo móvil!!");
+                    nextPageFunctionData('verPlano.html', verPlano, url);
+                } else {
+                    window.open(url, '_blank');
+                }
+            }
+        });
+
 }
