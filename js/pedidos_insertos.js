@@ -226,8 +226,11 @@ function enlistarPedidosInsertos(arrayJson) {
     </ons-list-item>
     <hr>`;
     arrayJson.insertos.forEach(inserto => {
+        let perfil = validarPerfil();
+        let accion = "";
+        if (perfil != "produccion") accion = `crearObjetMensajePedidoInserto('${inserto.id}','${inserto.estado}')`;
         html += `
-        <ons-card class="botonPrograma opacity50" onclick="crearObjetMensajePedidoInserto('${inserto.id}','${inserto.estado}')"
+        <ons-card class="botonPrograma opacity50" onclick="${accion}"
             style="padding:0; margin-bottom: 5px; border: 1px solid black;">
             <ons-list-item modifier="nodivider">
                 <div class="left" style="font-size:8pt">
@@ -237,13 +240,12 @@ function enlistarPedidosInsertos(arrayJson) {
                     <span class="list-item__title">
                         <b>${inserto.observaciones}</b> | <span style="font-size:9pt">${inserto.resistencia}</span>
                     </span>
-                    ${
-                        inserto.notas == "" ? `` : `
+                    ${inserto.notas == "" ? `` : `
                         <span class="list-item__subtitle">
                             <i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots"></i>
                             <b>${inserto.notas}</b>
                         </span>`
-                    }
+            }
                 </div>
                 <div class="right" style="white-space: nowrap;"><b>${separator(inserto.cantidad)} pzas</b></div>
             </ons-list-item>

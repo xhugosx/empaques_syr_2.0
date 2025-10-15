@@ -55,8 +55,11 @@ function setMostrarSalidaCajas() {
 
 function enlistarSalidasCajas(arrayJson) {
     var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesSalidasCajas(${arrayJson.id})"`;
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSalidasCajas(${arrayJson.id})">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion} >
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>
@@ -156,7 +159,7 @@ function opcionesSalidasCajas(id) {
                         setMostrarEditarSalidaCajas(id);
                     }
                 );
-                else if(opc == 1) setEliminarSalidaCaja(id);
+            else if (opc == 1) setEliminarSalidaCaja(id);
         }
     );
 }
@@ -182,8 +185,11 @@ function setMostrarSalidasInserto() {
 
 function enlistarSalidasInserto(arrayJson) {
     var observaciones = arrayJson.observaciones == "" ? "" : '<i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesSalidasInserto(${arrayJson.id})"`;
     let html1 = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSalidasInserto(${arrayJson.id})">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion} >
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>
@@ -335,8 +341,11 @@ function enlistarSalidasLamina(arrayJson) {
         cajas += caja.codigo + ' ' + caja.producto + "<br>";
     });
     var observaciones = arrayJson.observaciones == "" ? "" : '<div><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font></div>";
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesSalidasLamina(${arrayJson.id})"`;
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSalidasLamina(${arrayJson.id})">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion} >
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Recibido: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>

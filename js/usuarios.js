@@ -2,14 +2,14 @@ document.addEventListener('init', function (event) {
     var page = event.target;
     //const pagesPermitidas = ['almacen'];
 
-    if (page.id == "administracion") {
-        oCarga("Validando Perfil...");
+    if (page.id == "administracion" || page.id=== 'almacen')
         setTimeout(() => {
             remover();
-            cCarga();
-        }, 1000);
-    }
+        }, 1);
+
 });
+
+
 
 function remover() {
     let perfil = validarPerfil();
@@ -32,7 +32,7 @@ function remover() {
 }
 function validarPerfil() {
     let perfil = localStorage.getItem("perfil");
-    if (!perfil) return false; 
+    if (!perfil) return false;
     let perfiles = ["finanzas", "produccion", "administrador", "root"];
     return perfiles[perfil - 1];
 }

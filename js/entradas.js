@@ -56,8 +56,11 @@ function setMostrarEntradaCajas() {
 
 function enlistarEntradasCajas(arrayJson) {
     var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesEntradasCajas(${arrayJson.id})"`;
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesEntradasCajas(${arrayJson.id})">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>
@@ -153,7 +156,7 @@ function setMostrarEntradasInserto() {
     oCarga("Cargando datos...");
     let busqueda = $("#searchEntradaInserto").val();
     let fecha = $("#fechaEntradInserto").val();
-    servidor(myLink + "/php/entrada/inserto/select.php?search="+busqueda + "&fecha="+fecha,
+    servidor(myLink + "/php/entrada/inserto/select.php?search=" + busqueda + "&fecha=" + fecha,
         function (respuesta) {
             var resultado = respuesta.responseText;
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
@@ -166,8 +169,11 @@ function setMostrarEntradasInserto() {
 
 function enlistarEntradasInserto(arrayJson) {
     var observaciones = arrayJson.observaciones == "" ? "" : '<i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesEntradasInserto(${arrayJson.id})"`;
     let html1 = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesEntradasInserto(${arrayJson.id})">
+        <ons-card style="padding:0px;" class="botonPrograma" >
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>
@@ -303,8 +309,11 @@ function enlistarEntradasLamina(arrayJson) {
         cajas += caja.codigo + ' ' + caja.producto + "<br>";
     });
     var observaciones = arrayJson.observaciones == "" ? "" : '<div><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font></div>";
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesEntradasLamina(${arrayJson.id})"`;
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesEntradasLamina(${arrayJson.id})">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Recibido: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>

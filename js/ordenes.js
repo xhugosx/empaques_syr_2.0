@@ -2,7 +2,7 @@ function verOrden(orden) {
     $("#loadingOrden").empty();
     oCarga("Cargando orden");
     $("#ordenArchivo").attr("src", "https://docs.google.com/gview?url=" + orden + "&embedded=true");
-    
+
     setTimeout(() => {
         cCarga();
         // en caso de que no muestre nada
@@ -103,6 +103,10 @@ function setBuscarOrden(anio) {
             var resultado = respuesta.responseText;
             var arrayJson = resultado.split('|');
             //console.log(respuesta.responseText);
+            let perfil = validarPerfil();
+            let accion;
+            if (perfil == "produccion") accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
+
             var html = "";
 
             for (let i = 0; i < arrayJson.length - 1; i += 4) {
@@ -110,11 +114,16 @@ function setBuscarOrden(anio) {
 
                 for (let j = i; j < i + 4 && j < arrayJson.length - 1; j++) {
                     var tempJson = JSON.parse(arrayJson[j]);
-                    html += '<span class="ordenesLamina" onclick="mensajeOrden([\'' + tempJson.id + '\',\'' + tempJson.carpeta + '\',\'' + tempJson.path + '\'])">';
-                    html += '    <i class="fa-solid fa-file-pdf fa-3x"></i>';
-                    html += '    <br><br>';
-                    html += '    <font><b> ' + tempJson.path + '</b></font>';
-                    html += '</span>';
+                    let perfil = validarPerfil();
+                    let accion;
+                    if (perfil == "produccion") accion = `mensajeOrden1(['${tempJson.id}','${tempJson.carpeta}','${tempJson.path}'])`;
+                    else accion = `mensajeOrden(['${tempJson.id}','${tempJson.carpeta}','${tempJson.path}'])`;
+
+                    html += `<span class="ordenesLamina" onclick=" ${accion} ">
+                                <i class="fa-solid fa-file-pdf fa-3x"></i>
+                                <br><br>
+                                <font><b> ${tempJson.path} </b></font>
+                            </span>`;
                 }
 
                 html += '</div>';
@@ -167,4 +176,23 @@ function mensajeOrden(datos) {
                 );
             }
         }, datos);
+}
+
+function mensajeOrden1(datos) {
+    mensajeArriba('Opciones', ['<i class="fas fa-eye"></i>&nbsp;Ver orden', { label: '<i class="far fa-times" style="color:red"></i>&nbsp;Cancelar', modifier: 'destructive' }],
+        function (index) {
+            let anio = datos[1];
+            let archivo = datos[2];
+
+            if (index == 0) {
+                //let navegador = navigator.userAgent;
+                if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+                    //console.log("Estás usando un dispositivo móvil!!");
+                    nextPageFunctionData('verOrden.html', verOrden, myLink + '/ordenes/' + anio + '/' + archivo);
+                } else {
+                    window.open(myLink + '/ordenes/' + anio + '/' + archivo, '_blank');
+                }
+            }
+        }
+    );
 }

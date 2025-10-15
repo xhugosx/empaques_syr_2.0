@@ -1,3 +1,10 @@
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    if (page.id === 'grabados') {
+        remover();
+    }
+});
+
 function agregarGrabados() {
     let cantidad = $("#cantidad").val();
     let descripcion = $("#descripcion").val();
@@ -89,8 +96,11 @@ function mostrarGrabados() {
 }
 
 function enlistarGrabados(objeto) {
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesGrabados('${objeto.id}')"`;
     var html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesGrabados('${objeto.id}')">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
             <ons-list-item modifier="nodivider">
                 <div class="left">
                     <i class="fas fa-stamp fa-2x"></i>

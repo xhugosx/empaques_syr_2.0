@@ -1,11 +1,11 @@
 //FUNCION PARA VERIFICAR SI YA HABIA INICIADO SESION
 function primero() {
-  if (localStorage.getItem("usuario")){
+  if (localStorage.getItem("usuario")) {
     nextPage("home.html");
     let nombre = localStorage.getItem("usuario");
     let perfil = localStorage.getItem("perfil");
     alerta('Bienvenido: <hr><h4>' + tipoPerfil(perfil) + '</h4><h3>' + nombre + '</h3>');
-    
+
   }
   else resetarInicio();
   iniciarContadorInactividad();
@@ -47,7 +47,7 @@ function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   });
 }
 //FUNCION PARA GENERAR MENSAJE DE CONFIRMACION
-function alertComfirm(mensaje, botones, miFuncion, json,) {
+function alertComfirm(mensaje, botones, miFuncion, json) {
   ons.notification.confirm({
     title: "",
     message: mensaje,
@@ -105,15 +105,15 @@ function conversionTextoArray(txt) {
 //ESTA FUNCION ES PARA EJECUTAR UNA FUNCION AL PAR LA SIGUIENTE PAGINA
 function nextPageFunction(miPage, miFuncion) {
   myNavigator.pushPage(miPage, { data: { title: '' } }).then(function () {
-    if(!localStorage.getItem("usuario")) resetarInicio();
+    if (!localStorage.getItem("usuario")) resetarInicio();
     miFuncion();
 
   });
 }
 //ESTA FUNCION SOLO TE PASA A LA SIGUIENTE PAGINA
 function nextPage(miPage) {
-  myNavigator.pushPage(miPage, { data: { title: '' } }).then(function(){
-    if(!localStorage.getItem("usuario")) resetarInicio();
+  myNavigator.pushPage(miPage, { data: { title: '' } }).then(function () {
+    if (!localStorage.getItem("usuario")) resetarInicio();
   });
 }
 // esta funcion solo pasa a la siguiente pagina con un una variable como parametro
@@ -121,7 +121,7 @@ function nextPageFunctionData(miPage, miFuncion, dato) {
   myNavigator.pushPage(miPage, { data: { title: '' } }).then(function () {
 
     miFuncion(dato);
-    if(!localStorage.getItem("usuario")) resetarInicio();
+    if (!localStorage.getItem("usuario")) resetarInicio();
   });
 }
 //FUMCION PRA MOSTRAR UN MENSAJE
@@ -158,6 +158,9 @@ function alertaFunction(mensaje, titulo, funcion) {
 //var conexionActiva = null;
 //ESTA FUNCIONA PARA MANDAR DATOS AL SERVIDOR Y RECIBIR SU RESPUESTA
 function servidor(link, miFuncion) {
+  let usuario = localStorage.getItem("usuario");
+  let id = localStorage.getItem("id");
+  link = link + `&usuario=${usuario}&id=${id}`;
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 

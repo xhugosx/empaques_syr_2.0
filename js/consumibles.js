@@ -1,3 +1,7 @@
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    if (page.id === 'consumible') remover();
+});
 //funcion para refrescar todo
 function refresConsumible() {
     setConsumible0();
@@ -101,8 +105,11 @@ function getActualizarConsumibleDes(respuesta) {
 //fin de actualizar de consumible descripcion
 
 function enlistarConsumible(json) {
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="alertaConsumible('${conversionJsonArray(json)}')"`;
     return `
-    <ons-card style="padding:0px;" class="botonPrograma" onclick="alertaConsumible('${conversionJsonArray(json)}')">
+    <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
         <ons-list-item class="" modifier="nodivider">
             <div class="left">
                 <i class="fa-solid fa-toolbox fa-2x"></i>

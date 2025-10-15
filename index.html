@@ -129,7 +129,7 @@
                     style="border: #efefef 10px solid; border-radius: 50%; padding: 30px 20px 30px 20px; width: 100px;">
                     <i class="fa fa-user fa-5x" style="color: white;"></i>
                 </div>
-                <h1 style="color: white;">Inicio sesion</h1>
+                <h1 style="color: white;">Inicio sesión</h1>
                 <form onsubmit="return false;" id="formSesion">
                     <ons-card class="botonPrograma" style="border-radius: 30px; width: 80%;">
                         <span>Usuario:</span>
@@ -1889,7 +1889,7 @@
                             <i class="fa-regular fa-lock"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="contrasena" class="input-100" cols="30" rows="2"
+                            <ons-input id="contrasenaC" class="input-100" cols="30" rows="2"
                                 placeholder="contraseña Se Genera en automatico..."></ons-input>
                         </div>
                     </ons-list-item>
@@ -2274,7 +2274,7 @@
                 <span>Actualizar</span>
             </ons-fab>
 
-            <ons-fab
+            <ons-fab class="root administrador"
                 onclick="nextPageFunction('agregarPedidosLamina.html',function(){$('#fechaLP').val(fechaHoy());$('#fechaLPE').val(fechaHoy())})"
                 position="bottom right">
                 <span>Agregar</span>
@@ -2374,7 +2374,7 @@
             </ons-list>
             <br><br><br><br><br><br><br>
 
-            <ons-fab position="bottom right" onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
+            <ons-fab class="root administrador" position="bottom right" onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
                 <span>Agregar PDF </span>
                 <i class="fa-solid fa-file-circle-plus"></i>
             </ons-fab>
@@ -3077,7 +3077,7 @@
 
             <br><br><br><br><br>
 
-            <ons-fab class="root administrador" position="bottom left" onclick="setMostrarEntradaLaminas()">
+            <ons-fab position="bottom left" onclick="setMostrarEntradaLaminas()">
                 <i class="fa-solid fa-arrows-rotate"></i>
                 Actualizar
             </ons-fab>
@@ -3699,7 +3699,7 @@
                 </ons-tab>
             </ons-tabbar>
 
-            <ons-fab onclick="nextPage('agregarConsumible.html')" position="bottom right">
+            <ons-fab class="root administracion" onclick="nextPage('agregarConsumible.html')" position="bottom right">
                 <span>Agregar</span>
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
@@ -3710,7 +3710,7 @@
     <!-- vista consumible en existencia -->
 
     <template id="consumible1.html">
-        <ons-page>
+        <ons-page id="consumible">
 
             <div id="consumibleLoading">
                 <ons-progress-bar indeterminate></ons-progress-bar>
@@ -3806,7 +3806,7 @@
 
     <!-- Vista completa -->
     <template id="suajes.html">
-        <ons-page>
+        <ons-page id="suajes">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Suajes</div>
@@ -3819,7 +3819,7 @@
                 </ons-tab>
             </ons-tabbar>
 
-            <ons-fab onclick="nextPage('agregarSuaje.html')" position="bottom right">
+            <ons-fab class="root administracion" onclick="nextPage('agregarSuaje.html')" position="bottom right">
                 <span>Agregar</span>
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>
@@ -4005,7 +4005,7 @@
     <!-- FGRABADOS -->
     <!-- Vista completa -->
     <template id="grabados.html">
-        <ons-page>
+        <ons-page id="grabados">
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Grabados</div>
@@ -4027,7 +4027,7 @@
             </ons-list>
             <br><br><br><br><br>
 
-            <ons-fab onclick="nextPage('agregarGrabados.html')" position="bottom right">
+            <ons-fab class="root administracion" onclick="nextPage('agregarGrabados.html')" position="bottom right">
                 <span>Agregar</span>
                 <i class="fa-solid fa-plus"></i>
             </ons-fab>

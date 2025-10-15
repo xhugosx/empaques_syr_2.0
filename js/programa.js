@@ -259,9 +259,12 @@ function enlistarProgramaInserto(arrayJson) {
             opcionesProcesos += `${programa.proceso},`;
             idsProcesos += `${programa.id},`;
         });
-
+        let perfil = validarPerfil();
+        let accion;
+        if (perfil == "produccion") accion = `opcionesPrograma1([${idsProcesos}],[${opcionesProcesos}],'${arrayJson.codigo_caja}')`;
+        else accion = `opcionesPrograma('${inserto.id}',[${idsProcesos}],[${opcionesProcesos}],${inserto.cantidad})`;
         html += `
-        <ons-card class="botonPrograma opacity50" onclick="opcionesPrograma('${inserto.id}', [${idsProcesos}], [${opcionesProcesos}], ${inserto.cantidad})"
+        <ons-card class="botonPrograma opacity50" onclick="${accion}"
             style="padding:0; margin-bottom: 5px; border: 1px solid black;">
             <ons-list-item modifier="nodivider">
                 <div class="left" style="font-size:8pt">
@@ -309,8 +312,12 @@ function enlistarprogramaCaja(arrayJson) {
         idsProcesos += `${programa.id},`;
     });
 
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil == "produccion") accion = `opcionesPrograma1([${idsProcesos}],[${opcionesProcesos}],'${arrayJson.codigo}')`;
+    else accion = `opcionesPrograma('${arrayJson.id}',[${idsProcesos}],[${opcionesProcesos}],${arrayJson.cantidad})`;
     let html = `
-            <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesPrograma('${arrayJson.id}',[${idsProcesos}],[${opcionesProcesos}],${arrayJson.cantidad})">
+            <ons-card style="padding:0px;" class="botonPrograma" onclick=" ${accion} ">
 
                 <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
                     ${arrayJson.id} &emsp;
@@ -405,6 +412,55 @@ function opcionesPrograma(id_lp, id, procesos, piezas) {
                         if (k) setEliminarPrograma(id_lp);
                     }
                 );
+            else if (i != -1)
+                mensajeArriba("Editar Estado", [
+                    '🕓 Pendiente',
+                    '👷 Proceso',
+                    '✅ Terminado',
+                    {
+                        label: '<i class="fas fa-times" style="color:red"></i>&nbsp;Cancelar',
+                        modifier: 'destructive'
+                    }],
+                    function (j) {
+                        if (j != 3 && j != -1) setActualizarEstado(id[i], j);
+                    }
+                );
+        }
+    )
+}
+function opcionesPrograma1(id, procesos, codigo) {
+    //console.log(procesos,id_lp,id,piezas);
+    let botones = [];
+
+    procesos.forEach(proceso => {
+        botones.push(procesosProgramaIcon(proceso) + procesosPrograma(proceso));
+    });
+    botones.push(
+        '<span style="color: green !important"><i class="fas fa-drafting-compass" style="color: green"></i>&nbsp;Ver plano</span>',
+        {
+            label: '<i class="fas fa-times" style="color:red"></i>&nbsp;Cancelar',
+            modifier: 'destructive'
+        }
+    );
+    let cantidad = botones.length - 1; // se saca la cantidad de botones, para mandar dicha funcion
+    mensajeArriba("Modificar Proceso", botones,
+        function (i) {
+            //console.log(index, cantidad);
+
+            if (i == cantidad - 1) {
+                var timestamp = new Date().getTime();
+                let codigos = codigo.split("/");
+                let codigo1 = codigos[0];
+                let codigo2 = codigos[1];
+                var url = myLink + '/planos/' + codigo1 + '/' + codigo1 + '-' + codigo2 + '.pdf?timestamp=' + timestamp;
+                if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+                    //console.log("Estás usando un dispositivo móvil!!");
+                    nextPageFunctionData('verPlano.html', verPlano, url);
+                } else {
+                    window.open(url, '_blank');
+                }
+            }
+            else if (i == cantidad) return;
             else if (i != -1)
                 mensajeArriba("Editar Estado", [
                     '🕓 Pendiente',

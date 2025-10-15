@@ -92,9 +92,12 @@ function setMostrarInventarioCajas(cliente) {
 }
 
 function enlistarInventarioCajas(arrayJson, i) {
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `expandable onclick="setMostrarInventarioCajasIndividuales('${arrayJson.codigo}',${i})"`;
 
     let html = `<ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
-    <ons-list-item modifier="nodivider" expandable onclick="setMostrarInventarioCajasIndividuales('${arrayJson.codigo}',${i})">
+    <ons-list-item modifier="nodivider" ${accion}>
         <div class="left">
             <i class="fa-solid fa-box fa-2x"></i>
         </div>
@@ -128,9 +131,6 @@ function enlistarInventarioCajas(arrayJson, i) {
                 </ons-button>
             </ons-list>    
         </div>
-        
-        
-        
     </ons-list-item>
     </ons-card>
     `;
@@ -341,10 +341,14 @@ function enlistarInventarioInserto(arrayJson, i) {
 
     arrayJson.insertos.forEach(inserto => {
         let id = arrayJson.codigo.replace(/\//g, "") + inserto.tipo_inserto.replace(/[ .]/g, '');
+        let perfil = validarPerfil();
+        let accion;
+        if (perfil != "produccion") accion = `expandable onclick="setMostrarInventarioInsertoIndividuales('${id}', '${arrayJson.codigo}','${inserto.tipo_inserto}')"`;
+
         html += `
             <ons-card class="botonPrograma" onclick=""
                 style="padding:0; margin-bottom: 2px; border: 1px solid black;">
-                <ons-list-item modifier="nodivider" expandable onclick="setMostrarInventarioInsertoIndividuales('${id}', '${arrayJson.codigo}','${inserto.tipo_inserto}')">
+                <ons-list-item modifier="nodivider" ${accion} >
                     <div class="left">
                         <i class="fa-solid fa-box-open fa-1x"></i>
                     </div>
@@ -511,9 +515,12 @@ function enlistarInventarioLamina(arrayJson) {
     arrayJson.cajas.forEach(caja => {
         cajas += caja.codigo + ' ' + caja.producto + "<br>";
     });
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="mensajeAlertaInventarioLamina('${arrayJson.id}', ${arrayJson.inventario})"`;
     let html = `
         <ons-card style="padding:0px;" class="botonPrograma" onclick="">
-            <ons-list-item modifier="nodivider" onclick="mensajeAlertaInventarioLamina('${arrayJson.id}', ${arrayJson.inventario})">
+            <ons-list-item modifier="nodivider" >
                 <div class="left">
                     <strong>${arrayJson.id}</strong>
                 </div>

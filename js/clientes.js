@@ -9,7 +9,6 @@ function setClientes() {
         function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
             var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-
             listaInfinita('datosClientes', 'loadingClientes', arrayJson, enlistarClientes);
             cCarga();
         }
@@ -22,7 +21,7 @@ function setAgregarCliente() {
     const codigo = $('#codigo').val();
     const nombre = $('#nombre').val().toUpperCase();
     const rfc = $('#RFC').val().toUpperCase();
-    const contrasena = $('#contrasena').val().toUpperCase();
+    const contrasena = $('#contrasenaC').val().toUpperCase();
 
     // Validar si hay campos vacíos
     if (vacio(codigo, nombre, rfc, contrasena)) {
@@ -51,6 +50,7 @@ function setAgregarCliente() {
 
 //esta funcion es para autollenar la contraseña 
 function contrasenaCliente() {
+    //console.log("entro");
     var codigo = $('#codigo').val();
     var rfc = $('#RFC').val().toUpperCase();
     if (vacio(codigo, rfc)) {
@@ -59,7 +59,7 @@ function contrasenaCliente() {
 
         rfc = rfc.length <= 4 ? rfc : rfc.substr(0, 4);
         var contrasena = codigo + rfc;
-        $('#contrasena').val(contrasena);
+        $('#contrasenaC').val(contrasena);
         //console.log(contrasena)
     }
 }

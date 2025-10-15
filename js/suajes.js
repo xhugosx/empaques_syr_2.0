@@ -1,3 +1,7 @@
+document.addEventListener('init', function (event) {
+    var page = event.target;
+    if (page.id === 'suajes') remover();
+});
 function agregarSuajes() {
     let codigo = $("#codigo").val();
     let descripcion = $("#descripcion").val();
@@ -108,8 +112,11 @@ function mostrarSuajes() {
 }
 
 function enlistarSuajes(objeto, i) {
+    let perfil = validarPerfil();
+    let accion;
+    if (perfil != "produccion") accion = `onclick="opcionesSuajes('${objeto.id}')"`;
     var html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="opcionesSuajes('${objeto.id}')">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
                 <ons-list-item modifier="nodivider" >
                     <div class="left">
                         <i class="fas fa-scissors fa-2x"></i>

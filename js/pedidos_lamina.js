@@ -14,9 +14,13 @@ document.addEventListener('init', function (event) {
             'calendarioLamina.html': false,
             'ordenes.html': false
         };
-        remover();
+        //alerta("Entro");
     }
-    if (page.id === 'pedidosLamina') setMostrarPedidosLamina(); //EJECUTAR LA PRIMERA FUNCION PARA REELENAR LOS PEDIDOS DE LAMINA
+    if (page.id === 'pedidosLamina') {
+        setMostrarPedidosLamina();
+        remover();  //EJECUTAR LA PRIMERA FUNCION PARA REELENAR LOS PEDIDOS DE LAMINA
+    }
+    if (page.id === 'ordenesPdf') remover();
 
 
 });
@@ -272,9 +276,12 @@ function enlistarPedidosLamina(arrayJson) {
     }
 
     const o_c = arrayJson.o_c;
-
+    let perfil = validarPerfil();
+    let accion = "";
+    if (perfil == "produccion") accion = `crearMensajePL1('${arrayJson.estado}','${arrayJson.entrada}','${arrayJson.pzas_ordenadas}','${arrayJson.o_c}')`;
+    else accion = `crearMensajePL('${arrayJson.estado}','${arrayJson.entrada}','${arrayJson.pzas_ordenadas}','${arrayJson.o_c}','${arrayJson.observaciones}')`;
     const html1 = `
-  <ons-card style="padding:0px;" class="botonPrograma" onclick="crearMensajePL('${arrayJson.estado}','${arrayJson.entrada}','${arrayJson.pzas_ordenadas}','${arrayJson.o_c}','${arrayJson.observaciones}')">
+  <ons-card style="padding:0px;" class="botonPrograma" onclick="${accion}">
     <ons-list-header style="background:${colorEstado(arrayJson.estado)}; color:white;">
       ${arrayJson.entrada !== '' ? `<div class="contenedorHead" style="color:${colorEstado(arrayJson.estado)};">llego: ${separator(arrayJson.entrada)} pzas ${arrayJson.estado == 2 ? ` - faltan: ${separator(arrayJson.pzas_ordenadas - arrayJson.entrada)} pzas` : ""} </div>` : `<div class="contenedorHeadFecha" style="color:white;">Estimado: ${sumarDias(arrayJson.fecha_entrega, 0)}</div>`}
       
@@ -431,7 +438,7 @@ function aplicarFiltroLamina() {
         a += ids[i].value + ",";
     }
     tipoLamina = a.slice(0, -1); // para eliminar la ultima coma
-    tipoLamina = tipoLamina.length == 0 ? [1,2,3,4,5] : tipoLamina;
+    tipoLamina = tipoLamina.length == 0 ? [1, 2, 3, 4, 5] : tipoLamina;
     setMostrarPedidosLamina();
     menu.close();
 }
@@ -446,4 +453,56 @@ function resetearFiltroPedidosLamina() {
     setMostrarPedidosLamina(); //ACTUALIZAR DATOS RESETEADOS DEL FILTRO
 
     menu.close(); // CERRAR EL MENU LATERAL
+}
+
+function crearMensajePL1(estado, entrada, pzas_ordenadas, o_c) {
+    let botones = [
+        '<i class="fa-solid fa-circle" style="color: #E8C07C"></i> BACKORDER ',
+        '<i class="fa-solid fa-circle" style="color: #CE84DA"></i> PARCIAL ',
+        '<i class="fa-solid fa-circle" style="color: #00A514"></i> COMPLETO',
+        {
+            label: '<i class="fas fa-times" style="color:red"></i>&nbsp;Cancelar',
+            modifier: 'destructive'
+        }
+    ];
+
+    mensajeArriba('ESTADO', botones,
+        function (index) {
+            //console.log("Botón seleccionado:", index);
+            entrada = entrada == "" ? 0 : entrada;
+
+            // Si cancela o no selecciona nada
+            if (index == 3 || index == -1) return;
+
+            // Si el pedido está cancelado
+            if (estado == 4) {
+                alerta("Pedido cancelado. No se puede cambiar el estado!");
+                return;
+            }
+
+            // Si está parcial o completo y quiere volver a backorder
+            if ((estado == 2 || estado == 3) && index == 0) {
+                alerta("No se puede regresar a Backorder desde Parcial o Completo.");
+                return;
+            }
+
+            // Si el estado actual es parcial o completo (2 o 3)
+            if (estado == 2 || estado == 3 || estado == 1) {
+                let mensaje = `Existencia en inventario: ${entrada} de ${pzas_ordenadas}`;
+                alertComfirmDato(mensaje, 'number', ['Cancelar', 'Enviar'],
+                    function (inputIndex) {
+                        if (inputIndex) {
+                            let mess = `Se generará la siguiente Entrada:<br><br><font size="8px">${inputIndex} pza(s)</font>`;
+                            alertComfirm(mess, ['Cancelar', 'Aceptar'], function (confirmIndex) {
+                                if (confirmIndex) {
+                                    var suma = parseInt(inputIndex) + parseInt(entrada);
+                                    setActualizarEstadoPL(index + 1, o_c, suma, entrada);
+                                }
+                            });
+                        }
+                    }
+                );
+            }
+        }
+    );
 }
