@@ -25,7 +25,7 @@ function setMesEgreso(mes) {
       let resultado = respuesta.responseText;
       let arrayJson = resultado.split("|");
       listaInfinita('mesesEgresos', 'loadinEgresoMes', arrayJson, enlitsarMesEgreso);
-      console.log(myLink + "/php/ingresos/ingresoMensual.php?anio=" + anio + "&mes=" + mes,respuesta.responseText);
+      //console.log(myLink + "/php/ingresos/ingresoMensual.php?anio=" + anio + "&mes=" + mes,respuesta.responseText);
       graficaEgresoMes(arrayJson);
       cCarga();
     }
@@ -38,6 +38,7 @@ function setEgresos() {
   var anio = $("#anioG").text();
   servidor(myLink + '/php/egresos/egresoTotal.php?anio=' + anio,
     function (respuesta) {
+      //console.log(respuesta.responseText);
       let resultado = respuesta.responseText;
       let importes = resultado.split("|");
       if (importes.length > 1) listaInfinita('egresos', 'loadingEgreso', importes, enlitsarEgreso);
@@ -50,6 +51,7 @@ function setEgresos() {
       $("#cantidadTotal").text("$ " + suma(importes));
       graficaEgresoAnual(importes);
       cCarga();
+      
     }
   );
 }
@@ -104,12 +106,14 @@ function setModificarEgreso() {
     oCarga("Modificando Egreso...");
     servidorPost(myLink + "/php/egresos/update.php?id=" + id,
       function (respuesta) {
+        console.log(respuesta.responseText);
         if (respuesta.responseText == 1) {
           alerta("Egreso Modificado");
           resetearPilaFunction(resetearPilaFunction, setMesEgreso);
         }
         else alerta("No se pudo Modificar!");
         cCarga();
+
       }, formData);
   }
   else alerta("Espacios vacios!");
@@ -136,6 +140,7 @@ function setAgregarEgreso() {
           cCarga();
         }
         else alerta("No se pudo Agregar!")
+        //console.log(respuesta.responseText);
       }, formData);
   }
   else alerta("Espacios vacios!");

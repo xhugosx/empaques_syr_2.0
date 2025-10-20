@@ -160,7 +160,9 @@ function alertaFunction(mensaje, titulo, funcion) {
 function servidor(link, miFuncion) {
   let usuario = localStorage.getItem("usuario");
   let id = localStorage.getItem("id");
-  link = link + `&usuario=${usuario}&id=${id}`;
+  //console.log(link.slice(-1));
+  link = link.slice(-3) == "php" ? link + "?" : link + "&";
+  link = link + `nombreUsuario=${usuario}&idUsuario=${id}`; 
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
@@ -202,8 +204,7 @@ function servidor(link, miFuncion) {
 
 }
 
-
-function servidorPost(link, miFuncion, data) {
+function servidorPost1(link, miFuncion, data) {
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
@@ -222,6 +223,37 @@ function servidorPost(link, miFuncion, data) {
 
     xhttp.open("POST", link, true);
     xhttp.send(data);
+  }
+  else {
+    alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');
+  }
+}
+
+
+function servidorPost(link, miFuncion, data) {
+  let usuario = localStorage.getItem("usuario");
+  let id = localStorage.getItem("id");
+  //console.log(link.slice(-1));
+  link = link.slice(-3) == "php" ? link + "?" : link + "&";
+  link = link + `nombreUsuario=${usuario}&idUsuario=${id}`; 
+  if (window.navigator.onLine) {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+
+        miFuncion(this);
+
+      }
+      else if (this.status == 500) {
+        alerta("Ejecucion fallida!:");
+        cCarga();
+      }
+
+    };
+
+    xhttp.open("POST", link, true);
+    xhttp.send(data); 
   }
   else {
     alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');

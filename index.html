@@ -56,6 +56,8 @@
     <script src="./js/calendarioProgramaInserto.js"></script>
     <script src="./js/m2.js"></script>
     <script src="./js/usuarios.js"></script>
+    <script src="./js/actividad.js"></script>
+    <script src="./js/calendarioActividad.js"></script>
 
     <script src="./cordova.js"></script>
 
@@ -253,13 +255,23 @@
                         <span style="color:white"> Productos</span>
                     </ons-card>
                 </div>
-                <div class="contenedor-flexbox">
-                    <ons-card class="botonPrograma botonInicio root" style="text-align: center; "
+                <div class="contenedor-flexbox root">
+                    <ons-card class="botonPrograma botonInicio " style="text-align: center; "
                         onclick="nextPageFunction('usuarios.html',setUsuarios)">
                         <!--i class="fa-solid fa-boxes fa-4x" style="margin: 5px; "></i-->
                         <i class="fa-solid fa-users-gear fa-4x"></i>
                         <br>
                         <span> Usuarios </span>
+                    </ons-card>
+                    <ons-card class="botonPrograma botonInicio " style="text-align: center; "
+                        onclick="nextPage('actividad.html')">
+                        <!--i class="fa-solid fa-boxes fa-4x" style="margin: 5px; "></i-->
+                        <span style="position: relative; display: inline-block;">
+                            <i class="fas fa-user fa-4x"></i>
+                            <i class="fas fa-rectangle-list bordeIcon"></i>
+                        </span>
+                        <br>
+                        <span> Actividad </span>
                     </ons-card>
                 </div>
             </ons-card>
@@ -452,6 +464,72 @@
         </ons-page>
     </template>
     <!-- fin de control de ingresos -->
+
+    <!-- ACTIVIDAD -->
+    <template id="actividad.html">
+        <ons-page id="actividad">
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Actividad Usuarios</div>
+            </ons-toolbar>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input onkeyup="debounceBuscare(event,setActividad)"
+                        placeholder="Buscar: Nombre" id="busquedaActividad"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <center>
+                <div id="contenedorCalendario">
+                    <div id="mes">
+                        <span onclick="cambiarMes('anterior')"><i class="fas fa-arrow-left"
+                                style="color: white;"></i></span>
+                        <span id="nombreMes"></span>
+                        <span onclick="cambiarMes('siguiente')"><i class="fas fa-arrow-right"
+                                style="color: white;"></i></span>
+                    </div>
+                    <div id="dias"></div>
+                </div>
+            </center>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosActividad"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br><br><br><br>
+
+            <ons-fab onclick="setActividad()" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
+            </ons-fab>
+        </ons-page>
+    </template>
+
+    <!--template id="actividadUsuario.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Actividades</div>
+            </ons-toolbar>
+
+            <ons-list>
+                <ons-list-item>
+                    <ons-search-input onkeyup="//debounceBuscare(event,setActividad)"
+                        placeholder="Buscar: codigo / nombre" id="busquedaActividadUsuario"></ons-search-input>
+                </ons-list-item>
+            </ons-list>
+
+            <ons-list style="background: rgba(76, 175, 80, 0.0) ">
+                <ons-lazy-repeat id="datosActividadUsuario"></ons-lazy-repeat>
+            </ons-list>
+            <br><br><br>
+
+            <ons-fab onclick="//setActividad()" position="bottom left">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Actualizar</span>
+            </ons-fab>
+        </ons-page>
+    </template-->
 
     <!-- INICIO SECCION DE USUARIOS -->
 
@@ -1959,7 +2037,7 @@
                             <i class="fa-regular fa-lock"></i>
                         </div>
                         <div class="center">
-                            <ons-input id="contrasena" class="input-100" cols="30" rows="2"
+                            <ons-input id="contrasenaC" class="input-100" cols="30" rows="2"
                                 placeholder="contraseña Se Genera en automatico..."></ons-input>
                         </div>
                     </ons-list-item>
@@ -2016,7 +2094,8 @@
                 <i class="fa-solid fa-arrows-rotate"></i>
                 <span>Actualizar</span>
             </ons-fab>
-            <ons-fab class="root administrador"  onclick="setDescargarProductosExcel()" position="bottom left" style="bottom:85px;">
+            <ons-fab class="root administrador" onclick="setDescargarProductosExcel()" position="bottom left"
+                style="bottom:85px;">
                 <i class="fa-solid fa-file-arrow-down"></i>
                 <span>Descargar</span>
             </ons-fab>
@@ -2259,7 +2338,7 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input id="searchPCM" onkeyup="debounceBuscare(event,event,setMostrarPedidosLamina)"
+                    <ons-search-input id="searchPCM" onkeyup="debounceBuscare(event,setMostrarPedidosLamina)"
                         placeholder="Buscar: Od. Comp. / Estado / Resistencia / Medidas "></ons-search-input>
                 </ons-list-item>
             </ons-list>
@@ -2374,7 +2453,8 @@
             </ons-list>
             <br><br><br><br><br><br><br>
 
-            <ons-fab class="root administrador" position="bottom right" onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
+            <ons-fab class="root administrador" position="bottom right"
+                onclick="nextPageFunction('agregarOrdenes.html',asignarAnioOrden)">
                 <span>Agregar PDF </span>
                 <i class="fa-solid fa-file-circle-plus"></i>
             </ons-fab>
@@ -4164,7 +4244,8 @@
                     icon="fa-calendar-days"></ons-tab>
             </ons-tabbar>
 
-            <ons-fab class="root administrador"  onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
+            <ons-fab class="root administrador"
+                onclick="nextPageFunction('pedidosAgregar.html',llenarFecha);limpiarLocalStorage()"
                 position="bottom right">
                 <span>Agregar</span>
                 <i class="fa-regular fa-plus"></i>

@@ -148,9 +148,9 @@ function mensajeAccion(index, json) {
         }, 1);
 
     }
-    else if (index == 2) alertComfirm("Estas seguro de eliminar este consumible?", ["Aceptar", "Cancelar"],
-        function () {
-            if (index == 0) setEliminarConsumible(json.id);
+    else if (index == 2) alertComfirm("Estas seguro de eliminar este consumible?", ["Cancelar", "Aceptar"],
+        function (i) {
+            if (i == 1) setEliminarConsumible(json.id);
         });
 }
 

@@ -100,7 +100,7 @@ function setBuscarEditarCliente(id) {
             $('#codigo').val(agregarCeros(tempJson.codigo));
             $('#nombre').val(tempJson.nombre);
             $('#RFC').val(tempJson.rfc);
-            $('#contrasena').val(tempJson.contraseña);
+            $('#contrasenaC').val(tempJson.contraseña);
             $("#botonModificarCliente").prop("disabled", false);
             cCarga();
         }
@@ -114,7 +114,8 @@ function setEditarCliente() {
     var id = $('#codigo').val();
     var nombre = $('#nombre').val().toUpperCase();
     var rfc = $('#RFC').val().toUpperCase();
-    var contrasena = $('#contrasena').val().toUpperCase();
+    var contrasena = $('#contrasenaC').val().toUpperCase();
+    //console.log(id, rfc, nombre, contrasena);
     if (vacio(id, rfc, nombre, contrasena)) {
         $("#botonModificarCliente").prop("disabled", true);
         oCarga("Editando Cliente...");
@@ -170,7 +171,13 @@ function enlistarClientes(arrayJson, i) {
 }
 
 function crearObjetMensajeCliente(id, i, nombre) {
-    mensajeArriba("OPCIONES - " + id + " " + nombre, ["Copiar RFC", "Copiar Contraseña", "Editar", { label: "Eliminar", modifier: "destructive" }],
+    let botones = [
+        { label: "Copiar RFC", icon: "fa-copy" },
+        { label: "Copiar Contraseña", icon: "fa-copy" },
+        { label: "Editar", icon: "fa-pen-to-square" },
+        { label: "Eliminar", icon: "fa-trash", modifier: "destructive" }
+    ];
+    mensajeArriba("OPCIONES - " + id + " " + nombre, botones,
         function (index) {
             if (index == 0) { copyToClipboard('#rfc' + i); alertToast("Copiado al portapapeles!", 2000); }
             else if (index == 1) { copyToClipboard('#contrasena' + i); alertToast("Copiado al portapapeles!", 2000); }

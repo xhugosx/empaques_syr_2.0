@@ -470,27 +470,23 @@ function enlistarpedidosOC(arrayJson, i) {
 
 //ENLISTAR DATOS CLIENTES
 function enlistarPedidosCliente(arrayJson) {
-    let html1 = "";
-
-    html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunction(\'pedidosFiltroCliente.html\',function(){cliente = \'' + arrayJson.codigo + '\'})">'
-    html1 += '<ons-list-item modifier="chevron nodivider" >';
-    //html1 += '<ons-list-item modifier="chevron" tappable onclick="crearObjetMensajePedido()">';
-    html1 += '    <div class="left">';
-    html1 += '        <strong>';
-    html1 += agregarCeros(arrayJson.codigo);
-    html1 += '        </strong>';
-    html1 += '    </div>';
-    html1 += '    <div class="center">';
-    html1 += arrayJson.cliente;
-    html1 += '    </div>';
-    html1 += '    <div class="right">';
-    html1 += '        <span class="notification">' + arrayJson.contador + '</span>';
-    html1 += '    </div>';
-    html1 += '</ons-list-item>';
-    html1 += '</ons-card>';
-
-    return html1;
+    return `
+    <ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunction('pedidosFiltroCliente.html', function(){ cliente = '${arrayJson.codigo}' })">
+        <ons-list-item modifier="chevron nodivider">
+            <div class="left">
+                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+            </div>
+            <div class="center">
+                ${arrayJson.cliente}
+            </div>
+            <div class="right">
+                <span class="notification">${arrayJson.contador}</span>
+            </div>
+        </ons-list-item>
+    </ons-card>
+    `;
 }
+
 //ENLISTAR PEDIDOS
 var estadoTemp = "";
 function enlistarPedidos(arrayJson, i) {

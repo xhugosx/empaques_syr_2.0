@@ -212,7 +212,7 @@ function setInicio() {
         var form = $('#formSesion')[0];
         var formData = new FormData(form);
         let link = myLink + "/php/usuarios/inicioSesion.php";
-        servidorPost(link,
+        servidorPost1(link,
             function (respuesta) {
                 let resultado = respuesta.responseText;
                 let json = JSON.parse(resultado);

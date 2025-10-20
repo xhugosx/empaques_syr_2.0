@@ -173,7 +173,7 @@ function enlistarEntradasInserto(arrayJson) {
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesEntradasInserto(${arrayJson.id})"`;
     let html1 = `
-        <ons-card style="padding:0px;" class="botonPrograma" >
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
             <ons-list-header style="background: white">
                 ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
             </ons-list-header>
@@ -228,35 +228,16 @@ function setEditarInsertoEntrada() {
     let id = $("#id").val();
     let obs = $("#observaciones").val().toUpperCase();
     let cantidad = $("#cantidad").val();
-    if (cantidad > 0) {
-        let link = myLink + "/php/entrada/caja/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
-        servidor(link,
-            function (respuesta) {
-                respuesta = respuesta.responseText;
-                if (respuesta) {
-                    alerta("Entrada Editada, Correctamente!");
-                    resetearPilaFunction(setMostrarEntradasInserto);
-                }
-                else alerta("Hubo un error al editar");
-            }
-        );
-    }
-    else alerta("La cantidad tiene que ser mayor a 0");
-    //console.log(id, obs, cantidad);
-}
-
-function setEditarInsertoEntrada() {
-    let id = $("#id").val();
-    let obs = $("#observaciones").val().toUpperCase();
-    let cantidad = $("#cantidad").val();
+    //console.log(setMostrarEntradasInserto);
     if (cantidad > 0) {
         let link = myLink + "/php/entrada/inserto/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
         servidor(link,
             function (respuesta) {
                 respuesta = respuesta.responseText;
+                //cons
                 if (respuesta) {
                     alerta("Entrada Editada, Correctamente!");
-                    resetearPilaFunction(setMostrarEntradaInserto);
+                    resetearPilaFunction(setMostrarEntradasInserto);
                 }
                 else alerta("Hubo un error al editar");
             }
