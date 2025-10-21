@@ -99,6 +99,7 @@ function setAgregarIngreso() {
           cCarga();
         }
         else alerta("No se pudo Agregar!");
+        //console.log(respuesta.responseText);
 
       }, formData);
   }

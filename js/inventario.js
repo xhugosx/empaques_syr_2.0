@@ -519,7 +519,7 @@ function enlistarInventarioLamina(arrayJson) {
     let accion;
     if (perfil != "produccion") accion = `onclick="mensajeAlertaInventarioLamina('${arrayJson.id}', ${arrayJson.inventario})"`;
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="">
+        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
             <ons-list-item modifier="nodivider" >
                 <div class="left">
                     <strong>${arrayJson.id}</strong>

@@ -264,7 +264,7 @@ function setBuscarProductoCliente(codigo) {
     $("#pedidoCliente").val("Buscando...");
     $("#botonAgregarPedido").attr('disabled', true);
     oCarga("Buscando Producto...");
-
+    //console.log(myLink + "/php/lista_pedidos/selectProductoCliente.php?search=" + codigo);
     servidor(myLink + "/php/lista_pedidos/selectProductoCliente.php?search=" + codigo,
         function (respuesta) {
             var resultado = respuesta.responseText;//respuesta del servidor
