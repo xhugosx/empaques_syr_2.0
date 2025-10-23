@@ -737,6 +737,7 @@ ons-fab.fijadoCentro:hover {
     background-color: #4caf50;
     color: #fff;
 }
+
 .estado-0 {
     background-color: #af4c4c;
     color: #fff;
@@ -755,7 +756,8 @@ ons-button.button--large:hover {
     font-size: 24px;
 }
 
-.iconoBorde, .bordeIcon{
+.iconoBorde,
+.bordeIcon {
     text-shadow:
         -1.5px -1.5px 0 rgba(255, 255, 255, 0.9),
         1.5px -1.5px 0 rgba(255, 255, 255, 0.9),
@@ -770,6 +772,12 @@ ons-button.button--large:hover {
     color: #606060;
     margin: 85px;
 }
-.estadistica>i{
+
+.estadistica>i {
     color: white !important;
+}
+
+.alert-dialog {
+    width: 80% !important;
+    max-width: 400px !important;
 }

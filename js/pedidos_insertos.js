@@ -13,46 +13,60 @@ function agregarHtmlInserto() {
     let i = localStorage.getItem('insertos');
 
     //tomar el valor del la variable y concatenar id
+    let codigoCaja = $("#pedidoCodigo").val();
+    let link = myLink + "/php/lista_pedidos_inserto/idAutomatico.php?i=" + (i - 1) + "&codigo=" + codigoCaja;
+    var id = null;
+    servidor(link,
+        function (respuesta) {
+            id = respuesta.responseText;
+            let html = `
+                <div id="agregarInserto${i}">
+                    <ons-card style="padding:0px;" class="botonPrograma">
+                        <ons-list-item modifier="nodivider">
+                            <div class="center">
+                                <ons-input id="id${i}" type="text" class="input-100" cols="30" rows="1" placeholder="ID" disabled value="${id}"></ons-input>
+                                <ons-select class="input-100" id="inserto${i}" autofocus>
+                                    <option value="">Inserto</option>
+                                    <option value="DIV. UNICA">DIV. UNICA</option>
+                                    <option value="DIV. CORTA">DIV. CORTA</option>
+                                    <option value="DIV. LARGA">DIV. LARGA</option>
+                                    <option value="CAMA">CAMA</option>
+                                    <option value="SUAJADO">SUAJADO</option>
+                                    <option value="BASE">BASE</option>
+                                    <option value="SEPARADOR">SEPARADOR</option>
+                                </ons-select>
 
-    let html = "";
+                                <ons-select class="input-100" id="resistencia${i}">
+                                    <option value="" style="color: #ccc;">Resistencia</option>
+                                    <option value="MICRO">MICRO</option>
+                                    <option value="S/G">S/G</option>
+                                    <option value="21 ECT ESP">21 ECT ESP</option>
+                                    <option value="21 ECT">21 ECT</option>
+                                    <option value="23 ECT">23 ECT</option>
+                                    <option value="26 ECT">26 ECT</option>
+                                    <option value="32 ECT">32 ECT</option>
+                                    <option value="38 ECT">38 ECT</option>
+                                    <option value="42 ECT">42 ECT</option>
+                                    <option value="51 ECT">51 ECT</option>
+                                    <option value="61 ECT">61 ECT</option>
+                                    <option value="71 ECT">71 ECT</option>
+                                </ons-select>
+                                <br><br>
 
-    html += '<div id="agregarInserto' + i + '">';
-    html += '    <ons-card  style="padding:0px;" class="botonPrograma" >';
-    html += '        <ons-list-item modifier="nodivider">';
-    html += '            <div class="center">';
-    html += '                <ons-select  class="input-100" id="inserto' + i + '" autofocus>';
-    html += '                    <option value="">Inserto</option>';
-    html += '                    <option value="DIV. UNICA">DIV. UNICA</option>';
-    html += '                    <option value="DIV. CORTA">DIV. CORTA</option>';
-    html += '                    <option value="DIV. LARGA">DIV. LARGA</option>';
-    html += '                    <option value="CAMA">CAMA</option>';
-    html += '                    <option value="SUAJADO">SUAJADO</option>';
-    html += '                    <option value="BASE">BASE</option>';
-    html += '                    <option value="SEPARADOR">SEPARADOR</option>';
-    html += '                </ons-select>';
-    html += '                <ons-select  class="input-100" id="resistencia' + i + '">';
-    html += '                    <option value="" style="color: #ccc;">Resistencia</option>';
-    html += '                    <option value="MICRO">MICRO</option>';
-    html += '                    <option value="S/G">S/G</option>';
-    html += '                    <option value="21 ECT ESP">21 ECT ESP</option>';
-    html += '                    <option value="21 ECT">21 ECT</option>';
-    html += '                    <option value="23 ECT">23 ECT</option>';
-    html += '                    <option value="26 ECT">26 ECT</option>';
-    html += '                    <option value="32 ECT">32 ECT</option>';
-    html += '                    <option value="38 ECT">38 ECT</option>';
-    html += '                    <option value="42 ECT">42 ECT</option>';
-    html += '                    <option value="51 ECT">51 ECT</option>';
-    html += '                    <option value="61 ECT">61 ECT</option>';
-    html += '                    <option value="71 ECT">71 ECT</option>';
-    html += '                </ons-select><br><br>';
-    html += '                <ons-input id="cantidad' + i + '" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input><br><br><br>';
-    html += '                <ons-input id="notas' + i + '" type="text" class="input-100" cols="30" rows="1" placeholder="Notas (opcional)"></ons-input>';
-    html += '            </div>';
-    html += '        </ons-list-item>';
-    html += '    </ons-card>';
-    html += '</div>';
+                                <ons-input id="cantidad${i}" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
+                                <br><br><br>
 
-    $("#insertos").append(html);
+                                <ons-input id="notas${i}" type="text" class="input-100" cols="30" rows="1" placeholder="Notas (opcional)"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+                </div>
+            `;
+
+            $("#insertos").append(html);
+        }
+    );
+
     //mandar html al div
 }
 
@@ -74,8 +88,8 @@ function limpiarLocalStorage() {
 
 // FUNCION PARA AGREGAR EL PEDIDO DE INSERTO DESDE EL PEDIDO DE CAJA 
 function setAgregarPedidoInserto(...datos) {
-    //console.log(myLink + "/php/lista_pedidos_inserto/add.php?codigo=" + datos[0] + "&resistencia=" + datos[1] + "&cantidad=" + datos[2] + "&observaciones=" + datos[3] + "&fecha_oc=" + datos[4] + "&notas=" + datos[5] + "&idCaja=" + datos[6]);
-    servidor(myLink + "/php/lista_pedidos_inserto/add.php?codigo=" + datos[0] + "&resistencia=" + datos[1] + "&cantidad=" + datos[2] + "&observaciones=" + datos[3] + "&fecha_oc=" + datos[4] + "&notas=" + datos[5] + "&idCaja=" + datos[6],
+    //console.log(myLink + "/php/lista_pedidos_inserto/add.php?codigo=" + datos[0] + "&resistencia=" + datos[1] + "&cantidad=" + datos[2] + "&observaciones=" + datos[3] + "&fecha_oc=" + datos[4] + "&notas=" + datos[5] + "&idCaja=" + datos[6]+"&ids="+datos[7]);
+    servidor(myLink + "/php/lista_pedidos_inserto/add.php?codigo=" + datos[0] + "&resistencia=" + datos[1] + "&cantidad=" + datos[2] + "&observaciones=" + datos[3] + "&fecha_oc=" + datos[4] + "&notas=" + datos[5] + "&idCaja=" + datos[6] + "&ids=" + datos[7],
         function (respuesta) {
             var resultado = respuesta.responseText;
             if (resultado != 1) alerta("no se pudo inserto");

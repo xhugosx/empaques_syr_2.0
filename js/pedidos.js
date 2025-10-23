@@ -75,14 +75,17 @@ function buscarDtospedidos() {
 
 function solicitarInfoPedido(codigo, e) {
     tecla = (document.all) ? e.keyCode : e.which;
+
     if (codigo.length >= 7 || tecla == 13) {
         //funcion para solicitarInventario
         setBuscarInventario(codigo);
         //funcion para solicitar el ultimo registrado
         setBuscarProductoCliente(codigo);
+
     }
     else {
         limpiarRegistrosPedidos2();
+        $("#insertosPedidos").css("visibility", "hidden");
     }
 
 }
@@ -216,8 +219,9 @@ function setAgregarPedido() {
         const totalInsertos = parseInt(localStorage.getItem('insertos') || 0);
 
         if (totalInsertos > 0) {
-            let insertos = [], resistencias = [], cantidades = [], notas = [];
+            let ids = [], insertos = [], resistencias = [], cantidades = [], notas = [];
             for (let i = 1; i <= totalInsertos; i++) {
+                const id = $(`#id${i}`).val();
                 const inserto = $(`#inserto${i}`).val();
                 const res = $(`#resistencia${i}`).val();
                 const cant = $(`#cantidad${i}`).val();
@@ -228,13 +232,13 @@ function setAgregarPedido() {
                     $("#botonAgregarPedido").prop("disabled", false);
                     return;
                 }
-
+                ids.push(id);
                 insertos.push(inserto);
                 resistencias.push(res);
                 cantidades.push(cant);
                 notas.push(nota);
             }
-            setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas, id);
+            setAgregarPedidoInserto(codigo, resistencias, cantidades, insertos, fecha_oc, notas, id, ids);
         }
     }
 
@@ -263,6 +267,7 @@ function setBuscarProductoCliente(codigo) {
     $("#pedidoProducto").val("Buscando...");
     $("#pedidoCliente").val("Buscando...");
     $("#botonAgregarPedido").attr('disabled', true);
+    $("#insertosPedidos").css("visibility", "hidden");
     oCarga("Buscando Producto...");
     //console.log(myLink + "/php/lista_pedidos/selectProductoCliente.php?search=" + codigo);
     servidor(myLink + "/php/lista_pedidos/selectProductoCliente.php?search=" + codigo,
@@ -286,6 +291,7 @@ function setBuscarProductoCliente(codigo) {
                 $('#pedidoId').val(anio + agregarCeros(arrayJson[0].codigo) + "-" + cantidad);
                 //activar boton agregar
                 $("#botonAgregarPedido").attr('disabled', false);
+                $("#insertosPedidos").css("visibility", "visible");
                 //console.log(arrayJson);
 
             }

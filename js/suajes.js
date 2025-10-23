@@ -46,7 +46,11 @@ function editarSuajes() {
 
 function opcionesSuajes(id) {
     //let datos = "";
-    mensajeArriba("opciones", ["Editar", {label: 'Eliminar',modifier: 'destructive'}], function (index) {
+    let botones = [
+        { label: "Editar", icon: "fa-edit"},
+        {label: 'Eliminar',modifier: 'destructive', icon: "fa-trash"}
+    ];
+    mensajeArriba("opciones", botones, function (index) {
         //console.log(index);
         if (index == 0) {
             //alerta("Editara"+id);

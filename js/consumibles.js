@@ -1,6 +1,10 @@
 document.addEventListener('init', function (event) {
     var page = event.target;
-    if (page.id === 'consumible') remover();
+    if (page.id === 'consumible') {
+        menuConsumibles();
+        remover();
+        filtroGlobal = "";
+    }
 });
 //funcion para refrescar todo
 function refresConsumible() {
@@ -41,9 +45,10 @@ function setAgregarConsumible() {
 
     let descripcion = ($('#descripcion').val()).toUpperCase();
     let cantidad = $('#cantidad').val();
-    if (datoVacio(descripcion) && datoVacio(cantidad)) {
+    var tipo = $('#selectTipo').val();
+    if (vacio(descripcion, cantidad, tipo)) {
         oCarga("Agregando Consumible...");
-        servidor(myLink + '/php/consumibles/add.php?&descripcion=' + descripcion + '&cantidad=' + cantidad,
+        servidor(myLink + '/php/consumibles/add.php?&descripcion=' + descripcion + '&cantidad=' + cantidad + "&tipo=" + tipo,
             function (respuesta) {
                 if (respuesta.responseText == "1") {
                     alerta("Consumible agregado");
@@ -130,28 +135,39 @@ var idConsumible = "";
 function alertaConsumible(array) {
     array = array.split(",");
     var json = conversionArrayJson(array);
-    mensajeArriba("Opciones", ["Modificar Descripcion", "<b>Piezas disponibles</b>", { label: 'Eliminar', modifier: 'destructive' }], mensajeAccion, json);
-}
-function mensajeAccion(index, json) {
-    if (index == 0) {
-        showDialogo("my-dialogConsumibleDes", "dialogConsumibleDes.html");
-        setTimeout(() => {
-            $('#salidaConsumibleDes').val(json.descripcion);
-            idConsumible = json.id;
-        }, 1);
-    }
-    else if (index == 1) {
-        showDialogo("my-dialogConsumible", "dialogConsumibleSalida.html");
-        setTimeout(() => {
-            $('#salidaConsumible').val(json.cantidad);
-            idConsumible = json.id;
-        }, 1);
+    let botones = [
+        { label: "Modificar", icon: "fa-edit" },
+        { label: "Piezas", icon: "fa-calculator" },
+        { label: 'Eliminar', modifier: 'destructive', icon: "fa-trash" }
+    ];
+    mensajeArriba("Opciones", botones,
+        function (index) {
+            if (index == 0) {
+               nextPageFunction("editarConsumible.html",function(){
+                    $("#id").val(json.id);
+                    $("#descripcion").val(json.descripcion);
+                    $("#selectTipo").val(json.tipo);
+               });
+                /*showDialogo("my-dialogConsumibleDes", "dialogConsumibleDes.html");
+                setTimeout(() => {
+                    $('#salidaConsumibleDes').val(json.descripcion);
+                    idConsumible = json.id;
+                }, 1);*/
+            }
+            else if (index == 1) {
+                showDialogo("my-dialogConsumible", "dialogConsumibleSalida.html");
+                setTimeout(() => {
+                    $('#salidaConsumible').val(json.cantidad);
+                    idConsumible = json.id;
+                }, 1);
 
-    }
-    else if (index == 2) alertComfirm("Estas seguro de eliminar este consumible?", ["Cancelar", "Aceptar"],
-        function (i) {
-            if (i == 1) setEliminarConsumible(json.id);
-        });
+            }
+            else if (index == 2) alertComfirm("Estas seguro de eliminar este consumible?", ["Cancelar", "Aceptar"],
+                function (i) {
+                    if (i == 1) setEliminarConsumible(json.id);
+                });
+        }
+    );
 }
 
 
@@ -163,4 +179,80 @@ function incrementar() {
 function decrementar() {
     let cantidad = $('#salidaConsumible').val();
     if (cantidad > 0) $('#salidaConsumible').val(parseInt(cantidad) - 1);
+}
+
+function aplicarFiltroConsumible() {
+    var ids = document.querySelectorAll("input[name='tipo']:checked");
+    var a = "";
+    for (var i = 0; i < ids.length; i++) {
+        a += ids[i].value + ",";
+    }
+    filtroGlobal = a.slice(0, -1);
+    console.log(filtroGlobal);
+}
+function resetearFiltroConsumibles() {
+    $('input[type=checkbox]').prop('checked', false);
+    //aqui llamara la funcion consumible otra vez
+    menu.close();
+}
+function menuConsumibles() {
+    var html = `<ons-list>
+                    <center>
+                        <h4 style="color: #808fa2; font-weight: bold;">
+                            Filtros
+                        </h4>
+                    </center>
+                    <ons-list>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-1" value="1" name="tipo"></ons-checkbox>
+                            </label>
+                            <label for="check-1" class="center">
+                                <i class="fa-solid fa-paperclip fa-lg"></i>&nbsp;Papeleria
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-2" value="2" name="tipo"></ons-checkbox>
+                            </label>
+                            <label for="check-2" class="center">
+                                <i class="fa-solid fa-screwdriver-wrench fa-lg"></i>&nbsp;Herramienta
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-3" value="3" name="tipo"></ons-checkbox>
+                            </label>
+                            <label for="check-3" class="center">
+                                <i class="fa-solid fa-soap fa-lg"></i>&nbsp;Limpieza
+                            </label>
+                        </ons-list-item>
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-checkbox input-id="check-4" value="4" name="tipo"></ons-checkbox>
+                            </label>
+                            <label for="check-4" class="center">
+                                <i class="fa-solid fa-toolbox fa-lg"></i>&nbsp;Producción
+                            </label>
+                        </ons-list-item>
+                        
+                    </ons-list>
+                    <ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" onclick="aplicarFiltroConsumible()" modifier="large">
+                            Aplicar
+                        </ons-button>
+                    </ons-list-item>
+                    <br><br><ons-list-item modifier="nodivider">
+                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
+                            onclick="resetearFiltroConsumibles();">
+                            <ons-icon icon="fa-trash"></ons-icon>
+                            Resetear
+                        </ons-button>
+                    </ons-list-item>
+
+
+                </ons-list>
+            `;
+    $("#contenidoMenu").html(html);
+
 }

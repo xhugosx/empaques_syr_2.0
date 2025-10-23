@@ -475,8 +475,8 @@
 
             <ons-list>
                 <ons-list-item>
-                    <ons-search-input onkeyup="debounceBuscare(event,setActividad)"
-                        placeholder="Buscar: Nombre" id="busquedaActividad"></ons-search-input>
+                    <ons-search-input onkeyup="debounceBuscare(event,setActividad)" placeholder="Buscar: Nombre"
+                        id="busquedaActividad"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 
@@ -1964,6 +1964,18 @@
                 <ons-card class="contenedorInputSub">
                     <ons-list-item modifier="nodivider">
                         <div class="left">
+                            <i class="fa-regular fa-house"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="domicilio" class="input-100" cols="30" rows="2"
+                                placeholder="Domicilio (OPCIONAL)"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
                             <i class="fa-regular fa-lock"></i>
                         </div>
                         <div class="center">
@@ -2027,6 +2039,18 @@
                         <div class="center">
                             <ons-input id="RFC" class="input-100" cols="30" rows="2" placeholder="RFC"
                                 onkeyup="contrasenaCliente()"></ons-input>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+
+                <ons-card class="contenedorInputSub">
+                    <ons-list-item modifier="nodivider">
+                        <div class="left">
+                            <i class="fa-regular fa-house"></i>
+                        </div>
+                        <div class="center">
+                            <ons-input id="domicilio" class="input-100" cols="30" rows="2"
+                                placeholder="Domicilio (OPCIONAL)"></ons-input>
                         </div>
                     </ons-list-item>
                 </ons-card>
@@ -3770,6 +3794,13 @@
             <ons-toolbar>
                 <div class="left"><ons-back-button>Regresar</ons-back-button></div>
                 <div class="center">Consumibles</div>
+                <div class="right">
+                    <ons-toolbar-button onclick="var menu = document.getElementById('menu'); menu.open();"
+                        style="color:white; font-size:18px">
+                        Filtro
+                        <i class="fa-solid fa-filter"></i>
+                    </ons-toolbar-button>
+                </div>
             </ons-toolbar>
 
             <ons-tabbar position="top">
@@ -3848,7 +3879,7 @@
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
                             <div class="left">
-                                <i class="fa-solid fa-toolbox"></i>
+                                <i class="fa-solid fa-toolbox fa-lg"></i>
                             </div>
                             <div class="center">
                                 <ons-input id="descripcion" name="descriopcion" class="input-100" type="text" step="any"
@@ -3860,7 +3891,7 @@
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
                             <div class="left">
-                                <i class="fa-solid fa-calculator"></i>
+                                <i class="fa-solid fa-calculator fa-lg"></i>
                             </div>
                             <div class="center">
                                 <ons-input id="cantidad" name="cantidad" class="input-100" type="number" step="any"
@@ -3869,10 +3900,92 @@
                         </ons-list-item>
                     </ons-card>
 
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-list-check fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select class="input-100" name="tipo" id="selectTipo">
+                                    <option value="" style="color: #ccc;">(TIPO)</option>
+                                    <option value="1">PAPELERIA</option>
+                                    <option value="2">HERRAMIENTA</option>
+                                    <option value="3">LIMPIEZA</option>
+                                    <option value="4">PRODUCCIÓN</option>
+                                   
+                                </ons-select>
+
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
 
 
                     <ons-list-item modifier="nodivider">
                         <ons-button modifier="large" onclick="setAgregarConsumible()">Agregar</ons-button>
+                    </ons-list-item>
+
+                </ons-card>
+            </form>
+        </ons-page>
+    </template>
+
+    <template id="editarConsumible.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"><ons-back-button>Regresar</ons-back-button></div>
+                <div class="center">Editar Consumible</div>
+            </ons-toolbar>
+
+            <!--aqui iran los input de los datos-->
+            <form onsubmit="return false;" id="formPedidoLamina">
+                <ons-card id="contenedorInput">
+
+                     <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="id" name="id" class="input-100" type="text" step="any"
+                                    placeholder="ID" style="text-transform: uppercase;"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-solid fa-toolbox fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="descripcion" name="descriopcion" class="input-100" type="text" step="any"
+                                    placeholder="Descripcion" style="text-transform: uppercase;"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-list-check fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select class="input-100" name="tipo" id="selectTipo">
+                                    <option value="" style="color: #ccc;">(TIPO)</option>
+                                    <option value="1">PAPELERIA</option>
+                                    <option value="2">HERRAMIENTA</option>
+                                    <option value="3">LIMPIEZA</option>
+                                    <option value="4">PRODUCCIÓN</option>
+                                   
+                                </ons-select>
+
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <ons-button modifier="large" onclick="setEditarConsumible()">Editar</ons-button>
                     </ons-list-item>
 
                 </ons-card>
@@ -4604,30 +4717,32 @@
 
             </div>
 
+            <div id="insertosPedidos" style="visibility: hidden;">
+                <ons-card style="padding:0px;" class="botonPrograma" onclick="agregarHtmlInserto()">
+                    <ons-list-item modifier="nodivider" id="">
+                        <div class="center">
+                            <i class="fa-solid fa-circle-plus fa-2x"></i>
+                            &nbsp&nbsp
+                            <b style="color: rgb(82, 82, 82)">
+                                Agregar Inserto
+                            </b>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
 
-            <ons-card style="padding:0px;" class="botonPrograma" onclick="agregarHtmlInserto()">
-                <ons-list-item modifier="nodivider" id="">
-                    <div class="center">
-                        <i class="fa-solid fa-circle-plus fa-2x"></i>
-                        &nbsp&nbsp
-                        <b style="color: rgb(82, 82, 82)">
-                            Agrega Inserto
-                        </b>
-                    </div>
-                </ons-list-item>
-            </ons-card>
+                <ons-card style="padding:0px;" class="botonPrograma" onclick="retrocederInserto()">
+                    <ons-list-item modifier="nodivider" id="">
+                        <div class="center">
+                            <i class="fa-solid fa-circle-minus fa-2x"></i>
+                            &nbsp&nbsp
+                            <b style="color: rgb(82, 82, 82)">
+                                Quitar Inserto
+                            </b>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
+            </div>
 
-            <ons-card style="padding:0px;" class="botonPrograma" onclick="retrocederInserto()">
-                <ons-list-item modifier="nodivider" id="">
-                    <div class="center">
-                        <i class="fa-solid fa-circle-minus fa-2x"></i>
-                        &nbsp&nbsp
-                        <b style="color: rgb(82, 82, 82)">
-                            Quitar Inserto
-                        </b>
-                    </div>
-                </ons-list-item>
-            </ons-card>
 
 
 

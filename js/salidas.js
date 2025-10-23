@@ -159,7 +159,14 @@ function opcionesSalidasCajas(id) {
                         setMostrarEditarSalidaCajas(id);
                     }
                 );
-            else if (opc == 1) setEliminarSalidaCaja(id);
+            else if (opc == 1) {
+                alertConfirm("Estas seguro de eliminar esta salida?", ["Cancelar","Aceptar"], 
+                    function(idx){
+                        if(idx) setEliminarSalidaCaja(id);
+                    }
+                );
+                
+            } 
         }
     );
 }
@@ -245,34 +252,13 @@ function setEditarInsertoSalida() {
     let obs = $("#observaciones").val().toUpperCase();
     let cantidad = $("#cantidad").val();
     if (cantidad > 0) {
-        let link = myLink + "/php/salida/caja/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
-        servidor(link,
-            function (respuesta) {
-                respuesta = respuesta.responseText;
-                if (respuesta) {
-                    alerta("Salida Editada, Correctamente!");
-                    resetearPilaFunction(setMostrarSalidasInserto);
-                }
-                else alerta("Hubo un error al editar");
-            }
-        );
-    }
-    else alerta("La cantidad tiene que ser mayor a 0");
-    //console.log(id, obs, cantidad);
-}
-
-function setEditarInsertoSalida() {
-    let id = $("#id").val();
-    let obs = $("#observaciones").val().toUpperCase();
-    let cantidad = $("#cantidad").val();
-    if (cantidad > 0) {
         let link = myLink + "/php/salida/inserto/update.php?id=" + id + "&observaciones=" + obs + "&cantidad=" + cantidad;
         servidor(link,
             function (respuesta) {
                 respuesta = respuesta.responseText;
                 if (respuesta) {
                     alerta("Salida Editada, Correctamente!");
-                    resetearPilaFunction(setMostrarSalidaInserto);
+                    resetearPilaFunction(setMostrarSalidasInserto);
                 }
                 else alerta("Hubo un error al editar");
             }
@@ -314,7 +300,13 @@ function opcionesSalidasInserto(id) {
                         setMostrarEditarSalidaInserto(id);
                     }
                 );
-            else if (opc == 1) setEliminarSalidaInserto(id);
+            else if (opc == 1) {
+                alertConfirm("Estas seguro de eliminar esta salida?", ["Cancelar","Aceptar"], 
+                    function(idx){
+                        if(idx) setEliminarSalidaInserto(id);
+                    }
+                );
+            } 
         }
     );
 }
