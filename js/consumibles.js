@@ -8,21 +8,7 @@ document.addEventListener('init', function (event) {
 });
 //funcion para refrescar todo
 function refresConsumible() {
-    setConsumible0();
     setConsumible();
-}
-
-//funcion para buscar ambos consultas de consumibles
-function setConsumible0() {
-    oCarga("Cargando Datos...");
-    var busqueda = $('#searchConsumible0').val();
-    servidor(myLink + '/php/consumibles/selectSinExistencia.php?search=' + busqueda, function (respuesta) {
-        var resultado = respuesta.responseText;//respuesta del servidor
-        var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
-        $('#sinExistencia').attr("badge", arrayJson.length - 1);
-        listaInfinita('datosConsumible0', 'consumible0Loading', arrayJson, enlistarConsumible);
-        cCarga();
-    });
 }
 
 //mostrar inventario consumibles
@@ -30,7 +16,7 @@ function setConsumible0() {
 function setConsumible() {
     oCarga("Cargando Datos...");
     var busqueda = $('#searchConsumible').val();
-    servidor(myLink + '/php/consumibles/select.php?search=' + busqueda, function (respuesta) {
+    servidor(myLink + '/php/consumibles/select.php?search=' + busqueda + "&filtro=" + filtroGlobal, function (respuesta) {
         var resultado = respuesta.responseText;//respuesta del servidor
         var arrayJson = resultado.split('|'); //separamos los json en un arreglo, su delimitador siendo un '|'
         $('#existencia').attr("badge", arrayJson.length - 1);
@@ -76,36 +62,43 @@ function setEliminarConsumible(id) {
 //fin de eliminar consumible
 
 //actualizar consumible
-
-function setActualizarConsumible(id) {
-    let cantidad = $('#salidaConsumible').val();
-    if (cantidad >= 0) servidor(myLink + '/php/consumibles/update.php?id=' + id + '&cantidad=' + cantidad, getActualizarConsumible);
-    else alerta("No puede ser menor a 0");
-}
-function getActualizarConsumible(respuesta) {
-    if (respuesta.responseText == "1") {
-        alertToast("Piezas Actualizadas!", 2000)
-        refresConsumible();
-        hideDialogo('my-dialogConsumible');
-    }
-    else alerta("No se pudo Actualizar");
+function setEditarConsumible() {
+    let id = $('#id').val();
+    let des = $('#descripcion').val().toUpperCase();
+    let tipo = $('#selectTipo').val();
+    //console.log(id, des, tipo);
+    if (vacio(id, des, tipo))
+        servidor(myLink + '/php/consumibles/update.php?id=' + id + '&descripcion=' + des + '&tipo=' + tipo,
+            function (respuesta) {
+                //console.log(respuesta.responseText);
+                if (respuesta.responseText == "1") {
+                    resetearPilaFunction(setConsumible);
+                }
+                else alerta("No se pudo Actualizar");
+            }
+        );
+    else alerta("Datos vacios!!");
 }
 //fin de actualizar de consumible
 
 //actualizar consumible descripcion
 
-function setActualizarConsumibleDes(id) {
-    let descripcion = $('#salidaConsumibleDes').val().toUpperCase();
-    if (vacio(descripcion)) servidor(myLink + '/php/consumibles/updateDes.php?id=' + id + '&descripcion=' + descripcion, getActualizarConsumibleDes);
-    else alerta("No puede estar vacio");
-}
-function getActualizarConsumibleDes(respuesta) {
-    if (respuesta.responseText == "1") {
-        alertToast("Descripcion Actualizada!", 2000)
-        refresConsumible();
-        hideDialogo('my-dialogConsumibleDes');
+function setActualizarConsumible(id) {
+    let cantidad = $('#salidaConsumible').val();
+    if (cantidad >= 0) {
+        servidor(myLink + '/php/consumibles/updateCant.php?id=' + id + '&cantidad=' + cantidad,
+            function (respuesta) {
+                if (respuesta.responseText == "1") {
+                    alertToast("Piezas Actualizadas!", 2000);
+                    refresConsumible();
+                    hideDialogo('my-dialogConsumible');
+                }
+                else alerta("No se pudo Actualizar");
+            }
+        );
+
     }
-    else alerta("No se pudo Actualizar");
+    else alerta("La cantidad no puede ser menor a 0");
 }
 //fin de actualizar de consumible descripcion
 
@@ -117,7 +110,7 @@ function enlistarConsumible(json) {
     <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
         <ons-list-item class="" modifier="nodivider">
             <div class="left">
-                <i class="fa-solid fa-toolbox fa-2x"></i>
+                ${tipoConsumible(json.tipo)}
             </div>
             <div class="center">
                 <span class="list-item__title"><b>${json.descripcion}</b></span>
@@ -143,11 +136,11 @@ function alertaConsumible(array) {
     mensajeArriba("Opciones", botones,
         function (index) {
             if (index == 0) {
-               nextPageFunction("editarConsumible.html",function(){
+                nextPageFunction("editarConsumible.html", function () {
                     $("#id").val(json.id);
                     $("#descripcion").val(json.descripcion);
                     $("#selectTipo").val(json.tipo);
-               });
+                });
                 /*showDialogo("my-dialogConsumibleDes", "dialogConsumibleDes.html");
                 setTimeout(() => {
                     $('#salidaConsumibleDes').val(json.descripcion);
@@ -188,12 +181,22 @@ function aplicarFiltroConsumible() {
         a += ids[i].value + ",";
     }
     filtroGlobal = a.slice(0, -1);
-    console.log(filtroGlobal);
+    setConsumible();
+    menu.close();
 }
 function resetearFiltroConsumibles() {
     $('input[type=checkbox]').prop('checked', false);
-    //aqui llamara la funcion consumible otra vez
+    filtroGlobal = "";
     menu.close();
+}
+function tipoConsumible(tipo) {
+    let tipos = [
+        '<i class="fa-solid fa-paperclip fa-2x"></i>',
+        '<i class="fa-solid fa-screwdriver-wrench fa-2x"></i>',
+        '<i class="fa-solid fa-soap fa-2x"></i>',
+        '<<i class="fa-solid fa-toolbox fa-2x"></i>',
+    ];
+    return tipos[tipo - 1] || '<i class="fas fa-question fa-2x"></i>';
 }
 function menuConsumibles() {
     var html = `<ons-list>

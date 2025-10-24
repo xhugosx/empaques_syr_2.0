@@ -35,7 +35,7 @@ function debounceBuscare(e, miFuncion) {
   }, 400);
 }
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
-var myLink = "https://empaquessr.com/sistema/pruebas";
+var myLink = "https://empaquessr.com/sistema/empaquessr_2";
 function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   ons.notification.prompt({
     title: '',
@@ -205,6 +205,7 @@ function servidor(link, miFuncion) {
 }
 
 function servidorPost1(link, miFuncion, data) {
+  //console.log(link);
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 

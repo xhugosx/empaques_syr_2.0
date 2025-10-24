@@ -56,6 +56,7 @@ function setAgregarProducto() {
     let codigo = $('#codigoProducto1').val();
     let nombre = $('#nombreProducto').val();
     let precio = $('#precioProducto').val();
+    //let precio2 = $('#precio2Producto').val();
     let m2 = $('#m2Producto').val();
     let archivo = $('input[type=file]').val();
 
@@ -143,6 +144,7 @@ function setBuscarProductoActualizar(codigo) {
             $('#codigoProductoActualizar').val(arrayJson[0].codigo);
             $('#nombreProductoActualizar').val(arrayJson[0].producto);
             $('#precioProductoActualizar').val(arrayJson[0].precio);
+            $('#precio2ProductoActualizar').val(arrayJson[0].precio2);
             $('#m2ProductoActualizar').val(arrayJson[0].m2);
             $('#pdfNombreProductoActualizar').text(arrayJson[0].file == 1 ? producto[0] + "-" + producto[1] + ".pdf" : "No tiene Plano");
             $('#btnActualizarProducto').prop('disabled', false);
@@ -157,10 +159,15 @@ function enlistarProductos(arrayJson, i) {
     let perfil = validarPerfil();
     let accion, precio = "";
     if (perfil == "produccion") accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
-    else{
+    else {
         accion = `crearObjetMensaje('${arrayJson.codigo}', ${i})`;
-        precio = `<span class="list-item__subtitle" style="font-size:14px"><b>$ ${separator(arrayJson.precio)}</b></span>`  
-    } 
+        precio = `<span style="font-size:14px; white-space: nowrap;" >
+                    <b>
+                    <span class="list-item__subtitle">$ ${separator(arrayJson.precio2)}  &nbsp;|&nbsp;</span>  
+                    $ ${separator(arrayJson.precio)} &nbsp;</b>
+                </span>
+        `;
+    }
     const html = `
     <ons-card style="padding:0px;" class="botonPrograma" id="list-cliente${i}" 
               onclick="${accion}">
@@ -174,12 +181,13 @@ function enlistarProductos(arrayJson, i) {
             </div>
             
             <div class="center">
-                <span class="list-item__title"><b>${arrayJson.codigo}</b></span>
-                <span class="list-item__subtitle" style="font-size:14px">${arrayJson.producto}</span>
+                <span class="list-item__title"><b>${arrayJson.codigo}</b> ${arrayJson.producto} </span>
+                <span class="list-item__subtitle" style="font-size:12px">
+                    <b>M²: ${arrayJson.m2}</b>
+                </span>
             </div>
             
-            <div class="right" style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; white-space: nowrap;">
-                <span class="list-item__title"><b><b>M²: ${arrayJson.m2}</b></b></span>
+            <div class="right">
                 ${precio}
             </div>
             

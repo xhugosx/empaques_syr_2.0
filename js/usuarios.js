@@ -216,7 +216,7 @@ function setInicio() {
             function (respuesta) {
                 let resultado = respuesta.responseText;
                 let json = JSON.parse(resultado);
-                //console.log(json);
+                //console.log(json,link);
                 if (json.estatus == 1) {
                     nextPage("home.html");
                     alerta('Bienvenido: <hr><h4>' + tipoPerfil(json.perfil) + '</h4><h3>' + json.nombre + '</h3>');
