@@ -21,10 +21,11 @@ function enlistarActividad(arrayJson) {
         <br>
         <b>Detalles:</b><br>
     `;
+    
         // Recorremos act.datos con forEach
         Object.entries(act.datos).forEach(([clave, valor]) => {
             actividades += `&nbsp;&nbsp;&nbsp;<b>*&nbsp;${clave}:</b>&nbsp;${valor}<br>`;
-            //console.log(clave, valor);
+            //console.log(clave,valor);
         });
         actividades += `<hr>`;
     });
