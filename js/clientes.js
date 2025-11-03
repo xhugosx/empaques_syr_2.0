@@ -92,7 +92,7 @@ function setEliminarCliente(codigo, i) {
 //buscar editar cliente
 function setBuscarEditarCliente(id) {
     oCarga("Buscando Cliente...");
-    servidor(myLink + '/php/clientes/select.php?search=' + id,
+    servidor(myLink + '/php/clientes/select.php?id=' + id,
         function (respuesta) {
             var resultado = respuesta.responseText;
             var tempJson = resultado.split('|');

@@ -35,7 +35,7 @@ function debounceBuscare(e, miFuncion) {
   }, 400);
 }
 //FUNCION PARA GENERAR MENSAJES DE CONFIRMACION CON ENTRADA DE DATO
-var myLink = "https://empaquessr.com/sistema/empaquessr_2";
+var myLink = "https://empaquessr.com/sistema/pruebas";
 function alertComfirmDato(mensaje, tipoDato, botones, miFuncion, json) {
   ons.notification.prompt({
     title: '',
