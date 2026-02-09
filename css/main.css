@@ -129,11 +129,6 @@ body {
     width: 98%;
 }
 
-i {
-    color: #7BB5E8;
-    /*rgba(215,172,118,1);*/
-}
-
 ons-fab>span>i {
     color: rgb(255, 255, 255);
 }
@@ -233,11 +228,6 @@ ons-toolbar>div.right {
     font-weight: bold;
     color: white;
 
-}
-
-ons-toolbar.toolbar {
-    background-color: #1A9CE8;
-    color: white;
 }
 
 ons-back-button.back-button {
@@ -781,3 +771,4 @@ ons-button.button--large:hover {
     width: 80% !important;
     max-width: 400px !important;
 }
+

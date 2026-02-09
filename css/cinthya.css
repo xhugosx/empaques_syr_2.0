@@ -48,4 +48,14 @@ span>.fa-folder-open {
     background-color: #1ba0d1b9 !important;
     /* background-color: var(--switch-checked-background-color); */
 }
-
+.sistema{
+    box-shadow: none !important;
+    background-color: #ffffff00 !important;
+}
+i {
+    color: #7BB5E8;
+}
+ons-toolbar.toolbar {
+    background-color: #1A9CE8;
+    color: white;
+}

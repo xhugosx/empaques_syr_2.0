@@ -1,0 +1,78 @@
+:checked+.tabbar__button {
+    color: #AB83C9 !important;
+}
+
+.button--large {
+    background: #58168b;
+}
+
+.alert-dialog-button {
+    color: #58168b;
+}
+
+.checkbox--material .checkbox--material__input:checked+.checkbox--material__checkmark {
+    --checkbox-checked-background-color: #AB83C9 !important;
+}
+
+.btnResetear {
+    background-color: #8a4290 !important;
+    padding: 0;
+}
+
+.btnActivo {
+    background-color: #9280c8;
+    text-align: center;
+}
+
+ons-fab {
+    background-color: #AB83C9 !important;
+    margin-bottom: 20px;
+}
+
+.flechaDerecha,
+.flechaIzquierda {
+    background-color: #AB83C9;
+}
+
+.ordenesLamina>i {
+    color: #a96ebb;
+}
+
+.textAnioFolder {
+    color: #a96ebb;
+}
+
+span>.fa-folder-open {
+    color: #664470 !important;
+}
+
+#page1>.toolbar {
+    height: 100px !important;
+    border-radius: 0 0 50px 50px;
+    border: 0;
+    -webkit-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
+    background: linear-gradient(180deg, rgb(171, 131, 201) 0%, rgb(196, 134, 243) 5%, rgb(255, 255, 255) 13%);
+}
+
+.page__background {
+    background: conic-gradient(from 315deg, #7e68bf, #5b556e);
+}
+
+.year-input>#nextYear,
+.year-input>#prevYear {
+
+    background-color: #AB83C9;
+}
+.sistema{
+    box-shadow: none !important;
+    background-color: #ffffff00 !important;
+}
+i {
+    color:  #aca7bc;
+}
+ons-toolbar.toolbar {
+    background-color: #AB83C9;
+    color: white;
+}

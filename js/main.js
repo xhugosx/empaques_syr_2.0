@@ -5,7 +5,6 @@ function primero() {
     let nombre = localStorage.getItem("usuario");
     let perfil = localStorage.getItem("perfil");
     alerta('Bienvenido: <hr><h4>' + tipoPerfil(perfil) + '</h4><h3>' + nombre + '</h3>');
-
   }
   else resetarInicio();
   iniciarContadorInactividad();
@@ -162,7 +161,7 @@ function servidor(link, miFuncion) {
   let id = localStorage.getItem("id");
   //console.log(link.slice(-1));
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
-  link = link + `nombreUsuario=${usuario}&idUsuario=${id}`; 
+  link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
@@ -236,7 +235,7 @@ function servidorPost(link, miFuncion, data) {
   let id = localStorage.getItem("id");
   //console.log(link.slice(-1));
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
-  link = link + `nombreUsuario=${usuario}&idUsuario=${id}`; 
+  link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
@@ -254,7 +253,7 @@ function servidorPost(link, miFuncion, data) {
     };
 
     xhttp.open("POST", link, true);
-    xhttp.send(data); 
+    xhttp.send(data);
   }
   else {
     alerta('Revisa tu conexión <i style="color:gray" class="fa-solid fa-wifi fa-lg"></i>');
@@ -312,7 +311,7 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha, p
       '<i class="fas fa-calendar-check"></i>&nbsp;<b>Programar<b/>',
       botonEstado,
       '<i class="fas fa-drafting-compass"></i>&nbsp;Ver Plano',
-      '<i class="fas fa-info-circle"></i>&nbsp;Detalles',
+      '<i class="fas fa-square-plus"></i>&nbsp;Agregar Faltante',
       '<i class="fas fa-pen-to-square"></i>&nbsp;Editar ' + botonModificar,
       {
         label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Eliminar',
@@ -349,7 +348,26 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha, p
       //window.open(myLink+'/planos/'+codigo.substring(0,3)+'/'+codigo.substring(0,3)+'-'+codigo.substring(4,7)+'.pdf', '_blank');
 
     }
-    else if (index == 3) alerta("<b>Producto: </b><br>" + codigo + " " + producto + "<br><br><b>Cliente: </b><br>" + cliente + "<br><br><b>Fecha de Entrega: </b><br>" + fechaE + "<br><br><b>Orden de Compra: </b><br>" + oc + "<br><br><b>Fecha del pedido:</b><br>" + fecha + "<br><br><b>Observaciones: </b><br>" + observaciones + "<br>");
+    else if (index == 3) {
+      //alerta("Aqui se agregara algun faltante con el id: " + id);
+      let b = ['<i class="fas fa-times"></i>&nbsp;Cancelar', 'Aceptar&nbsp;<i class="fas fa-circle-check"></i>']
+      alertComfirmDato("Cantidad de faltante", "number", b,
+        function (input) {
+          if (input != null && input != "" && input != 0) {
+            link = myLink + '/php/lista_pedidos/add-f.php?id=' + id + '&cantidad=' + input;
+            servidor(link,
+              function (respuesta) {
+                cCarga();
+                respuesta = respuesta.responseText;
+                if (respuesta == 1) alerta("Faltante Agregado!");
+                else alerta("Hubo un error!");
+              }
+            )
+          }
+        }
+      )
+
+    }
     else if (index == 4) {
       if (estado != 4 && estado != 5) nextPageFunctionData('pedidosModificar.html', setModificarBuscarPedido, id);
       else {
@@ -1128,4 +1146,30 @@ function obtenerFechaActual() {
 
 function convertJson(json) {
   return json.split('|').filter(c => c.trim() !== '').map(c => JSON.parse(c.trim()));
+}
+
+function cambiarSistemaM() {
+  oCarga("Cambiando de sistema...");
+  setTimeout(() => {
+    document.getElementById('cssPrincipal').href = './css/michelle.css';
+    document.getElementById('logo').src = 'media/michelle.png';
+    myLink = "https://empaquessr.com/sistema/michelle_2";
+    document.getElementById("btnCambioSistemaE").style.display = "";
+    document.getElementById("btnCambioSistemaM").style.display = "none";
+    cCarga();
+  }, 1000);
+
+}
+
+function cambiarSistemaE() {
+  oCarga("Cambiando de sistema...");
+  setTimeout(() => {
+    document.getElementById('cssPrincipal').href = './css/cinthya.css';
+    document.getElementById('logo').src = 'media/Logo_oficial.svg';
+    myLink = "https://empaquessr.com/sistema/empaquessr_2";
+    document.getElementById("btnCambioSistemaM").style.display = "";
+    document.getElementById("btnCambioSistemaE").style.display = "none";
+    cCarga();
+  }, 1000);
+
 }

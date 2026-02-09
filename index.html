@@ -69,7 +69,7 @@
     <!-- mi css -->
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/calendarioPedidos.css">
-    <link rel="stylesheet" href="./css/cinthya.css">
+    <link rel="stylesheet" id="cssPrincipal" href="./css/cinthya.css">
 
     <title>Empaques SyR</title>
 </head>
@@ -147,7 +147,8 @@
                                 placeholder="Ejemplo: *******"></ons-input>
                         </ons-list-item>
                     </ons-card>
-
+                    <ons-checkbox input-id="mantener"></ons-checkbox>
+                    <label for="mantener" style="color:white">Mantener sesion iniciada</label>
                     <ons-list-item modifier="nodivider" style="width: 80%;">
                         <ons-button modifier="large" onclick="setInicio()">Iniciar Sesión</ons-button>
                     </ons-list-item>
@@ -164,7 +165,8 @@
         <ons-page id="page1">
             <ons-toolbar>
                 <div id="inicio" class="center" style="height:auto; text-align: center;">
-                    <img src="media/Logo_oficial.svg" height="80px" style="margin: 10px;" style="position: relative;">
+                    <img id="logo" src="media/Logo_oficial.svg" height="80px" style="margin: 10px;"
+                        style="position: relative;">
                 </div>
             </ons-toolbar>
 
@@ -188,6 +190,14 @@
                 <ons-tab page="controlGastos.html" label="Control de gastos" icon="fa-chart-bar"></ons-tab>
             </ons-tabbar>
 
+            <ons-fab id="btnCambioSistemaM" class="sistema" position="bottom left"
+                style="background-color: #ffffff00; bottom: 60px; display: '';">
+                <img onclick="cambiarSistemaM()" src="media/m.png" width="60px" alt="">
+            </ons-fab>
+            <ons-fab id="btnCambioSistemaE" class="sistema" position="bottom left"
+                style="background-color: #ffffff00; bottom: 60px; display: none;">
+                <img onclick="cambiarSistemaE()" src="media/Logo_oficial.svg" width="80px" alt="">
+            </ons-fab>
 
             <ons-fab onclick="cerrarSesion()" position="bottom right"
                 style="background-color: rgb(218, 84, 84); bottom: 60px">
@@ -2557,16 +2567,26 @@
                         </ons-list-item>
                     </ons-card>
 
-                    <!--ons-card class="contenedorInputSub">
-                        <ons-list-item tappable modifier="nodivider">
+                    <ons-card class="contenedorInputSub">
+
+                        <ons-list-item tappable>
                             <label class="left">
-                                <ons-checkbox input-id="michelle"></ons-checkbox>
+                                <ons-radio name="prov" input-id="radio-1" value="PCM" checked></ons-radio>
                             </label>
-                            <label for="michelle" class="center">
-                                Selecciona esta casilla si es de MICHELLE
+                            <label for="radio-1" class="center">
+                                PCM
                             </label>
                         </ons-list-item>
-                    </ons-card-->
+                        <ons-list-item tappable>
+                            <label class="left">
+                                <ons-radio name="prov" input-id="radio-2" value="PACK"></ons-radio>
+                            </label>
+                            <label for="radio-2" class="center">
+                                PACK
+                            </label>
+                        </ons-list-item>
+
+                    </ons-card>
 
                     <ons-card class="contenedorInputSub">
                         <ons-list-item modifier="nodivider">
@@ -3836,8 +3856,9 @@
             <ons-list style="background: rgba(76, 175, 80, 0.0) ">
                 <ons-lazy-repeat id="datosConsumible"></ons-lazy-repeat>
             </ons-list>
+            <br><br><br><br>
 
-             <ons-fab  onclick="setConsumible()" position="bottom left">
+            <ons-fab onclick="setConsumible()" position="bottom left">
                 <span>Actualizar</span>
                 <i class="fa-solid fa-arrows-rotate"></i>
             </ons-fab>
@@ -4385,7 +4406,7 @@
             <ons-list>
                 <ons-list-item>
                     <ons-search-input id="searchPedido" onkeyup="debounceBuscare(event,setBusquedaPendiente)"
-                        placeholder="Buscar: id / codigo / producto / Orden de compra"></ons-search-input>
+                        placeholder="Buscar: id / codigo / producto / Orden de compra / Observaciones"></ons-search-input>
                 </ons-list-item>
             </ons-list>
 

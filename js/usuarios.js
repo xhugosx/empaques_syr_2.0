@@ -10,7 +10,6 @@ document.addEventListener('init', function (event) {
 });
 
 
-
 function remover() {
     let perfil = validarPerfil();
     if (perfil) {
@@ -36,8 +35,6 @@ function validarPerfil() {
     let perfiles = ["finanzas", "produccion", "administrador", "root"];
     return perfiles[perfil - 1];
 }
-
-
 function setUsuarios() {
     oCarga("Cargando usuarios...");
     let search = $('#searchUsuarios').val();
@@ -141,6 +138,8 @@ let alertaTimer;
 
 // Inicia el contador de inactividad
 function iniciarContadorInactividad() {
+    let mantener = localStorage.getItem("mantener") === 'true' ? true : false;
+    if (mantener)return; // Si el usuario eligió mantener sesión, no iniciar contador
     // Cada vez que haya interacción, reinicia el timer
     ['mousemove', 'keydown', 'click', 'touchstart'].forEach(evt => {
         document.addEventListener(evt, reiniciarTimer);
@@ -162,14 +161,7 @@ function reiniciarTimer() {
 
 // Pregunta al usuario si sigue activo
 function preguntarSiActivo() {
-    // Llamamos a tu función de alerta, que debe ser bloqueante o prometer respuesta
-
-    if (!localStorage.getItem("usuario")) {
-        // Si ya no hay usuario, cancelar alerta y limpiar timers
-        clearTimeout(alertaTimer);
-        return;
-    }
-
+    if(!localStorage.getItem("usuario")) return;
     alertaFunction("¿Sigues activo en el sistema?", '',
         function () {
             reiniciarTimer();
@@ -206,7 +198,7 @@ function cerrarSesion() {
 function setInicio() {
     let usuario = $('#usuario').val();
     let contrasena = $('#contrasena').val();
-
+    var mantener = $('#mantener')[0].checked;
     if (vacio(usuario, contrasena)) {
         oCarga("Iniciando Sesion...");
         var form = $('#formSesion')[0];
@@ -223,7 +215,7 @@ function setInicio() {
                     localStorage.setItem("usuario", json.nombre);
                     localStorage.setItem("id", json.id);
                     localStorage.setItem("perfil", json.perfil);
-                    //localStorage.setItem("perfil", json.perfil);
+                    localStorage.setItem("mantener", mantener);
                 }
                 else if (json.error) alerta(json.error);
                 else alerta("Usuario bloqueado, solicite al encargado Desbloquear...", '<i class="fa-solid fa-triangle-exclamation"></i>');

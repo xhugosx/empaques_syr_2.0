@@ -23,11 +23,11 @@ function asignarAnioOrden() {
 }
 
 function setAgregarOrden() {
-
     if (datoVacio($('input[type=file]').val())) {
         var form = $('#formOrdenes')[0];
         var formData = new FormData(form);
-        var carpeta = $('#yearOrden').text();
+        const prov = $('input[name="prov"]:checked').val();
+        var carpeta = $('#yearOrden').text() + '-' + prov;
 
         $('#agregarOrden').prop("disabled", true);
         oCarga("Subiendo Archivo...");

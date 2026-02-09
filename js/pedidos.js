@@ -712,7 +712,6 @@ function menuPedidos() {
                             </label>
                             <label class="center">
                                 <div class="year-input">
-
                                     <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
                                     <input type="text" id="currentYear" readonly>
                                     <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
