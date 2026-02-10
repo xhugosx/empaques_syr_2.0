@@ -159,9 +159,10 @@ function alertaFunction(mensaje, titulo, funcion) {
 function servidor(link, miFuncion) {
   let usuario = localStorage.getItem("usuario");
   let id = localStorage.getItem("id");
-  //console.log(link.slice(-1));
+  
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
   link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
+  console.log(link);
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
@@ -233,7 +234,7 @@ function servidorPost1(link, miFuncion, data) {
 function servidorPost(link, miFuncion, data) {
   let usuario = localStorage.getItem("usuario");
   let id = localStorage.getItem("id");
-  //console.log(link.slice(-1));
+  
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
   link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
   if (window.navigator.onLine) {
@@ -1156,6 +1157,7 @@ function cambiarSistemaM() {
     myLink = "https://empaquessr.com/sistema/michelle_2";
     document.getElementById("btnCambioSistemaE").style.display = "";
     document.getElementById("btnCambioSistemaM").style.display = "none";
+    document.getElementById("btnCerrar").style.display = "none";
     cCarga();
   }, 1000);
 
@@ -1169,6 +1171,7 @@ function cambiarSistemaE() {
     myLink = "https://empaquessr.com/sistema/empaquessr_2";
     document.getElementById("btnCambioSistemaM").style.display = "";
     document.getElementById("btnCambioSistemaE").style.display = "none";
+    document.getElementById("btnCerrar").style.display = "";
     cCarga();
   }, 1000);
 
