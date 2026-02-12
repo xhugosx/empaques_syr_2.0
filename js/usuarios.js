@@ -126,7 +126,7 @@ function setEliminarUsuario(id) {
 }
 
 // Tiempo máximo de inactividad en milisegundos (ej: 15 min)
-const INACTIVITY_LIMIT = 10 * 60; //* 1000;
+const INACTIVITY_LIMIT = 10 * 60 * 1000;
 //const INACTIVITY_LIMIT = 5000;
 
 // Tiempo para responder alerta antes de cerrar sesión (ej: 1 min)
