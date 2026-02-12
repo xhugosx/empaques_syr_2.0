@@ -2,7 +2,7 @@ document.addEventListener('init', function (event) {
     var page = event.target;
     //const pagesPermitidas = ['almacen'];
 
-    if (page.id == "administracion" || page.id=== 'almacen')
+    if (page.id == "administracion" || page.id === 'almacen')
         setTimeout(() => {
             remover();
         }, 1);
@@ -126,7 +126,7 @@ function setEliminarUsuario(id) {
 }
 
 // Tiempo máximo de inactividad en milisegundos (ej: 15 min)
-const INACTIVITY_LIMIT = 10 * 60 * 1000;
+const INACTIVITY_LIMIT = 10 * 60; //* 1000;
 //const INACTIVITY_LIMIT = 5000;
 
 // Tiempo para responder alerta antes de cerrar sesión (ej: 1 min)
@@ -139,7 +139,7 @@ let alertaTimer;
 // Inicia el contador de inactividad
 function iniciarContadorInactividad() {
     let mantener = localStorage.getItem("mantener") === 'true' ? true : false;
-    if (mantener)return; // Si el usuario eligió mantener sesión, no iniciar contador
+    if (mantener) return; // Si el usuario eligió mantener sesión, no iniciar contador
     // Cada vez que haya interacción, reinicia el timer
     ['mousemove', 'keydown', 'click', 'touchstart'].forEach(evt => {
         document.addEventListener(evt, reiniciarTimer);
@@ -150,6 +150,7 @@ function iniciarContadorInactividad() {
 
 // Reinicia el timer de inactividad
 function reiniciarTimer() {
+    console.log("entro en timer");
     if (inactivityTimer) clearTimeout(inactivityTimer);
     if (alertaTimer) clearTimeout(alertaTimer);
 
@@ -161,7 +162,7 @@ function reiniciarTimer() {
 
 // Pregunta al usuario si sigue activo
 function preguntarSiActivo() {
-    if(!localStorage.getItem("usuario")) return;
+    if (!localStorage.getItem("usuario")) return;
     alertaFunction("¿Sigues activo en el sistema?", '',
         function () {
             reiniciarTimer();
@@ -188,6 +189,9 @@ function cerrarSesion() {
         function (index) {
             if (index) {
                 localStorage.clear();
+                ['mousemove', 'keydown', 'click', 'touchstart'].forEach(evt => {
+                    document.removeEventListener(evt, reiniciarTimer);
+                }); // removemos los eventos para no consumir recursos innecesarios
                 resetarInicio(); //FUNCION QUE ME REGRESA AL INICIO DE LA PILA
             }
         }
@@ -216,6 +220,7 @@ function setInicio() {
                     localStorage.setItem("id", json.id);
                     localStorage.setItem("perfil", json.perfil);
                     localStorage.setItem("mantener", mantener);
+                    iniciarContadorInactividad(); // iniciar contador de inactividad al iniciar sesión
                 }
                 else if (json.error) alerta(json.error);
                 else alerta("Usuario bloqueado, solicite al encargado Desbloquear...", '<i class="fa-solid fa-triangle-exclamation"></i>');

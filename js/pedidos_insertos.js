@@ -27,6 +27,7 @@ function agregarHtmlInserto() {
                                 <ons-input id="id${i}" type="text" class="input-100" cols="30" rows="1" placeholder="ID" disabled value="${id}"></ons-input>
                                 <ons-select class="input-100" id="inserto${i}" autofocus>
                                     <option value="">Inserto</option>
+                                    <option value="JUEGO DIV.">JUEGO DIV.</option>
                                     <option value="DIV. UNICA">DIV. UNICA</option>
                                     <option value="DIV. CORTA">DIV. CORTA</option>
                                     <option value="DIV. LARGA">DIV. LARGA</option>

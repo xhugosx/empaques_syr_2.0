@@ -5,9 +5,10 @@ function primero() {
     let nombre = localStorage.getItem("usuario");
     let perfil = localStorage.getItem("perfil");
     alerta('Bienvenido: <hr><h4>' + tipoPerfil(perfil) + '</h4><h3>' + nombre + '</h3>');
+    iniciarContadorInactividad();
   }
   else resetarInicio();
-  iniciarContadorInactividad();
+  
 }
 
 // INICIALIZAMOS LA PANTALLA DE CARGA, SE MANDARA A LLAMAR CUANDO SE NECESITE
@@ -162,7 +163,7 @@ function servidor(link, miFuncion) {
   
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
   link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
-  console.log(link);
+  //console.log(link);
   if (window.navigator.onLine) {
     var xhttp = new XMLHttpRequest();
 
