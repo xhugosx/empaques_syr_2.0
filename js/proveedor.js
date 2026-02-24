@@ -7,7 +7,7 @@ document.addEventListener('init', function (event) {
         menuProveedores(); // PARA RELLENAR EL MENU DE LA PAGINA PRINCIPAL DE PEDIDOS DE PROVEEDORES
         filtroProveedor = 0;
 
-    } 
+    }
 });
 
 //FUNCION PARA HACER MOSTRAR PROVEEDORES
@@ -90,8 +90,7 @@ function setEditarProveedor() {
     var id = $('#id').val();
     var nombre = $('#nombre').val().toUpperCase();
     var tipo = $('#selectTipo').val();
-    if (vacio(id, nombre, tipo))
-    {
+    if (vacio(id, nombre, tipo)) {
         oCarga("Editando Proveedor...");
         servidor(myLink + "/php/proveedores/update.php?id=" + id + "&nombre=" + nombre + "&tipo=" + tipo,
             function (respuesta) {
@@ -106,7 +105,7 @@ function setEditarProveedor() {
             }
         );
     }
-        
+
     else {
         alerta("Espacios vacios!");
         $('#botonModificarPedido').prop('disabled', false);
@@ -137,69 +136,105 @@ function mensajeProveedor(codigo) {
 
 function enlistarProveedor(arrayJson) {
     let html1 = `
-    <ons-card class="botonPrograma" onclick="mensajeProveedor('${arrayJson.codigo}')">
+    <ons-card class="botonPrograma" onclick="mensajeProveedor('${arrayJson.codigo}')" style="margin: 8px 10px; padding: 12px 15px;">
         <div class="contenedor-flexboxLados">
-        <div>
-            <i class="fas fa-lg fa-user-tie"></i> &nbsp;
-            <strong>${agregarCeros(arrayJson.codigo)}</strong> &nbsp;${arrayJson.nombre}
-        </div>
-        <div>
-            ${tipoEgreso(arrayJson.tipo)}
-        </div>
+            <div style="display: flex; align-items: center;">
+                <div style="margin-right: 15px;">
+                    <i class="fa fa-2x fa-user-tie"></i>
+                </div>
+                <div>
+                    <span class="badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
+                    <span class="nombre-principal" style="margin-top: 4px;">${arrayJson.nombre}</span>
+                </div>
+            </div>
+
+            <div style="text-align: right;">
+                ${tipoEgreso(arrayJson.tipo)}
+            </div>
         </div>
     </ons-card>
     `;
 
     return html1;
+}
+function tipoEgreso(idTipo) {
+    // El objeto ahora usa los números como referencia
+    const config = {
+        1: { nombre: 'CONSUMIBLE', clase: 'tipo-consumible', icono: 'fa-box-open' },
+        2: { nombre: 'LAMINA', clase: 'tipo-lamina', icono: 'fa-layer-group' },
+        3: { nombre: 'SERVICIO', clase: 'tipo-servicio', icono: 'fa-handshake' },
+        4: { nombre: 'SUAJES Y GRABADOS', clase: 'tipo-suajes', icono: 'fa-stamp' },
+        5: { nombre: 'MAQUILA', clase: 'tipo-maquila', icono: 'fa-industry' },
+        6: { nombre: 'GASOLINA', clase: 'tipo-gasolina', icono: 'fa-gas-pump' },
+        7: { nombre: 'HERRAMIENTA', clase: 'tipo-herramienta', icono: 'fa-tools' },
+        8: { nombre: 'OTROS', clase: 'tipo-otros', icono: 'fa-ellipsis-h' },
+        9: { nombre: 'PAGOS FIJOS', clase: 'tipo-pagos', icono: 'fa-file-invoice-dollar' }
+    };
 
+    // Buscamos por el número que llega. Si no existe (ej. llega un 10), usamos el 8 (OTROS)
+    const item = config[idTipo] || config[8];
+
+    return `
+        <span class="badge-tipo ${item.clase}">
+            <i class="fas ${item.icono}"></i> ${item.nombre}
+        </span>
+    `;
 }
 
 //FUNCION PARA EL MENU DE FILTRO DE PROVEEDORES
 function menuProveedores() {
-    var html = `<ons-list>
-        <center>
-            <h4 style="color: #808fa2; font-weight: bold;">
-                Filtros
-            </h4>
-        </center>
-        
-        <ons-list>
-            <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
-                Tipo
-            </ons-list-header>
-            ${[
-            'Consumible',
-            'Lamina',
-            'Servicio',
-            'Suajes y Grabados',
-            'Maquila',
-            'Gasolina',
-            'Herramienta',
-            'Otros',
-            'Pagos Fijos'
-        ].map((texto, index) => `
-                <ons-list-item tappable modifier="nodivider">
-                    <label class="left">
-                        <ons-radio name="tipo" input-id="${index + 1}"></ons-radio>
-                    </label>
-                    <label for="${index + 1}" class="center">
-                        ${texto}
-                    </label>
-                </ons-list-item>
-            `).join('')}
-        </ons-list>
+    // Definimos el mismo objeto de configuración (puedes tenerlo global)
+    const config = {
+        1: { nombre: 'CONSUMIBLE', clase: 'tipo-consumible', icono: 'fa-box-open' },
+        2: { nombre: 'LAMINA', clase: 'tipo-lamina', icono: 'fa-layer-group' },
+        3: { nombre: 'SERVICIO', clase: 'tipo-servicio', icono: 'fa-handshake' },
+        4: { nombre: 'SUAJES Y GRABADOS', clase: 'tipo-suajes', icono: 'fa-stamp' },
+        5: { nombre: 'MAQUILA', clase: 'tipo-maquila', icono: 'fa-industry' },
+        6: { nombre: 'GASOLINA', clase: 'tipo-gasolina', icono: 'fa-gas-pump' },
+        7: { nombre: 'HERRAMIENTA', clase: 'tipo-herramienta', icono: 'fa-tools' },
+        8: { nombre: 'OTROS', clase: 'tipo-otros', icono: 'fa-ellipsis-h' },
+        9: { nombre: 'PAGOS FIJOS', clase: 'tipo-pagos', icono: 'fa-file-invoice-dollar' }
+    };
 
-        <ons-list-item modifier="nodivider">
-            <ons-button id="botonPrograma" onclick="aplicarFiltroProveedor()" modifier="large">
-                Aplicar
+    var html = `
+    <ons-list>
+        <div style="text-align: center; padding: 10px 0;">
+            <h4 style="color: #455A64; font-weight: bold; margin: 0;">
+                <i class="fa-solid fa-filter"></i> Filtros de Proveedor
+            </h4>
+        </div>
+        
+        <ons-list-header style="background-color: transparent; font-size: 12px; font-weight: bold; color: #808fa2;">
+            SELECCIONAR CATEGORÍA
+        </ons-list-header>
+
+        ${Object.keys(config).map(id => {
+        const item = config[id];
+        return `
+            <ons-list-item tappable modifier="nodivider" class="item-filtro-proveedor">
+                <label class="left">
+                    <ons-radio name="tipo" input-id="${id}" value="${id}"></ons-radio>
+                </label>
+                <label for="${id}" class="center">
+                    <div class="badge-tipo ${item.clase}" style="width: 100%; border: none; justify-content: flex-start;">
+                        <i class="fas ${item.icono}" style="width: 25px; text-align: center;"></i> 
+                        ${item.nombre}
+                    </div>
+                </label>
+            </ons-list-item>
+            `;
+    }).join('')}
+
+        <ons-list-item modifier="nodivider" style="margin-top: 15px;">
+            <ons-button id="botonPrograma" onclick="aplicarFiltroProveedor()" modifier="large" >
+                Aplicar Filtros
             </ons-button>
         </ons-list-item>
-        <br><br>
+
         <ons-list-item modifier="nodivider">
-            <ons-button id="botonPrograma" class="btnResetear" modifier="large"
-                onclick="resetearFiltroProveedor();">
-                <ons-icon icon="fa-trash"></ons-icon>
-                Resetear
+            <ons-button class="btnResetear" modifier="large quiet" 
+                onclick="resetearFiltroProveedor();" style="color:white">
+                <ons-icon icon="fa-trash"></ons-icon> Resetear
             </ons-button>
         </ons-list-item>
     </ons-list>`;

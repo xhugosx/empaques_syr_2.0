@@ -1,233 +1,291 @@
+/* =========================================
+   CONFIGURACIÓN BASE Y TIPOGRAFÍA
+   ========================================= */
 @font-face {
     font-family: 'Candara';
     src: url('../font/Nexa\ Light.otf');
 }
 
 * {
-    font-family: 'Candara';
+    font-family: 'Candara', system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 input,
 ons-toolbar,
-div {
-    font-family: 'Candara' !important;
+div,
+span,
+b,
+h4,
+th,
+td {
+    font-family: 'Candara', system-ui, sans-serif !important;
 }
 
 body {
     font-size: 14px;
+    background-color: #f4f7f9;
+    /* Fondo más limpio y moderno */
+    color: #2c3e50;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
-
+/* =========================================
+   BOTONES E ICONOS
+   ========================================= */
 .boton-cliente {
     margin: 8px;
-}
-
-textarea,
-ons-input {
-    text-transform: uppercase;
-}
-
-div.right>i {
-    margin: 10px;
-    cursor: pointer;
-}
-
-.romperTexto {
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-}
-
-#programaStyle:hover {
-    cursor: pointer;
-}
-
-#programaStyle:active {
-    box-shadow: 0px 0px 10px 0px #333 inset
-}
-
-#programaStyle {
-    background-color: rgba(133, 133, 133, 0.438);
-    color: rgba(79, 79, 79, 0.758);
-    border-radius: 50px;
-    padding: 1%;
-
-}
-
-textarea {
-    overflow: hidden;
-}
-
-.centrar {
-    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .boton-icono {
     display: grid;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
-    width: 35px;
-    height: 35px;
+    border-radius: 14px;
+    /* Menos circular, más estilo app moderna */
+    width: 38px;
+    height: 38px;
     cursor: pointer;
-    background-color: white;
-    -webkit-filter: drop-shadow(0px 1px 2px rgba(51, 51, 51, 0.645));
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.boton-icono:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .boton-icono:active {
-    background-color: rgba(255, 255, 255, 0.616);
+    background-color: #f8f9fa;
+    transform: scale(0.92);
+}
+
+.botonCerrar {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.botonCerrar:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+ons-button.button--large {
+    border-radius: 16px;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+ons-button.button--large:hover {
+    cursor: pointer;
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   INPUTS, BÚSQUEDA Y FORMULARIOS
+   ========================================= */
+textarea,
+ons-input,
+input[type="text"] {
+    text-transform: uppercase;
+}
+
+textarea {
+    overflow: hidden;
+    resize: none;
+    border-radius: 12px;
+    border: 1px solid #e1e8ed;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    border-color: #1A9CE8;
+    outline: none;
 }
 
 ons-search-input {
     width: 100%;
     border-radius: 40px;
+    transition: box-shadow 0.3s ease;
 }
 
 ons-search-input>input {
-    border-radius: 40px;
+    border-radius: 40px !important;
+    padding: 8px 16px !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e1e8ed !important;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.02) !important;
 }
 
-.imagen-logo {
-    margin-top: 3px;
-}
-
-
-.list-cliente-animation,
-.list-producto-animation {
-    animation-duration: 2s;
-    animation-name: animTexto;
-}
-
-@keyframes animTexto {
-    10% {
-        transform: translateX(0px);
-    }
-
-    20% {
-        transform: translateX(-20px);
-    }
-
-    70% {
-        transform: translateX(200vh);
-    }
-
-    100% {
-        transform: translateX(205vh);
-    }
-}
-
-body {
-
-    overflow-x: hidden;
-
+ons-search-input>input:focus {
+    box-shadow: 0 0 0 3px rgba(26, 156, 232, 0.2) !important;
+    border-color: #1A9CE8 !important;
 }
 
 .input-100 {
     width: 98%;
 }
 
-ons-fab>span>i {
-    color: rgb(255, 255, 255);
+/* =========================================
+   CONTENEDORES PRINCIPALES (PROGRAMAS)
+   ========================================= */
+#programaStyle {
+    background-color: rgba(133, 133, 133, 0.1);
+    color: #555;
+    border-radius: 50px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.botonCerrar {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    border-radius: 10px;
+#programaStyle:hover {
     cursor: pointer;
+    background-color: rgba(133, 133, 133, 0.2);
 }
 
-.programa {
-    position: absolute;
-    font-weight: bold;
-
-}
-
-#proceso {
-    background-color: rgba(215, 172, 118, 1);
-    color: white;
-}
-
-#terminado {
-    background-color: rgba(35, 154, 75, 0.933);
-    color: white;
-}
-
-#pendiente {
-    background-color: rgb(209, 209, 209);
-}
-
-.programaTitle {
-    font: bold;
-    margin: 0%;
-
-
+#programaStyle:active {
+    box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 #contenedorInput {
-    background: rgba(255, 255, 255, 0);
-    font: bold;
+    background: transparent;
+    font-weight: bold;
     border: 2px solid #ffffff;
-    border-radius: 30px;
-    padding: 0%;
+    border-radius: 24px;
+    padding: 0;
 }
 
 .contenedorInputSub {
     border-radius: 20px;
-    padding: 0%;
+    padding: 0;
 }
 
 #contenedorPrograma {
-    background: rgba(0, 0, 0, 0.192);
-    font: bold;
-    border: 2px solid #ffffff;
-    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    /* Efecto cristal moderno */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 24px;
+    padding: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
 }
 
 #contenedorPrograma>.title {
-    color: rgb(255, 255, 255);
-    font: bold;
-    font-weight: 450;
-
+    color: #ffffff;
+    /* Ajustado para mejor lectura sobre cristal */
+    font-weight: 700;
 }
 
-.botonPrograma:active {
-    box-shadow: 0px 0px 10px -6px black inset;
+.contenedor2Programa {
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px);
+    border: 1px solid #ffffff;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.contenedor2Programa>h4 {
+    color: #5c4e40;
+    margin: auto;
+    font-weight: bold;
 }
 
 .botonPrograma {
     cursor: pointer;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.85)
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.botonPrograma:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.botonPrograma:active {
+    transform: scale(0.97);
+    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .botonPrograma>b {
-    color: rgb(113, 113, 113);
+    color: #4a4a4a;
 }
 
-.contenedor2Programa {
-    background-color: rgba(255, 255, 255, 0.464);
-    border: 2px solid #ffffff;
-    border-radius: 40px;
-    justify-content: center;
-
-
+/* =========================================
+   ESTADOS Y COLORES (DEGRADADOS)
+   ========================================= */
+#proceso,
+.proceso-proceso {
+    background: linear-gradient(135deg, #e3bd8d 0%, #d7ac76 100%) !important;
+    color: white;
+    box-shadow: 0 4px 10px rgba(215, 172, 118, 0.3);
+    border: none;
 }
 
-.contenedor2Programa>h4 {
-    color: rgb(114, 99, 81);
-    margin: auto;
+#terminado,
+.proceso-terminado,
+.estado-1 {
+    background: linear-gradient(135deg, #34d058 0%, #239a4b 100%) !important;
+    color: white;
+    box-shadow: 0 4px 10px rgba(35, 154, 75, 0.3);
+    border: none;
+}
+
+#pendiente,
+.proceso-pendiente {
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%) !important;
+    color: #666;
+    border: 1px solid #ccc;
+}
+
+.estado-0 {
+    background: linear-gradient(135deg, #ff6b6b 0%, #af4c4c 100%) !important;
+    color: white;
+    box-shadow: 0 4px 10px rgba(175, 76, 76, 0.3);
+}
+
+.proceso {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+}
+
+/* =========================================
+   COMPONENTES DE ONSEN UI (TOOLBAR, LISTAS)
+   ========================================= */
+ons-toolbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 ons-toolbar>div.center,
 ons-toolbar>div.right {
-    font-weight: bold;
+    font-weight: 600;
     color: white;
-
+    letter-spacing: 0.5px;
 }
 
 ons-back-button.back-button {
@@ -236,10 +294,35 @@ ons-back-button.back-button {
 
 span.back-button__icon {
     fill: white;
+    transition: transform 0.2s;
 }
 
-ons-list-header.list-header {
+ons-back-button.back-button:hover span.back-button__icon {
+    transform: translateX(-3px);
+}
+
+div.right>i {
+    margin: 10px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+div.right>i:hover {
+    transform: scale(1.1);
+}
+
+div.right>i:active {
+    opacity: 0.5;
+    transform: scale(0.9);
+}
+
+ons-list-header.list-header,
+ons-list-header {
     border-radius: 20px 20px 0px 0px;
+    background-color: #f0f4f8;
+    color: #5c6bc0;
+    font-weight: 700;
+    padding: 10px 15px;
 }
 
 .list-item__left {
@@ -248,494 +331,434 @@ ons-list-header.list-header {
     white-space: nowrap;
 }
 
-ons-button.button--large {
-    border-radius: 20px;
-}
-
-ons-list-header {
-    background-color: #ededed;
+span.list-item__subtitle {
+    font-size: 11px;
+    color: #888;
 }
 
 .placeholder {
-    color: rgb(167, 167, 167);
-}
-
-span.list-item__subtitle {
-    font-size: 10px;
+    color: #a0aab5;
 }
 
 .nombreArchivo {
     font-size: 15px;
+    font-weight: 600;
 }
 
-.subirPx {
-    bottom: 50px;
-}
-
-.agrandar {
-    animation: agrandar .8s;
-}
-
-@keyframes agrandar {
-    0% {
-        width: 10%;
-        height: 0%;
-    }
-
-    100% {
-        width: 97%;
-        height: 100%;
-    }
-}
-
-.contenedorHead {
-    position: absolute;
-    right: 0px;
-    margin-right: 2vh;
-    font-size: 10px;
-    background: white;
-    height: 15px;
-    width: auto;
-    border-radius: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    text-align: center;
-    padding-bottom: 7px;
-    margin-top: 1.5px;
-    font-weight: bold;
-}
-
-.contenedorHeadFecha {
-    position: absolute;
-    right: 0px;
-    margin-right: 2vh;
-    font-size: 11px;
-    height: 15px;
-    width: auto;
-    border-radius: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    text-align: center;
-    padding-bottom: 7px;
-    margin-top: 1.5px;
-    font-weight: bold;
-}
-
-.separacion {
-    position: absolute;
+/* =========================================
+   TARJETAS DE ÓRDENES / LÁMINAS
+   ========================================= */
+.ordenesLamina {
     background-color: #ffffff;
-    padding: 5px;
-    left: 20px;
-    margin-top: 2px;
-    margin-bottom: 5px;
-    border-radius: 10px;
-
+    margin: 10px;
+    padding: 15px 10px;
+    color: #1A9CE8;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    font-size: 11px;
+    font-weight: 600;
+    width: 22%;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid transparent;
 }
 
-.important {
-    height: 45px;
+.ordenesLamina:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(26, 156, 232, 0.15);
+    border-color: rgba(26, 156, 232, 0.2);
+    cursor: pointer;
 }
 
-.important>b {
-    font-size: 14px;
-    color: rgb(113, 113, 113);
+.ordenesLamina:active {
+    transform: scale(0.95);
+    background-color: #f8f9fa;
 }
 
+/* =========================================
+   CONTROLES NUMÉRICOS Y AÑOS
+   ========================================= */
 .input-number {
-    width: 100px;
-    padding: 0 12px;
+    width: 80px;
+    padding: 0 10px;
     vertical-align: top;
     text-align: center;
     outline: none;
+    border: 1px solid #e1e8ed;
+    height: 40px;
+    font-weight: bold;
+    color: #333;
 }
 
-.input-number,
 .input-number-decrement,
 .input-number-increment {
-    border: 1px solid #ccc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
     height: 40px;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
     user-select: none;
 }
 
-.input-number-decrement,
-.input-number-increment {
-    display: inline-block;
-    width: 30px;
-    line-height: 40px;
-    color: #ffffff;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
+.input-number-decrement {
+    border-radius: 12px 0 0 12px;
+    background: linear-gradient(135deg, #409dc4, #2b7a9e);
+}
 
+.input-number-increment {
+    border-radius: 0 12px 12px 0;
+    background: linear-gradient(135deg, #2b69a2, #1c4b75);
 }
 
 .input-number-decrement:active,
 .input-number-increment:active {
-    background: #ddd;
+    filter: brightness(0.8);
+    transform: scale(0.95);
 }
 
-.input-number-decrement {
-    border-right: none;
-    border-radius: 10px 0 0 10px;
-    background: rgb(64, 157, 196);
-
+/*Selector de Años Moderno */
+.year-input {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 30px;
+    padding: 3px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-.input-number-increment {
-    border-left: none;
-    border-radius: 0 10px 10px 0;
-    background: rgb(43, 105, 162);
+.year-input input {
+    text-align: center;
+    width: 60px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    padding: 8px;
+    border: none;
+    background: transparent;
 }
 
-input[type="text"] {
-    text-transform: uppercase;
+.year-input #prevYear,
+.year-input #nextYear {
+    color: #fff;
+    background: #1A9CE8;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
 }
 
-#cantidadTotal {
-    font-size: 30px;
+.year-input #prevYear {
+    border-radius: 25px 8px 8px 25px;
 }
 
-.anio {
-    font-size: 20px;
-    color: #606060;
-    font-family: arial;
+.year-input #nextYear {
+    border-radius: 8px 25px 25px 8px;
+}
+
+.year-input #prevYear:hover,
+.year-input #nextYear:hover {
+    background: #127ab8;
+    transform: scale(1.05);
+}
+
+.flechaIzquierda,
+.flechaDerecha {
+    margin: 0 15px;
+    background: #1A9CE8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(26, 156, 232, 0.3);
 }
 
 .flechaIzquierda {
-    margin-left: 20px;
-    margin-right: 20px;
-    border-radius: 25px 0 0 25px;
-    width: 40px;
-    height: 30px;
-    padding-top: 1.3vh;
-    color: #ffffff;
-    cursor: pointer;
+    border-radius: 20px 8px 8px 20px;
 }
 
 .flechaDerecha {
-    margin-left: 20px;
-    margin-right: 20px;
-    border-radius: 0 25px 25px 0;
-    width: 40px;
-    height: 30px;
-    padding-top: 1.3vh;
-    color: #ffffff;
-    cursor: pointer;
+    border-radius: 8px 20px 20px 8px;
 }
 
-.flechaDerecha:hover,
-.flechaIzquierda:hover {
-    opacity: 60%;
+.flechaIzquierda:hover,
+.flechaDerecha:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
 }
 
-.flecha::before {
-    top: 50px;
+.flechaIzquierda:active,
+.flechaDerecha:active {
+    transform: scale(0.9);
 }
 
-.flecha:active {
-    color: #1A9CE8;
+/* =========================================
+   ANIMACIONES
+   ========================================= */
+@keyframes animTexto {
+    0% {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    15% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+
+    85% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
 }
 
-ons-fab {
-    margin-bottom: 20px;
+.list-cliente-animation,
+.list-producto-animation {
+    animation: animTexto 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-#cantidadLaminas {
-    font-size: 20px;
-    color: white;
+@keyframes agrandar {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
+.agrandar {
+    animation: agrandar 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.girar {
+    animation: girar 1.5s linear infinite;
+}
+
+/* =========================================
+   ELEMENTOS FLOTANTES Y MODALES
+   ========================================= */
+ons-fab.fab,
+ons-fab.fijadoCentro {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s !important;
+    border-radius: 50px !important;
+}
+
+ons-fab.fab {
+    width: auto !important;
+    padding: 0 20px !important;
+}
+
+ons-fab.fab i {
+    color: white !important;
+}
+
+ons-fab.fijadoCentro {
+    width: 90% !important;
+    background-color: #455a64 !important;
+}
+
+ons-fab.fab:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+#pantallaCarga {
+    background-color: rgba(255, 255, 255, 0.32);
+    backdrop-filter: blur(2px);
+}
+
+#textoModal {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #2c3e50;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.alert-dialog {
+    width: 85% !important;
+    max-width: 380px !important;
+    border-radius: 20px !important;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* =========================================
+   UTILIDADES Y OTROS (GRID, PDF, ETC)
+   ========================================= */
+.pdfview {
+    margin: 20px auto;
+    display: block;
+    width: 95%;
+    max-width: 900px;
+    height: 85vh;
+    border-radius: 16px;
+    border: 1px solid #eee;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.romperTexto {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.centrar {
+    text-align: center;
+}
 
 .extraCentrar {
     width: 95% !important;
-
     height: auto !important;
-}
-
-
-.ordenesLamina {
-    background-color: #ffffff;
-    margin: 10px;
-    padding: 2%;
-    color: #1A9CE8;
-    text-align: center;
-    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.146);
-    font-size: 10px;
-    width: 20%;
-    border-radius: 10px;
-}
-
-.ordenesLamina:active {
-    background-color: #dcdcdc;
-}
-
-.ordenesLamina:hover {
-    opacity: 95%;
-    cursor: pointer;
 }
 
 .contenedor-flexbox {
     display: flex;
-    /*Convertimos al menú en flexbox*/
     justify-content: center;
-    /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
     align-items: center;
-    /*con esto alineamos de manera vertical*/
-}
-
-.contenedor-flexboxLados {
-    display: flex;
-    /*Convertimos al menú en flexbox*/
-    justify-content: space-between;
-    /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
-    align-items: baseline;
-    /*con esto alineamos de manera vertical*/
-}
-
-.botonAnio:active {
-    opacity: 30%;
 }
 
 .botonInicio {
     width: 100% !important;
 }
 
-ons-list>ons-card:active {
-    opacity: 60%;
-}
-
-.opacity50:active {
-    opacity: 50%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.opacity100:active {
-    opacity: 100% !important;
-}
-
-.usuario {
-    color: grey;
-    left: 45px;
-    position: absolute;
-}
-
-.pdfview {
-    /* Centrado */
-    margin: auto;
-    display: block;
-    /* Tamaño */
-    width: 850px;
-    height: 100vh;
-    /* Mejorar aspecto */
-    border-radius: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-th,
-td {
-    padding: 7px 7px 0 0;
-}
-
-.id_pedido {
-    margin: 100px !important;
-    font-size: large;
-    color: white;
-}
-
-.accionFactura {
-    padding: 13px;
-    margin: 0 5px 0 0;
-    /* background-color: grey; */
-    border-radius: 50px;
-    border: rgb(221, 220, 220) 3px outset;
-}
-
-.accionFactura:hover {
-    border: rgb(155, 155, 155) 3px inset;
-}
-
-.accionFactura:active {
-    opacity: 10%;
-}
-
-
-.year-input {
+.contenedor-flexboxLados {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    /* Cambiado de baseline a center para mejor alineación */
 }
 
-.year-input>input {
-    text-align: center;
-    width: 50px;
-    font-size: 16px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin: 0 10px;
-}
-
-.year-input>#prevYear {
-    /* Color azul oscuro */
-    color: #fff;
-    /* Texto blanco */
-    border: none;
-    border-radius: 20px 0 0 20px;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 10px 15px;
-    transition: background-color 0.3s;
-}
-
-.year-input>#nextYear {
-    /* Color azul oscuro */
-    color: #fff;
-    /* Texto blanco */
-    border: none;
-    border-radius: 0 20px 20px 0;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 10px 15px;
-    transition: background-color 0.3s;
-}
-
-.year .year-input>button:hover {
-    opacity: 80%;
-}
-
-.year-input>#nextYear:hover {
-    background-color: #314366;
-    /* Color azul oscuro más oscuro al pasar el mouse */
-}
-
-.year-input>#prevYear:hover {
-    background-color: #314366;
-    /* Color azul oscuro más oscuro al pasar el mouse */
-}
-
-ons-fab.fab {
-    width: auto !important;
-    border-radius: 50px !important;
-    font-size: 20px !important;
-    padding: 0 15px 0 15px;
-}
-
-ons-fab.fijadoCentro {
-    width: 95% !important;
-    border-radius: 50px !important;
-    font-size: 20px !important;
-    background-color: #54626a !important;
-}
-
-ons-fab.fab:hover {
-    cursor: pointer;
-}
-
-ons-fab.fijadoCentro:hover {
-    cursor: default !important;
-}
-
-.tituloOrden {
-    color: rgb(255, 255, 255);
-    margin: 0px 0px 0px 20px;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/*nuevo*/
+/* Etiquetas e información de productos */
 .expandProductos {
-    color: #808fa2;
-    padding: 0px 20px 10px 20px !important;
-}
-
-.expandProductos>.productos {
-    margin: 10px 0 10px 0;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px !important;
+    margin-top: 5px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.02);
 }
 
 .expandProductos>.productos>.cantidad {
-    background-color: rgb(61, 169, 120);
+    background: linear-gradient(135deg, #3da978, #2a8259);
     color: white;
-    margin-left: 20px;
-    padding: 2px 4px 2px 4px;
+    margin-left: 15px;
+    padding: 4px 10px;
     border-radius: 20px;
     font-weight: bold;
+    box-shadow: 0 2px 5px rgba(61, 169, 120, 0.3);
 }
 
 .expandProductos>.productos>.codigo {
     font-size: 13px;
-    margin: 0px;
-}
-
-.ocBotonSinColor {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-/* termina lo nuevo */
-.gris {
-    background-color: #e1e1e1e0;
-}
-
-@keyframes girar {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.girar {
-    animation: girar 2s linear infinite;
-}
-
-#pantallaCarga {
-    background-color: #ffffff30;
-}
-
-#textoModal {
-    text-shadow: 2px 2px 5px rgba(57, 57, 57, 0.727);
-    color: #3c3c3c;
-    font-weight: bold;
-}
-
-.proceso {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 13px;
+    color: #666;
     font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
 }
 
-.proceso-pendiente {
-    background-color: #bdbdbd;
-    color: #fff;
+.tituloOrden {
+    color: #ffffff;
+    margin: 0 0 0 20px;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.proceso-proceso {
-    background-color: #fbc02d;
-    color: #fff;
+.accionFactura {
+    padding: 12px;
+    margin: 0 5px 0 0;
+    background-color: #ffffff;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
 }
 
-.proceso-terminado {
-    background-color: #4caf50;
-    color: #fff;
+.accionFactura:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-.estado-1 {
-    background-color: #4caf50;
-    color: #fff;
+.accionFactura:active {
+    transform: scale(0.9);
+    background-color: #f0f0f0;
 }
 
-.estado-0 {
-    background-color: #af4c4c;
-    color: #fff;
+/* Decoraciones y helpers */
+.imagen-logo {
+    margin-top: 5px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-ons-button.button--large:hover {
-    cursor: pointer;
-    opacity: 90%;
+.gris {
+    background-color: rgba(225, 225, 225, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.opacity50:active {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+.opacity100:active {
+    opacity: 1 !important;
+}
+
+.usuario {
+    color: #888;
+    left: 45px;
+    position: absolute;
+    font-weight: 500;
+}
+
+#cantidadTotal {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2c3e50;
+}
+
+#cantidadLaminas {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mes {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4a5568;
+    margin: 85px;
+}
+
+.circulo-user {
+    border: #efefef 10px solid;
+    border-radius: 50%;
+    padding: 30px 20px 30px 20px;
+    width: 150px;
 }
 
 .bordeIcon {
@@ -755,20 +778,761 @@ ons-button.button--large:hover {
         1.5px 1.5px 0 rgba(255, 255, 255, 0.9);
 }
 
-/*nuevo siguiente*/
+ons-action-sheet-button[modifier="destructive"] {
+    color: red;
+}
 
-.mes {
+.anio {
     font-size: 20px;
     color: #606060;
-    margin: 85px;
+    font-family: arial;
 }
 
-.estadistica>i {
+.cont,
+.contP {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+
+@media (max-width: 600px) {
+    .contP {
+        display: block;
+    }
+}
+
+/* 1. Mantenemos el botón siempre circular y centrado */
+ons-fab.fab-animado {
+    overflow: visible !important;
+    /* Vital para que el texto se vea al salir del círculo */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 56px !important;
+    /* Ajusta al tamaño de tus botones actuales */
+    height: 56px !important;
+    max-width: 56px !important;
+    padding: 0 !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* 2. El texto (.fab-text) ahora será una etiqueta flotante */
+.fab-text {
+    position: absolute !important;
+    z-index: -1 !important;
+    /* Se coloca detrás del icono */
+    opacity: 0 !important;
+    background-color: #525252d3 !important;
+    /* Color igual a tu botón (image_3331b9.png) */
     color: white !important;
+    padding: 8px 18px !important;
+    border-radius: 20px !important;
+    font-weight: bold !important;
+    white-space: nowrap !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    /* Corrección para que la letra no se corte */
+    line-height: normal !important;
+    overflow: visible !important;
+    font-size: 18px;
+    margin-top: 10px !important;
 }
 
-.alert-dialog {
-    width: 80% !important;
-    max-width: 400px !important;
+/* --- LÓGICA DE BARRIDO SEGÚN POSICIÓN --- */
+
+/* SI ESTÁ A LA DERECHA (Right): El texto barre hacia la IZQUIERDA */
+ons-fab.fab-animado[position*="right"]:hover .fab-text {
+    opacity: 1 !important;
+    transform: translateX(-125%) !important;
+    /* Sale hacia la izquierda */
 }
 
+/* SI ESTÁ A LA IZQUIERDA (Left): El texto barre hacia la DERECHA */
+ons-fab.fab-animado[position*="left"]:hover .fab-text {
+    opacity: 1 !important;
+    transform: translateX(20%) !important;
+    /* Sale hacia la derecha */
+}
+
+/* 3. El icono (i) se mantiene al frente */
+ons-fab.fab-animado i {
+    z-index: 2 !important;
+    position: relative !important;
+    margin: 0 !important;
+}
+
+/* 4. Animación de entrada que ya tenías */
+ons-fab.fab-animado {
+    animation: bounceIn 0.8s both !important;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Contenedor principal de la tarjeta */
+.card-cliente-interactivo {
+    padding: 0 !important;
+    margin: 8px 12px !important;
+    overflow: hidden;
+}
+
+.lista-cliente-item {
+    padding: 10px 0;
+}
+
+/* Nombre del cliente */
+.nombre-cliente {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Contenedor de la derecha con el contador */
+.contenedor-notificacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.label-pedidos {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #95a5a6;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.notification-moderna {
+    background: linear-gradient(135deg, #e82727 0%, #d88c8c 100%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(26, 156, 232, 0.3);
+}
+
+/* Efecto al presionar (Active state) */
+.card-cliente-interactivo:active {
+    background-color: #fafafa;
+    transform: scale(0.98);
+    transition: all 0.1s ease;
+}
+
+/*aqui mas */
+/* Tarjeta de pedido */
+.pedido-card {
+    padding: 0 !important;
+    margin: 10px 12px !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+/* Encabezado sutil */
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pedido-id {
+    font-size: 12px;
+    color: #888;
+    font-weight: bold;
+}
+
+.pedido-entrega-status {
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* Cuerpo del item */
+.pedido-item {
+    padding: 10px 0 !important;
+}
+
+.pedido-info-principal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.pedido-titulo {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.pedido-detalles {
+    color: #666;
+    font-weight: 400;
+    font-size: 13px;
+    margin-left: 5px;
+}
+
+.pedido-cliente-nombre {
+    font-size: 14px;
+    color: #555;
+    margin: 4px 0;
+}
+
+.pedido-metadatos {
+    font-size: 12px;
+    color: #888;
+    display: flex;
+    gap: 15px;
+}
+
+/* Inventario y Observaciones */
+.pedido-inventario,
+.pedido-observaciones-box {
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pedido-inventario {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.pedido-observaciones-box {
+    background-color: #f5f5f5;
+    color: #616161;
+    border-left: 3px solid #ccc;
+}
+
+/* Columna Derecha: Cantidad */
+.pedido-cantidad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.pedido-cantidad-valor {
+    font-size: 18px;
+    font-weight: 800;
+    color: #222;
+}
+
+.pedido-cantidad-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #999;
+}
+
+.pedido-status-obs {
+    margin-top: 10px;
+    text-align: right;
+}
+
+/* Contenedor principal del desglose */
+.contenedor-facturas {
+    margin-top: 10px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Encabezado de la lista */
+.facturas-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #777;
+    text-transform: uppercase;
+}
+
+/* Filas de datos */
+.facturas-body {
+    padding: 2px 0;
+}
+
+.factura-fila {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #444;
+}
+
+.factura-fila:last-child {
+    border-bottom: none;
+}
+
+/* Estilos de columnas individuales */
+.f-num {
+    font-weight: 600;
+    flex: 1;
+}
+
+.f-cant {
+    text-align: center;
+    flex: 1;
+}
+
+.f-fecha {
+    text-align: right;
+    flex: 1;
+    color: #888;
+    font-size: 12px;
+}
+
+.f-cant small {
+    font-size: 10px;
+    color: #999;
+}
+
+/* Pie con el total */
+.facturas-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background-color: #fafafa;
+    border-top: 1px dashed #ccc;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.f-total {
+    color: #333;
+}
+
+/* Divisor para separar la caja de los insertos */
+.divisor-insertos {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #999;
+    padding: 10px 15px 5px 15px;
+    letter-spacing: 1px;
+}
+
+/* Ajuste de opacidad para que se vea moderno */
+.opacity50 {
+    opacity: 0.85;
+    /* Un poco más legible que 0.5 */
+    transition: opacity 0.3s;
+}
+
+.opacity50:hover,
+.opacity50:active {
+    opacity: 1;
+}
+
+/* Reutilizando los estilos de badges y contenedores de la respuesta anterior */
+.card-estandar {
+    background-color: #fff !important;
+    box-shadow: none !important;
+    /* Para que no compita con la tarjeta padre */
+}
+
+/* Alineación de la cantidad en insertos */
+.pedido-cantidad-valor {
+    font-weight: 700;
+    color: #333;
+}
+
+
+
+/*dialog de programa*/
+/* Contenedor Grid personalizado para evitar conflictos */
+.grid-procesos-dialogo {
+    display: block;
+    /* Por defecto uno abajo del otro en móvil */
+}
+
+@media (min-width: 450px) {
+    .grid-procesos-dialogo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+}
+
+/* Cajas de agrupación */
+.proceso-caja-grupo {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 4px 0;
+    margin-bottom: 12px;
+}
+
+.proceso-label-tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: #a0a0a0;
+    margin: 0 0 5px 5px;
+    text-transform: uppercase;
+}
+
+/* Botones con nombres únicos */
+.btn-principal-dialog {
+    border-radius: 10px !important;
+    margin-top: 15px;
+}
+
+.btn-link-dialog {
+    color: #7a7a7a !important;
+    font-size: 13px !important;
+    margin-top: 5px;
+    border: #22222273 solid 1px !important;
+    border-radius: 25px;
+}
+
+.btn-link-dialog:hover {
+    background-color: #7a7a7a95 !important;
+    color: white !important;
+    border: #ffffff solid 1px !important;
+    cursor: pointer;
+}
+
+/* Estilo del Diálogo */
+.dialog-moderno .dialog {
+    border-radius: 15px !important;
+}
+
+.dialog-header {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.dialog-title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.dialog-subtitle {
+    font-size: 0.85em;
+    color: #8a3f3f;
+}
+
+.dialog-container {
+    padding: 10px;
+}
+
+/*dialog insertos*/
+/* Reutilizando la estética neutra */
+.dialog-moderno .dialog {
+    border-radius: 15px !important;
+    background-color: #ffffff;
+}
+
+.proceso-caja-grupo {
+    background: #f8f9fa;
+    /* Gris muy suave */
+    border-radius: 10px;
+    padding: 5px 0;
+    margin-bottom: 10px;
+}
+
+.btn-principal-dialog {
+    border-radius: 10px !important;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.btn-link-dialog {
+    color: #888 !important;
+    font-size: 12px !important;
+    text-transform: none !important;
+    margin-top: 5px;
+}
+
+.proceso-label-tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: #a0a0a0;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* formularios */
+/* Limpieza del contenedor principal */
+#contenedorInput {
+    padding: 5px;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Estilo para las tarjetas de input */
+.contenedorInputSub {
+    margin: 8px 0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+    padding: 2px 0 !important;
+}
+
+/* El estado gris (lectura) */
+.contenedorInputSub.gris {
+    background-color: #f0f0f0 !important;
+    box-shadow: none !important;
+    border: 1px dashed #ccc !important;
+}
+
+/* ARREGLO PARA ONS-SELECT (Para que no se corte el texto) */
+.input-100 ons-select,
+.input-100 select {
+    width: 100% !important;
+}
+
+.input-100 .select-input {
+    padding: 0 10px !important;
+    /* Espacio para que no se corte el texto */
+    font-size: 14px !important;
+    height: 35px;
+}
+
+/* Inputs de texto */
+.input-100 input {
+    width: 100%;
+    padding: 10px 0 !important;
+}
+
+/* Etiquetas de fecha */
+.placeholder {
+    font-size: 11px;
+    color: #0888cd;
+    font-weight: bold;
+    margin-bottom: -5px;
+}
+
+/* Iconos de la izquierda */
+.contenedorInputSub ons-list-item .left {
+    color: #555;
+    min-width: 35px;
+}
+
+
+#insertosPedidos {
+    padding: 10px;
+    /* Unificado para mejor control */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* Centramos los elementos */
+    gap: 12px;
+    /* Espacio real y constante entre los botones */
+    align-items: center;
+}
+
+/* Aplicamos esto para que los ons-card dentro de los botones se vean parejos */
+#insertosPedidos .botonPrograma {
+    flex: 1;
+    /* Esto hace que ambos midan exactamente lo mismo de ancho */
+    margin: 0 !important;
+    /* Quitamos márgenes de Onsen para que el gap mande */
+    height: 60px;
+    /* Altura fija para que no se desfase el diseño */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+/* Ajuste fino para el contenido interno de los botones */
+#insertosPedidos ons-list-item {
+    background-color: transparent !important;
+    width: 100%;
+}
+
+#insertosPedidos b {
+    font-size: 13px;
+    /* Un poco más pequeño para que quepa bien en pantallas chicas */
+    letter-spacing: -0.2px;
+}
+
+/* formulario insertos */
+.bloque-inserto {
+    animation: fadeIn 0.3s ease-in;
+    margin-top: 10px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*        proveedores         */
+.contenedor-flexboxLados {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nombre-principal {
+    color: #333;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* Estilo base para todos los tipos */
+.badge-tipo {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-tipo i {
+    margin-right: 5px;
+    font-size: 12px;
+}
+
+/* Colores por Categoría */
+.tipo-consumible {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #A5D6A7;
+}
+
+/* Verde */
+.tipo-lamina {
+    background: #FFF3E0;
+    color: #EF6C00;
+    border: 1px solid #FFCC80;
+}
+
+/* Naranja */
+.tipo-servicio {
+    background: #E3F2FD;
+    color: #1565C0;
+    border: 1px solid #90CAF9;
+}
+
+/* Azul */
+.tipo-suajes {
+    background: #F3E5F5;
+    color: #7B1FA2;
+    border: 1px solid #CE93D8;
+}
+
+/* Morado */
+.tipo-maquila {
+    background: #E0F2F1;
+    color: #00695C;
+    border: 1px solid #80CBC4;
+}
+
+/* Teal */
+.tipo-gasolina {
+    background: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #EF9A9A;
+}
+
+/* Rojo */
+.tipo-herramienta {
+    background: #ECEFF1;
+    color: #455A64;
+    border: 1px solid #B0BEC5;
+}
+
+/* Gris Blue */
+.tipo-otros {
+    background: #F5F5F5;
+    color: #616161;
+    border: 1px solid #E0E0E0;
+}
+
+/* Gris */
+.tipo-pagos {
+    background: #FFFDE7;
+    color: #F9A825;
+    border: 1px solid #FFF59D;
+}
+
+/* Amarillo */
+
+/*proveedor*/
+/* Sombra suave para las tarjetas internas */
+.contenedorInputSub {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #f0f0f0 !important;
+    margin: 10px 0 !important;
+    transition: all 0.3s ease;
+}
+
+/* Efecto cuando el usuario hace clic o escribe */
+.contenedorInputSub:focus-within {
+    box-shadow: 0 4px 12px rgba(13, 71, 161, 0.15) !important;
+    border: 2px solid #4b4b4b !important;
+    transform: translateY(-2px);
+}
+
+/* Estilo para los iconos laterales */
+.icon-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f8f9fa;
+    color: #0d47a1;
+}
+
+/* Animación para el botón */
+.btn-registro {
+    border-radius: 25px !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    background-image: linear-gradient(to right, #0d47a1, #1976d2);
+    border: none;
+    margin-top: 15px;
+}

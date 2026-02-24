@@ -456,10 +456,9 @@ function enlistarpedidosOC(arrayJson, i) {
                     
                 </div>
                 <div class="right">
-                    <span class="notification">
-                        ${arrayJson.contador}
-                    </span>
-                    <i class="fa-solid fa-chevron-down" style="color:#c7c7cc;"></i>
+                    <div class="contenedor-notificacion-oc">
+                        <span class="notification-moderna">${arrayJson.contador}</span>
+                    </div>
                 </div>
                 <div class="expandable-content expandProductos" id="contenidoPedidos${i}">
                     <center>
@@ -477,16 +476,21 @@ function enlistarpedidosOC(arrayJson, i) {
 //ENLISTAR DATOS CLIENTES
 function enlistarPedidosCliente(arrayJson) {
     return `
-    <ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunction('pedidosFiltroCliente.html', function(){ cliente = '${arrayJson.codigo}' })">
-        <ons-list-item modifier="chevron nodivider">
+    <ons-card class="botonPrograma card-cliente-interactivo" onclick="nextPageFunction('pedidosFiltroCliente.html', function(){ cliente = '${arrayJson.codigo}' })">
+        <ons-list-item modifier="chevron nodivider" class="lista-cliente-item">
             <div class="left">
-                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+                <span class="badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
             </div>
+            
             <div class="center">
-                ${arrayJson.cliente}
+                <span class="nombre-cliente">${arrayJson.cliente}</span>
             </div>
+            
             <div class="right">
-                <span class="notification">${arrayJson.contador}</span>
+                <div class="contenedor-notificacion">
+                    <span class="label-pedidos">Pedidos</span>
+                    <span class="notification-moderna">${arrayJson.contador}</span>
+                </div>
             </div>
         </ons-list-item>
     </ons-card>
@@ -499,81 +503,77 @@ function enlistarPedidos(arrayJson, i) {
     let color = "";
     let entregado = "";
 
+    // Lógica de colores y estados (Se mantiene igual)
     if (arrayJson.oc == "FALTANTE") {
         color = "#a01a1a";
         entregado = "Faltante";
     } else if (arrayJson.fechaSalida != "") {
-        color = "rgb(8, 136, 205)";
+        color = "#0888cd";
         entregado = `Entregado: ${sumarDias(arrayJson.fechaSalida, 0)}`;
     } else {
-        color = "rgb(61, 121, 75)";
+        color = "#3d794b";
         entregado = `Entrega: ${sumarDias(arrayJson.fecha_entrega, 0)}`;
     }
 
-    const color1 = arrayJson.observaciones == "" ? "gray" : "rgb(115, 168, 115)";
-    const inventario = arrayJson.estado != 2
-        ? ""
-        : `<hr><span style="color:#48AC33;font-size:15px">
-            ${separator(arrayJson.inventario)} pza(s) hechas - ${sumarDias(arrayJson.fecha_entrada, 0)}
-           </span>`;
+    const tieneObservaciones = arrayJson.observaciones !== "";
+    const colorIconoObs = tieneObservaciones ? "#73a873" : "#ccc";
+
+    const inventarioHtml = arrayJson.estado != 2 ? "" : `
+        <div class="pedido-inventario">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>${separator(arrayJson.inventario)} pza(s) hechas - ${sumarDias(arrayJson.fecha_entrada, 0)}</span>
+        </div>`;
 
     let perfil = validarPerfil();
-    let accion;
-    if (perfil == "produccion") accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
-    else accion = `
-            crearObjetMensajePedido(
-                    '${arrayJson.oc}',
-                    '${arrayJson.id}',
-                    '${arrayJson.codigo}',
-                    '${arrayJson.estado}',
-                    '${arrayJson.observaciones}',
-                    '${sumarDias(arrayJson.fecha_oc, 0)}',
-                    '${arrayJson.producto}',
-                    '${arrayJson.cliente}',
-                    '${sumarDias(arrayJson.fecha_entrega, 0)}'
-                 )
-        `;
+    let accion = perfil == "produccion" 
+        ? `crearObjetMensajePedido1('${arrayJson.codigo}')` 
+        : `crearObjetMensajePedido('${arrayJson.oc}', '${arrayJson.id}', '${arrayJson.codigo}', '${arrayJson.estado}', '${arrayJson.observaciones}', '${sumarDias(arrayJson.fecha_oc, 0)}', '${arrayJson.producto}', '${arrayJson.cliente}', '${sumarDias(arrayJson.fecha_entrega, 0)}')`;
 
     const html = `
-    <ons-card style="padding:0px;" class="botonPrograma"
-        onclick="event.stopPropagation(); ${accion}">
+    <ons-card class="botonPrograma pedido-card" onclick="event.stopPropagation(); ${accion}">
+        
+        <div class="pedido-header">
+            <div class="header-left">
+                ${estadosColor(arrayJson.estado)}
+                <span class="pedido-id">#${arrayJson.id}</span>
+            </div>
+            <b class="pedido-entrega-status" style="color:${color};">${entregado}</b>
+        </div>
 
-        <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
-            ${estadosColor(arrayJson.estado)}&emsp;${arrayJson.id}&emsp;
-            <b style="color:${color};">${entregado}</b>
-        </ons-list-header>
-
-        <ons-list-item modifier="nodivider">
+        <ons-list-item modifier="nodivider" class="pedido-item">
             <div class="left">
-                <strong>${arrayJson.codigo}</strong>
+                <span class="badge-codigo">${arrayJson.codigo}</span>
             </div>
 
             <div class="center">
-                <span class="list-item__title">
-                    ${arrayJson.producto}&nbsp;|&nbsp;
-                    <b style="color:#404040">${arrayJson.resistencia} ${arrayJson.papel}</b>
-                </span>
+                <div class="pedido-info-principal">
+                    <span class="pedido-titulo">
+                        ${arrayJson.producto} 
+                        <small class="pedido-detalles">${arrayJson.resistencia} ${arrayJson.papel}</small>
+                    </span>
+                    
+                    <span class="pedido-cliente-nombre">${arrayJson.cliente}</span>
+                    
+                    <div class="pedido-metadatos">
+                        <span><b>O.C:</b> ${arrayJson.oc}</span>
+                        <span><b>Fecha:</b> ${sumarDias(arrayJson.fecha_oc, 0)}</span>
+                    </div>
 
-                <span class="list-item__subtitle">
-                    <span>${arrayJson.cliente}</span><br>
-                    <b>O. C: ${arrayJson.oc}&emsp;Fecha: ${sumarDias(arrayJson.fecha_oc, 0)}</b>
                     ${enlistarFacturas(arrayJson)}
-                    ${inventario}
-                    ${arrayJson.observaciones == ""
-            ? ""
-            : `<hr><span><b><i style="color: rgb(115, 168, 115)" 
-                           class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;&nbsp;</b>${arrayJson.observaciones}</span>`}
-                </span>
+                    ${inventarioHtml}
+
+                    ${tieneObservaciones ? `
+                        <div class="pedido-observaciones-box">
+                            <i class="fa-solid fa-comment-dots"></i>
+                            <span>${arrayJson.observaciones}</span>
+                        </div>` : ""}
+                </div>
             </div>
 
             <div class="right">
-                <div class="centrar">
-                    <b style="font-size:16px; white-space: nowrap;">
-                        ${separator(arrayJson.cantidad)} <span style="font-size:14px">pzas</span>
-                    </b>
-                </div>
-                <div style="position: absolute; bottom:85%; right: 10px;">
-                    <i style="color:${color1}" class="fa-solid fa-comment-dots fa-2x"></i>
+                <div class="pedido-cantidad-container">
+                    <span class="pedido-cantidad-valor">${separator(arrayJson.cantidad)}</span>
+                    <span class="pedido-cantidad-label">pzas</span>
                 </div>
             </div>
         </ons-list-item>
@@ -584,39 +584,44 @@ function enlistarPedidos(arrayJson, i) {
 }
 
 function enlistarFacturas(registro) {
-    var html = "";
     if (registro.estado != 4 && registro.estado != 5) return "";
-    else {
-        var facturas = (registro.facturas).split(",");
-        var entregas = (registro.entregado).split(",");
-        var fechas = (registro.fecha_factura).split(",");
-        var suma = 0;
 
-        html += '<hr style="margin:0"><span><table>';
-        html += '<tr>';
-        html += '    <th>Factura</th>';
-        html += '    <th>Entregado</th>';
-        html += '    <th>Fecha</th>';
-        html += '</tr>';
-        for (let j = 0; j < entregas.length; j++) {
+    let facturas = (registro.facturas).split(",");
+    let entregas = (registro.entregado).split(",");
+    let fechas = (registro.fecha_factura).split(",");
+    let suma = 0;
 
-            html += '<tr>';
-            html += '    <td>' + facturas[j] + '</td>';
-            html += '    <td>' + separator(entregas[j]) + ' pzas.</td>';
-            html += '    <td>' + fechas[j] + '</td>';
-            html += '</tr>';
-            suma += parseInt(entregas[j]);
-        }
-        html += '<tr>';
-        html += '    <td></td>';
-        html += '    <td><b>Total: </b></td>';
-        html += '    <td><b>' + separator(suma) + ' pzas.</b></td>';
-        html += '</tr>';
-        html += "</table></span>";
-        //console.log(html);
-        return html;
+    let html = `
+        <div class="contenedor-facturas">
+            <div class="facturas-header">
+                <span>Factura</span>
+                <span>Entregado</span>
+                <span>Fecha</span>
+            </div>
+            <div class="facturas-body">
+    `;
+
+    for (let j = 0; j < entregas.length; j++) {
+        html += `
+            <div class="factura-fila">
+                <span class="f-num">${facturas[j]}</span>
+                <span class="f-cant">${separator(entregas[j])} <small>pzas</small></span>
+                <span class="f-fecha">${fechas[j]}</span>
+            </div>
+        `;
+        suma += parseInt(entregas[j]);
     }
 
+    html += `
+            </div>
+            <div class="facturas-footer">
+                <span>Total Facturado:</span>
+                <span class="f-total">${separator(suma)} pzas.</span>
+            </div>
+        </div>
+    `;
+
+    return html;
 }
 
 function reiniciarFilter() {
@@ -704,19 +709,19 @@ function menuPedidos() {
                     </center>
                     <ons-list>
                         <ons-list-item>
-                            <label class="left">
+                            <div class="left">
                                 <h4 style="color: #808fa2;">
 
                                     Año
                                 </h4>
-                            </label>
-                            <label class="center">
+                            </div>
+                            <div class="center">
                                 <div class="year-input">
                                     <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
                                     <input type="text" id="currentYear" readonly>
                                     <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
                                 </div>
-                            </label>
+                            </div>
                         </ons-list-item>
                         <ons-list-item tappable>
                             <label class="left">

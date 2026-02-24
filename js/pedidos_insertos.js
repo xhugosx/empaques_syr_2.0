@@ -1,32 +1,42 @@
 //var filtro = false;
 function agregarHtmlInserto() {
-    //validar si existe la variable de cantidad de insertos si no crearla
-    //localStorage.setItem('insertos', 2);
-
     if (localStorage.getItem('insertos')) {
         let i = localStorage.getItem('insertos');
         localStorage.setItem('insertos', (parseInt(i) + 1));
+    } else {
+        localStorage.setItem('insertos', 1);
     }
-    else localStorage.setItem('insertos', 1);
-    //console.log(localStorage.getItem('insertos'));
 
     let i = localStorage.getItem('insertos');
-
-    //tomar el valor del la variable y concatenar id
     let codigoCaja = $("#pedidoCodigo").val();
     let link = myLink + "/php/lista_pedidos_inserto/idAutomatico.php?i=" + (i - 1) + "&codigo=" + codigoCaja;
-    var id = null;
-    servidor(link,
-        function (respuesta) {
-            id = respuesta.responseText;
-            let html = `
-                <div id="agregarInserto${i}">
-                    <ons-card style="padding:0px;" class="botonPrograma">
+
+    servidor(link, function (respuesta) {
+        let id = respuesta.responseText;
+
+        // Estructura dinámica con las mismas clases del formulario principal
+        let html = `
+            <div id="agregarInserto${i}" class="bloque-inserto">
+                <ons-card style="background: #e3f2fd; padding: 5px; margin-bottom: 15px; border-radius: 12px;">
+                    <div style="padding: 5px 15px; font-weight: bold; color: #0d47a1;"> 
+                        <i class="fa-solid fa-layer-group"></i> CONFIGURACIÓN DE INSERTO #${i}
+                    </div>
+
+                    <ons-card class="contenedorInputSub gris">
                         <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-regular fa-key"></i></div>
                             <div class="center">
-                                <ons-input id="id${i}" type="text" class="input-100" cols="30" rows="1" placeholder="ID" disabled value="${id}"></ons-input>
-                                <ons-select class="input-100" id="inserto${i}" autofocus>
-                                    <option value="">Inserto</option>
+                                <ons-input id="id${i}" class="input-100" placeholder="ID" disabled value="${id}"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-puzzle-piece"></i></div>
+                            <div class="center">
+                                <ons-select class="input-100" id="inserto${i}">
+                                    <option value="">TIPO DE INSERTO</option>
                                     <option value="JUEGO DIV.">JUEGO DIV.</option>
                                     <option value="DIV. UNICA">DIV. UNICA</option>
                                     <option value="DIV. CORTA">DIV. CORTA</option>
@@ -36,39 +46,49 @@ function agregarHtmlInserto() {
                                     <option value="BASE">BASE</option>
                                     <option value="SEPARADOR">SEPARADOR</option>
                                 </ons-select>
-
-                                <ons-select class="input-100" id="resistencia${i}">
-                                    <option value="" style="color: #ccc;">Resistencia</option>
-                                    <option value="MICRO">MICRO</option>
-                                    <option value="S/G">S/G</option>
-                                    <option value="21 ECT ESP">21 ECT ESP</option>
-                                    <option value="21 ECT">21 ECT</option>
-                                    <option value="23 ECT">23 ECT</option>
-                                    <option value="26 ECT">26 ECT</option>
-                                    <option value="32 ECT">32 ECT</option>
-                                    <option value="38 ECT">38 ECT</option>
-                                    <option value="42 ECT">42 ECT</option>
-                                    <option value="51 ECT">51 ECT</option>
-                                    <option value="61 ECT">61 ECT</option>
-                                    <option value="71 ECT">71 ECT</option>
-                                </ons-select>
-                                <br><br>
-
-                                <ons-input id="cantidad${i}" type="number" class="input-100" cols="30" rows="1" placeholder="Cantidad"></ons-input>
-                                <br><br><br>
-
-                                <ons-input id="notas${i}" type="text" class="input-100" cols="30" rows="1" placeholder="Notas (opcional)"></ons-input>
                             </div>
                         </ons-list-item>
                     </ons-card>
-                </div>
-            `;
 
-            $("#insertos").append(html);
-        }
-    );
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div class="center">
+                                <ons-select class="input-100" id="resistencia${i}">
+                                    <option value="">RESISTENCIA</option>
+                                    <option value="MICRO">MICRO</option>
+                                    <option value="S/G">S/G</option>
+                                    <option value="21 ECT">21 ECT</option>
+                                    <option value="32 ECT">32 ECT</option>
+                                    <option value="42 ECT">42 ECT</option>
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
 
-    //mandar html al div
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-hashtag"></i></div>
+                            <div class="center">
+                                <ons-input id="cantidad${i}" type="number" class="input-100" placeholder="CANTIDAD"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-pen-to-square"></i></div>
+                            <div class="center">
+                                <ons-input id="notas${i}" class="input-100" placeholder="Notas (opcional)"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+                </ons-card>
+            </div>
+        `;
+
+        $("#insertos").append(html);
+    });
 }
 
 function retrocederInserto() {
@@ -220,26 +240,31 @@ function setActualizarEstadoPedidoInserto(datos) {
 //nueva funcion para enlistar de una nueva forma...
 function enlistarPedidosInsertos(arrayJson) {
 
-    let html = `<ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100" onclick="">
-    <ons-list-header style="background-color: white;">
-        ${arrayJson.id_caja}&emsp; <b style="color: green;">${sumarDias(arrayJson.fecha_entrega, 0)}</b>
-    </ons-list-header>
-    <ons-list-item modifier="nodivider">
-        <div class="left">
-            <strong>${arrayJson.codigo_caja}</strong>
+    let html = `
+    <ons-card class="botonPrograma pedido-card opacity100" style="padding:0 0 8px 0;">
+        <div class="pedido-header">
+            <div class="header-left">
+                <span class="pedido-id">ID Caja: #${arrayJson.id_caja}</span>
+            </div>
+            <b class="pedido-entrega-status" style="color: #3d794b;">
+                Entrega: ${sumarDias(arrayJson.fecha_entrega, 0)}
+            </b>
         </div>
-        <div class="center romperTexto">
-            <span class="list-item__title">
-                ${arrayJson.nombre_producto}
-            </span>
-            <span class="list-item__subtitle">
-                <span>
-                    ${arrayJson.nombre_cliente}
-                </span>
-            </span>
-        </div>
-    </ons-list-item>
-    <hr>`;
+
+        <ons-list-item modifier="nodivider" class="pedido-item">
+            <div class="left">
+                <span class="badge-codigo">${arrayJson.codigo_caja}</span>
+            </div>
+            <div class="center">
+                <div class="pedido-info-principal">
+                    <span class="pedido-titulo">${arrayJson.nombre_producto}</span>
+                    <span class="pedido-cliente-nombre">${arrayJson.nombre_cliente}</span>
+                </div>
+            </div>
+        </ons-list-item>
+
+        <div class="divisor-insertos">Insertos relacionados</div>
+    `;
     arrayJson.insertos.forEach(inserto => {
         let perfil = validarPerfil();
         let accion = "";

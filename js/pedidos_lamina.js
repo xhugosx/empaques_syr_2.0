@@ -352,20 +352,20 @@ function menuPedidosLamina() {
                     </center>
                     <ons-list>
                         <ons-list-item>
-                            <label class="left">
+                            <div class="left">
                                 <h4 style="color: #808fa2;">
 
                                     Año
                                 </h4>
-                            </label>
-                            <label class="center">
+                            </div>
+                            <div class="center">
                                 <div class="year-input">
 
                                     <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
                                     <input type="text" id="currentYear" readonly>
                                     <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
                                 </div>
-                            </label>
+                            </div>
                         </ons-list-item>
                     </ons-list>
                     <ons-list>

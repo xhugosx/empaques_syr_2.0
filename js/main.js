@@ -1,5 +1,6 @@
 //FUNCION PARA VERIFICAR SI YA HABIA INICIADO SESION
 function primero() {
+  ons.platform.select('ios');
   if (localStorage.getItem("usuario")) {
     nextPage("home.html");
     let nombre = localStorage.getItem("usuario");
@@ -8,7 +9,7 @@ function primero() {
     iniciarContadorInactividad();
   }
   else resetarInicio();
-  
+
 }
 
 // INICIALIZAMOS LA PANTALLA DE CARGA, SE MANDARA A LLAMAR CUANDO SE NECESITE
@@ -160,7 +161,7 @@ function alertaFunction(mensaje, titulo, funcion) {
 function servidor(link, miFuncion) {
   let usuario = localStorage.getItem("usuario");
   let id = localStorage.getItem("id");
-  
+
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
   link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
   //console.log(link);
@@ -235,7 +236,7 @@ function servidorPost1(link, miFuncion, data) {
 function servidorPost(link, miFuncion, data) {
   let usuario = localStorage.getItem("usuario");
   let id = localStorage.getItem("id");
-  
+
   link = link.slice(-3) == "php" ? link + "?" : link + "&";
   link = link + `nombreUsuario=${usuario}&idUsuario=${id}`;
   if (window.navigator.onLine) {
@@ -388,8 +389,6 @@ function crearObjetMensajePedido(oc, id, codigo, estado, observaciones, fecha, p
 
 
 
-
-
 function crearObjetMensajePedidoEstado(id) {
   ons.openActionSheet({
     title: "<b>Agregar Factura</b>",
@@ -502,34 +501,6 @@ function copyToClipboard(elemento) {
   }
 }
 
-
-
-
-/*function crearObjetMensajeProcesoPrograma(idP, id, cantidad, codigo, resistencia, observaciones, papel) {
-
-  ons.openActionSheet({
-    title: 'ASIGNAR PROCESO - ' + codigo,
-    cancelable: true,
-    buttons: [
-      '<i class="fa-solid fa-circle" style="color: rgba(35, 154, 75, 0.933);"></i> Terminado ',
-      '<i class="fa-solid fa-circle" style="color: rgb(233, 188, 105);"></i> Proceso ',
-      '<i class="fa-solid fa-circle" style="color:rgb(209, 209, 209);"></i> Pendiente ',
-      'Finalizar',
-      {
-        label: 'Eliminar',
-        modifier: 'destructive'
-      }
-    ]
-  }).then(function (index) {
-    if (index == 0) setActualizarEstado(idP, 2);
-    else if (index == 1) setActualizarEstado(idP, 1);
-    else if (index == 2) setActualizarEstado(idP, 0);
-    else if (index == 3) alertPrompt(id, cantidad, codigo, resistencia, observaciones, papel);
-    else if (index == 4) alertaConfirPrograma("Estas seguro de eliminar este pedido del programa?", setEliminarPrograma, id);//eliminar
-
-  });
-}*/
-
 function alertConfirm(mensaje, botones, mifuncion, titulo) {
   ons.notification.confirm({
     title: titulo,
@@ -572,77 +543,6 @@ function alertaConfirPrograma(mensaje, funcionSi, id) {
   });
 }
 
-//funcion para alert confirm global
-/*function alertConfirmReporteFaltante(mensaje, json, input) {
-  //setAgregarFaltante(id,codigo,cantidad,resistencia,oc,fecha_oc)
-  ons.notification.confirm({
-    title: "",
-    message: mensaje,
-    buttonLabels: ['SI', 'NO'],
-    callback: function (idx) {
-      if (idx == 0) {
-        setAgregarFaltante(json);
-        setProcesosProgramaEntradaPedido(json.id, input);
-      }
-      else setProcesosProgramaEntradaPedido(json.id, input);
-    }
-  });
-}*/
-
-/*function alertPrompt(id, cantidad, codigo, resistencia, observaciones, papel) {
-  //el id es el id de la lista del pedido
-  //json = JSON.parse(json);
-  ons.notification.prompt({
-    title: '',
-    inputType: 'number',
-    buttonLabels: [
-      'Cancelar',
-      'Agregar'
-    ],
-    message: 'Cantidad total hechas (pzas)'
-  }).then(function (input) {
-
-    if (input !== null && input !== "" && input != 0) {
-      if (parseInt(cantidad) > parseInt(input)) {
-        //alert("si entro cantidad: "+ cantidad +"input: "+input);
-        ons.notification.confirm({
-          title: "",
-          message: 'Se mandará a inventario <br><br> <font size="8px">' + input + ' pza(s)</font>',
-          buttonLabels: ['Aceptar', 'Cancelar'],
-          callback: function (idx) {
-            if (idx == 0) {
-              cantidad -= input;
-              json = JSON.parse(crearJson(["id", "cantidad", "codigo", "resistencia", "observaciones", "papel"], [id, cantidad, codigo, resistencia, observaciones, papel]));
-
-              alertConfirmReporteFaltante("La cantidad es menor al del pedido, ¿Deseas generar reporte de faltante?", json, input);
-            }
-            else alerta("Cancelado");
-          }
-        });
-
-
-
-      }
-
-      else {
-        ons.notification.confirm({
-          title: "",
-          message: 'Se mandará a inventario <br><br> <font size="8px">' + input + ' pza(s)</font>',
-          buttonLabels: ['Aceptar', 'Cancelar'],
-          callback: function (idx) {
-            if (idx == 0) {
-              setProcesosProgramaEntradaPedido(id, input);
-            }
-            else alerta("Cancelado");
-          }
-        });
-        //
-      }
-    }
-    else if (input == 0) alerta("*ERROR* <br>Debe se mayor de <b>0</b>");
-    else alerta("No se envio nada");
-  });
-}*/
 //alert prompt para inventario
 function alertPromptInventario(id_lp, salida, inventario) {
   ons.notification.prompt({
@@ -1160,7 +1060,7 @@ function cambiarSistemaM() {
     document.getElementById("btnCambioSistemaM").style.display = "none";
     document.getElementById("btnCerrar").style.display = "none";
     cCarga();
-  }, 1000);
+  }, 2000);
 
 }
 
@@ -1174,6 +1074,6 @@ function cambiarSistemaE() {
     document.getElementById("btnCambioSistemaE").style.display = "none";
     document.getElementById("btnCerrar").style.display = "";
     cCarga();
-  }, 1000);
+  }, 2000);
 
 }

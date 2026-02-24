@@ -60,8 +60,8 @@ span>.fa-folder-open {
     background: conic-gradient(from 315deg, #7e68bf, #5b556e);
 }
 
-.year-input>#nextYear,
-.year-input>#prevYear {
+.year-input #nextYear,
+.year-input #prevYear {
 
     background-color: #AB83C9;
 }
@@ -69,10 +69,25 @@ span>.fa-folder-open {
     box-shadow: none !important;
     background-color: #ffffff00 !important;
 }
-i {
-    color:  #aca7bc;
+i,.action-sheet-button {
+    color:  #735eb6;
 }
 ons-toolbar.toolbar {
     background-color: #AB83C9;
     color: white;
+}
+#mes{
+    background: linear-gradient(120deg, #AB83C9, #7d5a97);
+}
+
+/* Etiqueta del código (Badge) */
+.badge-codigo {
+    background-color: #f0f4f8;
+    color: #AB83C9;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    border: 1px solid rgba(191, 37, 215, 0.2);
+    margin-left: 10px;
 }
