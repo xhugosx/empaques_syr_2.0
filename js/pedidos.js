@@ -443,7 +443,9 @@ function enlistarpedidosOC(arrayJson, i) {
         <ons-card style="padding:0px;" class="botonPrograma ocBoton${i}">
             <ons-list-item modifier="nodivider" expandable onclick="setBuscarPedidosOc('${arrayJson.agrupado_por_fecha}','${arrayJson.orden_compra}',${i})">
                 <div class="left">
-                    <i class="fas fa-lg fa-folder-open"></i>
+                    <div class="margen-icon">
+                        <i class="fas fa-lg fa-folder-open"></i>
+                    </div>
                 </div>
                 
                 <div class="center" style="display: flex; justify-content: space-between;">

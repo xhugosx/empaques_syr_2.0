@@ -150,24 +150,44 @@ function setEditarCliente() {
 function enlistarClientes(arrayJson, i) {
 
     let html = `
-    <ons-card class="botonPrograma" id="list-cliente${i}" onclick="crearObjetMensajeCliente(${arrayJson.codigo}, ${i}, '${arrayJson.nombre}','${arrayJson.domicilio}')">
+        <ons-card class="botonPrograma tarjeta-unificada" id="list-cliente${i}" 
+                onclick="crearObjetMensajeCliente(${arrayJson.codigo}, ${i}, '${arrayJson.nombre}','${arrayJson.domicilio}')">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div class="margen-icon">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <span class="badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
+                        <span style="font-weight: 700; color: #0f172a; font-size: 16px; margin-top: 2px;">
+                            ${arrayJson.nombre}
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <i class="fa-solid fa-user-large fa-lg"></i>
-        <strong>${agregarCeros(arrayJson.codigo)}</strong>&nbsp;${arrayJson.nombre}
-    </div>
-    <br>
-    <span>
-    <b>Domicilio: </b> ${arrayJson.domicilio}
-    </span>
-    <br>
-    <span style="font-size:12px; color:grey;">
-        <b>RFC:</b> <span id="rfc${i}">${arrayJson.rfc}</span>&emsp;&emsp;
-        <b>Contraseña:</b> <span id="contrasena${i}">${arrayJson.contraseña}</span>
-    </span>
-    
-    </ons-card>
+            ${arrayJson.domicilio == "" ? '' :
+                `<div style="margin-top: 12px; display: flex; align-items: center; gap: 8px; color: #475569; font-size: 13px;">
+                    <i class="fa-solid fa-location-dot" style="color: #94a3b8;"></i>
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        ${arrayJson.domicilio}
+                    </span>
+                </div>`
+            }
 
+            <div class="grid-datos">
+                <div class="dato-item">
+                    <b><i class="fa-solid fa-id-card"></i> RFC</b>
+                    <span id="rfc${i}">${arrayJson.rfc || '---'}</span>
+                </div>
+                <div class="dato-item">
+                    <b><i class="fa-solid fa-key"></i> Contraseña</b>
+                    <span id="contrasena${i}">${arrayJson.contraseña || '---'}</span>
+                </div>
+            </div>
+
+        </ons-card>
     `;
 
     return html;

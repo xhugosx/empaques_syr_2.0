@@ -136,11 +136,11 @@ function mensajeProveedor(codigo) {
 
 function enlistarProveedor(arrayJson) {
     let html1 = `
-    <ons-card class="botonPrograma" onclick="mensajeProveedor('${arrayJson.codigo}')" style="margin: 8px 10px; padding: 12px 15px;">
+    <ons-card class="botonPrograma" onclick="mensajeProveedor('${arrayJson.codigo}')" style="margin: 8px 10px; padding: 12px 15px; background:white">
         <div class="contenedor-flexboxLados">
             <div style="display: flex; align-items: center;">
-                <div style="margin-right: 15px;">
-                    <i class="fa fa-2x fa-user-tie"></i>
+                <div class="margen-icon">
+                    <i class="fa fa-user-tie"></i>
                 </div>
                 <div>
                     <span class="badge-codigo">${agregarCeros(arrayJson.codigo)}</span>

@@ -17,9 +17,9 @@ function agregarHtmlInserto() {
         // Estructura dinámica con las mismas clases del formulario principal
         let html = `
             <div id="agregarInserto${i}" class="bloque-inserto">
-                <ons-card style="background: #e3f2fd; padding: 5px; margin-bottom: 15px; border-radius: 12px;">
-                    <div style="padding: 5px 15px; font-weight: bold; color: #0d47a1;"> 
-                        <i class="fa-solid fa-layer-group"></i> CONFIGURACIÓN DE INSERTO #${i}
+                <ons-card class="card-sub">
+                    <div class="card-sub-header"> 
+                        <i class="fa-solid fa-box-open"></i> CONFIGURACIÓN DE INSERTO #${i}
                     </div>
 
                     <ons-card class="contenedorInputSub gris">

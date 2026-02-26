@@ -91,3 +91,36 @@ ons-toolbar.toolbar {
     border: 1px solid rgba(191, 37, 215, 0.2);
     margin-left: 10px;
 }
+/* card del sub */
+.card-sub {
+    background: #f2e3e5;
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-sub-header {
+    padding: 5px 15px;
+    font-weight: bold;
+    color: #9b4282;
+}
+/* Etiquetas de fecha */
+.placeholder {
+    font-size: 11px;
+    color: #9508cd;
+    font-weight: bold;
+    margin-bottom: -5px;
+}
+
+
+.margen-icon {
+    background: #eae3fd;
+    color: #720da1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

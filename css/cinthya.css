@@ -48,28 +48,100 @@ span>.fa-folder-open {
     background-color: #1ba0d1b9 !important;
     /* background-color: var(--switch-checked-background-color); */
 }
-.sistema{
+
+.sistema {
     box-shadow: none !important;
     background-color: #ffffff00 !important;
 }
-i, .action-sheet-button {
+
+i,
+.action-sheet-button {
     color: #0d70c6;
 }
-ons-toolbar.toolbar {
+
+/*ons-toolbar.toolbar {
     background-color: #1A9CE8;
     color: white;
-}
-#mes{
+}*/
+#mes {
     background: linear-gradient(120deg, #4285f4, #5d8eb9);
 }
+
 /* Etiqueta del código (Badge) */
 .badge-codigo {
-    background-color: #f0f4f8;
-    color: #1A9CE8;
+    background-color: #dceaf8;
+    color: #0e4c6f;
     padding: 4px 8px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     border: 1px solid rgba(26, 156, 232, 0.2);
     margin-left: 10px;
+}
+
+/* card del sub */
+.card-sub {
+    background: #e3f2fd;
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-sub-header {
+    padding: 5px 15px;
+    font-weight: bold;
+    color: #0d47a1;
+}
+
+/* Etiquetas de fecha */
+.placeholder {
+    font-size: 11px;
+    color: #0888cd;
+    font-weight: bold;
+    margin-bottom: -5px;
+}
+
+
+.margen-icon {
+    background: #e3f2fd;
+    color: #0d47a1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*ons-toolbar */
+/* Toolbar Modernizada */
+ons-toolbar.toolbar {
+    background: linear-gradient(to bottom, #30749c, #4b7ccb85, #ffffff00);
+    border-bottom: none;
+    height: 55px;
+    /* Un poco más de altura para que respire */
+}
+
+/* Color de los textos y botones */
+ons-toolbar.toolbar .center,
+ons-toolbar.toolbar .left,
+ons-toolbar.toolbar .right,
+ons-back-button {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Efecto para el título */
+ons-toolbar .center {
+    font-size: 28px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los iconos de la toolbar */
+ons-toolbar .left i,
+ons-toolbar .right i {
+    color: #ffffff !important;
+    font-size: 20px;
 }
