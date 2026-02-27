@@ -10,7 +10,7 @@ function verOrden(orden) {
 }
 
 function abrirCarpeta(elemento) {
-    var id = elemento.firstChild.nextElementSibling.id;
+    var id = elemento;
 
     $(".fa-folder").removeClass('fa-folder-open')
     $("#" + id).toggleClass('fa-folder-open');
@@ -77,10 +77,12 @@ function setBuscarAnio() {
 
             for (let j = i; j < i + 4 && j < resultado.length - 1; j++) {
                 html += `
-                <span class="ordenesLamina" onclick="abrirCarpeta(this)">
-                    <i class="fa-solid fa-folder fa-3x" id="${resultado[j]}"></i>
+                <span class="ordenesLamina" onclick="abrirCarpeta('${resultado[j]}')">
+                    <div class="badge-icon" style="background: #b4b4b4; height: 60px; width: 60px;">
+                        <i class="fa-solid fa-folder fa-3x" id="${resultado[j]}" style="color:white"></i>
+                    </div>
                     <br><br>
-                    <font><b>${resultado[j]}</b></font>
+                    <font color="#000000"><b>${resultado[j]}</b></font>
                 </span>
             `;
             }
@@ -120,9 +122,11 @@ function setBuscarOrden(anio) {
                     else accion = `mensajeOrden(['${tempJson.id}','${tempJson.carpeta}','${tempJson.path}'])`;
 
                     html += `<span class="ordenesLamina" onclick=" ${accion} ">
-                                <i class="fa-solid fa-file-pdf fa-3x"></i>
+                                <div class="badge-icon" style="background: #f7f7f7; height: 60px; width: 60px;">
+                                    <i class="fa-solid fa-file-pdf fa-3x" style="color: #9d9d9d;"></i>
+                                </div>
                                 <br><br>
-                                <font><b> ${tempJson.path} </b></font>
+                                <font color="#000000"><b> ${tempJson.path} </b></font>
                             </span>`;
                 }
 

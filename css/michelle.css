@@ -46,18 +46,11 @@ span>.fa-folder-open {
     color: #664470 !important;
 }
 
-#page1>.toolbar {
-    height: 100px !important;
-    border-radius: 0 0 50px 50px;
-    border: 0;
-    -webkit-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    background: linear-gradient(180deg, rgb(171, 131, 201) 0%, rgb(196, 134, 243) 5%, rgb(255, 255, 255) 13%);
-}
-
 .page__background {
-    background: conic-gradient(from 315deg, #7e68bf, #5b556e);
+    background-color: #5b556e !important;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(126, 104, 191, 0.6) 0px, transparent 55%),
+        radial-gradient(at 100% 100%, rgba(45, 42, 54, 0.4) 0px, transparent 50%) !important;
 }
 
 .year-input #nextYear,
@@ -65,18 +58,28 @@ span>.fa-folder-open {
 
     background-color: #AB83C9;
 }
-.sistema{
+
+.sistema {
     box-shadow: none !important;
     background-color: #ffffff00 !important;
 }
-i,.action-sheet-button {
-    color:  #735eb6;
+
+i,
+.action-sheet-button {
+    color: #735eb6;
 }
+
 ons-toolbar.toolbar {
     background-color: #AB83C9;
     color: white;
 }
-#mes{
+
+#logo {
+    margin-top: 10px;
+    height: 90px;
+}
+
+#mes {
     background: linear-gradient(120deg, #AB83C9, #7d5a97);
 }
 
@@ -91,6 +94,7 @@ ons-toolbar.toolbar {
     border: 1px solid rgba(191, 37, 215, 0.2);
     margin-left: 10px;
 }
+
 /* card del sub */
 .card-sub {
     background: #f2e3e5;
@@ -105,6 +109,7 @@ ons-toolbar.toolbar {
     font-weight: bold;
     color: #9b4282;
 }
+
 /* Etiquetas de fecha */
 .placeholder {
     font-size: 11px;

@@ -1052,28 +1052,28 @@ function convertJson(json) {
 
 function cambiarSistemaM() {
   oCarga("Cambiando de sistema...");
+  document.getElementById('cssPrincipal').href = './css/michelle.css';
+  document.getElementById('logo').src = 'media/michelle.png';
+  myLink = "https://empaquessr.com/sistema/michelle_2";
+  document.getElementById("btnCambioSistemaE").style.display = "";
+  document.getElementById("btnCambioSistemaM").style.display = "none";
+  document.getElementById("btnCerrar").style.display = "none";
   setTimeout(() => {
-    document.getElementById('cssPrincipal').href = './css/michelle.css';
-    document.getElementById('logo').src = 'media/michelle.png';
-    myLink = "https://empaquessr.com/sistema/michelle_2";
-    document.getElementById("btnCambioSistemaE").style.display = "";
-    document.getElementById("btnCambioSistemaM").style.display = "none";
-    document.getElementById("btnCerrar").style.display = "none";
     cCarga();
-  }, 2000);
+  }, 1000);
 
 }
 
 function cambiarSistemaE() {
   oCarga("Cambiando de sistema...");
+  document.getElementById('cssPrincipal').href = './css/cinthya.css';
+  document.getElementById('logo').src = 'media/Logo_oficial.svg';
+  myLink = "https://empaquessr.com/sistema/empaquessr_2";
+  document.getElementById("btnCambioSistemaM").style.display = "";
+  document.getElementById("btnCambioSistemaE").style.display = "none";
+  document.getElementById("btnCerrar").style.display = "";
   setTimeout(() => {
-    document.getElementById('cssPrincipal').href = './css/cinthya.css';
-    document.getElementById('logo').src = 'media/Logo_oficial.svg';
-    myLink = "https://empaquessr.com/sistema/empaquessr_2";
-    document.getElementById("btnCambioSistemaM").style.display = "";
-    document.getElementById("btnCambioSistemaE").style.display = "none";
-    document.getElementById("btnCerrar").style.display = "";
     cCarga();
-  }, 2000);
+  }, 1000);
 
 }

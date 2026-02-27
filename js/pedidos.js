@@ -527,8 +527,8 @@ function enlistarPedidos(arrayJson, i) {
         </div>`;
 
     let perfil = validarPerfil();
-    let accion = perfil == "produccion" 
-        ? `crearObjetMensajePedido1('${arrayJson.codigo}')` 
+    let accion = perfil == "produccion"
+        ? `crearObjetMensajePedido1('${arrayJson.codigo}')`
         : `crearObjetMensajePedido('${arrayJson.oc}', '${arrayJson.id}', '${arrayJson.codigo}', '${arrayJson.estado}', '${arrayJson.observaciones}', '${sumarDias(arrayJson.fecha_oc, 0)}', '${arrayJson.producto}', '${arrayJson.cliente}', '${sumarDias(arrayJson.fecha_entrega, 0)}')`;
 
     const html = `
@@ -702,135 +702,104 @@ function restarAnioFiltro() {
     anioGlobal--;
     document.getElementById('currentYear').value = anioGlobal; //console.log(anioGlobal);
 }
+
 function menuPedidos() {
-    var html = `<ons-list>
-                    <center>
-                        <h4 style="color: #808fa2; font-weight: bold;">
-                            Filtros
-                        </h4>
-                    </center>
-                    <ons-list>
-                        <ons-list-item>
-                            <div class="left">
-                                <h4 style="color: #808fa2;">
+    var html = `
+    <ons-list>
+        <div style="text-align: center; padding: 20px 0 10px 0;">
+            <span style="color: #5b556e; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; font-size: 14px;">
+                <i class="fa-solid fa-sliders"></i> Filtros de Pedidos
+            </span>
+        </div>
 
-                                    Año
-                                </h4>
-                            </div>
-                            <div class="center">
-                                <div class="year-input">
-                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
-                                    <input type="text" id="currentYear" readonly>
-                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
-                                </div>
-                            </div>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="pedidoRadio" input-id="Actuales" checked value="1"></ons-radio>
-                            </label>
-                            <label for="Actuales" class="center">
-                                Actuales
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="pedidoRadio" input-id="Faltantes" value="2"></ons-radio>
-                            </label>
-                            <label for="Faltantes" class="center">
-                                Faltantes
-                            </label>
-                        </ons-list-item>
-                    </ons-list>
-                    <ons-list>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-1" value="0" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-1" class="center">
-                                ⚪ Pendiente
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-2" value="1" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-2" class="center">
-                                🟠 Proceso
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-3" value="2" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-3" class="center">
-                                🟢 Terminado
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-4" value="3" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-4" class="center">
-                                🟩 Terminado sin procesos
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-5" value="4" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-5" class="center">
-                                🔵 Entregado
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-6" value="5" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-6" class="center">
-                                🟣 E. Parcial
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-7" value="6" name="estado"></ons-checkbox>
-                            </label>
-                            <label for="check-7" class="center">
-                                ⚫ Cancelado
-                            </label>
-                        </ons-list-item>
-                    </ons-list>
-                    <ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large">
-                            Aplicar
-                        </ons-button>
-                    </ons-list-item>
-                    <br><br><ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
-                            onclick="resetearFiltroPedidos();">
-                            <ons-icon icon="fa-trash"></ons-icon>
-                            Resetear
-                        </ons-button>
-                    </ons-list-item>
+        <ons-list-header style="font-size: 11px; background: transparent;">PERIODO Y VISTA</ons-list-header>
+        
+       <ons-list-item>
+            <div class="left">
+                <h4 style="color: #808fa2;">
 
+                    Año
+                </h4>
+            </div>
+            <div class="center">
+                <div class="year-input">
+                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
+                    <input type="text" id="currentYear" readonly>
+                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
+                </div>
+            </div>
+        </ons-list-item>
 
-                </ons-list>
-            `;
+        <ons-list-item tappable modifier="nodivider">
+            <label class="left">
+                <ons-radio name="pedidoRadio" input-id="Actuales" checked value="1"></ons-radio>
+            </label>
+            <label for="Actuales" class="center" style="font-size: 14px;">Pedidos Actuales</label>
+        </ons-list-item>
+
+        <ons-list-item tappable modifier="nodivider">
+            <label class="left">
+                <ons-radio name="pedidoRadio" input-id="Faltantes" value="2"></ons-radio>
+            </label>
+            <label for="Faltantes" class="center" style="font-size: 14px;">Pedidos Faltantes</label>
+        </ons-list-item>
+
+        <ons-list-header style="font-size: 11px; background: transparent; margin-top: 15px;">ESTADO DE PRODUCCIÓN</ons-list-header>
+        
+        ${[
+            { id: 1, val: 0, txt: 'Pendiente', col: '#94a3b8', ico: 'fa-clock' },
+            { id: 2, val: 1, txt: 'En Proceso', col: '#f59e0b', ico: 'fa-spinner' },
+            { id: 3, val: 2, txt: 'Terminado', col: '#10b981', ico: 'fa-check-double' },
+            { id: 4, val: 3, txt: 'T. sin procesos', col: '#059669', ico: 'fa-box' },
+            { id: 5, val: 4, txt: 'Entregado', col: '#3b82f6', ico: 'fa-truck-fast' },
+            { id: 6, val: 5, txt: 'E. Parcial', col: '#8b5cf6', ico: 'fa-boxes-stacked' },
+            { id: 7, val: 6, txt: 'Cancelado', col: '#ef4444', ico: 'fa-ban' }
+        ].map(item => `
+            <ons-list-item tappable modifier="nodivider">
+                <label class="left">
+                    <ons-checkbox input-id="check-${item.id}" value="${item.val}" name="estado"></ons-checkbox>
+                </label>
+                <label for="check-${item.id}" class="center" style="font-size: 14px; display: flex; align-items: center;">
+                    <span class="badge-icon" style="background-color: ${item.col};">   
+                        <i class="fa-solid ${item.ico}" style="color: white; font-size: 14px;"></i>
+                    </span> 
+                    ${item.txt}
+                </label>
+            </ons-list-item>
+        `).join('')}
+
+        <div style="padding: 20px 15px;">
+            <ons-button id="botonPrograma" onclick="aplicarFiltro()" modifier="large" 
+                style=" box-shadow: 0 4px 12px rgba(126, 104, 191, 0.3);">
+                Aplicar Filtros
+            </ons-button>
+            
+            <ons-button class="btnResetear" modifier="large quiet" 
+                onclick="resetearFiltroPedidos();" style=" margin-top: 10px; color:white; font-weight: bold;">
+                <ons-icon icon="fa-trash"></ons-icon> Limpiar Filtros
+            </ons-button>
+        </div>
+    </ons-list>`;
+
     $("#contenidoMenu").html(html);
-
 }
 
 function estadosColor(estado) {
-    const colores = {
-        0: '⚪',
-        1: '🟠',
-        2: '🟢',
-        3: '🟩',
-        4: '🔵',
-        5: '🟣',
-        6: '⚫'
+    const config = {
+        0: { ico: 'fa-clock', col: '#94a3b8', txt: 'Pendiente' },
+        1: { ico: 'fa-spinner', col: '#f59e0b', txt: 'En Proceso' },
+        2: { ico: 'fa-check-double', col: '#10b981', txt: 'Terminado' },
+        3: { ico: 'fa-box', col: '#059669', txt: 'T. sin procesos' },
+        4: { ico: 'fa-truck-fast', col: '#3b82f6', txt: 'Entregado' },
+        5: { ico: 'fa-boxes-stacked', col: '#8b5cf6', txt: 'E. Parcial' },
+        6: { ico: 'fa-ban', col: '#ef4444', txt: 'Cancelado' }
     };
-    return colores[estado];
+    const item = config[estado] || { ico: 'fa-question', col: '#ccc', txt: '??' };
+    return `
+        <div class="badge-icon" style="background-color: ${item.col};">
+            <i class="fa-solid ${item.ico}" style="color: white; font-size: 14px;"></i>
+        </div>
+    `;
 }
 
 function crearObjetMensajePedido1(codigo) {

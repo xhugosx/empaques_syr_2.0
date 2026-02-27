@@ -21,19 +21,17 @@ span>.fa-folder-open {
     color: #0c4b70 !important;
 }
 
-#page1>.toolbar {
-    height: 100px !important;
-    border-radius: 0 0 50px 50px;
-    border: 0;
-    -webkit-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, 0.75);
-    background: linear-gradient(180deg, rgba(26, 156, 232, 1) 0%, rgba(134, 203, 243, 1) 5%, rgba(255, 255, 255, 1) 13%);
+#logo {
+    margin-top: 10px;
+    height: 90px;
 }
 
+
 .page__background {
-    background: #475ACC;
-    background: conic-gradient(from 315deg, #00415f, #698390);
+    background-color: #00415f !important;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(105, 131, 144, 0.5) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(71, 90, 204, 0.3) 0px, transparent 50%) !important;
 }
 
 .year-input #nextYear,

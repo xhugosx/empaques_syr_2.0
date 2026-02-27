@@ -860,19 +860,18 @@ ons-fab.fab-animado i {
 }
 
 /* 4. Animación de entrada que ya tenías */
-ons-fab.fab-animado {
-    animation: bounceIn 0.8s both !important;
+ons-fab.fab-animado:hover {
+    animation: bounceIn 2s infinite !important;
+    cursor: pointer;
 }
 
 @keyframes bounceIn {
     0% {
-        opacity: 0;
-        transform: scale(0.3);
+        transform: scale(1);
     }
 
     50% {
-        opacity: 1;
-        transform: scale(1.05);
+        transform: scale(1.2);
     }
 
     100% {
@@ -1569,3 +1568,38 @@ ons-fab.fab-animado {
     font-size: 10px;
     margin-bottom: 2px;
 }
+
+#page1 .toolbar {
+    height: 110px !important;
+    border-radius: 0 0 70px 70px;
+    background: #ffffff !important;
+    /* Azul medianoche sólido */
+    border-bottom: 5px solid #8393acb4;
+    /* Línea de acento brillante en la curva */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+
+}
+
+/*filtro pedidos*/
+
+/* Indicadores de estado circulares */
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.badge-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border: 1.5px solid white;
+    margin-right: 8px;
+}
+
