@@ -650,7 +650,7 @@ ons-fab.fab:hover {
 }
 
 /* Etiquetas e información de productos */
-.expandProductos {
+/*.expandProductos {
     background-color: #f8f9fa;
     border-radius: 12px;
     padding: 15px !important;
@@ -672,7 +672,7 @@ ons-fab.fab:hover {
     font-size: 13px;
     color: #666;
     font-weight: 500;
-}
+}*/
 
 .tituloOrden {
     color: #ffffff;
@@ -1603,3 +1603,213 @@ ons-fab.fab-animado:hover {
     margin-right: 8px;
 }
 
+.activo-orden {
+    color: #000000b9 !important;
+}
+
+/*productos*/
+/* Tarjeta de Producto Moderna */
+.producto-card {
+    background: white;
+    margin: 10px 12px;
+    padding: 5px 0 0 7px;
+    border: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+/* Badge para el icono del producto */
+.producto-icon-wrapper {
+    background: #f1f5f9;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+}
+
+/* Etiquetas de precio */
+.precio-tag {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.precio-regular {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.precio-especial {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+/* Etiqueta de M2 */
+.m2-badge {
+    font-size: 11px;
+    background: #fdf2f8;
+    color: #db2777;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    border: 1px solid #fbcfe8;
+}
+
+/* Contenedor principal del producto */
+.producto-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Espacio entre la fila técnica y el nombre */
+    width: 100%;
+    padding: 4px 0;
+}
+
+/* Fila superior para datos técnicos (Código y M2) */
+.producto-header-technical {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
+/* Nombre del producto debajo de los datos técnicos */
+.producto-name-block {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.3;
+    word-break: break-word;
+    /* Rompe palabras largas si es necesario */
+}
+
+/* usuarios */
+/* Ajuste para el header dentro de la tarjeta */
+.user-card-header {
+    background: #f8fafc !important;
+    /* Gris muy tenue */
+    color: #64748b !important;
+    font-weight: 800 !important;
+    font-size: 11px !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 8px 15px !important;
+    border-radius: 16px 16px 0 0;
+    /* Solo esquinas superiores */
+}
+
+.user-avatar-circle {
+    background: #f1f5f9;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7e68bf;
+    border: 1px solid #e2e8f0;
+}
+
+/* Detalles del usuario */
+/* Contenedor de logs técnicos */
+.log-detalles {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 5px;
+    border-left: 3px solid #303030c4;
+    /* Línea de color para indicar registro */
+}
+
+/* Estilo para las claves de los datos técnicos */
+.log-key {
+    color: #64748b;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.log-val {
+    color: #1e293b;
+    font-size: 12px;
+}
+
+/* prorama cajas */
+/* Cabecera de Programa */
+.programa-header {
+    background: #f8fafc !important;
+    padding: 8px 15px !important;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Estilo base para las cápsulas de proceso (sin alterar tus colores) */
+.proceso {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.botonPrograma {
+    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.botonPrograma:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.badge-codigo-programa {
+    /* Reciclando tu clase badge-codigo pero adaptada al lateral */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 65px;
+    padding: 8px 4px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    color: #475569;
+}
+
+/* fehcas de entrega de pedidos */
+.fecha-verde {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid #a5d6a7;
+    font-size: 12px;
+    font-weight: 800;
+}
+.fecha-azul {
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid #90caf9;
+    font-size: 12px;
+    font-weight: 800;
+}
+.fecha-rojo {
+    background: #ffebee;
+    color: #c62828;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid #ef9a9a;
+    font-size: 12px;
+    font-weight: 800;
+}

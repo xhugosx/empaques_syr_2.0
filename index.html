@@ -559,66 +559,70 @@
             <!--aqui iran los input de los datos-->
 
             <ons-card id="contenedorInput">
-                <ons-card class="contenedorInputSub">
+                <ons-card class="card-sub">
+                    <div class="card-sub-header">
+                        <i class="fa-solid fa-user-tie"></i> AÑADIR USUARIO
+                    </div>
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-user-large fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="nombre" class="input-100" cols="30" rows="2"
+                                    placeholder="Usuario"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-key fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="contrasenaUsuario" type="password" class="input-100" cols="30" rows="2"
+                                    placeholder="Contraseña"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-key fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="contrasenaUsuario1" type="password" class="input-100" cols="30" rows="2"
+                                    placeholder="Repite tu Contraseña"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-users fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select class="input-100" name="usuario" id="perfil">
+                                    <option value="" style="color: #ccc;">(PERFIL)</option>
+                                    <option value="1">📈 Finanzas</option>
+                                    <option value="2">⚙️ Produccion</option>
+                                    <option value="3">👨‍💼 Administrador</option>
+                                    <option value="4">🔑 Root</option>
+                                </ons-select>
+
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
                     <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-user-large fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="nombre" class="input-100" cols="30" rows="2"
-                                placeholder="Usuario"></ons-input>
-                        </div>
+                        <ons-button modifier="large" id="agregarProveedor"
+                            onclick="setAgregarUsuario()">Agregar</ons-button>
                     </ons-list-item>
                 </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-key fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="contrasenaUsuario" type="password" class="input-100" cols="30" rows="2"
-                                placeholder="Contraseña"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-key fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="contrasenaUsuario1" type="password" class="input-100" cols="30" rows="2"
-                                placeholder="Repite tu Contraseña"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-users fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-select class="input-100" name="usuario" id="perfil">
-                                <option value="" style="color: #ccc;">(PERFIL)</option>
-                                <option value="1">📈 Finanzas</option>
-                                <option value="2">⚙️ Produccion</option>
-                                <option value="3">👨‍💼 Administrador</option>
-                                <option value="4">🔑 Root</option>
-                            </ons-select>
-
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-list-item modifier="nodivider">
-                    <ons-button modifier="large" id="agregarProveedor"
-                        onclick="setAgregarUsuario()">Agregar</ons-button>
-                </ons-list-item>
             </ons-card>
-
         </ons-page>
     </template>
     <!-- fin de agregar usuario-->
@@ -634,52 +638,56 @@
             <!--aqui iran los input de los datos-->
 
             <ons-card id="contenedorInput">
+                <ons-card class="card-sub">
+                    <div class="card-sub-header">
+                        <i class="fa-solid fa-user-tie"></i> EDICIÓN DE USUARIO
+                    </div>
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-key fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="id" class="input-100" cols="30" rows="2" placeholder="Id"
+                                    disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
 
-                <ons-card class="contenedorInputSub">
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-user-large fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-input id="nombre" class="input-100" cols="30" rows="2"
+                                    placeholder="Usuario"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left">
+                                <i class="fa-regular fa-users fa-lg"></i>
+                            </div>
+                            <div class="center">
+                                <ons-select class="input-100" name="usuario" id="perfil">
+                                    <option value="" style="color: #ccc;">(PERFIL)</option>
+                                    <option value="1">📈 Finanzas</option>
+                                    <option value="2">⚙️ Produccion</option>
+                                    <option value="3">👨‍💼 Administrador</option>
+                                    <option value="4">🔑 Root</option>
+                                </ons-select>
+
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
                     <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-user-large fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="id" class="input-100" cols="30" rows="2" placeholder="Id"
-                                disabled></ons-input>
-                        </div>
+                        <ons-button modifier="large" onclick="setEditarUsuario()">Editar</ons-button>
                     </ons-list-item>
                 </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-user-large fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-input id="nombre" class="input-100" cols="30" rows="2"
-                                placeholder="Usuario"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left">
-                            <i class="fa-regular fa-users fa-lg"></i>
-                        </div>
-                        <div class="center">
-                            <ons-select class="input-100" name="usuario" id="perfil">
-                                <option value="" style="color: #ccc;">(PERFIL)</option>
-                                <option value="1">📈 Finanzas</option>
-                                <option value="2">⚙️ Produccion</option>
-                                <option value="3">👨‍💼 Administrador</option>
-                                <option value="4">🔑 Root</option>
-                            </ons-select>
-
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-list-item modifier="nodivider">
-                    <ons-button modifier="large" onclick="setEditarUsuario()">Editar</ons-button>
-                </ons-list-item>
             </ons-card>
 
         </ons-page>
@@ -2117,8 +2125,8 @@
                 <i class="fa-solid fa-arrows-rotate"></i>
                 <span class="fab-text">Actualizar</span>
             </ons-fab>
-            <ons-fab lass="root administrador fab-animado" onclick="setDescargarProductosExcel()" position="bottom left"
-                style="bottom:85px;">
+            <ons-fab class="root administrador fab-animado" onclick="setDescargarProductosExcel()"
+                position="bottom left" style="bottom:85px;">
                 <i class="fa-solid fa-file-arrow-down"></i>
                 <span class="fab-text">Descargar</span>
             </ons-fab>
@@ -2137,90 +2145,93 @@
             <form onsubmit="return false;" id="formProducto">
 
                 <ons-card id="contenedorInput">
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-regular fa-key fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="codigo" id="codigoProducto1" cols="12" rows="1" maxlength="9"
-                                    class="input-100" placeholder="Codigo"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-regular fa-box fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="producto" id="nombreProducto" class="input-100" cols="30" rows="2"
-                                    placeholder="Producto"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="precio" type="number" id="precioProducto" class="input-100" cols="30"
-                                    rows="1" placeholder="$ PRECIO"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="precio2" type="number" id="precio2Producto" class="input-100" cols="30"
-                                    rows="1" placeholder="2do $ PRECIO"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-ruler-combined fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="m2" type="number" id="m2Producto" class="input-100" cols="30" rows="1"
-                                    placeholder="Metros cuadrados"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-file-pdf fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="pdf" onchange="cargarArchivoProducto()" type="file" id="pdfProducto"
-                                    cols="30" rows="1" placeholder="archivo"
-                                    style="opacity: 0%; position: absolute;"></ons-input>
-                                <div id="pdfNombreProducto" class="nombreArchivo">Selecciona un archivo -Plano en PDF-
+                    <ons-card class="card-sub">
+                        <div class="card-sub-header">
+                            <i class="fa-solid fa-user-tie"></i> AÑADIR PRODUCTO
+                        </div>
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-regular fa-key fa-lg"></i>
                                 </div>
-                            </div>
+                                <div class="center">
+                                    <ons-input name="codigo" id="codigoProducto1" cols="12" rows="1" maxlength="9"
+                                        class="input-100" placeholder="Codigo"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-regular fa-box fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="producto" id="nombreProducto" class="input-100" cols="30" rows="2"
+                                        placeholder="Producto"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="precio" type="number" id="precioProducto" class="input-100"
+                                        cols="30" rows="1" placeholder="$ PRECIO"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="precio2" type="number" id="precio2Producto" class="input-100"
+                                        cols="30" rows="1" placeholder="2do $ PRECIO"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-ruler-combined fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="m2" type="number" id="m2Producto" class="input-100" cols="30"
+                                        rows="1" placeholder="Metros cuadrados"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-file-pdf fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="pdf" onchange="cargarArchivoProducto()" type="file"
+                                        id="pdfProducto" cols="30" rows="1" placeholder="archivo"
+                                        style="opacity: 0%; position: absolute;"></ons-input>
+                                    <div id="pdfNombreProducto" class="nombreArchivo">Selecciona un archivo -Plano en
+                                        PDF-
+                                    </div>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-list-item modifier="nodivider">
+                            <ons-button modifier="large" onclick="setAgregarProducto()"
+                                id="btn-producto">Agregar</ons-button>
                         </ons-list-item>
                     </ons-card>
-
-                    <ons-list-item modifier="nodivider">
-                        <ons-button modifier="large" onclick="setAgregarProducto()"
-                            id="btn-producto">Agregar</ons-button>
-                    </ons-list-item>
-
+                </ons-card>
             </form>
-
-            </ons-card>
-
         </ons-page>
     </template>
 
@@ -2233,84 +2244,91 @@
             </ons-toolbar>
             <form onsubmit="return false;" id="formProductoActualizar">
                 <ons-card id="contenedorInput">
-                    <ons-card class="contenedorInputSub">
+                    <ons-card class="card-sub">
+                        <div class="card-sub-header">
+                            <i class="fa-solid fa-user-tie"></i> EDICIÓN DE PRODUCTO
+                        </div>
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-regular fa-key fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="codigo" id="codigoProductoActualizar" maxlength="10"
+                                        class="input-100" disabled></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-regular fa-box fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="producto" id="nombreProductoActualizar"
+                                        class="input-100"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="precio" type="number" id="precioProductoActualizar"
+                                        class="input-100"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="precio2" type="number" id="precio2ProductoActualizar"
+                                        class="input-100"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-ruler-combined fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="m2" type="number" id="m2ProductoActualizar"
+                                        class="input-100"></ons-input>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
+                        <ons-card class="contenedorInputSub">
+                            <ons-list-item modifier="nodivider">
+                                <div class="left">
+                                    <i class="fa-solid fa-file-pdf fa-lg"></i>
+                                </div>
+                                <div class="center">
+                                    <ons-input name="pdf" onchange="cargarArchivoProductoActualizar()" type="file"
+                                        id="pdfProductoActualizar" cols="30" rows="1" placeholder="archivo"
+                                        style="opacity: 0%; position: absolute;"></ons-input>
+                                    <div id="pdfNombreProductoActualizar" class="nombreArchivo">Selecciona un archivo
+                                        -Plano
+                                        en PDF-</div>
+                                </div>
+                            </ons-list-item>
+                        </ons-card>
+
                         <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-regular fa-key fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="codigo" id="codigoProductoActualizar" maxlength="10" class="input-100"
-                                    disabled></ons-input>
-                            </div>
+                            <ons-button id="btnActualizarProducto" modifier="large" onclick="setActualizarProducto()"
+                                disabled>Actualizar</ons-button>
                         </ons-list-item>
                     </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-regular fa-box fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="producto" id="nombreProductoActualizar" class="input-100"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="precio" type="number" id="precioProductoActualizar"
-                                    class="input-100"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="precio2" type="number" id="precio2ProductoActualizar"
-                                    class="input-100"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-ruler-combined fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="m2" type="number" id="m2ProductoActualizar"
-                                    class="input-100"></ons-input>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-card class="contenedorInputSub">
-                        <ons-list-item modifier="nodivider">
-                            <div class="left">
-                                <i class="fa-solid fa-file-pdf fa-lg"></i>
-                            </div>
-                            <div class="center">
-                                <ons-input name="pdf" onchange="cargarArchivoProductoActualizar()" type="file"
-                                    id="pdfProductoActualizar" cols="30" rows="1" placeholder="archivo"
-                                    style="opacity: 0%; position: absolute;"></ons-input>
-                                <div id="pdfNombreProductoActualizar" class="nombreArchivo">Selecciona un archivo -Plano
-                                    en PDF-</div>
-                            </div>
-                        </ons-list-item>
-                    </ons-card>
-
-                    <ons-list-item modifier="nodivider">
-                        <ons-button id="btnActualizarProducto" modifier="large" onclick="setActualizarProducto()"
-                            disabled>Actualizar</ons-button>
-                    </ons-list-item>
                 </ons-card>
             </form>
 
@@ -2563,10 +2581,12 @@
                             <ons-list-item modifier="nodivider">
 
                                 <div class="center contenedor-flexbox">
-                                    <i class="fa-regular fa-circle-minus fa-3x botonAnio" style="margin: 20px; cursor:pointer"
+                                    <i class="fa-regular fa-circle-minus fa-3x botonAnio"
+                                        style="margin: 20px; cursor:pointer"
                                         onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())-1)"></i>
                                     <span style="font-size:x-large" id="yearOrden"></span>
-                                    <i class="fa-regular fa-circle-plus fa-3x botonAnio" style="margin: 20px; cursor: pointer;"
+                                    <i class="fa-regular fa-circle-plus fa-3x botonAnio"
+                                        style="margin: 20px; cursor: pointer;"
                                         onclick="$('#yearOrden').text(parseInt($('#yearOrden').text())+1)"></i>
 
                                 </div>
@@ -4748,148 +4768,155 @@
             </ons-toolbar>
 
             <ons-card id="contenedorInput">
-                <ons-card class="contenedorInputSub gris">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-fingerprint fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input id="pedidoModificarId" class="input-100" placeholder="Id" disabled></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub gris">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-user fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input id="pedidoModificarCliente" class="input-100" placeholder="Cliente"
-                                disabled></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub gris">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-box fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input id="pedidoModificarProducto" class="input-100" placeholder="Producto"
-                                disabled></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub gris">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-regular fa-key fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input id="pedidoModificarCodigo" class="input-100" placeholder="Codigo"
-                                disabled></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-house-crack fa-lg"></i></div>
-                        <div class="center">
-                            <ons-select class="input-100" id="pedidoModificarResistencia">
-                                <option value="">RESISTENCIA</option>
-                                <option value="MICRO">MICRO</option>
-                                <option value="S/G">S/G</option>
-                                <option value="21 ECT ESP">21 ECT ESP</option>
-                                <option value="21 ECT">21 ECT</option>
-                                <option value="23 ECT">23 ECT</option>
-                                <option value="26 ECT">26 ECT</option>
-                                <option value="29 ECT">29 ECT</option>
-                                <option value="30 ECT">30 ECT</option>
-                                <option value="32 ECT">32 ECT</option>
-                                <option value="36 ECT">36 ECT</option>
-                                <option value="38 ECT">38 ECT</option>
-                                <option value="40 ECT">40 ECT</option>
-                                <option value="42 ECT">42 ECT</option>
-                                <option value="44 ECT">44 ECT</option>
-                                <option value="48 ECT">48 ECT</option>
-                                <option value="51 ECT">51 ECT</option>
-                                <option value="61 ECT">61 ECT</option>
-                                <option value="71 ECT">71 ECT</option>
-                                <option value="200 LBS">200 LBS</option>
-                                <option value="250 LBS">250 LBS</option>
-                                <option value="275 LBS">275 LBS</option>
-                            </ons-select>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-file fa-lg"></i></div>
-                        <div class="center">
-                            <ons-select class="input-100" id="pedidoModificarPapel">
-                                <option value="">PAPEL</option>
-                                <option value="NAL">NAL</option>
-                                <option value="AME">AME</option>
-                                <option value="BCO">BCO</option>
-                            </ons-select>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-calculator fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input type="number" id="pedidoModificarCantidad" class="input-100"
-                                placeholder="Cantidad"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-clipboard fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input id="pedidoModificarOc" class="input-100"
-                                placeholder="Orden de Compra"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-calendar-days fa-lg"></i></div>
-                        <div class="center">
-                            <div class="placeholder">Fecha Orden de Compra!</div>
-                            <ons-input type="date" id="pedidoModificarFechaOc" class="input-100"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-calendar-days fa-lg"></i></div>
-                        <div class="center">
-                            <div class="placeholder">Fecha de Entrega!</div>
-                            <ons-input type="date" id="pedidoModificarFechaEntrega" class="input-100"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-card class="contenedorInputSub">
-                    <ons-list-item modifier="nodivider">
-                        <div class="left"><i class="fa-solid fa-comment-dots fa-lg"></i></div>
-                        <div class="center">
-                            <ons-input id="pedidoModificarObservaciones" class="input-100"
-                                placeholder="Observaciones (opcional)"></ons-input>
-                        </div>
-                    </ons-list-item>
-                </ons-card>
-
-                <ons-list-item modifier="nodivider">
-                    <div class="center">
-                        <ons-button id="botonModificarPedido" modifier="large" onclick="setModificarPedido()" disabled>
-                            Guardar Cambios
-                        </ons-button>
+                <ons-card class="card-sub">
+                    <div class="card-sub-header">
+                        <i class="fa-solid fa-box"></i>&nbsp;EDICIÓN DEL PEDIDO
                     </div>
-                </ons-list-item>
+                    <ons-card class="contenedorInputSub gris">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-fingerprint fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input id="pedidoModificarId" class="input-100" placeholder="Id"
+                                    disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub gris">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-user fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input id="pedidoModificarCliente" class="input-100" placeholder="Cliente"
+                                    disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub gris">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-box fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input id="pedidoModificarProducto" class="input-100" placeholder="Producto"
+                                    disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub gris">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-regular fa-key fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input id="pedidoModificarCodigo" class="input-100" placeholder="Codigo"
+                                    disabled></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-house-crack fa-lg"></i></div>
+                            <div class="center">
+                                <ons-select class="input-100" id="pedidoModificarResistencia">
+                                    <option value="">RESISTENCIA</option>
+                                    <option value="MICRO">MICRO</option>
+                                    <option value="S/G">S/G</option>
+                                    <option value="21 ECT ESP">21 ECT ESP</option>
+                                    <option value="21 ECT">21 ECT</option>
+                                    <option value="23 ECT">23 ECT</option>
+                                    <option value="26 ECT">26 ECT</option>
+                                    <option value="29 ECT">29 ECT</option>
+                                    <option value="30 ECT">30 ECT</option>
+                                    <option value="32 ECT">32 ECT</option>
+                                    <option value="36 ECT">36 ECT</option>
+                                    <option value="38 ECT">38 ECT</option>
+                                    <option value="40 ECT">40 ECT</option>
+                                    <option value="42 ECT">42 ECT</option>
+                                    <option value="44 ECT">44 ECT</option>
+                                    <option value="48 ECT">48 ECT</option>
+                                    <option value="51 ECT">51 ECT</option>
+                                    <option value="61 ECT">61 ECT</option>
+                                    <option value="71 ECT">71 ECT</option>
+                                    <option value="200 LBS">200 LBS</option>
+                                    <option value="250 LBS">250 LBS</option>
+                                    <option value="275 LBS">275 LBS</option>
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-file fa-lg"></i></div>
+                            <div class="center">
+                                <ons-select class="input-100" id="pedidoModificarPapel">
+                                    <option value="">PAPEL</option>
+                                    <option value="NAL">NAL</option>
+                                    <option value="AME">AME</option>
+                                    <option value="BCO">BCO</option>
+                                </ons-select>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-calculator fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input type="number" id="pedidoModificarCantidad" class="input-100"
+                                    placeholder="Cantidad"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-clipboard fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input id="pedidoModificarOc" class="input-100"
+                                    placeholder="Orden de Compra"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-calendar-days fa-lg"></i></div>
+                            <div class="center">
+                                <div class="placeholder">Fecha Orden de Compra!</div>
+                                <ons-input type="date" id="pedidoModificarFechaOc" class="input-100"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-calendar-days fa-lg"></i></div>
+                            <div class="center">
+                                <div class="placeholder">Fecha de Entrega!</div>
+                                <ons-input type="date" id="pedidoModificarFechaEntrega" class="input-100"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-card class="contenedorInputSub">
+                        <ons-list-item modifier="nodivider">
+                            <div class="left"><i class="fa-solid fa-comment-dots fa-lg"></i></div>
+                            <div class="center">
+                                <ons-input id="pedidoModificarObservaciones" class="input-100"
+                                    placeholder="Observaciones (opcional)"></ons-input>
+                            </div>
+                        </ons-list-item>
+                    </ons-card>
+
+                    <ons-list-item modifier="nodivider">
+                        <div class="center">
+                            <ons-button id="botonModificarPedido" modifier="large" onclick="setModificarPedido()"
+                                disabled>
+                                Guardar Cambios
+                            </ons-button>
+                        </div>
+                    </ons-list-item>
+                </ons-card>
             </ons-card>
         </ons-page>
     </template>

@@ -507,18 +507,15 @@ function enlistarPedidos(arrayJson, i) {
 
     // Lógica de colores y estados (Se mantiene igual)
     if (arrayJson.oc == "FALTANTE") {
-        color = "#a01a1a";
+        color = "fecha-rojo";
         entregado = "Faltante";
-    } else if (arrayJson.fechaSalida != "") {
-        color = "#0888cd";
-        entregado = `Entregado: ${sumarDias(arrayJson.fechaSalida, 0)}`;
     } else {
-        color = "#3d794b";
+        color = "fecha-verde";
         entregado = `Entrega: ${sumarDias(arrayJson.fecha_entrega, 0)}`;
     }
+    //console.log(arrayJson);
 
     const tieneObservaciones = arrayJson.observaciones !== "";
-    const colorIconoObs = tieneObservaciones ? "#73a873" : "#ccc";
 
     const inventarioHtml = arrayJson.estado != 2 ? "" : `
         <div class="pedido-inventario">
@@ -539,7 +536,7 @@ function enlistarPedidos(arrayJson, i) {
                 ${estadosColor(arrayJson.estado)}
                 <span class="pedido-id">#${arrayJson.id}</span>
             </div>
-            <b class="pedido-entrega-status" style="color:${color};">${entregado}</b>
+            <b class="pedido-entrega-status ${color}"><i class="far fa-calendar-check"></i>&nbsp; ${entregado}</b>
         </div>
 
         <ons-list-item modifier="nodivider" class="pedido-item">
@@ -749,8 +746,8 @@ function menuPedidos() {
         ${[
             { id: 1, val: 0, txt: 'Pendiente', col: '#94a3b8', ico: 'fa-clock' },
             { id: 2, val: 1, txt: 'En Proceso', col: '#f59e0b', ico: 'fa-spinner' },
-            { id: 3, val: 2, txt: 'Terminado', col: '#10b981', ico: 'fa-check-double' },
-            { id: 4, val: 3, txt: 'T. sin procesos', col: '#059669', ico: 'fa-box' },
+            { id: 3, val: 2, txt: 'Terminado', col: '#059669', ico: 'fa-check' },
+            { id: 4, val: 3, txt: 'T. sin procesos', col: '#10b981', ico: 'fa-clipboard-check' },
             { id: 5, val: 4, txt: 'Entregado', col: '#3b82f6', ico: 'fa-truck-fast' },
             { id: 6, val: 5, txt: 'E. Parcial', col: '#8b5cf6', ico: 'fa-boxes-stacked' },
             { id: 7, val: 6, txt: 'Cancelado', col: '#ef4444', ico: 'fa-ban' }
@@ -788,8 +785,8 @@ function estadosColor(estado) {
     const config = {
         0: { ico: 'fa-clock', col: '#94a3b8', txt: 'Pendiente' },
         1: { ico: 'fa-spinner', col: '#f59e0b', txt: 'En Proceso' },
-        2: { ico: 'fa-check-double', col: '#10b981', txt: 'Terminado' },
-        3: { ico: 'fa-box', col: '#059669', txt: 'T. sin procesos' },
+        2: { ico: 'fa-check', col: '#059669', txt: 'Terminado' },
+        3: { ico: 'fa-clipboard-check', col: '#10b981', txt: 'T. sin procesos' },
         4: { ico: 'fa-truck-fast', col: '#3b82f6', txt: 'Entregado' },
         5: { ico: 'fa-boxes-stacked', col: '#8b5cf6', txt: 'E. Parcial' },
         6: { ico: 'fa-ban', col: '#ef4444', txt: 'Cancelado' }

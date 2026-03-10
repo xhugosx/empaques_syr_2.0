@@ -302,10 +302,12 @@ function enlistarprogramaCaja(arrayJson) {
     let procesos = "";
     let opcionesProcesos = "";
     let idsProcesos = "";
+
     arrayJson.programa.forEach(programa => {
+        // Mantengo tus clases originales (.proceso y .proceso-estado)
         procesos += `
             <span class="proceso proceso-${procesoProgramaEstado(programa.estado)}">
-            ${procesoProgramaEstadoIcon(programa.estado)} ${procesosPrograma(programa.proceso)}
+                ${procesoProgramaEstadoIcon(programa.estado)} ${procesosPrograma(programa.proceso)}
             </span>
         `;
         opcionesProcesos += `${programa.proceso},`;
@@ -313,49 +315,59 @@ function enlistarprogramaCaja(arrayJson) {
     });
 
     let perfil = validarPerfil();
-    let accion;
-    if (perfil == "produccion") accion = `opcionesPrograma1([${idsProcesos}],[${opcionesProcesos}],'${arrayJson.codigo}')`;
-    else accion = `opcionesPrograma('${arrayJson.id}',[${idsProcesos}],[${opcionesProcesos}],${arrayJson.cantidad})`;
-    let html = `
-            <ons-card style="padding:0px;" class="botonPrograma" onclick=" ${accion} ">
+    let accion = (perfil == "produccion")
+        ? `opcionesPrograma1([${idsProcesos}],[${opcionesProcesos}],'${arrayJson.codigo}')`
+        : `opcionesPrograma('${arrayJson.id}',[${idsProcesos}],[${opcionesProcesos}],${arrayJson.cantidad})`;
 
-                <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
-                    ${arrayJson.id} &emsp;
-                    <span style="color: rgb(115, 168, 115)">&emsp;<b>Fecha Entrega:</b> ${sumarDias(arrayJson.fecha_entrega, 0)}</span>
-                </ons-list-header>
+    return `
+    <ons-card class="botonPrograma" onclick="${accion}" 
+              style="padding:0px; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        
+        <ons-list-header class="programa-header">
+            <span style="color: #64748b; font-weight: 800;"># ${arrayJson.id}</span>
+            <span class="fecha-verde">
+                <i class="far fa-calendar-check"></i> <b>Entrega:</b> ${sumarDias(arrayJson.fecha_entrega, 0)}
+            </span>
+        </ons-list-header>
 
-                <ons-list-item modifier="nodivider">
-                    <div class="left">
-                        <strong>${arrayJson.codigo}</strong>
+        <ons-list-item modifier="nodivider" style="padding: 10px 0;">
+            
+            <div class="left" style="margin-right: 12px;">
+                <div class="badge-codigo">
+                    <strong>${arrayJson.codigo}</strong>
+                </div>
+            </div>
+
+            <div class="center">
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <span style="font-size: 15px; color: #1e293b; line-height: 1.3;">
+                        <b>${arrayJson.producto}</b> 
+                        <b style="color: #475569; font-size: 13px; margin-left:10px;">${arrayJson.resistencia}</b>
+                    </span>
+
+                    <span style="font-size: 12px; color: #64748b; margin-top: 4px;">
+                        <i class="far fa-user" style="font-size: 10px;"></i> ${arrayJson.cliente}
+                    </span>
+
+                    <div style="height: 1px; background: #f1f5f9; margin: 8px 0;"></div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        ${procesos}
                     </div>
+                </div>
+            </div>
 
-                    <div class="center romperTexto">
-                        <span class="list-item__title">
-                            ${arrayJson.producto}&nbsp;|&nbsp;<b style="color:#404040">${arrayJson.resistencia}</b>
-                        </span>
-
-                        <span class="list-item__subtitle">
-                            <span>${arrayJson.cliente}</span><br>
-                            <hr>
-                            <!-- 🧩 PROCESOS -->
-                            <div style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
-                                ${procesos}
-                            </div>
-                        </span>
-                    </div>
-
-                    <div class="right">
-                        <div class="centrar">
-                            <b style="font-size:16px; white-space: nowrap;">
-                                ${arrayJson.cantidad} <span style="font-size:14px;">pzas</span>
-                            </b>
-
-                        </div>
-                    </div>
-                </ons-list-item>
-            </ons-card>`;
-
-    return html
+            <div class="right" style="min-width: fit-content; margin-left: 10px; align-self: center;">
+                <div style="text-align: right; background: #f8fafc; padding: 5px 10px; border-radius: 10px; border: 1px solid #f1f5f9;">
+                    <b style="font-size: 16px; color: #1e293b; display: block;">
+                        ${arrayJson.cantidad}
+                    </b>
+                    <span style="font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase;">pzas</span>
+                </div>
+            </div>
+            
+        </ons-list-item>
+    </ons-card>`;
 }
 
 //NUEVO CODIGO, DEL PROGRAMA NUEVO

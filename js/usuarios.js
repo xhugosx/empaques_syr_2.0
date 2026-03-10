@@ -234,35 +234,46 @@ function setInicio() {
 function enlistarUsuarios(arrayJson) {
     let estatus = arrayJson.estatus == 1 ? "checked" : "";
     let root = arrayJson.perfil == 4 ? "disabled" : "";
+
     const html = `
-        <ons-card style="padding:0px;" class="botonPrograma">
-            <ons-list-header>
+        <ons-card style="padding:0px; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" class="botonPrograma">
+            
+            <ons-list-header class="user-card-header">
+                <i class="fas fa-shield-halved" style="margin-right: 5px;"></i>
                 ${tipoPerfil(arrayJson.perfil)}
             </ons-list-header>
-            <ons-list-item modifier="nodivider">
 
+            <ons-list-item modifier="nodivider" style="padding: 5px 0;">
 
-                <div class="left">
-                    <span style="position: relative; display: inline-block;">
-                        <i class="fas fa-user fa-2x"></i>
-                    </span>
+                <div class="left" style="margin-left: 10px;">
+                    <div class="user-avatar-circle">
+                        <i class="fas fa-user"></i>
+                    </div>
                 </div>
 
                 <div class="center" onclick="opcionesUsuaio(${arrayJson.id},'${arrayJson.nombre}')">
-                    <span class="list-item__title"><b>[ ${arrayJson.id} ] ${arrayJson.nombre} </b></span>
-                    <span class="list-item__subtitle" style="font-size:14px">
-                        Contraseña: ******
-                    </span>
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span style="font-size: 15px; color: #1e293b;">
+                            <b style="color: #64748b;">[ ${arrayJson.id} ]</b> 
+                            <span style="font-weight: 700;">${arrayJson.nombre}</span>
+                        </span>
+                        <span style="font-size: 13px; color: #94a3b8;">
+                            <i class="fas fa-lock" style="font-size: 10px;"></i> 
+                            Contraseña: <span style="letter-spacing: 2px;">******</span>
+                        </span>
+                    </div>
                 </div>
 
-                <div class="right"
-                    style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; white-space: nowrap;">
-                    <span class="list-item__title">
-                        Estatus
-                    </span>
-                    <span class="list-item_subtitle">
-                        <ons-switch id="estatus${arrayJson.id}" onclick="switchsUsuario( ${arrayJson.id})" ${estatus} ${root}></ons-switch>
-                    </span>
+                <div class="right" style="padding-right: 15px;">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <span style="font-size: 9px; font-weight: 800; color: #6b6b6b; text-transform: uppercase;">Estatus</span>
+                        <ons-switch 
+                            id="estatus${arrayJson.id}" 
+                            onclick="switchsUsuario(${arrayJson.id})" 
+                            ${estatus} 
+                            ${root}>
+                        </ons-switch>
+                    </div>
                 </div>
 
             </ons-list-item>

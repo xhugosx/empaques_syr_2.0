@@ -14,6 +14,8 @@ function abrirCarpeta(elemento) {
 
     $(".fa-folder").removeClass('fa-folder-open')
     $("#" + id).toggleClass('fa-folder-open');
+    $(".activo-orden").removeClass('activo-orden');
+    $("#" + id).toggleClass('activo-orden');
 
     setBuscarOrden(id);
 }

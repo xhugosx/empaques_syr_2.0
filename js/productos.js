@@ -157,42 +157,68 @@ function setBuscarProductoActualizar(codigo) {
 //sirve para enlistar todos los productos
 function enlistarProductos(arrayJson, i) {
     let perfil = validarPerfil();
-    let accion, precio = "";
-    if (perfil == "produccion") accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
-    else {
+    let accion = "";
+    let precioContenido = "";
+
+    // Lógica de acciones y precios
+    if (perfil == "produccion") {
+        accion = `crearObjetMensajePedido1('${arrayJson.codigo}')`;
+    } else {
         accion = `crearObjetMensaje('${arrayJson.codigo}', ${i})`;
-        precio = `<span style="font-size:14px; white-space: nowrap;" >
-                    <b>
-                    <span class="list-item__subtitle">$ ${separator(arrayJson.precio2)}  &nbsp;|&nbsp;</span>  
-                    $ ${separator(arrayJson.precio)} &nbsp;</b>
-                </span>
+        precioContenido = `
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                <span style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Precios</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span class="precio-tag precio-regular">$${separator(arrayJson.precio2)}</span>
+                    <span style="color: #cbd5e1; font-weight: 300;">|</span>
+                    <span class="precio-tag precio-especial">$${separator(arrayJson.precio)}</span>
+                </div>
+            </div>
         `;
     }
+
     const html = `
-    <ons-card style="padding:0px;" class="botonPrograma" id="list-cliente${i}" 
-              onclick="${accion}">
-        <ons-list-item modifier="nodivider">
+    <div class="producto-card botonPrograma" id="list-cliente${i}" onclick="${accion}">
+        <ons-list-item modifier="nodivider" style="background: transparent; padding: 0;">
             
-            <div class="left">
-               <span style="position: relative; display: inline-block;">
-                    <i class="fas fa-box fa-2x"></i>
-                    ${ExistePlano(arrayJson.file)}
-                </span>
+            <div class="left" style="margin-right: 14px; align-self: flex-start; margin-top: 4px;">
+                <div style="position: relative; display: inline-block;">
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-box fa-lg"></i>
+                    </div>
+                    <div style="position: absolute; top: -6px; right: -6px;">
+                        ${ExistePlano(arrayJson.file)}
+                    </div>
+                </div>
             </div>
             
             <div class="center">
-                <span class="list-item__title"><b>${arrayJson.codigo}</b> ${arrayJson.producto} </span>
-                <span class="list-item__subtitle" style="font-size:12px">
-                    <b>M²: ${arrayJson.m2}</b>
-                </span>
+                <div class="producto-item-container">
+                    
+                    <div class="producto-header-technical">
+                        <div class="badge-codigo" style="font-weight: 900; margin:0;">
+                            ${arrayJson.codigo}
+                        </div>
+                        <div class="producto-name-block">
+                            ${arrayJson.producto}
+                        </div>
+                        <span class="m2-badge">
+                            <i class="fa-solid fa-ruler-combined" style="font-size: 9px;"></i> 
+                            M²: ${arrayJson.m2}
+                        </span>
+                    </div>
+
+                   
+
+                </div>
             </div>
             
-            <div class="right">
-                ${precio}
+            <div class="right" style="min-width: fit-content; margin-left: 10px; align-self: flex-start; margin-top: 4px;">
+                ${precioContenido}
             </div>
             
         </ons-list-item>
-    </ons-card>
+    </div>
     `;
     return html;
 }
