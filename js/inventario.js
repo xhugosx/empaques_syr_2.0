@@ -54,25 +54,32 @@ function setMostrarInventarioClienteCajas() {
 }
 
 function enlistarInventarioClienteCajas(arrayJson) {
-    let html = `
-        <ons-card style="padding:0px;" class="botonPrograma"
-            onclick="nextPageFunction('cajaInventario.html', function() {
-            setMostrarInventarioCajas('${arrayJson.codigo}')
-            })">
-            <ons-list-item modifier="chevron nodivider">
+    return `
+    <ons-card class="botonPrograma card-cliente-interactivo" 
+              onclick="nextPageFunction('cajaInventario.html', function() { setMostrarInventarioCajas('${arrayJson.codigo}') })">
+        <ons-list-item modifier="chevron nodivider" class="lista-cliente-item">
+            
             <div class="left">
-                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+                <div class="producto-icon-wrapper">
+                    <i class="fas fa-clipboard-user fa-2x"></i>
+                </div>
             </div>
+            
             <div class="center">
-                ${arrayJson.cliente}
+                <span class="list-item__title badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
+                <span class="list-item__subtitle nombre-cliente">${arrayJson.cliente}</span>
             </div>
+            
             <div class="right">
-                <span class="notification">${arrayJson.cantidad_productos}</span>
+                <div class="contenedor-notificacion">
+                    <span class="label-pedidos">Modelos</span>
+                    <span class="notification-moderna">${arrayJson.cantidad_productos}</span>
+                </div>
             </div>
-            </ons-list-item>
-        </ons-card>
+
+        </ons-list-item>
+    </ons-card>
     `;
-    return html;
 }
 
 function setMostrarInventarioCajas(cliente) {
@@ -99,7 +106,9 @@ function enlistarInventarioCajas(arrayJson, i) {
     let html = `<ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
     <ons-list-item modifier="nodivider" ${accion}>
         <div class="left">
-            <i class="fa-solid fa-box fa-2x"></i>
+            <div class="producto-icon-wrapper">
+                <i class="fa-solid fa-clipboard-list fa-2x"></i>
+            </div>
         </div>
         <div class="center romperTexto">
             <span class="list-item__title">
@@ -112,10 +121,11 @@ function enlistarInventarioCajas(arrayJson, i) {
             </span>
         </div>
         <div class="right">
-            <font size="5px"><b>
-                ${separator(arrayJson.inventario)} <font size="2px">pza(s)</font>
-            </b>
-            </font>
+            <div class="pedido-cantidad-container">
+                <span class="pedido-cantidad-valor">${separator(arrayJson.inventario)}</span>
+                <span class="pedido-cantidad-label">pzas</span>
+            </div>
+           
             <i class="fa-solid fa-chevron-down" style="color:#c7c7cc;"></i>
         </div>
         <div class="expandable-content" style="padding: 0px; margin: 0px;">
@@ -125,7 +135,7 @@ function enlistarInventarioCajas(arrayJson, i) {
                         <ons-progress-circular id="circularInventario${i}" indeterminate></ons-progress-circular>
                     </center>
                 </ons-lazy-repeat>
-                <ons-button modifier="large" style="width:98%" onclick="mensajeAlertaInventarioCajaTodo('${arrayJson.codigo}')">
+                <ons-button modifier="large" style="width:99%" onclick="mensajeAlertaInventarioCajaTodo('${arrayJson.codigo}')">
                     <i class="fa-solid fa-truck-moving" style="color:white"></i>
                     &nbsp;Entregado
                 </ons-button>
@@ -152,29 +162,31 @@ function setMostrarInventarioCajasIndividuales(caja, i) {
 
 //ENLISTADOS DE CAJAS
 function enlistarInventarioCajasIndividuales(arrayJson) {
-    let html = `<ons-card class="botonPrograma" 
-    style="padding:0; margin-bottom: 5px; border: 1px solid black;" onclick="mensajeAlertaInventarioCaja(${arrayJson.inventario}, '${arrayJson.id}')">
-        <ons-list-item modifier="nodivider">
-            <div class="center">
-                <b>${arrayJson.id}</b>
+    return `
+    <ons-card class="botonPrograma" 
+              style="padding:0; margin: 10px 10px; border-radius: 25px; border: 1px solid #a5a5a5; box-shadow: none; background: #fafafa;" 
+              onclick="mensajeAlertaInventarioCaja(${arrayJson.inventario}, '${arrayJson.id}')">
+        <ons-list-item modifier="nodivider" style="min-height: 38px; padding: 0 8px;">
+            <div class="left">
+                <i class="fas fa-box fa-lg"style="margin-left:10px"></i> &nbsp;&nbsp;
+                <span style="font-size: 12px; font-weight: 800; color: #484b50;">${arrayJson.id}</span>
             </div>
-            <div class="right" style="padding: 0px 12px 0px 0px;">
-            <span class="notification" style="background: rgb(61, 174, 80)" >
-                ${separator(arrayJson.entrada)}
-            </span>
-            <i class="fa-solid fa-minus"></i>
-            <span class="notification">
-                ${separator(arrayJson.salida)}
-            </span>
-            <i class="fa-solid fa-equals"></i>
-            <span class="notification" style="background: rgb(8, 136, 205);">
-                ${separator(arrayJson.inventario)} <font size="2px">pza(s)</font>
-            </span>
+            <div class="right" style="display: flex; align-items: center; gap: 4px; padding: 0;">
+                <span class="notification-moderna" style="background: #16a34a; font-size: 12px; padding: 1px 6px; color: white; min-width: 30px; text-align: center;">
+                    ${separator(arrayJson.entrada)}
+                </span>
+                <i class="fa-solid fa-minus" style="font-size: 11px; color: #cbd5e1;"></i>
+                <span class="notification-moderna" style="background: #94a3b8; font-size: 11px; padding: 1px 6px; color: white; min-width: 30px; text-align: center;">
+                    ${separator(arrayJson.salida)}
+                </span>
+                <i class="fa-solid fa-equals" style="font-size: 9px; color: #cbd5e1;"></i>
+                <span class="notification-moderna" style="background: #3a7cda; font-size: 12px; padding: 1px 8px; color: white; min-width: 55px; text-align: center;">
+                    ${separator(arrayJson.inventario)} <small style="font-size: 8px;">pza(s)</small>
+                </span>
             </div>
         </ons-list-item>
-        </ons-card>
+    </ons-card>
     `;
-    return html;
 }
 
 function mensajeAlertaInventarioCaja(inventario, id) {
@@ -289,13 +301,25 @@ function enlistarInventarioClienteInserto(arrayJson) {
             function() {setMostrarInventarioInserto('${arrayJson.codigo}')})">
             <ons-list-item modifier="chevron nodivider">
             <div class="left">
-                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+                <div class="producto-icon-wrapper">
+                    <i class="fa-solid fa-clipboard-user fa-2x"></i>
+                </div>
             </div>
             <div class="center">
-                ${arrayJson.cliente}
+                <span class="list-item__title badge-codigo">
+                    ${agregarCeros(arrayJson.codigo)}
+                </span>
+                <span class="list-item__subtitle">
+                    <span>
+                        ${arrayJson.cliente}
+                    </span>
+                </span>
             </div>
             <div class="right">
-                <span class="notification">${arrayJson.cantidad_productos}</span>
+                <div class="contenedor-notificacion">
+                    <span class="label-pedidos">Modelos</span>
+                    <span class="notification-moderna">${arrayJson.cantidad_productos}</span>
+                </div>
             </div>
             </ons-list-item>
         </ons-card>
@@ -321,12 +345,14 @@ function setMostrarInventarioInserto(cliente) {
 function enlistarInventarioInserto(arrayJson, i) {
     let html = `
         <ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
-            <ons-list-item modifier="nodivider" onclick="//setMostrarInventarioCajasIndividuales('${arrayJson.codigo}',${i})">
+            <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fa-solid fa-box fa-2x"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fa-solid fa-box fa-2x"></i>
+                    </div>
                 </div>
                 <div class="center romperTexto">
-                    <span class="list-item__title">
+                    <span class="list-item__title badge-codigo">
                         ${arrayJson.codigo}
                     </span>
                     <span class="list-item__subtitle">
@@ -347,20 +373,19 @@ function enlistarInventarioInserto(arrayJson, i) {
 
         html += `
             <ons-card class="botonPrograma" onclick=""
-                style="padding:0; margin-bottom: 2px; border: 1px solid black;">
+                style="padding:0; margin-bottom: 2px; border: 1px solid grey;">
                 <ons-list-item modifier="nodivider" ${accion} >
                     <div class="left">
-                        <i class="fa-solid fa-box-open fa-1x"></i>
+                        <i class="fa-solid fa-clipboard-list fa-lg"></i>
                     </div>
                     <div class="center">
                         <b>${inserto.tipo_inserto}</b> &nbsp;|&nbsp; <span style="font-size:9pt">${inserto.resistencia}</span>   
                     </div>
                     <div class="right" style="white-space: nowrap;">
-                        <font size="5px">
-                            <b>
-                                ${separator(inserto.inventario)} <font size="2px">pza(s)</font>
-                            </b>
-                        </font>
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor">${separator(inserto.inventario)}</span>
+                            <span class="pedido-cantidad-label">pzas</span>
+                        </div>
                         <i class="fa-solid fa-chevron-down" style="color:#c7c7cc; margin-left: 8px;"></i>
                     </div>
                     <div class="expandable-content">
@@ -402,30 +427,31 @@ function setMostrarInventarioInsertoIndividuales(id, codigo, inserto) {
 }
 
 function enlistarInventarioInsertosIndividuales(arrayJson) {
-    let html = `
-        <ons-card class="botonPrograma" 
-        style="padding:0; margin-bottom: 5px; border: 1px solid black;" onclick="mensajeAlertaInventarioInserto(${arrayJson.inventario}, '${arrayJson.id}')">
-            <ons-list-item modifier="nodivider">
-                <div class="center">
-                    <b>${arrayJson.id}</b>
-                </div>
-                <div class="right" style="padding: 0px 12px 0px 0px;">
-                    <span class="notification" style="background: rgb(61, 174, 80)" >
-                        ${separator(arrayJson.entrada)}
-                    </span>
-                    <i class="fa-solid fa-minus"></i>
-                    <span class="notification">
-                        ${separator(arrayJson.salida)}
-                    </span>
-                    <i class="fa-solid fa-equals"></i>
-                    <span class="notification" style="background: rgb(8, 136, 205);">
-                        ${separator(arrayJson.inventario)} <font size="2px">pza(s)</font>
-                    </span>
-                </div>
-            </ons-list-item>
-        </ons-card>
+    return `
+    <ons-card class="botonPrograma" 
+              style="padding:0; border-radius: 25px; border: 1px solid #a5a5a5; box-shadow: none; background: #fafafa;" 
+              onclick="mensajeAlertaInventarioInserto(${arrayJson.inventario}, '${arrayJson.id}')">
+        <ons-list-item modifier="nodivider" style="min-height: 38px; padding: 0 8px;">
+            <div class="left">
+                <i class="fas fa-box-open fa-lg" style="margin-left:10px;"></i> &nbsp;&nbsp;
+                <span style="font-size: 12px; font-weight: 800; color: #484b50;">${arrayJson.id}</span>
+            </div>
+            <div class="right" style="display: flex; align-items: center; gap: 4px; padding: 0;">
+                <span class="notification-moderna" style="background: #16a34a; font-size: 12px; padding: 1px 6px; color: white; min-width: 30px; text-align: center;">
+                    ${separator(arrayJson.entrada)}
+                </span>
+                <i class="fa-solid fa-minus" style="font-size: 11px; color: #cbd5e1;"></i>
+                <span class="notification-moderna" style="background: #94a3b8; font-size: 11px; padding: 1px 6px; color: white; min-width: 30px; text-align: center;">
+                    ${separator(arrayJson.salida)}
+                </span>
+                <i class="fa-solid fa-equals" style="font-size: 9px; color: #cbd5e1;"></i>
+                <span class="notification-moderna" style="background: #3a7cda; font-size: 12px; padding: 1px 8px; color: white; min-width: 55px; text-align: center;">
+                    ${separator(arrayJson.inventario)} <small style="font-size: 8px;">pza(s)</small>
+                </span>
+            </div>
+        </ons-list-item>
+    </ons-card>
     `;
-    return html;
 }
 
 function mensajeAlertaInventarioInserto(inventario, id) {
@@ -510,38 +536,64 @@ function setMostrarInventarioLamina() {
     );
 }
 
-function enlistarInventarioLamina(arrayJson) {
-    let cajas = "";
-    arrayJson.cajas.forEach(caja => {
-        cajas += caja.codigo + ' ' + caja.producto + "<br>";
-    });
-    let perfil = validarPerfil();
-    let accion;
-    if (perfil != "produccion") accion = `onclick="mensajeAlertaInventarioLamina('${arrayJson.id}', ${arrayJson.inventario})"`;
-    let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
-            <ons-list-item modifier="nodivider" >
-                <div class="left">
-                    <strong>${arrayJson.id}</strong>
+function enlistarInventarioLamina(data) {
+    // Estilizamos la lista de cajas para que no sea solo texto plano con <br>
+    const cajas = data.cajas
+        .map(caja => `
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+                <i class="fa-solid fa-box "></i>
+                <b style="color: #475569;">${caja.codigo}</b> ${caja.producto}
+            </div>`)
+        .join('');
+
+    const perfil = validarPerfil();
+    const accion = perfil !== "produccion"
+        ? `onclick="mensajeAlertaInventarioLamina('${data.id}', ${data.inventario})"`
+        : '';
+
+    return `
+    <ons-card class="botonPrograma" style="padding: 0; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: white;" ${accion}>
+        <ons-list-header>
+            <div class="badge-codigo" style="min-width: 45px; text-align: center; font-weight: 900;">
+                ${data.id}
+            </div>
+        </ons-list-header>
+        <ons-list-item modifier="nodivider" style="padding: 10px 0;">
+            <div class="left" style="align-self: flex-start; margin-left: 12px;">
+                <div class="producto-icon-wrapper">
+                    <i class="fa-solid fa-clipboard-list fa-2x"></i>
                 </div>
-                <div class="center romperTexto">
-                    <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
-                    <span class="list-item__subtitle">
-                    ${cajas}
+            </div>
+            <div class="center romperTexto">
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    
+                    <span style="font-size: 15px; color: #1e293b; line-height: 1.2; margin-bottom: 4px;">
+                        <span style="font-weight: 800; color: #334155;">
+                            ${esEntero(data.ancho)} X ${esEntero(data.largo)}
+                        </span>
+                        <span style="color: #94a3b8; margin: 0 4px;">|</span>
+                        <b style="color: #64748b; font-size: 13px;">${data.resistencia} ${data.papel}</b>
                     </span>
-                </div>
-                <div class="right">
-                    <div class="centrar">
-                    <span class="notification"><font size="2px">${separator(arrayJson.inventario)} pza(s)</font></span>
+
+                    <div style="height: 1px; background: #f1f5f9; margin: 6px 0;"></div>
+
+                    <div style="display: flex; flex-direction: column;">
+                        ${cajas}
                     </div>
                 </div>
-                <div>hola</div>
-            </ons-list-item>
-        </ons-card>
-    `;
-    return html
-}
+            </div>
 
+            <div class="right" style="min-width: fit-content; align-self: center; padding-right: 10px;">
+                <div class="pedido-cantidad-container">
+                    <span class="pedido-cantidad-valor">${separator(data.inventario)}</span>
+                    <span class="pedido-cantidad-label">pzas</span>
+                </div>
+            </div>
+
+        </ons-list-item>
+    </ons-card>
+    `;
+}
 function mensajeAlertaInventarioLamina(id, inventario) {
     alertComfirmDato("Generar salida: ", "number", ["Cancelar", "Aceptar"],
         function (salida) {

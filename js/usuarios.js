@@ -150,7 +150,7 @@ function iniciarContadorInactividad() {
 
 // Reinicia el timer de inactividad
 function reiniciarTimer() {
-    console.log("entro en timer");
+    //console.log("entro en timer");
     if (inactivityTimer) clearTimeout(inactivityTimer);
     if (alertaTimer) clearTimeout(alertaTimer);
 

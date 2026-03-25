@@ -60,26 +60,38 @@ function enlistarEntradasCajas(arrayJson) {
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesEntradasCajas(${arrayJson.id})"`;
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
-            <ons-list-header style="background: white">
-                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
-            </ons-list-header>
+        <ons-card style="padding:0px; background: #dff3df;" class="botonPrograma" ${accion}>
+            <ons-lit-header class="pedido-header" style="background: rgba(255, 255, 255, 0.7); border-radius: 20px 20px 0 0;">
+                <div class="header-left">
+                    <span class="pedido-id">#${arrayJson.id_lp}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: rgb(61, 174, 80);">
+                    <i class="far fa-calendar" style="color:rgb(61, 174, 80);"></i>
+                    &nbsp; ${sumarDias(arrayJson.fecha, 0)}
+                    </b>
+            </ons-lit-header>
             <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fa-solid fa-box fa-2x"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-box fa-2x"></i>
+                    </div>
                 </div>
                 <div class="center">
-                    <span class="list-item__title"><b>${arrayJson.codigo}</b>&nbsp;${arrayJson.producto}</span>
-                    <span class="list-item__subtitle">
+                    <span class="list-item__title">
+                        <b class="badge-codigo" style="margin: 0;">${arrayJson.codigo}</b>
+                        &nbsp;${arrayJson.producto}
+                    </span>
+                    <span class="list-item__subtitle" style="margin-top: 5px;">
                     ${arrayJson.nombre}
                     ${observaciones}
                     </span>
         
                 </div>
                 <div class="right">
-                    <span class="notification" style="background: rgb(61, 174, 80);">
-                        ${separator(arrayJson.cantidad)} <font size="2px">pza(s)</font>
-                    </span>
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor">${separator(arrayJson.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
                 </div>
             </ons-list-item>
         </ons-card>
@@ -168,41 +180,55 @@ function setMostrarEntradasInserto() {
 }
 
 function enlistarEntradasInserto(arrayJson) {
-    var observaciones = arrayJson.observaciones == "" ? "" : '<i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    // Usamos el mismo formato de observaciones que te gusta
+    var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+
     let perfil = validarPerfil();
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesEntradasInserto(${arrayJson.id})"`;
-    let html1 = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
-            <ons-list-header style="background: white">
-                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
+
+    let html = `
+        <ons-card style="padding:0px; background: #dff3df;" class="botonPrograma" ${accion}>
+            <ons-list-header class="pedido-header" style="background: rgba(255, 255, 255, 0.7); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">#${arrayJson.id_lp}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: rgb(61, 174, 80);">
+                    <i class="far fa-calendar" style="color:rgb(61, 174, 80);"></i>
+                    &nbsp;${sumarDias(arrayJson.fecha, 0)}
+                </b>
             </ons-list-header>
+
             <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fa-solid fa-box-open fa-2x"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fa-solid fa-box-open fa-2x"></i>
+                    </div>
                 </div>
                 <div class="center">
+                    <span class="list-item__title">
+                        <b class="badge-codigo" style="margin: 0;">${arrayJson.codigo}</b>
+                        &nbsp;${arrayJson.inserto}
+                    </span>
                     
-                    <span class="list-item__subtitle">
-                        <b>${arrayJson.codigo}</b>&nbsp;${arrayJson.producto} - ${arrayJson.nombre}
-                        <br>
+                    <span class="list-item__subtitle" style="margin-top: 5px; display: block;">
+                        <div style="margin-bottom: 2px;">${arrayJson.producto} - ${arrayJson.nombre}</div>
+                        <div style="color: rgb(61, 174, 80); font-weight: bold;">Resistencia: ${arrayJson.resistencia}</div>
                         ${observaciones}
                     </span>
-                    <span class="list-item__title">
-                        <b>${arrayJson.inserto}</b> | ${arrayJson.resistencia}
-                    </span>
+                </div>
                 </div>
                 <div class="right">
-                    <span class="notification" style="background: rgb(61, 174, 80);">
-                        ${separator(arrayJson.cantidad)} <font size="2px">pza(s)</font>
-                    </span>
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor">${separator(arrayJson.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
                 </div>
             </ons-list-item>
         </ons-card>
     `;
 
-
-    return html1;
+    return html;
 }
 
 function setMostrarEditarEntradaInserto(id) {
@@ -285,40 +311,68 @@ function setMostrarEntradaLaminas() {
 }
 
 function enlistarEntradasLamina(arrayJson) {
-    let cajas = "";
+    // Generamos la lista de cajas con un estilo más limpio
+    let cajasHtml = "";
     arrayJson.cajas.forEach(caja => {
-        cajas += caja.codigo + ' ' + caja.producto + "<br>";
+        cajasHtml += `<div style="font-size: 11px; color: #475569; margin-bottom: 2px;">
+                        <i class="fas fa-caret-right" style="font-size: 10px; opacity: 0.5;"></i> 
+                        <b>${caja.codigo}</b> ${caja.producto}
+                      </div>`;
     });
-    var observaciones = arrayJson.observaciones == "" ? "" : '<div><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font></div>";
+
+    var observaciones = arrayJson.observaciones == "" ? "" :
+        `<div style="margin-top: 8px; border-top: 1px dashed rgba(61, 174, 80, 0.3); padding-top: 6px;">
+            <i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;
+            <span style="font-size: 11px; color: #2e7d32;">${arrayJson.observaciones}</span>
+        </div>`;
+
     let perfil = validarPerfil();
-    let accion;
-    if (perfil != "produccion") accion = `onclick="opcionesEntradasLamina(${arrayJson.id})"`;
-    let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
-            <ons-list-header style="background: white">
-                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: rgb(61, 174, 80);">Recibido: ${sumarDias(arrayJson.fecha, 0)}</b>
+    let accion = (perfil != "produccion") ? `onclick="opcionesEntradasLamina(${arrayJson.id})"` : "";
+
+    return `
+        <ons-card style="padding:0px; background: #dff3df;" class="botonPrograma" ${accion}>
+            <ons-list-header class="pedido-header" style="background: rgba(255, 255, 255, 0.7); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">#${arrayJson.id_lp}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: rgb(61, 174, 80);">
+                    <i class="far fa-calendar" style="color:rgb(61, 174, 80);"></i>
+                    &nbsp; Recibido: ${sumarDias(arrayJson.fecha, 0)}
+                </b>
             </ons-list-header>
-            <ons-list-item modifier="nodivider" onclick="">
+
+            <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fas fa-sheet-plastic fa-2x"></i>
-                </div>
-                <div class="center romperTexto">
-                    <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
-                    <span class="list-item__subtitle">
-                    ${cajas}
-                    ${observaciones}
-                    </span>
-                </div>
-                <div class="right">
-                    <div class="centrar">
-                    <span class="notification" style="background: rgb(61, 174, 80);"><font size="2px">${separator(arrayJson.cantidad)} pza(s)</font></span>
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-sheet-plastic fa-2x"></i>
                     </div>
                 </div>
-                <div>hola</div>
+
+                <div class="center" style="padding: 6px 0;">
+                    <div class="list-item__title" style="margin-bottom: 6px;">
+                        <span style="font-size: 15px; font-weight: 800; color: #1e293b;">
+                            ${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)}
+                        </span>
+                        <span style="font-size: 12px; color: #64748b; margin-left: 5px;">
+                            | <b>${arrayJson.resistencia} ${arrayJson.papel}</b>
+                        </span>
+                    </div>
+                    <div class="list-item__subtitle" style="margin-bottom: 4px;">
+                        ${cajasHtml}
+                    </div>
+
+                    ${observaciones}
+                </div>
+
+                <div class="right">
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor">${separator(arrayJson.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
+                </div>
             </ons-list-item>
         </ons-card>
     `;
-    return html
 }
 
 function setMostrarEditarEntradaLamina(id) {

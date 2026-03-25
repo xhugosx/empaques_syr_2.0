@@ -108,16 +108,27 @@ function enlistarConsumible(json) {
     if (perfil != "produccion") accion = `onclick="alertaConsumible('${conversionJsonArray(json)}')"`;
     return `
     <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
+        <ons-list-header class="pedido-header">
+            <span style="color: #475569; font-weight: 800; font-size: 11px; text-transform: uppercase;">${consumible(json.tipo)} </span>
+            <b style="color: #3b82f6; font-size: 11px;">
+                <i class="far fa-calendar-alt"></i> ${sumarDias(json.fecha, 0)}
+            </b>
+        </ons-list-header>
         <ons-list-item class="" modifier="nodivider">
             <div class="left">
-                ${tipoConsumible(json.tipo)}
+                <div class="producto-icon-wrapper">
+                    ${tipoConsumible(json.tipo)}
+                </div>
             </div>
+            
             <div class="center">
-                <span class="list-item__title"><b>${json.descripcion}</b></span>
-                <span class="list-item__subtitle"><b>${sumarDias(json.fecha, 0)}</b></span>
+                <b>${json.descripcion}</b>
             </div>
-            <div class="right">
-                <span class="notification">${json.cantidad} pza(s)</span>
+            <div class="right" >
+                <div class="pedido-cantidad-container">
+                    <span class="pedido-cantidad-valor" style="color: #1e40af;">${separator(json.cantidad)}</span>
+                    <span class="pedido-cantidad-label">Pzas</span>
+                </div>
             </div>
         </ons-list-item>
     </ons-card>
@@ -141,11 +152,6 @@ function alertaConsumible(array) {
                     $("#descripcion").val(json.descripcion);
                     $("#selectTipo").val(json.tipo);
                 });
-                /*showDialogo("my-dialogConsumibleDes", "dialogConsumibleDes.html");
-                setTimeout(() => {
-                    $('#salidaConsumibleDes').val(json.descripcion);
-                    idConsumible = json.id;
-                }, 1);*/
             }
             else if (index == 1) {
                 showDialogo("my-dialogConsumible", "dialogConsumibleSalida.html");
@@ -194,68 +200,78 @@ function tipoConsumible(tipo) {
         '<i class="fa-solid fa-paperclip fa-2x"></i>',
         '<i class="fa-solid fa-screwdriver-wrench fa-2x"></i>',
         '<i class="fa-solid fa-soap fa-2x"></i>',
-        '<<i class="fa-solid fa-toolbox fa-2x"></i>',
+        '<i class="fa-solid fa-toolbox fa-2x"></i>',
     ];
     return tipos[tipo - 1] || '<i class="fas fa-question fa-2x"></i>';
 }
+function consumible(tipo) {
+    let tipos = [
+        'PAPELERIA',
+        'HERRAMIENTA',
+        'LIMPIEZA',
+        'PRODUCCION',
+    ];
+    return tipos[tipo - 1] || 'TIPO DESCONOCIDO';
+}
 function menuConsumibles() {
-    var html = `<ons-list>
-                    <center>
-                        <h4 style="color: #808fa2; font-weight: bold;">
-                            Filtros
-                        </h4>
-                    </center>
-                    <ons-list>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-1" value="1" name="tipo"></ons-checkbox>
-                            </label>
-                            <label for="check-1" class="center">
-                                <i class="fa-solid fa-paperclip fa-lg"></i>&nbsp;Papeleria
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-2" value="2" name="tipo"></ons-checkbox>
-                            </label>
-                            <label for="check-2" class="center">
-                                <i class="fa-solid fa-screwdriver-wrench fa-lg"></i>&nbsp;Herramienta
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-3" value="3" name="tipo"></ons-checkbox>
-                            </label>
-                            <label for="check-3" class="center">
-                                <i class="fa-solid fa-soap fa-lg"></i>&nbsp;Limpieza
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-checkbox input-id="check-4" value="4" name="tipo"></ons-checkbox>
-                            </label>
-                            <label for="check-4" class="center">
-                                <i class="fa-solid fa-toolbox fa-lg"></i>&nbsp;Producción
-                            </label>
-                        </ons-list-item>
-                        
-                    </ons-list>
-                    <ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" onclick="aplicarFiltroConsumible()" modifier="large">
-                            Aplicar
-                        </ons-button>
-                    </ons-list-item>
-                    <br><br><ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" class="btnResetear" modifier="large"
-                            onclick="resetearFiltroConsumibles();">
-                            <ons-icon icon="fa-trash"></ons-icon>
-                            Resetear
-                        </ons-button>
-                    </ons-list-item>
+    var html = `
+        <div style="padding: 16px 8px; background: #f8fafc;">
+            <h4 style="color: #475569; font-weight: 800; text-align: center; margin-bottom: 20px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">
+                Filtros de Búsqueda
+            </h4>
 
+            <ons-list style="background: none; border: none;">
+                <ons-list-item tappable modifier="nodivider" style="background: white; border-radius: 12px; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <label class="left" style="padding-left: 10px;">
+                        <ons-checkbox input-id="check-1" value="1" name="tipo"></ons-checkbox>
+                    </label>
+                    <label for="check-1" class="center" style="font-size: 14px; color: #1e293b; font-weight: 500;">
+                        <i class="fa-solid fa-paperclip"></i> &nbsp; Papelería
+                    </label>
+                </ons-list-item>
 
-                </ons-list>
-            `;
+                <ons-list-item tappable modifier="nodivider" style="background: white; border-radius: 12px; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <label class="left" style="padding-left: 10px;">
+                        <ons-checkbox input-id="check-2" value="2" name="tipo"></ons-checkbox>
+                    </label>
+                    <label for="check-2" class="center" style="font-size: 14px; color: #1e293b; font-weight: 500;">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp; Herramienta
+                    </label>
+                </ons-list-item>
+
+                <ons-list-item tappable modifier="nodivider" style="background: white; border-radius: 12px; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <label class="left" style="padding-left: 10px;">
+                        <ons-checkbox input-id="check-3" value="3" name="tipo"></ons-checkbox>
+                    </label>
+                    <label for="check-3" class="center" style="font-size: 14px; color: #1e293b; font-weight: 500;">
+                        <i class="fa-solid fa-soap"></i>&nbsp; Limpieza
+                    </label>
+                </ons-list-item>
+
+                <ons-list-item tappable modifier="nodivider" style="background: white; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <label class="left" style="padding-left: 10px;">
+                        <ons-checkbox input-id="check-4" value="4" name="tipo"></ons-checkbox>
+                    </label>
+                    <label for="check-4" class="center" style="font-size: 14px; color: #1e293b; font-weight: 500;">
+                        <i class="fa-solid fa-toolbox"></i>&nbsp; Producción
+                    </label>
+                </ons-list-item>
+            </ons-list>
+
+            <div style="padding: 10px 15px;">
+                <ons-button id="botonPrograma" onclick="aplicarFiltroConsumible()" modifier="large" 
+                    style="background: #3b82f6; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); font-weight: bold; border-radius: 10px;">
+                    Aplicar Filtros
+                </ons-button>
+
+                <div style="height: 12px;"></div>
+
+                <ons-button class="btnResetear" onclick="resetearFiltroConsumibles()" modifier="large"
+                    style="background: #f1f5f9; font-weight: 600; border-radius: 10px; border: 1px solid #e2e8f0;">
+                    <ons-icon icon="fa-trash" style="font-size: 12px;"></ons-icon> Resetear
+                </ons-button>
+            </div>
+        </div>
+    `;
     $("#contenidoMenu").html(html);
-
 }

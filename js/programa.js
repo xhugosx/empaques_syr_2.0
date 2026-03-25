@@ -224,77 +224,91 @@ function limpiarSelectPrograma() {
     }
 }
 
-//FUNCIONES NUEVAS PARA MOSTRAR PROGRAMA DE INSERTOS
 function enlistarProgramaInserto(arrayJson) {
-    //console.log(arrayJson);
+    // 1. CABECERA DE LA TARJETA PRINCIPAL (Datos de la Caja Madre)
+    let html = `
+    <ons-card class="botonPrograma" style="padding:0; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: #ffffff;">
+        
+        <ons-list-header class="programa-header">
+            <span style="color: #64748b; font-weight: 800;"># ${arrayJson.id_caja}</span>
+            <span class="fecha-verde">
+                <i class="far fa-calendar-check"></i> <b>Entrega:</b> ${sumarDias(arrayJson.fecha_entrega, 0)}
+            </span>
+        </ons-list-header>
 
-    let html = `<ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
-    <ons-list-header style="background-color: white;">
-        ${arrayJson.id_caja}&emsp; <b style="color: green;">${sumarDias(arrayJson.fecha_entrega, 0)}</b>
-    </ons-list-header>
-    <ons-list-item modifier="nodivider">
-        <div class="left">
-            <strong>${arrayJson.codigo_caja}</strong>
-        </div>
-        <div class="center romperTexto">
-            <span class="list-item__title">
-                ${arrayJson.nombre_producto}
-            </span>
-            <span class="list-item__subtitle">
-                <span>
-                    ${arrayJson.nombre_cliente}
-                </span>
-            </span>
-        </div>
-    </ons-list-item>
-    <hr>`;
+        <ons-list-item modifier="nodivider">
+            <div class="left" >
+                <div class="badge-codigo">
+                    <strong>${arrayJson.codigo_caja}</strong>
+                </div>
+            </div>
+            <div class="center">
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 15px; font-weight: 800; color: #1e293b;">${arrayJson.nombre_producto}</span>
+                    <span style="font-size: 12px; color: #64748b; margin-top: 2px;">
+                        <i class="far fa-user" style="font-size: 10px;"></i> ${arrayJson.nombre_cliente}
+                    </span>
+                </div>
+            </div>
+        </ons-list-item>
+
+        <div style="padding: 10px; background: #f8fafc; border-radius: 0 0 16px 16px;">
+            <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
+                Contenido de Insertos:
+            </div>`;
+
+    // 2. ITERACIÓN DE LOS INSERTOS (Sub-tarjetas)
     arrayJson.insertos.forEach(inserto => {
         let procesos = "";
         let opcionesProcesos = "";
         let idsProcesos = "";
+
         inserto.programa.forEach(programa => {
-            procesos += `<div style="padding:0; margin-bottom: 5px;"><span class="proceso proceso-${procesoProgramaEstado(programa.estado)}">
-                            ${procesoProgramaEstadoIcon(programa.estado)} ${procesosPrograma(programa.proceso)}
-                    </span></div>`;
+            procesos += `
+                <span class="proceso proceso-${procesoProgramaEstado(programa.estado)}" style="margin-bottom: 0;">
+                    ${procesoProgramaEstadoIcon(programa.estado)} ${procesosPrograma(programa.proceso)}
+                </span>`;
             opcionesProcesos += `${programa.proceso},`;
             idsProcesos += `${programa.id},`;
         });
+
         let perfil = validarPerfil();
-        let accion;
-        if (perfil == "produccion") accion = `opcionesPrograma1([${idsProcesos}],[${opcionesProcesos}],'${arrayJson.codigo_caja}')`;
-        else accion = `opcionesPrograma('${inserto.id}',[${idsProcesos}],[${opcionesProcesos}],${inserto.cantidad})`;
+        let accion = (perfil == "produccion")
+            ? `opcionesPrograma1([${idsProcesos}],[${opcionesProcesos}],'${arrayJson.codigo_caja}')`
+            : `opcionesPrograma('${inserto.id}',[${idsProcesos}],[${opcionesProcesos}],${inserto.cantidad})`;
+
         html += `
-        <ons-card class="botonPrograma opacity50" onclick="${accion}"
-            style="padding:0; margin-bottom: 5px; border: 1px solid black;">
-            <ons-list-item modifier="nodivider">
-                <div class="left" style="font-size:8pt">
-                    ${inserto.id}
-                </div>
-                <div class="center">
-                    <span class="list-item__title">
-                        <b>${inserto.observaciones}</b> | <span style="font-size:9pt">${inserto.resistencia}</span>
+        <div class="botonPrograma" onclick="${accion}" 
+             style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span style="font-size: 13px; color: #1e293b;">
+                        <b>${inserto.observaciones}</b> <span style="color: #94a3b8; margin: 0 4px;">|</span> <small style="color: #64748b;">${inserto.resistencia}</small>
                     </span>
-                    ${inserto.notas == "" ? `` : `
-                        <span class="list-item__subtitle">
-                            <i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots"></i>
-                            <b>${inserto.notas}</b>
-                        </span>`
-            }
-                    
+                    <small style="font-size: 10px; color: #cbd5e1; font-weight: 800;">ID: ${inserto.id}</small>
                 </div>
-                <div class="right" style="white-space: nowrap;"><b>${separator(inserto.cantidad)} pzas</b></div>
-            </ons-list-item>
-            <hr>
-                <div style="margin: 5px 6px 0 6px; display: flex; flex-wrap: wrap; gap: 5px;">
+                <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 8px; text-align: right; ">
+                    <b style="font-size: 13px; color: #334155; display: block;">${separator(inserto.cantidad)}</b>
+                    <span style="font-size: 8px; color: #94a3b8; font-weight: 800; text-transform: uppercase;">pzas</span>
+                </div>
+            </div>
+
+            ${inserto.notas ? `
+            <div style="background: #fffbeb; border-left: 3px solid #f59e0b; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px;">
+                <span style="font-size: 11px; color: #b45309;">
+                    <i class="fa-solid fa-comment-dots"></i> <b>Nota:</b> ${inserto.notas}
+                </span>
+            </div>` : ''}
+
+            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
                 ${procesos}
-                </div>
-        </ons-card>`;
+            </div>
+        </div>`;
     });
-    html += `</ons-card>`;
 
-
+    html += `</div></ons-card>`;
     return html;
-
 }
 
 //FUNCIONES NUEVA PARA MOSTRAR PROGRAMA CAJAS
@@ -330,9 +344,9 @@ function enlistarprogramaCaja(arrayJson) {
             </span>
         </ons-list-header>
 
-        <ons-list-item modifier="nodivider" style="padding: 10px 0;">
+        <ons-list-item modifier="nodivider">
             
-            <div class="left" style="margin-right: 12px;">
+            <div class="left">
                 <div class="badge-codigo">
                     <strong>${arrayJson.codigo}</strong>
                 </div>
@@ -351,7 +365,7 @@ function enlistarprogramaCaja(arrayJson) {
 
                     <div style="height: 1px; background: #f1f5f9; margin: 8px 0;"></div>
 
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                         ${procesos}
                     </div>
                 </div>
@@ -360,7 +374,7 @@ function enlistarprogramaCaja(arrayJson) {
             <div class="right" style="min-width: fit-content; margin-left: 10px; align-self: center;">
                 <div style="text-align: right; background: #f8fafc; padding: 5px 10px; border-radius: 10px; border: 1px solid #f1f5f9;">
                     <b style="font-size: 16px; color: #1e293b; display: block;">
-                        ${arrayJson.cantidad}
+                        ${separator(arrayJson.cantidad)}
                     </b>
                     <span style="font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase;">pzas</span>
                 </div>
@@ -552,118 +566,142 @@ function estadoProgramaIcon(dato) {
 
 function enlistarProgramaHistorialCaja(arrayJson) {
     let procesos = "";
-    //console.log(arrayJson);
+
     arrayJson.programa.forEach(programa => {
+        // Usamos la misma lógica de estilos para mantener consistencia visual
         procesos += `
             <span class="proceso estado-${programa.hoy}">
-            ${estadoProgramaIcon(programa.hoy)} ${procesosPrograma(programa.proceso)}
+                ${estadoProgramaIcon(programa.hoy)} ${procesosPrograma(programa.proceso)}
             </span>
         `;
     });
 
-    let html = `
-            <ons-card style="padding:0px;" class="botonPrograma">
+    return `
+    <ons-card class="botonPrograma" 
+              style="padding:0px; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        
+        <ons-list-header class="programa-header">
+            <span style="color: #64748b; font-weight: 800;"># ${arrayJson.id}</span>
+            <span class="fecha-verde">
+                <i class="far fa-calendar-check"></i> <b>Entrega:</b> ${sumarDias(arrayJson.fecha_entrega, 0)}
+            </span>
+        </ons-list-header>
 
-                <ons-list-header style="background-color: rgba(255, 255, 255, 0);">
-                    ${arrayJson.id} &emsp;
-                    <span style="color: rgb(115, 168, 115)">&emsp;<b>Fecha Entrega:</b> ${sumarDias(arrayJson.fecha_entrega, 0)}</span>
-                </ons-list-header>
+        <ons-list-item modifier="nodivider">
+            
+            <div class="left" style="margin-right: 12px;">
+                <div class="badge-codigo" style="margin-left:10px;">
+                    <strong>${arrayJson.codigo}</strong>
+                </div>
+            </div>
 
-                <ons-list-item modifier="nodivider">
-                    <div class="left">
-                        <strong>${arrayJson.codigo}</strong>
+            <div class="center romperTexto">
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <span style="font-size: 15px; color: #1e293b; line-height: 1.3;">
+                        <b>${arrayJson.producto}</b> 
+                        <b style="color: #475569; font-size: 13px; margin-left:10px;">${arrayJson.resistencia}</b>
+                    </span>
+
+                    <span style="font-size: 12px; color: #64748b; margin-top: 4px;">
+                        <i class="far fa-user" style="font-size: 10px;"></i> ${arrayJson.cliente}
+                    </span>
+
+                    <div style="height: 1px; background: #f1f5f9; margin: 8px 0;"></div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${procesos}
                     </div>
+                </div>
+            </div>
 
-                    <div class="center romperTexto">
-                        <span class="list-item__title">
-                            ${arrayJson.producto}&nbsp;|&nbsp;<b style="color:#404040">${arrayJson.resistencia}</b>
-                        </span>
-
-                        <span class="list-item__subtitle">
-                            <span>${arrayJson.cliente}</span><br>
-                            <hr>
-                            <!-- 🧩 PROCESOS -->
-                            <div style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
-                                ${procesos}
-                            </div>
-                        </span>
-                    </div>
-
-                    <div class="right">
-                        <div class="centrar">
-                            <b style="font-size:16px; white-space: nowrap;">
-                                ${arrayJson.cantidad} <span style="font-size:14px;">pzas</span>
-                            </b>
-
-                        </div>
-                    </div>
-                </ons-list-item>
-            </ons-card>`;
-
-    return html
+            <div class="right" style="min-width: fit-content; margin-left: 10px; align-self: center;">
+                <div style="text-align: right; background: #f8fafc; padding: 5px 10px; border-radius: 10px; border: 1px solid #f1f5f9;">
+                    <b style="font-size: 16px; color: #1e293b; display: block;">
+                        ${separator(arrayJson.cantidad)}
+                    </b>
+                    <span style="font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase;">pzas</span>
+                </div>
+            </div>
+            
+        </ons-list-item>
+    </ons-card>`;
 }
 
 function enlistarProgramaHistorialInserto(arrayJson) {
-    //console.log(arrayJson);
+    // 1. CABECERA DE LA TARJETA PRINCIPAL (Datos de la Caja Madre)
+    let html = `
+    <ons-card class="botonPrograma" style="padding:0; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: #ffffff;">
+        
+        <ons-list-header class="programa-header">
+            <span style="color: #64748b; font-weight: 800;"># ${arrayJson.id_caja}</span>
+            <span class="fecha-verde">
+                <i class="far fa-calendar-check"></i> <b>Entrega:</b> ${sumarDias(arrayJson.fecha_entrega, 0)}
+            </span>
+        </ons-list-header>
 
-    let html = `<ons-card style="padding:0 0 5px 0;" class="botonPrograma opacity100">
-    <ons-list-header style="background-color: white;">
-        ${arrayJson.id_caja}&emsp; <b style="color: green;">${sumarDias(arrayJson.fecha_entrega, 0)}</b>
-    </ons-list-header>
-    <ons-list-item modifier="nodivider">
-        <div class="left">
-            <strong>${arrayJson.codigo_caja}</strong>
-        </div>
-        <div class="center romperTexto">
-            <span class="list-item__title">
-                ${arrayJson.nombre_producto}
-            </span>
-            <span class="list-item__subtitle">
-                <span>
-                    ${arrayJson.nombre_cliente}
-                </span>
-            </span>
-        </div>
-    </ons-list-item>
-    <hr>`;
+        <ons-list-item modifier="nodivider">
+            <div class="left" >
+                <div class="badge-codigo">
+                    <strong>${arrayJson.codigo_caja}</strong>
+                </div>
+            </div>
+            <div class="center">
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 15px; font-weight: 800; color: #1e293b;">${arrayJson.nombre_producto}</span>
+                    <span style="font-size: 12px; color: #64748b; margin-top: 2px;">
+                        <i class="far fa-user" style="font-size: 10px;"></i> ${arrayJson.nombre_cliente}
+                    </span>
+                </div>
+            </div>
+        </ons-list-item>
+
+        <div style="padding: 10px; background: #f8fafc; border-radius: 0 0 16px 16px;">
+            <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
+                Historial de Insertos:
+            </div>`;
+
+    // 2. ITERACIÓN DE LOS INSERTOS (Sub-tarjetas de Historial)
     arrayJson.insertos.forEach(inserto => {
         let procesos = "";
+
         inserto.programa.forEach(programa => {
-            procesos += `<div style="padding:0; margin-bottom: 5px;"><span class="proceso estado-${programa.hoy}">
-                            ${estadoProgramaIcon(programa.hoy)} ${procesosPrograma(programa.proceso)}
-                    </span></div>`;
+            procesos += `
+                <span class="proceso estado-${programa.hoy}" style="margin-bottom: 0;">
+                    ${estadoProgramaIcon(programa.hoy)} ${procesosPrograma(programa.proceso)}
+                </span>`;
         });
 
+        // Aplicamos el diseño limpio sin los min-width y con los márgenes corregidos
         html += `
-        <ons-card class="botonPrograma opacity50" 
-            style="padding:0; margin-bottom: 5px; border: 1px solid black;">
-            <ons-list-item modifier="nodivider">
-                <div class="left" style="font-size:8pt">
-                    ${inserto.id}
-                </div>
-                <div class="center">
-                    <span class="list-item__title">
-                        <b>${inserto.observaciones}</b> | <span style="font-size:9pt">${inserto.resistencia}</span>
+        <div class="botonPrograma" 
+             style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-top: 8px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span style="font-size: 13px; color: #1e293b;">
+                        <b>${inserto.observaciones}</b> <span style="color: #94a3b8; margin: 0 4px;">|</span> <small style="color: #64748b;">${inserto.resistencia}</small>
                     </span>
-                    ${inserto.notas == "" ? `` : `
-                        <span class="list-item__subtitle">
-                            <i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots"></i>
-                            <b>${inserto.notas}</b>
-                        </span>`
-            }
-                    
+                    <small style="font-size: 10px; color: #cbd5e1; font-weight: 800;">ID: ${inserto.id}</small>
                 </div>
-                <div class="right" style="white-space: nowrap;"><b>${separator(inserto.cantidad)} pzas</b></div>
-            </ons-list-item>
-            <hr>
-                <div style="margin: 5px 6px 0 6px; display: flex; flex-wrap: wrap; gap: 5px;">
+                <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 8px; text-align: right;">
+                    <b style="font-size: 13px; color: #334155; display: block;">${separator(inserto.cantidad)}</b>
+                    <span style="font-size: 8px; color: #94a3b8; font-weight: 800; text-transform: uppercase;">pzas</span>
+                </div>
+            </div>
+
+            ${inserto.notas ? `
+            <div style="background: #fffbeb; border-left: 3px solid #f59e0b; padding: 4px 8px; border-radius: 4px; margin-top: 8px;">
+                <span style="font-size: 11px; color: #b45309;">
+                    <i class="fa-solid fa-comment-dots"></i> <b>Nota:</b> ${inserto.notas}
+                </span>
+            </div>` : ''}
+
+            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px;">
                 ${procesos}
-                </div>
-        </ons-card>`;
+            </div>
+        </div>`;
     });
-    html += `</ons-card>`;
 
-
+    html += `</div></ons-card>`;
     return html;
-
 }

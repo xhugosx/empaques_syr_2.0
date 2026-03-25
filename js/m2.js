@@ -294,25 +294,43 @@ function cargarGraficaLine(labels, datos, nombres) {
 
 
 function enlistarEstadisticaCliente(arrayJson) {
-    let html = `
-        <ons-card style="padding:0px;" class="botonPrograma"
-            onclick="nextPageFunction('estadisticasCajas.html', 
-            function() {setEstadisticasCajas('${arrayJson.codigo}');})">
-            <ons-list-item modifier="chevron nodivider">
-            <div class="left">
-                <strong>${agregarCeros(arrayJson.codigo)}</strong>
+    return `
+    <ons-card class="botonPrograma" 
+              onclick="nextPageFunction('estadisticasCajas.html', function() {setEstadisticasCajas('${arrayJson.codigo}');})"
+              style="padding:0; margin: 8px 12px; border-radius: 14px; border: 1px solid #edf2f7; box-shadow: 0 3px 6px rgba(0,0,0,0.03); background: white;">
+        
+        <ons-list-item modifier="chevron nodivider" ripple style="padding: 6px 0;">
+            
+            <div class="left" style="margin-left: 14px;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 4px 10px; border-radius: 8px; text-align: center;">
+                    <strong style="color: #475569; font-size: 13px;">${agregarCeros(arrayJson.codigo)}</strong>
+                </div>
             </div>
+
             <div class="center">
-                ${arrayJson.nombre}
+                <span style="font-size: 15px; font-weight: 800; color: #1e293b; letter-spacing: -0.3px;">
+                    ${arrayJson.nombre}
+                </span>
             </div>
-            <div class="right" style="white-space: nowrap;">
-                <b>${separator(arrayJson.total_m2)} m²</b> &nbsp;&nbsp;
-                <span class="notification">${arrayJson.total}</span>
+
+            <div class="right" style="padding-right: 12px; display: flex; align-items: center; gap: 15px;">
+                
+                <div style="text-align: right;">
+                    <span style="display: block; font-size: 9px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: -2px;">Volumen</span>
+                    <b style="font-size: 16px; color: #0f172a;">
+                        ${separator(arrayJson.total_m2)} <small style="font-size: 11px; font-weight: 400; color: #64748b;">m²</small>
+                    </b>
+                </div>
+
+                <div style="background: #da3f3f; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 4px; margin-right:15px;">
+                    <i class="fas fa-boxes" style="font-size: 10px; opacity: 0.7; color:white"></i>
+                    ${arrayJson.total}
+                </div>
             </div>
-            </ons-list-item>
-        </ons-card>
+
+        </ons-list-item>
+    </ons-card>
     `;
-    return html;
 }
 
 function enlistarEstadisticaCajas(arrayJson) {
@@ -322,91 +340,91 @@ function enlistarEstadisticaCajas(arrayJson) {
     let facturas = "";
     let procesos = "";
 
+    // Estilo moderno para los procesos
     arrayJson.procesos.forEach((proceso) => {
         procesos += `
             <span class="proceso proceso-terminado estadistica">
-                ${procesosProgramaIcon(proceso)} &nbsp; ${procesosPrograma(proceso)}
+                ${procesosProgramaIcon(proceso)} ${procesosPrograma(proceso)}
             </span>
         `;
     });
 
+    // Generamos las listas de la tabla
     for (let i = 0; i < arrayJson.parcial_m2.length; i++) {
-        m2 += `<li> ${separator(arrayJson.parcial_m2[i])} m²</li>`;
-        entregas += `<li> ${separator(arrayJson.entregas[i])} </li>`;
-        fechas += `<li> ${arrayJson.fechas[i]} </li>`;
-        facturas += `<li> ${arrayJson.facturas[i]} </li>`;
+        m2 += `<li style="padding: 4px 0;"> ${separator(arrayJson.parcial_m2[i])} <small>m²</small></li>`;
+        entregas += `<li style="padding: 4px 0;"> ${separator(arrayJson.entregas[i])} </li>`;
+        fechas += `<li style="padding: 4px 0;"> ${arrayJson.fechas[i]} </li>`;
+        facturas += `<li style="padding: 4px 0; font-weight: bold; color: #334155;"> ${arrayJson.facturas[i]} </li>`;
     }
 
-    let html = `
-        <ons-card style="padding:0px;" class="botonPrograma">
-                <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
-                    ${arrayJson.id_pedido}
-                </ons-list-header>
+    return `
+    <ons-card class="botonPrograma" style="padding:0; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: white;">
+        
+        <ons-list-header class="programa-header">
+            <span style="color: #64748b; font-weight: 800;"># ${arrayJson.id_pedido}</span>
+            <span style="color: #10b981; font-size: 11px; font-weight: 800;">
+                <i class="fas fa-check-circle" style="color:#10b981"></i> FINALIZADO
+            </span>
+        </ons-list-header>
 
-                <ons-list-item modifier="nodivider">
+        <ons-list-item modifier="nodivider" >
+            <div class="left" style="align-self: flex-start; margin-right: 12px;">
+                <div class="badge-codigo" style="min-width: 50px; text-align: center;">
+                    <strong>${arrayJson.codigo}</strong>
+                </div>
+            </div>
 
-                    <div class="center">
-                        <span class="list-item__title">
-                            <b> ${arrayJson.codigo} </b> &nbsp; ${arrayJson.producto} &nbsp;|&nbsp; ${arrayJson.m2}&nbsp;m²
-                        </span>
-
-                        <span class="list-item__subtitle">
-                            <hr>
-                            ${procesos}
-                            <hr>
-                            <span style="font-size: 14px;">
-                            <b>Entrada:</b> ${arrayJson.entrada} pz(s).   |   ${arrayJson.entrada_fecha} 
-                            </span>
-                            <hr>
-                            <table border="1" cellpadding="8" cellspacing="0"
-                                style="border-collapse: collapse; text-align: center; width: 100%;">
-                                <thead style="background-color: #f2f2f2;">
-                                    <tr>
-                                        <th>FACTURAS</th>
-                                        <th>FECHAS</th>
-                                        <th>ENTREGAS</th>
-                                        <th>M²</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                                ${facturas}
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                                ${fechas}
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                                ${entregas}
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                                ${m2}
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <!-- Fila total -->
-                                    <tr style="font-weight: bold;color:white; background-color: #57575774; font-size: 15px;">
-                                        <td colspan="2" style="text-align: right;">TOTAL:</td>
-                                        <td> ${separator(arrayJson.total_entregado)} pz(s).</td>
-                                        <td> ${separator(arrayJson.total_m2)} m²</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-
-                        </span>
+            <div class="center romperTexto" style="padding-right: 10px;">
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <span style="font-size: 15px; color: #1e293b; font-weight: 800; line-height: 1.2;">
+                        ${arrayJson.producto}
+                    </span>
+                    
+                    <div style="font-size: 12px; color: #64748b; margin: 4px 0 8px 0;">
+                        <b>Total Pedido:</b> ${arrayJson.m2} m²
                     </div>
 
+                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px;">
+                        ${procesos}
+                    </div> 
+                </div>
+            </div>
+        </ons-list-item>
 
-                </ons-list-item>
-            </ons-card>
+        <div style="margin: 0 12px 12px 12px;">
+            <div style="background: #f8fafc; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="font-size: 10px; color: #64748b; display: block; font-weight: 800; text-transform: uppercase;">Entrada:</span>
+                    <b style="font-size: 13px; color: #1e293b;">${arrayJson.entrada} pz(s).</b> 
+                    <span style="color: #94a3b8; font-size: 11px;"> | ${arrayJson.entrada_fecha}</span>
+                </div>
+                <div style="text-align: right; border-left: 2px solid #e2e8f0; padding-left: 12px;">
+                    <span style="font-size: 10px; color: #64748b; display: block; font-weight: 800; text-transform: uppercase;">Total Entregado:</span>
+                    <b style="font-size: 16px; color: #334155;">${separator(arrayJson.total_m2)} <small style="font-size: 10px;">m²</small></b>
+                </div>
+            </div>
+
+            <div style="overflow: hidden; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: center;">
+                    <thead>
+                        <tr style="background: #f1f5f9; color: #475569; font-weight: 800; text-transform: uppercase; font-size: 9px;">
+                            <th style="padding: 8px;">Factura</th>
+                            <th style="padding: 8px;">Fecha</th>
+                            <th style="padding: 8px;">Pzas</th>
+                            <th style="padding: 8px;">m²</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: #64748b;">
+                        <tr>
+                            <td style="padding: 5px 0;"><ul style="list-style:none; padding:0; margin:0;">${facturas}</ul></td>
+                            <td style="padding: 5px 0;"><ul style="list-style:none; padding:0; margin:0;">${fechas}</ul></td>
+                            <td style="padding: 5px 0;"><ul style="list-style:none; padding:0; margin:0;">${entregas}</ul></td>
+                            <td style="padding: 5px 0;"><ul style="list-style:none; padding:0; margin:0;">${m2}</ul></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ons-card>
     `;
-    return html;
 }

@@ -279,7 +279,14 @@ function enlistarPedidosLamina(arrayJson) {
                 </div>`;
         }
     }
-
+    const colorEstBack = [
+        '',
+        '#f9e5c8', // BACKORDER (naranja muy tenue)
+        '#e8dcf5', // PARCIAL (morado muy claro)
+        '#dff3df', // COMPLETO (verde muy suave)
+        '#e5e5e5', // CANCELADO (gris claro)
+        '#f9dada'  // POR ENTREGAR (rojo muy suave)
+    ];
     const o_c = arrayJson.o_c;
     let perfil = validarPerfil();
     let accion = (perfil == "produccion")
@@ -288,7 +295,7 @@ function enlistarPedidosLamina(arrayJson) {
 
     // Modernización del HTML
     const html1 = `
-    <ons-card class="tarjeta-moderna botonPrograma" onclick="${accion}" style="padding: 15px; margin: 10px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: none; cursor:pointer;">
+    <ons-card class="tarjeta-moderna botonPrograma" onclick="${accion}" style="background:${colorEstBack[arrayJson.estado]}; padding: 15px; margin: 10px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: none; cursor:pointer;">
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -319,7 +326,7 @@ function enlistarPedidosLamina(arrayJson) {
         <div style="background: #f5f5f5; border-radius: 12px; padding: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 ${arrayJson.entrada !== ''
-            ? `<span style="font-size: 13px; color: #64748b;">Llegó: <b style="color: #0f172a;">${separator(arrayJson.entrada)}</b></span>`
+            ? `<span style="font-size: 13px; color: #64748b;">Llegaron: <b style="color: #0f172a;">${separator(arrayJson.entrada)}</b> Láminas</span>`
             : `<span style="font-size: 13px; color: #64748b;">Entrega Est.: <b style="color: #3b82f6;">${sumarDias(arrayJson.fecha_entrega, 0)}</b></span>`
         }
                 ${arrayJson.estado == 2 ? `<span style="font-size: 12px; color: #ef4444;">Faltan: ${separator(arrayJson.pzas_ordenadas - arrayJson.entrada)}</span>` : ""}

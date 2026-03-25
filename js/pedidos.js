@@ -443,8 +443,8 @@ function enlistarpedidosOC(arrayJson, i) {
         <ons-card style="padding:0px;" class="botonPrograma ocBoton${i}">
             <ons-list-item modifier="nodivider" expandable onclick="setBuscarPedidosOc('${arrayJson.agrupado_por_fecha}','${arrayJson.orden_compra}',${i})">
                 <div class="left">
-                    <div class="margen-icon">
-                        <i class="fas fa-lg fa-folder-open"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-folder-open fa-lg"></i>
                     </div>
                 </div>
                 
@@ -481,11 +481,14 @@ function enlistarPedidosCliente(arrayJson) {
     <ons-card class="botonPrograma card-cliente-interactivo" onclick="nextPageFunction('pedidosFiltroCliente.html', function(){ cliente = '${arrayJson.codigo}' })">
         <ons-list-item modifier="chevron nodivider" class="lista-cliente-item">
             <div class="left">
-                <span class="badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
+                <div class="producto-icon-wrapper">
+                    <i class="fas fa-address-book fa-2x"></i>
+                </div>
             </div>
             
             <div class="center">
-                <span class="nombre-cliente">${arrayJson.cliente}</span>
+                <span class="list-item__title badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
+                <span class="list-item__subtitle nombre-cliente">${arrayJson.cliente}</span>
             </div>
             
             <div class="right">
@@ -539,7 +542,7 @@ function enlistarPedidos(arrayJson, i) {
             <b class="pedido-entrega-status ${color}"><i class="far fa-calendar-check"></i>&nbsp; ${entregado}</b>
         </div>
 
-        <ons-list-item modifier="nodivider" class="pedido-item">
+        <ons-list-item modifier="nodivider">
             <div class="left">
                 <span class="badge-codigo">${arrayJson.codigo}</span>
             </div>

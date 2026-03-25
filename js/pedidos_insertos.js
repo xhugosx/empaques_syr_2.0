@@ -58,9 +58,14 @@ function agregarHtmlInserto() {
                                     <option value="">RESISTENCIA</option>
                                     <option value="MICRO">MICRO</option>
                                     <option value="S/G">S/G</option>
+                                    <option value="16 ECT">16 ECT</option>
+                                    <option value="20 ECT">20 ECT</option>
                                     <option value="21 ECT">21 ECT</option>
                                     <option value="32 ECT">32 ECT</option>
                                     <option value="42 ECT">42 ECT</option>
+                                    <option value="48 ECT">48 ECT</option>
+                                    <option value="51 ECT">51 ECT</option>  
+                                    <option value="200 LBS">200 LBS</option>  
                                 </ons-select>
                             </div>
                         </ons-list-item>
@@ -253,7 +258,7 @@ function enlistarPedidosInsertos(arrayJson) {
 
         <ons-list-item modifier="nodivider" class="pedido-item">
             <div class="left">
-                <span class="badge-codigo">${arrayJson.codigo_caja}</span>
+                &nbsp; <span class="badge-codigo">${arrayJson.codigo_caja}</span>
             </div>
             <div class="center">
                 <div class="pedido-info-principal">
@@ -271,13 +276,13 @@ function enlistarPedidosInsertos(arrayJson) {
         if (perfil != "produccion") accion = `crearObjetMensajePedidoInserto('${inserto.id}','${inserto.estado}')`;
         html += `
         <ons-card class="botonPrograma opacity50" onclick="${accion}"
-            style="padding:0; margin-bottom: 5px; border: 1px solid black;">
+            style="padding:0; margin-bottom: 5px; border: 1px solid #878787;">
             <ons-list-item modifier="nodivider">
                 <div class="left" style="font-size:8pt">
                     ${estadosColor(inserto.estado)} ${inserto.id}
                 </div>
                 <div class="center">
-                    <span class="list-item__title">
+                    <span class="list-item__tittle">
                         <b>${inserto.observaciones}</b> | <span style="font-size:9pt">${inserto.resistencia}</span>
                     </span>
                     ${inserto.notas == "" ? `` : `

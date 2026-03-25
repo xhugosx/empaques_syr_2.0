@@ -54,31 +54,46 @@ function setMostrarSalidaCajas() {
 }
 
 function enlistarSalidasCajas(arrayJson) {
-    var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    // Mantenemos tu formato de observaciones
+    var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: #ef4444" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+
     let perfil = validarPerfil();
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesSalidasCajas(${arrayJson.id})"`;
+
     let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion} >
-            <ons-list-header style="background: white">
-                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
+        <ons-card style="padding:0px; background: #fee2e2;" class="botonPrograma" ${accion}>
+            <ons-list-header class="pedido-header" style="background: rgba(255, 255, 255, 0.7); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">#${arrayJson.id_lp}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #dc2626;">
+                    <i class="far fa-calendar-check" style="color: #dc2626;"></i>
+                    &nbsp; Terminado: ${sumarDias(arrayJson.fecha, 0)}
+                </b>
             </ons-list-header>
+
             <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fa-solid fa-box fa-2x"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-box fa-2x"></i>
+                    </div>
                 </div>
                 <div class="center">
-                    <span class="list-item__title"><b>${arrayJson.codigo}</b>&nbsp;${arrayJson.producto}</span>
-                    <span class="list-item__subtitle">
-                    ${arrayJson.nombre}
-                    ${observaciones}
+                    <span class="list-item__title">
+                        <b class="badge-codigo" style="margin: 0;">${arrayJson.codigo}</b>
+                        &nbsp;${arrayJson.producto}
                     </span>
-        
+                    <span class="list-item__subtitle" style="margin-top: 5px;">
+                        ${arrayJson.nombre}
+                        ${observaciones}
+                    </span>
                 </div>
                 <div class="right">
-                    <span class="notification" >
-                        ${separator(arrayJson.cantidad)} <font size="2px">pza(s)</font>
-                    </span>
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor" style="color: #b91c1c;">${separator(arrayJson.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
                 </div>
             </ons-list-item>
         </ons-card>
@@ -160,13 +175,13 @@ function opcionesSalidasCajas(id) {
                     }
                 );
             else if (opc == 1) {
-                alertConfirm("Estas seguro de eliminar esta salida?", ["Cancelar","Aceptar"], 
-                    function(idx){
-                        if(idx) setEliminarSalidaCaja(id);
+                alertConfirm("Estas seguro de eliminar esta salida?", ["Cancelar", "Aceptar"],
+                    function (idx) {
+                        if (idx) setEliminarSalidaCaja(id);
                     }
                 );
-                
-            } 
+
+            }
         }
     );
 }
@@ -191,39 +206,52 @@ function setMostrarSalidasInserto() {
 }
 
 function enlistarSalidasInserto(arrayJson) {
-    var observaciones = arrayJson.observaciones == "" ? "" : '<i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+    // Mantenemos tu formato de observaciones con un toque rojizo
+    var observaciones = arrayJson.observaciones == "" ? "" : '<br><i style="color: #ef4444" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font>";
+
     let perfil = validarPerfil();
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesSalidasInserto(${arrayJson.id})"`;
+
     let html1 = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion} >
-            <ons-list-header style="background: white">
-                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Terminado: ${sumarDias(arrayJson.fecha, 0)}</b>
+        <ons-card style="padding:0px; background: #fee2e2;" class="botonPrograma" ${accion}>
+            <ons-list-header class="pedido-header" style="background: rgba(255, 255, 255, 0.7); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">#${arrayJson.id_lp}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #dc2626;">
+                    <i class="far fa-calendar-check" style="color: #dc2626;"></i>
+                    &nbsp; Terminado: ${sumarDias(arrayJson.fecha, 0)}
+                </b>
             </ons-list-header>
+
             <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fa-solid fa-box-open fa-2x"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fa-solid fa-box-open fa-2x"></i>
+                    </div>
                 </div>
                 <div class="center">
-                    
-                    <span class="list-item__subtitle">
-                        <b>${arrayJson.codigo}</b>&nbsp;${arrayJson.producto} - ${arrayJson.nombre}
-                        <br>
-                        ${observaciones}
-                    </span>
                     <span class="list-item__title">
-                        <b>${arrayJson.inserto}</b> | ${arrayJson.resistencia}
+                        <b class="badge-codigo" style="margin: 0;">${arrayJson.codigo}</b>
+                        &nbsp;${arrayJson.inserto}
+                    </span>
+                    
+                    <span class="list-item__subtitle" style="margin-top: 5px; display: block;">
+                        <div style="margin-bottom: 2px;">${arrayJson.producto} - ${arrayJson.nombre}</div>
+                        <div style="color: #b91c1c; font-weight: bold;">Resistencia: ${arrayJson.resistencia}</div>
+                        ${observaciones}
                     </span>
                 </div>
                 <div class="right">
-                    <span class="notification" >
-                        ${separator(arrayJson.cantidad)} <font size="2px">pza(s)</font>
-                    </span>
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor" style="color: #b91c1c;">${separator(arrayJson.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
                 </div>
             </ons-list-item>
         </ons-card>
     `;
-
 
     return html1;
 }
@@ -301,12 +329,12 @@ function opcionesSalidasInserto(id) {
                     }
                 );
             else if (opc == 1) {
-                alertConfirm("Estas seguro de eliminar esta salida?", ["Cancelar","Aceptar"], 
-                    function(idx){
-                        if(idx) setEliminarSalidaInserto(id);
+                alertConfirm("Estas seguro de eliminar esta salida?", ["Cancelar", "Aceptar"],
+                    function (idx) {
+                        if (idx) setEliminarSalidaInserto(id);
                     }
                 );
-            } 
+            }
         }
     );
 }
@@ -328,40 +356,70 @@ function setMostrarSalidaLaminas() {
 }
 
 function enlistarSalidasLamina(arrayJson) {
-    let cajas = "";
+    // Generamos la lista de cajas vinculadas con un estilo limpio
+    let cajasHtml = "";
     arrayJson.cajas.forEach(caja => {
-        cajas += caja.codigo + ' ' + caja.producto + "<br>";
+        cajasHtml += `<div style="font-size: 11px; color: #475569; margin-bottom: 2px;">
+                        <i class="fas fa-caret-right" style="font-size: 10px; opacity: 0.5; color: #dc2626;"></i> 
+                        <b>${caja.codigo}</b> ${caja.producto}
+                      </div>`;
     });
-    var observaciones = arrayJson.observaciones == "" ? "" : '<div><i style="color: rgb(115, 168, 115)" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;<font size="2pt">' + arrayJson.observaciones + "</font></div>";
+
+    // Observaciones con el estilo de icono de comentario que prefieres
+    var observaciones = arrayJson.observaciones == "" ? "" :
+        `<div style="margin-top: 8px; border-top: 1px dashed rgba(220, 38, 38, 0.2); padding-top: 6px;">
+            <i style="color: #ef4444" class="fa-solid fa-comment-dots fa-2x"></i>&nbsp;
+            <span style="font-size: 11px; color: #b91c1c;">${arrayJson.observaciones}</span>
+        </div>`;
+
     let perfil = validarPerfil();
-    let accion;
-    if (perfil != "produccion") accion = `onclick="opcionesSalidasLamina(${arrayJson.id})"`;
-    let html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion} >
-            <ons-list-header style="background: white">
-                ${arrayJson.id_lp} &nbsp;&nbsp;<b style="color: red;">Recibido: ${sumarDias(arrayJson.fecha, 0)}</b>
+    let accion = (perfil != "produccion") ? `onclick="opcionesSalidasLamina(${arrayJson.id})"` : "";
+
+    return `
+        <ons-card style="padding:0px; background: #fee2e2;" class="botonPrograma" ${accion}>
+            <ons-list-header class="pedido-header" style="background: rgba(255, 255, 255, 0.7); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">#${arrayJson.id_lp}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #dc2626;">
+                    <i class="far fa-calendar-check" style="color: #dc2626;"></i>
+                    &nbsp; Recibido: ${sumarDias(arrayJson.fecha, 0)}
+                </b>
             </ons-list-header>
-            <ons-list-item modifier="nodivider" onclick="">
+
+            <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fas fa-sheet-plastic fa-2x"></i>
-                </div>
-                <div class="center romperTexto">
-                    <span class="list-item__title">${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)} | <b>${arrayJson.resistencia} ${arrayJson.papel}</b></span>
-                    <span class="list-item__subtitle">
-                    ${cajas}
-                    ${observaciones}
-                    </span>
-                </div>
-                <div class="right">
-                    <div class="centrar">
-                    <span class="notification" ><font size="2px">${separator(arrayJson.cantidad)} pza(s)</font></span>
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-sheet-plastic fa-2x"></i>
                     </div>
                 </div>
-                <div>hola</div>
+
+                <div class="center romperTexto" style="padding: 6px 0;">
+                    <div class="list-item__title" style="margin-bottom: 6px;">
+                        <span style="font-size: 15px; font-weight: 800; color: #1e293b;">
+                            ${esEntero(arrayJson.ancho)} X ${esEntero(arrayJson.largo)}
+                        </span>
+                        <span style="font-size: 12px; color: #64748b; margin-left: 5px;">
+                            | <b>${arrayJson.resistencia} ${arrayJson.papel}</b>
+                        </span>
+                    </div>
+
+                    <div class="list-item__subtitle" style="margin-bottom: 4px;">
+                        ${cajasHtml}
+                    </div>
+
+                    ${observaciones}
+                </div>
+
+                <div class="right">
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor" style="color: #b91c1c;">${separator(arrayJson.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
+                </div>
             </ons-list-item>
         </ons-card>
     `;
-    return html
 }
 
 function setMostrarEditarSalidaLamina(id) {

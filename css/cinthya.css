@@ -12,7 +12,6 @@
 .flechaIzquierda {
 
     background-color: #1ba0d1b9;
-    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.4);
     border: #5f8ea4 0.1px solid;
 
 }
@@ -57,10 +56,6 @@ i,
     color: #0d70c6;
 }
 
-/*ons-toolbar.toolbar {
-    background-color: #1A9CE8;
-    color: white;
-}*/
 #mes {
     background: linear-gradient(120deg, #4285f4, #5d8eb9);
 }
@@ -71,7 +66,7 @@ i,
     color: #0e4c6f;
     padding: 4px 8px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 800;
     border: 1px solid rgba(26, 156, 232, 0.2);
     margin-left: 10px;
@@ -156,4 +151,57 @@ ons-toolbar .right i {
     text-transform: uppercase;
     /* Opcional: un borde muy sutil para dar más definición */
     border: 1px solid #e0f2fe;
+}
+
+.fab-animado {
+    background-color: #3e9bf1 !important;
+    margin-bottom: 20px;
+    border: white 2px solid !important;
+}
+
+ons-tab {
+    transition: all .5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent;
+}
+
+ons-tab.active {
+    background-color: #ffffff !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(109, 109, 109, 0.3);
+    border: #3f78e9 1px solid;
+    border-radius: 25px;
+    margin: 3px 5px 0 20px;
+    z-index: 10;
+}
+
+ons-tab.active .tabbar__label,
+ons-tab.active .tabbar__icon {
+    color: #3f78e9 !important;
+    animation: slideUp .7s ease-out;
+}
+
+:checked+.tabbar__button {
+    padding-bottom: 5px;
+}
+
+ons-tab.active .tabbar__icon {
+    text-shadow:
+        1px 1px 0 #ccc,
+        1.5px 1.5px 0 #bbb,
+        2px 2px 0 #aaa,
+        2.5px 2.5px 0 #999,
+        3px 3px 0 #888,
+        3.5px 3.5px 3.5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(7px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

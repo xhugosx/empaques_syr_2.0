@@ -137,28 +137,40 @@ function mensajeProveedor(codigo) {
 function enlistarProveedor(arrayJson) {
     let html1 = `
     <ons-card class="botonPrograma" onclick="mensajeProveedor('${arrayJson.codigo}')" style="margin: 8px 10px; padding: 12px 15px; background:white">
-        <div class="contenedor-flexboxLados">
-            <div style="display: flex; align-items: center;">
-                <div class="margen-icon">
-                    <i class="fa fa-user-tie"></i>
+        <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-user-tie fa-2x"></i>
+                    </div>
                 </div>
-                <div>
-                    <span class="badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
-                    <span class="nombre-principal" style="margin-top: 4px;">${arrayJson.nombre}</span>
+                <div class="center">
+                    <span class="list-item__title badge-codigo">${agregarCeros(arrayJson.codigo)}</span>
+                    <span class="list-item__subtitle nombre-principal" style="margin-top: 4px;">${arrayJson.nombre}</span>
                 </div>
-            </div>
 
-            <div style="text-align: right;">
+            <div class="right">
                 ${tipoEgreso(arrayJson.tipo)}
             </div>
-        </div>
+        </ons-list-item>
     </ons-card>
     `;
 
     return html1;
 }
-function tipoEgreso(idTipo) {
+function tipoEgreso(idTipo, clase = 0) {
     // El objeto ahora usa los números como referencia
+    let tipoNombre = [
+        "CONSUMIBLE",
+        "LAMINA",
+        "SERVICIO",
+        "SUAJES Y GRABADOS",
+        "MAQUILA",
+        "GASOLINA",
+        "HERRAMIENTA",
+        "OTROS",
+        "PAGOS FIJOS"
+    ]
+    if (clase) return tipoNombre[idTipo - 1] || '?';
     const config = {
         1: { nombre: 'CONSUMIBLE', clase: 'tipo-consumible', icono: 'fa-box-open' },
         2: { nombre: 'LAMINA', clase: 'tipo-lamina', icono: 'fa-layer-group' },
@@ -170,13 +182,10 @@ function tipoEgreso(idTipo) {
         8: { nombre: 'OTROS', clase: 'tipo-otros', icono: 'fa-ellipsis-h' },
         9: { nombre: 'PAGOS FIJOS', clase: 'tipo-pagos', icono: 'fa-file-invoice-dollar' }
     };
-
-    // Buscamos por el número que llega. Si no existe (ej. llega un 10), usamos el 8 (OTROS)
     const item = config[idTipo] || config[8];
-
     return `
         <span class="badge-tipo ${item.clase}">
-            <i class="fas ${item.icono}"></i> ${item.nombre}
+            <i class="fas ${item.icono}"></i> ${tipoNombre[idTipo - 1] || 'OTROS'}
         </span>
     `;
 }

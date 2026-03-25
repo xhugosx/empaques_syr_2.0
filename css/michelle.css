@@ -24,9 +24,10 @@
     text-align: center;
 }
 
-ons-fab {
+.fab-animado {
     background-color: #AB83C9 !important;
     margin-bottom: 20px;
+    border: white 2px solid !important;
 }
 
 .flechaDerecha,
@@ -66,7 +67,7 @@ span>.fa-folder-open {
 
 i,
 .action-sheet-button {
-    color: #735eb6;
+    color: #a18aee;
 }
 
 ons-toolbar.toolbar {
@@ -89,10 +90,9 @@ ons-toolbar.toolbar {
     color: #AB83C9;
     padding: 4px 8px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 800;
     border: 1px solid rgba(191, 37, 215, 0.2);
-    margin-left: 10px;
 }
 
 /* card del sub */
@@ -138,4 +138,51 @@ ons-toolbar.toolbar {
     padding: 2px 6px;
     border-radius: 4px;
     text-transform: uppercase;
+}
+
+ons-tab {
+    transition: all .5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent;
+}
+
+ons-tab.active {
+    background-color: #ffffff !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(109, 109, 109, 0.3);
+    border: #7e68bf 1px solid;
+    border-radius: 25px;
+    margin: 3px 5px 0 20px;
+    z-index: 10;
+}
+
+ons-tab.active .tabbar__label,
+ons-tab.active .tabbar__icon {
+    color: #7e68bf !important;
+    animation: slideUp .5s ease-out;
+}
+
+:checked+.tabbar__button {
+    padding-bottom: 5px;
+}
+
+ons-tab.active .tabbar__icon {
+    text-shadow:
+        1px 1px 0 #ccc,
+        1.5px 1.5px 0 #bbb,
+        2px 2px 0 #aaa,
+        2.5px 2.5px 0 #999,
+        3px 3px 0 #888,
+        3.5px 3.5px 3.5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(7px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

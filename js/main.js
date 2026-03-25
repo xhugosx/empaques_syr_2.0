@@ -855,23 +855,23 @@ function agregarClase(i) {
 }
 
 function crearMensajePL(estado, entrada, pzas_ordenadas, o_c, observaciones) {
-
+  const botones = [
+    `<div class="badge-icon" style="background: #ffa500;"><i class="fa-solid fa-clock" style="color: white; font-size: 12px;"></i></div> BACKORDER`,
+    `<div class="badge-icon" style="background: #a020f0;"><i class="fa-solid fa-boxes-stacked" style="color: white; font-size: 12px;"></i></div> PARCIAL`,
+    `<div class="badge-icon" style="background: #008000;"><i class="fa-solid fa-check" style="color: white; font-size: 12px;"></i></div> COMPLETO`,
+    `<div class="badge-icon" style="background: #334155;"><i class="fa-solid fa-ban" style="color: white; font-size: 12px;"></i></div> CANCELADO`,
+    `<div class="badge-icon" style="background: #ff0000;"><i class="fa-solid fa-truck-ramp-box" style="color: white; font-size: 12px;"></i></div> POR ENTREGAR`,
+    '<i class="fas fa-eye"></i>&nbsp; Observaciones',
+    '<i class="fas fa-edit"></i>&nbsp; Editar',
+    {
+      label: '<i class="fas fa-trash"></i>&nbsp; Eliminar',
+      modifier: 'destructive'
+    }
+  ];
   ons.openActionSheet({
     title: 'ESTADO',
     cancelable: true,
-    buttons: [
-      '<i class="fa-solid fa-circle" style="color: #E8C07C"></i> BACKORDER ',
-      '<i class="fa-solid fa-circle" style="color: #CE84DA"></i> PARCIAL ',
-      '<i class="fa-solid fa-circle" style="color: #00A514"></i> COMPLETO',
-      '<i class="fa-solid fa-circle" style="color: #000000"></i> CANCELADA',
-      '<i class="fa-solid fa-circle" style="color:rgb(225, 0, 0)"></i> POR ENTREGAR',
-      '<i class="fas fa-eye"></i>&nbsp;Observaciones',
-      '<i class="fas fa-edit"></i>&nbsp;Editar',
-      {
-        label: '<i class="fas fa-trash" style="color:red"></i>&nbsp;Elminar',
-        modifier: 'destructive'
-      }
-    ]
+    buttons: botones
   }).then(function (index) {
     //if(estado != index || index != -1) alerta('No puedes cambiar de estado por ya existen en Inventario')
     var faltante = pzas_ordenadas - entrada;
@@ -1057,7 +1057,7 @@ function cambiarSistemaM() {
   myLink = "https://empaquessr.com/sistema/michelle_2";
   document.getElementById("btnCambioSistemaE").style.display = "";
   document.getElementById("btnCambioSistemaM").style.display = "none";
-  document.getElementById("btnCerrar").style.display = "none";
+  $('#btnCerrar').attr('style', 'display: none !important;');
   setTimeout(() => {
     cCarga();
   }, 1000);
@@ -1071,7 +1071,7 @@ function cambiarSistemaE() {
   myLink = "https://empaquessr.com/sistema/empaquessr_2";
   document.getElementById("btnCambioSistemaM").style.display = "";
   document.getElementById("btnCambioSistemaE").style.display = "none";
-  document.getElementById("btnCerrar").style.display = "";
+  $('#btnCerrar').removeAttr('style');
   setTimeout(() => {
     cCarga();
   }, 1000);

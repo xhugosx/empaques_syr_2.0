@@ -184,9 +184,9 @@ function enlistarProductos(arrayJson, i) {
             <div class="left" style="margin-right: 14px; align-self: flex-start; margin-top: 4px;">
                 <div style="position: relative; display: inline-block;">
                     <div class="producto-icon-wrapper">
-                        <i class="fas fa-box fa-lg"></i>
+                        <i class="fas fa-box fa-2x"></i>
                     </div>
-                    <div style="position: absolute; top: -6px; right: -6px;">
+                    <div style="position: absolute; top: 5px; right: 5px;">
                         ${ExistePlano(arrayJson.file)}
                     </div>
                 </div>
@@ -194,7 +194,6 @@ function enlistarProductos(arrayJson, i) {
             
             <div class="center">
                 <div class="producto-item-container">
-                    
                     <div class="producto-header-technical">
                         <div class="badge-codigo" style="font-weight: 900; margin:0;">
                             ${arrayJson.codigo}
@@ -202,31 +201,23 @@ function enlistarProductos(arrayJson, i) {
                         <div class="producto-name-block">
                             ${arrayJson.producto}
                         </div>
-                        <span class="m2-badge">
-                            <i class="fa-solid fa-ruler-combined" style="font-size: 9px;"></i> 
-                            M²: ${arrayJson.m2}
-                        </span>
                     </div>
-
-                   
-
+                </div>
+                <div class="m2-badge">
+                    <i class="fa-solid fa-ruler-combined" style="font-size: 9px;"></i> 
+                    M²: ${arrayJson.m2}
                 </div>
             </div>
-            
             <div class="right" style="min-width: fit-content; margin-left: 10px; align-self: flex-start; margin-top: 4px;">
                 ${precioContenido}
             </div>
-            
         </ons-list-item>
     </div>
     `;
     return html;
 }
 
-
-
 function agregarClaseProducto(i) {
-
     $("#list-producto" + i).addClass("list-producto-animation");
     setTimeout(function () {
         $('.list-cliente-animation').remove();
@@ -269,9 +260,31 @@ function verPlano(plano) {
 }
 
 function ExistePlano(file) {
-    return file == 1 ? '<i class="fa-solid fa-file-circle-check fa-lg bordeIcon" style="color:#00bb2d; right:-10px; font-size:15px"></i>' : '<i class="fa-solid fa-file-circle-xmark fa-lg bordeIcon" style="color:#ff6961; right:-10px; font-size:15px"></i>';
-}
+    // Configuración de estilos: bg (fondo suave), txt (icono fuerte), ico (clase de font-awesome)
+    const estilo = file == 1
+        ? { bg: '#dcfce7', txt: '#29a055', ico: 'fa-file-circle-check' }
+        : { bg: '#e9e9e9', txt: '#aaaaaa', ico: 'fa-file-circle-xmark' };
 
+    return `
+        <div class="bordeIcon" 
+             style="
+                background: ${estilo.bg}; 
+                width: 22px; 
+                height: 22px; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                border-radius: 6px; 
+                border: 1.5px solid white; 
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                position: absolute;
+                right: -8px;
+                top: -8px;
+             ">
+            <i class="fa-solid ${estilo.ico}" style="font-size: 13px; color: ${estilo.txt}; "></i>
+        </div>
+    `;
+}
 function setDescargarProductosExcel() {
     let botones = ["Cancelar", "Aceptar"];
     let mensaje = "Escribe el codigo del cliente que deseas descargar";

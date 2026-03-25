@@ -110,22 +110,38 @@ function enlistarGrabados(objeto) {
     let perfil = validarPerfil();
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesGrabados('${objeto.id}')"`;
-    var html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
+
+    let html = `
+        <ons-card style="padding:0px; background: white;" class="botonPrograma" ${accion}>
+            <ons-lit-header class="pedido-header" style="background: #f4f4f4; border-radius: 20px 20px 0 0;">
+                <div class="header-left">
+                    <span class="pedido-id">ID: ${objeto.id}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #666;">
+                    <i class="fas fa-stamp"></i>&nbsp; Grabado
+                </b>
+            </ons-lit-header>
+
             <ons-list-item modifier="nodivider">
                 <div class="left">
-                    <i class="fas fa-stamp fa-2x"></i>
+                    <div class="producto-icon-wrapper">
+                        <i class="fas fa-stamp fa-2x" ></i>
+                    </div>
                 </div>
-                <div class="center">
-                    <span class="list-item__subtitle">
-                        <span style="font-size: 13pt;"> ${objeto.descripcion} </span>
-                    </span>
+
+                <div class="center romperTexto">
+                    ${objeto.descripcion}
                 </div>
-                <div class="right"> <span class="notification"> ${objeto.cantidad} pza(s)</span> </div>
+
+                <div class="right">
+                    <div class="pedido-cantidad-container">
+                        <span class="pedido-cantidad-valor" style="color: #444;">${separator(objeto.cantidad)}</span>
+                        <span class="pedido-cantidad-label">pzas</span>
+                    </div>
+                </div>
             </ons-list-item>
         </ons-card>
     `;
 
     return html;
-
 }

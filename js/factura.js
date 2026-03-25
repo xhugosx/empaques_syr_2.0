@@ -29,17 +29,35 @@ function setModificarBuscarFacturas(id) {
 function editarFactura(id, posicion) {
     //console.log(banderaFactura[posicion]);
     if (banderaFactura[posicion] === undefined || banderaFactura[posicion] === false) {
-        var entregado = $("#entregado" + posicion).text();
-        var fecha = $("#fecha" + posicion).text();
-        var factura = $("#factura" + posicion).text();
-        //alerta(entregado + " " + fecha + " " + id + " " + posicion)
-        //var boton;
+        var entregado = $("#entregado" + posicion).text().trim();
+        var fecha = $("#fecha" + posicion).text().trim();
+        var factura = $("#factura" + posicion).text().trim();
 
-        //$("#entregado"+posicion).html("");
-        $("#factura" + posicion).html('<ons-input id="inputId' + posicion + '" type="text" value="' + factura + '">');
-        $("#entregado" + posicion).html('<ons-input id="inputEntregado' + posicion + '" type="number" value="' + entregado + '">');
-        $("#fecha" + posicion).html('<ons-input id="inputFecha' + posicion + '" type="date" value="' + fecha + '">');
+        $("#factura" + posicion).html(`
+            <ons-input id="inputId${posicion}" modifier="underbar" type="text" value="${factura}" 
+                style="width: 100%; font-weight: 800; color: #1e293b;">
+            </ons-input>
+        `);
+
+        $("#entregado" + posicion).html(`
+            <ons-input id="inputEntregado${posicion}" modifier="underbar" type="number" value="${entregado}" 
+                style="width: 100%; font-weight: 800; color: #2e7d32;">
+            </ons-input>
+        `);
+
+        $("#fecha" + posicion).html(`
+            <ons-input id="inputFecha${posicion}" modifier="underbar" type="date" value="${fecha}" 
+                style="width: 100%; color: #475569;">
+            </ons-input>
+        `);
+
+        $("#editar" + posicion).css({
+            "background": "rgba(61, 174, 80, 0.2)",
+            "color": "#2e7d32",
+            "transition": "all 0.3s ease"
+        });
         $("#editar" + posicion).html('<i class="fa-solid fa-check"></i>');
+        $("#editar" + posicion).closest('ons-card').css("border", "1px solid #2e7d32");
 
         banderaFactura[posicion] = true;
     }
@@ -101,39 +119,58 @@ function setEliminarFactura(id) {
 
 //ENLISTAR DATOS CLIENTES
 function enlistarFacturasEditar(arrayJson, i) {
-    // { "id": "418", "id_pedido": "2023019-20", "entregado": "600", "factura": "A-7935", "fecha": "2023-06-26" }
-    let html1 = "";
-    html1 += '<ons-card style="padding:0px;" class="botonPrograma opacity100"> ';
-    html1 += '    <ons-list-item modifier="nodivider">';
-    html1 += '        <div class="left">';
-    html1 += '            <strong>ID:&nbsp; </strong>' + arrayJson.id;
-    html1 += '        </div>';
-    html1 += '        <div class="center">';
-    html1 += '            <table>';
-    html1 += '                <tr>';
-    html1 += '                    <td style="font-weight: bold;">Factura: </td>';
-    html1 += '                    <td id="factura' + i + '">' + arrayJson.factura + '</td>';
-    html1 += '                </tr>';
-    html1 += '                <tr>';
-    html1 += '                    <td style="font-weight: bold;">Entregado: </td>';
-    html1 += '                    <td id="entregado' + i + '">' + arrayJson.entregado + '</td>';
-    html1 += '                </tr>';
-    html1 += '                <tr>';
-    html1 += '                    <td style="font-weight: bold;">Fecha: </td>';
-    html1 += '                    <td id="fecha' + i + '">' + arrayJson.fecha + '</td>';
-    html1 += '                </tr>';
-    html1 += '                <tr>';
-    html1 += '                    <td id="button' + i + '"></td>';
-    html1 += '                </tr>';
-    html1 += '            </table>';
-    html1 += '        </div>';
-    html1 += '        <div class="right">';
-    html1 += '            <span id="editar' + i + '" class="accionFactura" onclick="editarFactura(' + arrayJson.id + ',' + i + ')"><i';
-    html1 += '                class="fa-solid fa-pen"></i></span>';
-    html1 += '            <span class="accionFactura" onclick="confirmarEliminar(' + arrayJson.id + ')"><i class="fa-solid fa-trash"></i></span>';
-    html1 += '        </div>';
-    html1 += '    </ons-list-item>';
-    html1 += '</ons-card>';
+    // Estructura limpia usando Template Literals
+    let html1 = `
+        <ons-card style="padding:0px; background: white; margin-bottom: 15px;" class="botonPrograma opacity100"> 
+            
+            <ons-lit-header class="pedido-header" style="background: #f4f4f4; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; padding: 8px 15px;">
+                <div class="header-left">
+                    <span class="pedido-id" style="color: #64748b;">ID: ${arrayJson.id}</span>
+                </div>
+                <b style="color: #1e293b; font-size: 12px;">
+                    <i class="fas fa-hashtag"></i> Pedido: ${arrayJson.id_pedido}
+                </b>
+            </ons-lit-header>
+
+            <ons-list-item modifier="nodivider">
+                <div class="center" style="padding: 10px 0;">
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        
+                        <div style="display: flex; align-items: center;">
+                            <span style="width: 85px; font-weight: bold; color: #64748b; font-size: 13px;">FACTURA:</span>
+                            <span id="factura${i}" style="color: #1e293b; font-weight: 800;">${arrayJson.factura}</span>
+                        </div>
+
+                        <div style="display: flex; align-items: center;">
+                            <span style="width: 85px; font-weight: bold; color: #64748b; font-size: 13px;">ENTREGADO:</span>
+                            <span id="entregado${i}" style="color: #2e7d32; font-weight: 800;">${arrayJson.entregado}</span>
+                        </div>
+
+                        <div style="display: flex; align-items: center;">
+                            <span style="width: 85px; font-weight: bold; color: #64748b; font-size: 13px;">FECHA:</span>
+                            <span id="fecha${i}" style="color: #475569;">${arrayJson.fecha}</span>
+                        </div>
+
+                        <div id="button${i}" style="margin-top: 5px;"></div>
+                    </div>
+                </div>
+
+                <div class="right" style="display: flex; gap: 10px; align-items: center;">
+                    <div id="editar${i}" class="accionFactura" 
+                         style="background: #e2e8f0; color: #475569; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+                         onclick="editarFactura(${arrayJson.id}, ${i})">
+                        <i class="fa-solid fa-pen" style="font-size: 14px;"></i>
+                    </div>
+
+                    <div class="accionFactura" 
+                         style="background: rgba(225, 29, 72, 0.1); color: #e11d48; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+                         onclick="confirmarEliminar(${arrayJson.id})">
+                        <i class="fa-solid fa-trash" style="font-size: 14px;"></i>
+                    </div>
+                </div>
+            </ons-list-item>
+        </ons-card>
+    `;
 
     return html1;
 }
@@ -173,139 +210,165 @@ function mostrarFacturas() {
 
 function enlistarFacturasRemisiones(objeto, i) {
     var html = `
-        <ons-card style="padding:0px;" class="botonPrograma" onclick="buscarFacturasEspecificas('${objeto.factura}',${i})">
-                <ons-list-header style="background-color: rgba(255, 255, 255, 0)">
-                    <b> ${sumarDias(objeto.fecha, 0)} </b>
-                </ons-list-header>
-                <ons-list-item modifier="nodivider" expandable>
-                    <div class="left">
+        <ons-card style="padding:0px; background: white; border-radius: 20px; overflow: hidden; margin-bottom: 15px;" 
+                  class="botonPrograma" 
+                  onclick="buscarFacturasEspecificas('${objeto.factura}', ${i})">
+            
+            <ons-lit-header class="pedido-header" style="background: #f4f4f4; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; padding: 10px 15px;">
+                <b style="color: #1e293b; font-size: 12px;">
+                    <i class="far fa-calendar-alt"></i>&nbsp; ${sumarDias(objeto.fecha, 0)}
+                </b>
+            </ons-lit-header>
+
+            <ons-list-item modifier="nodivider" expandable style="padding: 5px 0;">
+                
+                <div class="left">
+                    <div class="producto-icon-wrapper" style="margin-left:15px;">
                         <i class="fas fa-file-invoice fa-2x"></i>
                     </div>
-                    <div class="center romperTexto">
-                        <span class="list-item__title" style="font-size: 18px">
-                            ${objeto.factura}
-                        </span>
-                        <span class="list-item__subtitle">
-                            <span>${objeto.codigo_cliente} ${objeto.cliente}</span><br>
-                        </span>
+                </div>
+
+                <div class="center romperTexto">
+                    <span class="list-item__title" style="font-size: 18px; font-weight: 800; color: #1e293b;">
+                        Folio: ${objeto.factura}
+                    </span>
+                    <span class="list-item__subtitle" style="color: #64748b; margin-top: 3px; font-size: 13px;">
+                        <i class="fas fa-user-tag" style="font-size: 11px;"></i> <b>${objeto.codigo_cliente}</b> ${objeto.cliente}
+                    </span>
+                </div>
+
+                <div class="expandable-content expandProductos" id="contenidoFacturas${i}" style="background: #fdfdfd; padding: 15px 0;">
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+                        <ons-progress-circular indeterminate style="width: 24px; height: 24px;"></ons-progress-circular>
+                        <span style="font-size: 12px; color: #94a3b8; font-weight: 600;">Cargando productos...</span>
                     </div>
-                    <div class="expandable-content expandProductos" id="contenidoFacturas${i}">
-                        <center>
-                            <ons-progress-circular indeterminate></ons-progress-circular>
-                        </center>
-                         
-                    </div>
-                </ons-list-item>
-            </ons-card>
+                </div>
+
+            </ons-list-item>
+        </ons-card>
     `;
 
     return html;
-
 }
 
 function buscarFacturasEspecificas(factura, i) {
     servidor(myLink + "/php/facturas/busquedaEspecifica.php?factura=" + factura, function (respuesta) {
         var data = respuesta.responseText;
-        //console.log(data);
         var arrayJson = data.split('|');
-        var html = `<ons-list modifier="inset">`;
+
+        // Estructura de Tabla Premium (Igual a la de pedidos)
+        var html = `
+            <div style="padding: 10px; background: #ffffff;">
+                <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #edf2f7; text-align: left;">
+                            <th style="padding: 10px 5px; color: #64748b; font-weight: 800; font-size: 11px; text-transform: uppercase;">Pedido</th>
+                            <th style="padding: 10px 5px; color: #64748b; font-weight: 800; font-size: 11px; text-transform: uppercase;">Producto</th>
+                            <th style="padding: 10px 5px; color: #64748b; font-weight: 800; font-size: 11px; text-transform: uppercase; text-align: right;">Cant.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
         for (var j = 0; j < arrayJson.length - 1; j++) {
             var json = JSON.parse(arrayJson[j]);
             html += `
-                <ons-list-item modifier="longdivider" style="margin:0px">
-                    <div class="left">
-                        <b style="font-size:12px">${json.id_pedido}</b>
-                    </div>
-                    <div class="center">
-                        <b style="color:grey; font-size:13px">(${json.codigo})</b> &nbsp; <span> ${json.producto}</span>
-                    </div>
-                    <div class="right">
-                       <span class="notification">${separator(json.entregado)} pzas.</span>
-                    </div>
-                </ons-list-item>
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 12px 5px; color: #475569; font-weight: bold;">
+                        ${json.id_pedido}
+                    </td>
+                    <td style="padding: 12px 5px; color: #1e293b; line-height: 1.4;">
+                        <span style="color: #94a3b8; font-size: 11px; display: block; font-weight: bold;">[${json.codigo}]</span>
+                        ${json.producto}
+                    </td>
+                    <td style="padding: 12px 5px; text-align: right;">
+                        <span style="background: #f1f5f9; color: #1e293b; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 12px;">
+                            ${separator(json.entregado)}
+                        </span>
+                    </td>
+                </tr>
             `;
         }
-        html += `</ons-list>`;
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
         $("#contenidoFacturas" + i).html(html);
     });
 }
 
 function menuFacturas() {
-    var html = `<ons-list>
-                    <center>
-                        <h4 style="color: #808fa2; font-weight: bold;">
-                            Filtros
-                        </h4>
-                    </center>
-                    <ons-list>
-                        <ons-list-item>
-                            <label class="left">
-                                <h4 style="color: #808fa2;">
-                                    Año
-                                </h4>
-                            </label>
-                            <label class="center">
-                                <div class="year-input">
+    var html = `
+        <div style="padding: 25px 18px; background: white; min-height: 100vh;">
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="background: #f1f5f9; width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                    <i class="fa-solid fa-sliders fa-2x" style="color: #1e293b;"></i>
+                </div>
+                <h3 style="color: #1e293b; font-weight: 800; margin: 0; font-size: 22px; letter-spacing: -0.5px;">Panel de Filtros</h3>
+                <p style="color: #94a3b8; font-size: 13px; margin-top: 5px;">Personaliza tu vista de facturación</p>
+            </div>
 
-                                    <button id="prevYear" onclick="restarAnioFiltro()">&lt;</button>
-                                    <input type="text" id="currentYear" readonly>
-                                    <button id="nextYear" onclick="sumarAnioFiltro()">&gt;</button>
-                                </div>
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="facturaRadio" input-id="todo" checked value=""></ons-radio>
-                            </label>
-                            <label for="todo" class="center">
-                                TODO
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="facturaRadio" input-id="cinthya" value="A-"></ons-radio>
-                            </label>
-                            <label for="cinthya" class="center">
-                                (A) CINTHYA 
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="facturaRadio" input-id="cinthya2" value="B-"></ons-radio>
-                            </label>
-                            <label for="cinthya2" class="center">
-                                (B) CINTHYA 
-                            </label>
-                        </ons-list-item>
-                        <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="facturaRadio" input-id="michelle" value="F-"></ons-radio>
-                            </label>
-                            <label for="michelle" class="center">
-                                (F) MICHELLE
-                            </label>
-                        </ons-list-item>
-                         <ons-list-item tappable>
-                            <label class="left">
-                                <ons-radio name="facturaRadio" input-id="remisiones" value="R-"></ons-radio>
-                            </label>
-                            <label for="remisiones" class="center">
-                                (R) REMISIONES
-                            </label>
-                        </ons-list-item>
-                         <ons-list-item modifier="nodivider">
-                        <ons-button id="botonPrograma" onclick="actualizarFacturas();$('#menu')[0].close();" modifier="large">
-                            Aplicar
-                        </ons-button>
-                    </ons-list-item>
-                        
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; color: #64748b; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; margin-left: 5px;">
+                    <i class="far fa-calendar-alt"></i> Periodo Anual
+                </label>
+                
+                <div style="background: #f8fafc; border-radius: 18px; padding: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #e2e8f0;">
+                    <ons-button modifier="quiet" onclick="restarAnioFiltro()" style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #1e293b;">
+                        <i class="fas fa-chevron-left"></i>
+                    </ons-button>
+                    
+                    <input type="text" id="currentYear" readonly 
+                        style="width: 100px; text-align: center; border: none; font-size: 22px; font-weight: 800; color: #1e293b; background: transparent; outline: none;">
+                    
+                    <ons-button modifier="quiet" onclick="sumarAnioFiltro()" style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #1e293b;">
+                        <i class="fas fa-chevron-right"></i>
+                    </ons-button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 35px;">
+                <label style="display: block; color: #64748b; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; margin-left: 5px;">
+                    <i class="fas fa-tags"></i> Tipo de Documento
+                </label>
+
+                <div style="background: #f8fafc; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0;">
+                    <ons-list style="background: transparent;">
+                        ${crearItemRadio("todo", "", "MOSTRAR TODO", "fa-border-all")}
+                        ${crearItemRadio("cinthya", "A-", "(A) CINTHYA", "fa-user-tie")}
+                        ${crearItemRadio("cinthya2", "B-", "(B) CINTHYA", "fa-user-tie")}
+                        ${crearItemRadio("michelle", "F-", "(F) MICHELLE", "fa-user-nurse")}
+                        ${crearItemRadio("remisiones", "R-", "(R) REMISIONES", "fa-receipt")}
                     </ons-list>
+                </div>
+            </div>
+            <ons-button id="botonPrograma" onclick="actualizarFacturas(); $('#menu')[0].close();" modifier="large" 
+                style=" box-shadow: 0 4px 12px rgba(126, 104, 191, 0.3);">
+                Aplicar Filtros
+            </ons-button>
+        </div>
+    `;
 
-
-                </ons-list>
-            `;
     $("#contenidoMenu").html(html);
     llenarAnio();
+}
+
+// Función auxiliar para mantener el código limpio y profesional
+function crearItemRadio(id, valor, label, icono) {
+    return `
+        <ons-list-item tappable style="background: transparent; border-bottom: 1px solid #f1f5f9;">
+            <label class="left" style="padding-right: 15px;">
+                <ons-radio name="facturaRadio" input-id="${id}" value="${valor}" ${id === 'todo' ? 'checked' : ''}></ons-radio>
+            </label>
+            <label for="${id}" class="center" style="font-weight: 600; color: #475569; font-size: 14px;">
+                <i class="fas ${icono}" style="margin-right: 10px; opacity: 0.5;"></i> ${label}
+            </label>
+        </ons-list-item>
+    `;
 }
 //FIN DE NUEVO
 

@@ -119,24 +119,37 @@ function enlistarSuajes(objeto, i) {
     let perfil = validarPerfil();
     let accion;
     if (perfil != "produccion") accion = `onclick="opcionesSuajes('${objeto.id}')"`;
-    var html = `
-        <ons-card style="padding:0px;" class="botonPrograma" ${accion}>
-                <ons-list-item modifier="nodivider" >
-                    <div class="left">
+
+    let html = `
+        <ons-card style="padding:0px; background: white;" class="botonPrograma" ${accion}>
+            <ons-lit-header class="pedido-header" style="background: #f4f4f4; border-radius: 20px 20px 0 0;">
+                <div class="header-left">
+                    <span class="pedido-id">ID: ${objeto.id}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #666;">
+                    <i class="fas fa-tools"></i>&nbsp; Herramental
+                </b>
+            </ons-lit-header>
+
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <div class="producto-icon-wrapper">
                         <i class="fas fa-scissors fa-2x"></i>
                     </div>
-                    <div class="center romperTexto">
-                        <b><span class="list-item__title" style="font-size: 14px">
-                            ${objeto.codigo}
-                        </span></b>
-                        <span class="list-item__subtitle">
-                            <span style="font-size: 13pt;"> ${objeto.descripcion} </span>
-                        </span>
+                </div>
+                <div class="center romperTexto">
+                    <div style="margin-bottom: 4px;">
+                        <b class="badge-codigo" style="margin: 0;">${objeto.codigo}</b>
                     </div>
-                </ons-list-item>
-            </ons-card>
+                    <span class="list-item__title" style="font-size: 15px; font-weight: 800; color: #1e293b;">
+                        ${objeto.descripcion}
+                    </span>
+                </div>
+                <div class="right">
+                    </div>
+            </ons-list-item>
+        </ons-card>
     `;
 
     return html;
-
 }

@@ -179,164 +179,286 @@ function setModificarIngreso() {
 
 
 function enlitsarIngreso(arrayJson, i) {
-  let html1 = "";
   if (arrayJson == 0) return "<div></div>";
-  html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'ingresosMensual.html\',setMesIngreso,' + (i + 1) + ');mesIngreso=' + (i + 1) + '"> ';
-  html1 += '    <ons-list-item class="" modifier="nodivider chevron">';
-  html1 += '        <div class="left"> ';
-  html1 += '            <i class="fa-solid fa-money-bill-trend-up fa-2x"></i> ';
-  html1 += '        </div> ';
-  html1 += '        <div class="center"> ';
-  html1 += '            <b> ' + mesNombre(i) + ' </b>';
-  html1 += '        </div>';
-  html1 += '        <div class="right" style="color: green; font-size:15px"><span>$ ' + arrayJson.toLocaleString("es-MX") + '</span></div> ';
-  html1 += '    </ons-list-item> ';
-  html1 += '</ons-card>';
+
+  // Mantenemos tu lógica de navegación y asignación de variable
+  let accion = `onclick="nextPageFunctionData('ingresosMensual.html', setMesIngreso, ${i + 1}); mesIngreso = ${i + 1}"`;
+
+  let html1 = `
+        <ons-card style="padding:0px; background: white;" class="botonPrograma" ${accion}>
+
+            <ons-list-item modifier="nodivider chevron">
+                <div class="left"> 
+                    <div class="producto-icon-wrapper">
+                        <i class="fa-solid fa-money-bill-trend-up fa-2x"></i> 
+                    </div>
+                </div> 
+
+                <div class="center romperTexto"> 
+                    <span class="list-item__title" style="font-size: 16px; font-weight: 800; color: #1e293b; text-transform: capitalize;">
+                        ${mesNombre(i)}
+                    </span>
+                    <span class="list-item__subtitle" style="color: #94a3b8; font-size: 12px;">
+                        Ver detalle de ingresos por cliente
+                    </span>
+                </div>
+
+                <div class="right">
+                    <div class="pedido-cantidad-container" style="background: rgba(61, 174, 80, 0.1); border: none; padding: 8px 12px;">
+                        <span class="pedido-cantidad-valor" style="color: #2e7d32; font-size: 16px;">
+                            $ ${arrayJson.toLocaleString("es-MX")}
+                        </span>
+                    </div>
+                </div> 
+            </ons-list-item> 
+        </ons-card>
+    `;
+
   return html1;
 }
 function graficaIngreso(importes) {
-  $("#cantidadTotal").text("$ " + suma(importes));
+  // Actualizamos el total con formato de moneda
+  $("#cantidadTotal").text("$ " + suma(importes).toLocaleString("es-MX"));
+
   if (chart) {
     chart.data.datasets[0].data = importes;
     chart.update();
   }
   else {
     var grafica = document.getElementById("grafica").getContext("2d");
+
     chart = new Chart(grafica, {
-      type: "line",
+      type: "bar", // Cambiado a barras
       data: {
         labels: meses(),
         datasets: [
           {
             label: "Ganancias",
-            backgroundColor: 'rgba(163,221,203,0.2)',
-            borderColor: 'rgba(163,221,203,1)',
-            data: importes
-
+            data: importes,
+            // Verde más llamativo (Esmeralda)
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 2,
+            borderRadius: 5, // Bordes ligeramente redondeados en las barras
+            hoverBackgroundColor: 'rgba(16, 185, 129, 0.4)',
           }
         ]
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false // Ocultamos la leyenda para que se vea más limpio
+        },
         tooltips: {
+          mode: 'index',
+          intersect: false,
+          backgroundColor: 'rgba(30, 41, 59, 0.9)', // Fondo oscuro para el tooltip
+          titleFontColor: '#fff',
+          bodyFontColor: '#fff',
           callbacks: {
             label(t, d) {
               const xLabel = d.datasets[t.datasetIndex].label;
-              const yLabel = t.yLabel >= 1000 ? '$ ' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '$ ' + t.yLabel;
+              const yLabel = '$ ' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
               return xLabel + ': ' + yLabel;
             }
           }
         },
         scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                callback: (label, index, labels) => {
-                  return '$ ' + label.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                }
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              padding: 10,
+              callback: (label) => {
+                return '$ ' + label.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
               }
+            },
+            gridLines: {
+              color: 'rgba(0,0,0,0.05)',
+              drawBorder: false
             }
-          ]
+          }],
+          xAxes: [{
+            gridLines: {
+              display: false // Quitamos líneas verticales para mayor limpieza
+            }
+          }]
         }
-
       }
     });
   }
 }
 
 function enlitsarMesIngreso(arrayJson, i) {
-  let html1 = "";
+  // La acción de clic que ya tenías definida
+  let accion = `onclick="nextPageFunctionData('ingresosMensualCliente.html', setIngresoMensualCliente, [mesIngreso, ${arrayJson.cliente}])"`;
 
-  html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="nextPageFunctionData(\'ingresosMensualCliente.html\',setIngresoMensualCliente,[mesIngreso,' + arrayJson.cliente + '])"> ';
-  html1 += '    <ons-list-item class="" modifier="nodivider chevron">';
-  html1 += '        <div class="left"> ';
-  html1 += '            <i class="fa-solid fa-user fa-2x"></i> ';
-  html1 += '        </div> ';
-  html1 += '        <div class="center"> ';
-  //html1 += '            <b> '+ agregarCeros(arrayJson.cliente)+' </b> &nbsp; '+arrayJson.nombre;
-  html1 += '            <span class="list-item__title"><b> ' + agregarCeros(arrayJson.cliente) + ' </b> &nbsp; ' + arrayJson.nombre + '</span>';
-  html1 += '            <span class="list-item__subtitle"><div style="color:grey; font-size: 15px;">Facturas: ' + arrayJson.facturas + '</div></span>';
-  html1 += '        </div>';
-  html1 += '        <div class="right"><span style="color: green;font-size:15px">$' + new Intl.NumberFormat('es-MX').format(arrayJson.suma) + '</span> </div> ';
-  html1 += '    </ons-list-item> ';
-  html1 += '</ons-card>';
+  let html1 = `
+        <ons-card style="padding:0px; background: white;" class="botonPrograma" ${accion}>
+            <ons-lit-header class="pedido-header" style="background: #f4f4f4; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">CODIGO: ${agregarCeros(arrayJson.cliente)}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #666;">
+                    <i class="fa-solid fa-address-card"></i>&nbsp; Perfil Cliente
+                </b>
+            </ons-lit-header>
+
+            <ons-list-item modifier="nodivider chevron">
+                <div class="left"> 
+                    <div class="producto-icon-wrapper">
+                        <i class="fa-solid fa-user fa-2x"></i> 
+                    </div>
+                </div> 
+
+                <div class="center romperTexto"> 
+                    <span class="list-item__title" style="font-size: 15px; font-weight: 800; color: #1e293b;">
+                        ${arrayJson.nombre}
+                    </span>
+                    
+                    <span class="list-item__subtitle" style="margin-top: 4px; display: block;">
+                        <div style="color: #64748b; font-size: 14px;">
+                            <i class="fas fa-file-invoice" style="font-size: 12px;"></i>&nbsp;Facturas: <b>${arrayJson.facturas}</b>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="right">
+                    <div class="pedido-cantidad-container" style="background: rgba(61, 174, 80, 0.1); border: none; padding: 8px 12px;">
+                        <span class="pedido-cantidad-valor" style="color: #2e7d32; font-size: 16px;">
+                            $ ${new Intl.NumberFormat('es-MX').format(arrayJson.suma)}
+                        </span>
+                    </div>
+                </div> 
+            </ons-list-item> 
+        </ons-card>
+    `;
+
   return html1;
 }
 
 function graficaIngresoCliente(json) {
-  //json = conversionTextoArray(json);
   let importes = [];
   let clientes = [];
+
+  // Mantenemos tu lógica de procesamiento de datos
   for (let i = 0; i < json.length - 1; i++) {
-    json[i] = JSON.parse(json[i])
+    json[i] = JSON.parse(json[i]);
     importes.push(json[i].suma);
     clientes.push(agregarCeros(json[i].cliente));
   }
-  //console.log(json);
 
-  $("#cantidadTotalMes").text("$ " + suma(importes));
+  // Actualizamos el total del mes con formato local
+  $("#cantidadTotalMes").text("$ " + suma(importes).toLocaleString("es-MX"));
 
   var grafica = document.getElementById("graficaMes").getContext("2d");
+  if (window.chartMes instanceof Chart) {
+    window.chartMes.destroy();
+  }
 
-  var chartMes = new Chart(grafica, {
-    type: "line",
+  window.chartMes = new Chart(grafica, {
+    type: "bar", // Cambiado a barras para consistencia
     data: {
       labels: clientes,
       datasets: [
         {
-          label: mesNombre(mesIngreso - 1),
-          backgroundColor: 'rgba(163,221,203,0.2)',
-          borderColor: 'rgba(163,221,203,1)',
-          data: importes
-
+          label: "Ingreso por Cliente (" + mesNombre(mesIngreso - 1) + ")",
+          data: importes,
+          // Verde Esmeralda llamativo
+          backgroundColor: 'rgba(16, 185, 129, 0.2)',
+          borderColor: 'rgba(16, 185, 129, 1)',
+          borderWidth: 2,
+          borderRadius: 5, // Barras con puntas redondeadas
+          hoverBackgroundColor: 'rgba(16, 185, 129, 0.4)',
         }
       ]
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: false // Más limpio sin leyenda
+      },
       tooltips: {
+        mode: 'index',
+        intersect: false,
+        backgroundColor: 'rgba(30, 41, 59, 0.9)',
         callbacks: {
           label(t, d) {
-            const xLabel = d.datasets[t.datasetIndex].label;
-            const yLabel = t.yLabel >= 1000 ? '$ ' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '$ ' + t.yLabel;
-            return xLabel + ': ' + yLabel;
+            const yLabel = '$ ' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return "Total: " + yLabel;
           }
         }
       },
       scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-              callback: (label, index, labels) => {
-                return '$ ' + label.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-              }
-            }
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            padding: 10,
+            callback: (label) => '$ ' + label.toLocaleString()
+          },
+          gridLines: {
+            color: 'rgba(0,0,0,0.05)',
+            drawBorder: false
           }
-        ]
+        }],
+        xAxes: [{
+          gridLines: {
+            display: false // Limpieza total en el eje X
+          },
+          ticks: {
+            fontStyle: 'bold' // Resalta el ID del cliente
+          }
+        }]
       }
-
     }
   });
 }
 
 //funcion para enlistar por mes cliente ingreso
 function enlitsarMesIngresoCliente(arrayJson) {
-  let html1 = "";
+  let html1 = `
+        <ons-card style="padding:0px; background: white;" class="botonPrograma" onclick="setArribaIngreso(${arrayJson.id})"> 
+            <ons-lit-header class="pedido-header" style="background: #f4f4f4; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between;">
+                <div class="header-left">
+                    <span class="pedido-id">ID: ${arrayJson.id}</span>
+                </div>
+                <b class="pedido-entrega-status" style="color: #666;">
+                    <i class="far fa-calendar-check"></i>&nbsp; ${sumarDias(arrayJson.fecha, 0)}
+                </b>
+            </ons-lit-header>
 
-  html1 += '<ons-card style="padding:0px;" class="botonPrograma" onclick="setArribaIngreso(' + arrayJson.id + ')"> ';
-  html1 += '     <ons-list-header style="background:white">' + sumarDias(arrayJson.fecha, 0) + '</ons-list-header>';
-  html1 += '    <ons-list-item class="" modifier="nodivider">';
-  html1 += '        <div class="left"> ';
-  html1 += '            <i class="fa-solid fa-file-invoice-dollar fa-2x"></i> ';
-  html1 += '        </div> ';
-  html1 += '        <div class="center"> ';
-  //html1 += '            <b> '+ agregarCeros(arrayJson.cliente)+' </b> &nbsp; '+arrayJson.nombre;
-  html1 += '            <span class="list-item__title"><b> Factura: ' + arrayJson.factura + ' </b> -&nbsp; ' + metodoPago(arrayJson.metodo_pago) + '</span>';
-  html1 += '            <span class="list-item__subtitle"><div style="color:grey; font-size: 15px;">Observaciones: ' + arrayJson.observaciones + '</div></span>';
-  html1 += '        </div>';
-  html1 += '        <div class="right"><span style="color: green;font-size:15px">$' + new Intl.NumberFormat('es-MX').format(arrayJson.total_importe) + '</span> </div> ';
-  html1 += '    </ons-list-item> ';
-  html1 += '</ons-card>';
+            <ons-list-item modifier="nodivider">
+                <div class="left"> 
+                    <div class="producto-icon-wrapper">
+                        <i class="fa-solid fa-file-invoice-dollar fa-2x"></i> 
+                    </div>
+                </div> 
+
+                <div class="center romperTexto"> 
+                    <span class="list-item__title" style="font-size: 15px; font-weight: 800; color: #1e293b;">
+                        Factura: ${arrayJson.factura}
+                    </span>
+                    <span class="list-item__subtitle" style="margin-top: 4px; display: block; color: #64748b;">
+                        <i class="fas fa-hand-holding-usd" style="font-size: 11px;"></i> ${metodoPago(arrayJson.metodo_pago)}
+                    </span>
+
+                    <div style="margin-top: 6px; font-size: 13px; color: #94a3b8; font-style: italic;">
+                        ${arrayJson.observaciones ? 'Observaciones: ' + arrayJson.observaciones : 'Sin observaciones'}
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div class="pedido-cantidad-container" style="background: rgba(61, 174, 80, 0.1); border: none; padding: 8px 12px;">
+                        <span class="pedido-cantidad-valor" style="color: #2e7d32; font-size: 16px;">
+                            $${new Intl.NumberFormat('es-MX').format(arrayJson.total_importe)}
+                        </span>
+                    </div>
+                </div> 
+            </ons-list-item> 
+        </ons-card>
+    `;
+
   return html1;
 }
 
