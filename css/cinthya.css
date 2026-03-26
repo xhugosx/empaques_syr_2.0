@@ -187,11 +187,11 @@ ons-tab.active .tabbar__icon {
 i,
 ons-tab.active .tabbar__icon {
     text-shadow:
-        1px 1px 0 #ccc,
-        1.5px 1.5px 0 #bbb,
-        2px 2px 0 #aaa,
-        2.5px 2.5px 0 #999,
-        3px 3px 0 #888,
+        1px 1px 0 #ccccccd7,
+        1.5px 1.5px 0 #bbbbbbc5,
+        2px 2px 0 #aaaaaad2,
+        2.5px 2.5px 0 #999999cc,
+        3px 3px 0 #888888d2,
         3.5px 3.5px 3.5px rgba(0, 0, 0, 0.5);
 }
 
