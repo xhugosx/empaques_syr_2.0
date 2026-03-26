@@ -165,6 +165,7 @@ ons-tab.active .tabbar__icon {
     padding-bottom: 5px;
 }
 
+i,
 ons-tab.active .tabbar__icon {
     text-shadow:
         1px 1px 0 #ccc,
