@@ -45,6 +45,7 @@ function agregarHtmlInserto() {
                                     <option value="SUAJADO">SUAJADO</option>
                                     <option value="BASE">BASE</option>
                                     <option value="SEPARADOR">SEPARADOR</option>
+                                    <option value="ESQUINERO">ESQUINERO</option>
                                 </ons-select>
                             </div>
                         </ons-list-item>
@@ -61,6 +62,7 @@ function agregarHtmlInserto() {
                                     <option value="16 ECT">16 ECT</option>
                                     <option value="20 ECT">20 ECT</option>
                                     <option value="21 ECT">21 ECT</option>
+                                    <option value="23 ECT">23 ECT</option>
                                     <option value="32 ECT">32 ECT</option>
                                     <option value="42 ECT">42 ECT</option>
                                     <option value="48 ECT">48 ECT</option>

@@ -545,12 +545,11 @@ function enlistarInventarioLamina(data) {
                 <b style="color: #475569;">${caja.codigo}</b> ${caja.producto}
             </div>`)
         .join('');
-
     const perfil = validarPerfil();
     const accion = perfil !== "produccion"
         ? `onclick="mensajeAlertaInventarioLamina('${data.id}', ${data.inventario})"`
         : '';
-
+            console.log(data);
     return `
     <ons-card class="botonPrograma" style="padding: 0; margin: 10px 12px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: white;" ${accion}>
         <ons-list-header>
@@ -591,6 +590,10 @@ function enlistarInventarioLamina(data) {
             </div>
 
         </ons-list-item>
+        ${data.observaciones ? `<hr> 
+            <div style="font-size: 11px; color: #64748b; padding: 0 12px 10px 12px;">
+                <i class="fa-solid fa-comment"></i> <span style="color: #94a3b8;"> &nbsp; ${data.observaciones}</span>
+            </div>` : ''}
     </ons-card>
     `;
 }
